@@ -107,8 +107,9 @@
 /* WEARO Mega Menu — canonical layout and responsive rules */
 
 body .fashion-nav .fashion-shop-mega {
-  width: min(1120px, calc(100vw - 48px)) !important;
-  max-width: min(1120px, calc(100vw - 48px)) !important;
+  width: min(1120px, calc(100vw - 32px)) !important;
+  max-width: min(1120px, calc(100vw - 32px)) !important;
+  box-sizing: border-box !important;
   padding: 28px 30px 30px !important;
   display: grid !important;
   grid-template-columns: minmax(300px, .82fr) minmax(420px, 1.18fr) !important;
@@ -117,6 +118,17 @@ body .fashion-nav .fashion-shop-mega {
   row-gap: 24px !important;
   align-items: start !important;
   box-sizing: border-box !important;
+}
+
+/* Keep the desktop mega menu centered in the viewport, independent of the trigger's x-position. */
+@media (min-width: 761px) {
+  body .fashion-nav .fashion-shop-mega {
+    position: fixed !important;
+    top: calc(var(--wearo-header-total, 100px) + 12px) !important;
+    left: 50% !important;
+    right: auto !important;
+    transform: translateX(-50%) !important;
+  }
 }
 
 /* Left column: identity + complete category browser */
