@@ -1,5 +1,5 @@
-/* WEARO — Language, location & currency selector
-   Scoped only to the header locale control/modal. Uses existing header palette tokens.
+/* WEARO — Language selector modal
+   Header trigger + centered dialog. Scoped; uses existing brand tokens.
 */
 
 .fashion-language-switcher {
@@ -12,20 +12,20 @@
   margin-left: 2px;
   padding: 0 9px;
   border: 1px solid transparent;
-  border-left: 1px solid color-mix(in srgb, var(--wearo-paper) 18%, transparent);
+  border-left: 1px solid color-mix(in srgb, var(--wearo-paper, #fff) 18%, transparent);
   background: transparent;
   color: inherit;
-  font: 700 9px/1 Space Grotesk, Arial, sans-serif;
-  letter-spacing: .1em;
+  font: 700 9px/1 "Space Grotesk", Arial, sans-serif;
+  letter-spacing: 0.1em;
   cursor: pointer;
-  transition: color .18s ease, background .18s ease, border-color .18s ease, transform .18s ease;
+  transition: color 0.18s ease, background 0.18s ease, border-color 0.18s ease, transform 0.18s ease;
 }
 
 .fashion-language-switcher:hover,
 .fashion-language-switcher.is-active {
-  color: var(--wearo-orange);
-  border-color: color-mix(in srgb, var(--wearo-orange) 60%, transparent);
-  background: color-mix(in srgb, var(--wearo-orange) 9%, transparent);
+  color: var(--wearo-orange, #e85d04);
+  border-color: color-mix(in srgb, var(--wearo-orange, #e85d04) 60%, transparent);
+  background: color-mix(in srgb, var(--wearo-orange, #e85d04) 9%, transparent);
   transform: translateY(-1px);
 }
 
@@ -38,26 +38,17 @@
   overflow: hidden;
   border-radius: 50%;
   background: #da251d;
-  box-shadow: 0 0 0 1px rgba(255, 255, 255, .18);
-  font-family: "Apple Color Emoji", "Segoe UI Emoji", sans-serif;
-  font-size: 15px;
-  line-height: 1;
-  letter-spacing: 0;
-}
-
-.fashion-language-flag--large {
-  width: 30px;
-  height: 30px;
-  flex-basis: 30px;
-  font-size: 17px;
-  box-shadow: 0 0 0 1px rgba(0, 0, 0, .08);
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.18);
+  object-fit: cover;
 }
 
 .fashion-language-code {
   min-width: 26px;
   text-align: left;
-  letter-spacing: .12em;
+  letter-spacing: 0.12em;
 }
+
+/* ── Overlay ─────────────────────────────────────────────── */
 
 .wearo-language-modal {
   position: fixed;
@@ -66,169 +57,266 @@
   display: grid;
   place-items: center;
   padding: 24px;
-  background: rgba(0, 0, 0, .58);
-  backdrop-filter: blur(7px);
-  -webkit-backdrop-filter: blur(7px);
-  animation: wearo-language-fade-in .18s ease-out both;
+  animation: wearo-language-fade-in 0.18s ease-out both;
 }
 
-.wearo-language-dialog {
+.wearo-language-modal__backdrop {
+  position: absolute;
+  inset: 0;
+  border: 0;
+  padding: 0;
+  margin: 0;
+  background: rgba(8, 10, 14, 0.62);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  cursor: pointer;
+}
+
+/* ── Panel ────────────────────────────────────────────────── */
+
+.wearo-language-modal__panel {
   position: relative;
-  width: min(680px, calc(100vw - 32px));
+  z-index: 1;
+  width: min(420px, calc(100vw - 32px));
   box-sizing: border-box;
-  padding: 28px 24px 24px;
+  padding: 28px 24px 22px;
   background: #fff;
   color: #111;
-  border: 1px solid rgba(17, 17, 17, .08);
-  box-shadow: 0 28px 90px rgba(0, 0, 0, .28);
-  animation: wearo-language-dialog-in .2s cubic-bezier(.22, 1, .36, 1) both;
+  border: 1px solid rgba(17, 17, 17, 0.08);
+  border-radius: 4px;
+  box-shadow:
+    0 24px 80px rgba(0, 0, 0, 0.32),
+    0 2px 8px rgba(0, 0, 0, 0.08);
+  animation: wearo-language-dialog-in 0.22s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
-.wearo-language-dialog__close {
-  position: absolute;
-  top: 20px;
-  right: 18px;
-  width: 38px;
-  height: 38px;
+/* ── Header ───────────────────────────────────────────────── */
+
+.wearo-language-modal__header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 22px;
+  padding-right: 4px;
+}
+
+.wearo-language-modal__header .fashion-menu-kicker {
+  display: block;
+  margin-bottom: 6px;
+  color: rgba(17, 17, 17, 0.45);
+  font: 650 10px/1 "Space Grotesk", Arial, sans-serif;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.wearo-language-modal__header h2 {
+  margin: 0;
+  font: 600 20px/1.2 "Space Grotesk", Arial, sans-serif;
+  letter-spacing: -0.03em;
+  color: #111;
+}
+
+.wearo-language-modal__header p {
+  margin: 8px 0 0;
+  max-width: 28ch;
+  color: rgba(17, 17, 17, 0.58);
+  font: 400 12.5px/1.45 "Space Grotesk", Arial, sans-serif;
+}
+
+.wearo-language-modal__close {
+  flex: 0 0 auto;
+  width: 36px;
+  height: 36px;
   display: grid;
   place-items: center;
+  margin: -6px -6px 0 0;
   padding: 0;
   border: 0;
+  border-radius: 4px;
   background: transparent;
   color: #111;
   cursor: pointer;
-  transition: background .16s ease, transform .16s ease;
+  transition: background 0.15s ease, transform 0.15s ease;
 }
 
-.wearo-language-dialog__close:hover {
-  background: rgba(0, 0, 0, .055);
-  transform: rotate(3deg);
+.wearo-language-modal__close:hover {
+  background: rgba(0, 0, 0, 0.06);
 }
 
-.wearo-language-dialog__header {
-  padding-right: 46px;
-  margin-bottom: 25px;
+.wearo-language-modal__close:focus-visible {
+  outline: 2px solid #111;
+  outline-offset: 2px;
 }
 
-.wearo-language-dialog__header h2 {
-  margin: 0;
-  font: 600 19px/1.2 "Space Grotesk", Arial, sans-serif;
-  letter-spacing: -.025em;
-  text-transform: none;
-}
+/* ── Options ──────────────────────────────────────────────── */
 
-.wearo-language-dialog__header p {
-  margin: 7px 0 0;
-  color: rgba(17, 17, 17, .64);
-  font: 400 12px/1.4 "Space Grotesk", Arial, sans-serif;
-}
-
-.wearo-language-dialog__body {
+.wearo-language-modal__options {
   display: grid;
-  gap: 0;
+  gap: 10px;
 }
 
-.wearo-language-field,
-.wearo-language-confirm {
-  width: 100%;
-  min-height: 50px;
-  box-sizing: border-box;
-}
-
-.wearo-language-field {
-  display: flex;
+.wearo-language-option {
+  position: relative;
+  display: grid;
+  grid-template-columns: auto 1fr auto auto;
   align-items: center;
-  justify-content: space-between;
-  gap: 18px;
-  padding: 0 15px;
-  border: 1px solid rgba(17, 17, 17, .16);
+  gap: 14px;
+  width: 100%;
+  min-height: 64px;
+  box-sizing: border-box;
+  padding: 12px 14px;
+  border: 1px solid rgba(17, 17, 17, 0.14);
+  border-radius: 4px;
   background: #fff;
   color: #111;
   text-align: left;
-  font: 500 14px/1.2 "Space Grotesk", Arial, sans-serif;
   cursor: pointer;
-  transition: border-color .16s ease, background .16s ease, box-shadow .16s ease;
+  transition:
+    border-color 0.16s ease,
+    background 0.16s ease,
+    box-shadow 0.16s ease,
+    transform 0.16s ease;
 }
 
-.wearo-language-field:hover,
-.wearo-language-field:focus-visible {
-  border-color: rgba(17, 17, 17, .46);
+.wearo-language-option:hover {
+  border-color: rgba(17, 17, 17, 0.32);
   background: #fafafa;
-  outline: none;
-  box-shadow: 0 0 0 2px rgba(17, 17, 17, .04);
 }
 
-.wearo-language-field__leading {
-  display: inline-flex;
-  align-items: center;
-  gap: 12px;
+.wearo-language-option:focus-visible {
+  outline: none;
+  border-color: #111;
+  box-shadow: 0 0 0 3px rgba(17, 17, 17, 0.08);
+}
+
+.wearo-language-option.is-active {
+  border-color: #111;
+  background: #f7f7f7;
+  box-shadow: inset 0 0 0 1px #111;
+}
+
+.wearo-language-option__flag {
+  width: 36px;
+  height: 36px;
+  flex: 0 0 36px;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  border-radius: 50%;
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.08);
+  background: #eee;
+}
+
+.wearo-language-option__flag img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.wearo-language-option__text {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
   min-width: 0;
 }
 
-.wearo-language-field__leading > span:last-child {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+.wearo-language-option__text strong {
+  font: 600 14.5px/1.2 "Space Grotesk", Arial, sans-serif;
+  letter-spacing: -0.01em;
 }
 
-.wearo-language-field__value {
-  font: 700 10px/1 "Oswald", Arial, sans-serif;
-  letter-spacing: .12em;
-  color: rgba(17, 17, 17, .55);
+.wearo-language-option__text small {
+  color: rgba(17, 17, 17, 0.52);
+  font: 500 11px/1.2 "Space Grotesk", Arial, sans-serif;
+  letter-spacing: 0.04em;
 }
 
-/* The existing divider is upgraded into the currency row.
-   Currency follows the active document language: VIE => VND, ENG => USD. */
-.wearo-language-divider {
-  height: 50px;
-  margin: 0;
-  padding: 0 15px;
-  box-sizing: border-box;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  border-inline: 1px solid rgba(17, 17, 17, .16);
-  border-bottom: 1px solid rgba(17, 17, 17, .16);
-  background: #fff;
+.wearo-language-option__meta {
+  font: 700 10px/1 "Oswald", "Space Grotesk", Arial, sans-serif;
+  letter-spacing: 0.14em;
+  color: rgba(17, 17, 17, 0.42);
+}
+
+.wearo-language-option.is-active .wearo-language-option__meta {
   color: #111;
-  font: 500 14px/1.2 "Space Grotesk", Arial, sans-serif;
 }
 
-.wearo-language-divider::before {
-  content: "Mệnh giá";
+.wearo-language-option__check {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(17, 17, 17, 0.22);
+  background: transparent;
+  position: relative;
+  transition: border-color 0.15s ease, background 0.15s ease;
 }
 
-.wearo-language-divider::after {
-  content: "VND";
-  font: 700 10px/1 "Oswald", Arial, sans-serif;
-  letter-spacing: .12em;
-  color: rgba(17, 17, 17, .55);
+.wearo-language-option.is-active .wearo-language-option__check {
+  border-color: #111;
+  background: #111;
 }
 
-html[lang="en"] .wearo-language-divider::before {
-  content: "Currency";
+.wearo-language-option.is-active .wearo-language-option__check::after {
+  content: "";
+  position: absolute;
+  top: 3px;
+  left: 5.5px;
+  width: 4px;
+  height: 7px;
+  border: solid #fff;
+  border-width: 0 1.5px 1.5px 0;
+  transform: rotate(45deg);
 }
 
-html[lang="en"] .wearo-language-divider::after {
-  content: "USD";
+/* ── Footer ───────────────────────────────────────────────── */
+
+.wearo-language-modal__footer {
+  margin-top: 18px;
+  display: grid;
+  gap: 12px;
 }
 
-.wearo-language-confirm {
-  margin-top: 22px;
+.wearo-language-modal__hint {
+  margin: 0;
+  text-align: center;
+  color: rgba(17, 17, 17, 0.48);
+  font: 500 11.5px/1.3 "Space Grotesk", Arial, sans-serif;
+  letter-spacing: 0.02em;
+}
+
+.wearo-language-modal__confirm {
+  width: 100%;
+  min-height: 48px;
+  padding: 0 18px;
   border: 1px solid #111;
+  border-radius: 2px;
   background: #111;
   color: #fff;
   font: 650 13px/1 "Space Grotesk", Arial, sans-serif;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
   cursor: pointer;
-  transition: background .16s ease, color .16s ease, transform .16s ease;
+  transition: background 0.16s ease, transform 0.16s ease, box-shadow 0.16s ease;
 }
 
-.wearo-language-confirm:hover,
-.wearo-language-confirm:focus-visible {
+.wearo-language-modal__confirm:hover {
   background: #000;
   transform: translateY(-1px);
-  outline: none;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.18);
 }
+
+.wearo-language-modal__confirm:focus-visible {
+  outline: 2px solid #111;
+  outline-offset: 3px;
+}
+
+.wearo-language-modal__confirm:active {
+  transform: translateY(0);
+}
+
+/* ── Motion ───────────────────────────────────────────────── */
 
 @keyframes wearo-language-fade-in {
   from { opacity: 0; }
@@ -236,13 +324,20 @@ html[lang="en"] .wearo-language-divider::after {
 }
 
 @keyframes wearo-language-dialog-in {
-  from { opacity: 0; transform: translateY(10px) scale(.985); }
-  to { opacity: 1; transform: translateY(0) scale(1); }
+  from {
+    opacity: 0;
+    transform: translateY(12px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
 }
+
+/* ── Responsive ───────────────────────────────────────────── */
 
 @media (max-width: 1120px) {
   .fashion-language-switcher {
-    display: inline-flex;
     min-width: 60px;
     margin-left: 0;
     padding-left: 7px;
@@ -251,7 +346,6 @@ html[lang="en"] .wearo-language-divider::after {
 
 @media (max-width: 900px) {
   .fashion-language-switcher {
-    display: inline-flex;
     min-width: 56px;
     height: 36px;
     padding-inline: 5px;
@@ -262,7 +356,6 @@ html[lang="en"] .wearo-language-divider::after {
     width: 23px;
     height: 23px;
     flex-basis: 23px;
-    font-size: 14px;
   }
 
   .fashion-language-code {
@@ -271,41 +364,43 @@ html[lang="en"] .wearo-language-divider::after {
 
   .wearo-language-modal {
     padding: 16px;
+    align-items: end;
   }
 
-  .wearo-language-dialog {
-    width: min(680px, calc(100vw - 24px));
-    padding: 24px 18px 18px;
+  .wearo-language-modal__panel {
+    width: min(420px, calc(100vw - 24px));
+    padding: 22px 18px 18px;
+    border-radius: 8px 8px 0 0;
   }
 }
 
-@media (max-width: 520px) {
-  .wearo-language-dialog__header h2 {
-    font-size: 17px;
+@media (max-width: 420px) {
+  .wearo-language-option {
+    grid-template-columns: auto 1fr auto;
+    gap: 12px;
+    min-height: 58px;
+    padding: 10px 12px;
   }
 
-  .wearo-language-dialog__header p {
-    font-size: 11px;
+  .wearo-language-option__meta {
+    display: none;
   }
 
-  .wearo-language-field,
-  .wearo-language-confirm,
-  .wearo-language-divider {
-    min-height: 48px;
-    height: 48px;
+  .wearo-language-modal__header h2 {
+    font-size: 18px;
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .wearo-language-modal,
-  .wearo-language-dialog {
+  .wearo-language-modal__panel {
     animation: none;
   }
 
   .fashion-language-switcher,
-  .wearo-language-dialog__close,
-  .wearo-language-field,
-  .wearo-language-confirm {
+  .wearo-language-modal__close,
+  .wearo-language-option,
+  .wearo-language-modal__confirm {
     transition: none;
   }
 }

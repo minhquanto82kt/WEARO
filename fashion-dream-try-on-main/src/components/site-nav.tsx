@@ -149,9 +149,81 @@ export function SiteNav() {
 
       {searchOpen && <div className="fashion-search-panel" role="dialog" aria-label={t("Tìm kiếm nhanh", "Quick search")}><div className="fashion-search-panel__header"><div><span className="fashion-menu-kicker">WEARO / SEARCH</span><h2>{t("Tìm sản phẩm", "Find your style")}</h2></div><button type="button" className="fashion-icon-btn" onClick={() => { setSearchOpen(false); setQuery(""); }} aria-label={t("Đóng tìm kiếm", "Close search")}><X size={18} /></button></div><form onSubmit={submitSearch} className="fashion-search-form"><label htmlFor="site-search" className="sr-only">{t("Tìm kiếm sản phẩm", "Search products")}</label><Search size={18} aria-hidden="true" /><input id="site-search" type="search" value={query} onChange={(event) => setQuery(event.target.value)} placeholder={t("Tìm sản phẩm, phong cách...", "Search products, styles...")} autoFocus /><button type="submit" disabled={!query.trim()}>{t("Tìm", "Search")}</button></form><div className="fashion-search-panel__body"><div><span className="fashion-menu-label">01 / QUICK ACCESS</span><div className="fashion-search-links"><Link to="/shop" onClick={closeMenus}><span>{t("Tất cả sản phẩm", "All products")}</span><ChevronRight size={15} /></Link><Link to="/ai" onClick={closeMenus}><span>AI Studio</span><ChevronRight size={15} /></Link><Link to="/account" onClick={closeMenus}><span>{t("Tài khoản", "My Account")}</span><ChevronRight size={15} /></Link></div></div><div><span className="fashion-menu-label">02 / CATEGORIES</span><div className="fashion-search-tags">{CATEGORIES.map((category) => <Link key={category.slug} to="/shop" search={{ category: category.slug }} onClick={closeMenus}>{category.name}</Link>)}</div></div></div><div className="fashion-search-hint"><span>{t("Enter để tìm · Esc để đóng", "Enter to search · Esc to close")}</span><span>WEARO / SEARCH</span></div></div>}
 
-      {mobileOpen && <div className="fashion-mobile-menu" role="dialog" aria-label="WEARO menu"><div className="fashion-menu-header"><div><span className="fashion-menu-kicker">WEARO / NAVIGATION</span><h2>{t("Khám phá", "Discover")}</h2></div><span className="fashion-menu-status">MODERN EVERYDAY</span></div><div className="fashion-menu-grid"><section className="fashion-menu-section"><span className="fashion-menu-label">01 / SHOP</span><Link to="/shop" onClick={closeMenus}><span><strong>{t("Cửa hàng", "Shop")}</strong><small>{t("Khám phá bộ sưu tập", "Browse the collection")}</small></span><ChevronRight size={17} /></Link><Link to="/ai" onClick={closeMenus}><span><strong>AI Studio</strong><small>BETA / Virtual Try-On</small></span><ChevronRight size={17} /></Link><Link to="/journal" onClick={closeMenus}><span><strong>Journal</strong><small>{t("Phong cách & cảm hứng", "Style & inspiration")}</small></span><ChevronRight size={17} /></Link><Link to="/about" onClick={closeMenus}><span><strong>{t("Giới thiệu", "About")}</strong><small>{t("Về WEARO", "About WEARO")}</small></span><ChevronRight size={17} /></Link></section><section className="fashion-menu-section"><span className="fashion-menu-label">02 / ACCOUNT</span><Link to="/account/wishlist" onClick={closeMenus}><span><strong>{t("Yêu thích", "Wishlist")}</strong><small>{t("Lưu sản phẩm bạn thích", "Saved pieces")}</small></span><Heart size={17} /></Link><Link to="/account" onClick={closeMenus}><span><strong>{t("Tài khoản", "Account")}</strong><small>{customerEmail ?? t("Đăng nhập / Đăng ký", "Sign in / Register")}</small></span><UserRound size={17} /></Link><Link to="/cart" onClick={closeMenus}><span><strong>{t("Giỏ hàng", "Cart")}</strong><small>{count} {t("sản phẩm", "items")}</small></span><ShoppingBag size={17} /></Link></section></div></div>}
+      {mobileOpen && <div className="fashion-mobile-menu" role="dialog" aria-label="WEARO menu"><div className="fashion-menu-header"><div><span className="fashion-menu-kicker">WEARO / NAVIGATION</span><h2>{t("Khám phá", "Discover")}</h2></div><span className="fashion-menu-status">MODERN EVERYDAY</span></div><div className="fashion-menu-grid"><section className="fashion-menu-section"><span className="fashion-menu-label">01 / SHOP</span><Link to="/shop" onClick={closeMenus}><span><strong>{t("Cửa hàng", "Shop")}</strong><small>{t("Khám phá bộ sưu tập", "Browse the collection")}</small></span><ChevronRight size={17} /></Link><Link to="/ai" onClick={closeMenus}><span><strong>AI Studio</strong><small>Virtual try-on / Beta</small></span><ChevronRight size={17} /></Link><Link to="/journal" onClick={closeMenus}><span><strong>Journal</strong><small>{t("Phong cách & cảm hứng", "Style & inspiration")}</small></span><ChevronRight size={17} /></Link><Link to="/about" onClick={closeMenus}><span><strong>{t("Giới thiệu", "About")}</strong><small>{t("Về WEARO", "About WEARO")}</small></span><ChevronRight size={17} /></Link></section><section className="fashion-menu-section"><span className="fashion-menu-label">02 / ACCOUNT</span><Link to="/account/wishlist" onClick={closeMenus}><span><strong>{t("Yêu thích", "Wishlist")}</strong><small>{t("Lưu sản phẩm bạn thích", "Saved pieces")}</small></span><Heart size={17} /></Link><Link to="/account" onClick={closeMenus}><span><strong>{t("Tài khoản", "Account")}</strong><small>{customerEmail ?? t("Đăng nhập / Đăng ký", "Sign in / Register")}</small></span><UserRound size={17} /></Link><Link to="/cart" onClick={closeMenus}><span><strong>{t("Giỏ hàng", "Cart")}</strong><small>{count} {t("sản phẩm", "items")}</small></span><ShoppingBag size={17} /></Link></section></div></div>}
 
-      {languageModalOpen && <div className="wearo-language-modal" role="dialog" aria-modal="true" aria-label={t("Ngôn ngữ", "Language")}><button type="button" className="wearo-language-modal__backdrop" aria-label={t("Đóng", "Close")} onClick={() => setLanguageModalOpen(false)} /><div className="wearo-language-modal__panel"><div className="wearo-language-modal__header"><div><span className="fashion-menu-kicker">WEARO / LANGUAGE</span><h2>{t("Ngôn ngữ", "Language")}</h2></div><button type="button" className="fashion-icon-btn" onClick={() => setLanguageModalOpen(false)} aria-label={t("Đóng", "Close")}><X size={18} /></button></div><button type="button" className={`wearo-language-option ${selectedLanguage === "vi" ? "is-active" : ""}`} onClick={() => setSelectedLanguage("vi")}><img src="/flags/vietnam.svg" alt="" width={28} height={28} /><span><strong>Tiếng Việt</strong><small>VIE / Việt Nam</small></span></button><button type="button" className={`wearo-language-option ${selectedLanguage === "en" ? "is-active" : ""}`} onClick={() => setSelectedLanguage("en")}><img src="/flags/united-kingdom.svg" alt="" width={28} height={28} /><span><strong>English</strong><small>ENG / International</small></span></button><button type="button" className="fashion-btn wearo-language-modal__confirm" onClick={() => { setLanguage(selectedLanguage); setLanguageModalOpen(false); }}>{t("Xác nhận", "Confirm")}</button></div></div>}
+      {languageModalOpen && (
+        <div className="wearo-language-modal" role="dialog" aria-modal="true" aria-labelledby="wearo-language-title">
+          <button type="button" className="wearo-language-modal__backdrop" aria-label={t("Đóng", "Close")} onClick={() => setLanguageModalOpen(false)} />
+          <div className="wearo-language-modal__panel">
+            <div className="wearo-language-modal__header">
+              <div>
+                <span className="fashion-menu-kicker">WEARO / LANGUAGE</span>
+                <h2 id="wearo-language-title">{t("Chọn ngôn ngữ", "Choose language")}</h2>
+                <p>{t("Ngôn ngữ ảnh hưởng đến giao diện và đơn vị tiền tệ hiển thị.", "Language affects the interface and displayed currency.")}</p>
+              </div>
+              <button type="button" className="wearo-language-modal__close" onClick={() => setLanguageModalOpen(false)} aria-label={t("Đóng", "Close")}>
+                <X size={18} />
+              </button>
+            </div>
+
+            <div className="wearo-language-modal__options" role="listbox" aria-label={t("Ngôn ngữ", "Language")}>
+              <button
+                type="button"
+                role="option"
+                aria-selected={selectedLanguage === "vi"}
+                className={`wearo-language-option ${selectedLanguage === "vi" ? "is-active" : ""}`}
+                onClick={() => setSelectedLanguage("vi")}
+              >
+                <span className="wearo-language-option__flag">
+                  <img src="/flags/vietnam.svg" alt="" width={32} height={32} />
+                </span>
+                <span className="wearo-language-option__text">
+                  <strong>Tiếng Việt</strong>
+                  <small>VIE · Việt Nam</small>
+                </span>
+                <span className="wearo-language-option__meta">VND</span>
+                <span className="wearo-language-option__check" aria-hidden="true" />
+              </button>
+
+              <button
+                type="button"
+                role="option"
+                aria-selected={selectedLanguage === "en"}
+                className={`wearo-language-option ${selectedLanguage === "en" ? "is-active" : ""}`}
+                onClick={() => setSelectedLanguage("en")}
+              >
+                <span className="wearo-language-option__flag">
+                  <img src="/flags/united-kingdom.svg" alt="" width={32} height={32} />
+                </span>
+                <span className="wearo-language-option__text">
+                  <strong>English</strong>
+                  <small>ENG · International</small>
+                </span>
+                <span className="wearo-language-option__meta">USD</span>
+                <span className="wearo-language-option__check" aria-hidden="true" />
+              </button>
+            </div>
+
+            <div className="wearo-language-modal__footer">
+              <p className="wearo-language-modal__hint">
+                {selectedLanguage === "vi"
+                  ? "Tiền tệ hiển thị: VND"
+                  : "Display currency: USD"}
+              </p>
+              <button
+                type="button"
+                className="wearo-language-modal__confirm"
+                onClick={() => {
+                  setLanguage(selectedLanguage);
+                  setLanguageModalOpen(false);
+                }}
+              >
+                {t("Xác nhận", "Confirm")}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </nav>
   );
 }
