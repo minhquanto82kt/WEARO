@@ -1,44 +1,95 @@
-Fashion Dream Try-On Shop
+# WEARO — Fashion Commerce & AI Virtual Try-On
 
-Môn: Ý tưởng khởi nghiệp – IUH
+**WEARO** là dự án thương mại điện tử thời trang unisex, định hướng kết hợp khám phá sản phẩm, hỗ trợ phối đồ bằng AI và trải nghiệm Virtual Try-On. Đây là dự án đang phát triển; các tính năng cần được xác minh qua CI và môi trường triển khai trước khi xem là hoàn tất.
 
-Fashion Dream Try-On Shop là dự án thương mại điện tử thời trang tích hợp công nghệ AI, hướng đến việc nâng cao trải nghiệm mua sắm trực tuyến thông qua khả năng khám phá sản phẩm và thử đồ bằng công nghệ AI Virtual Try-On.
+[![CI](https://github.com/minhquanto82kt/fashion-dream-try-on-shop/actions/workflows/ci.yml/badge.svg?branch=feature%2Fproduct-admin)](https://github.com/minhquanto82kt/fashion-dream-try-on-shop/actions/workflows/ci.yml)
+[![Last commit](https://img.shields.io/github/last-commit/minhquanto82kt/fashion-dream-try-on-shop/feature%2Fproduct-admin)](https://github.com/minhquanto82kt/fashion-dream-try-on-shop/commits/feature/product-admin)
+[![License](https://img.shields.io/badge/license-check%20repository-lightgrey)](https://github.com/minhquanto82kt/fashion-dream-try-on-shop)
 
-🌐 Live Demo
+## Truy cập bản triển khai
 
-👉 Truy cập Fashion Dream trên Vercel
+- **Store preview:** [Mở website](https://fashion-dream-try-on-main-git-main-up-think.vercel.app/)
+- **Admin preview:** [Mở trang quản trị](https://fashion-dream-try-on-main-git-feature-product-admin-up-think.vercel.app/admin)
 
-- 🛍️ **Store:** [Open Website](https://fashion-dream-try-on-main-git-main-up-think.vercel.app/)
-- ⚙️ **Admin Dashboard:** [Open Admin](https://fashion-dream-try-on-main-git-feature-product-admin-up-think.vercel.app/admin)
+> Đây là các liên kết preview được lưu trong README trước đó; hãy xác minh lại trên Vercel nếu chúng không còn truy cập được.
 
-✨ Định hướng dự án
+## Kiến trúc tổng quan
 
-Dự án hướng đến việc xây dựng một nền tảng thời trang trực tuyến hiện đại, kết hợp:
+```text
+GitHub (source code)
+       │
+       ▼
+GitHub Actions (build, typecheck, lint, smoke tests)
+       │
+       ▼
+Vercel (deployment/runtime)
+       │
+       ▼
+WEARO storefront ─── Supabase (database, auth, RLS)
+       │
+       ├── AI provider / Virtual Try-On
+       └── Payment integrations
+```
 
-🛍️ Thương mại điện tử thời trang
-🤖 AI Virtual Try-On
-👕 Khám phá và quản lý sản phẩm
-🛒 Giỏ hàng và quy trình thanh toán
-👤 Quản lý tài khoản người dùng
-⚙️ Admin Dashboard
-📱 Giao diện responsive
-🛠️ Công nghệ sử dụng
-React
-TypeScript
-TanStack Router
-Vite
-CSS
-Vercel
-AI / Virtual Try-On
-🚀 Deployment
+Supabase là nguồn dữ liệu chính của ứng dụng; GitHub quản lý mã nguồn. Cấu hình nhạy cảm phải được giữ ở server hoặc environment variables, không đưa vào client.
 
-Dự án được triển khai trên Vercel.
+## Công nghệ
 
-🎓 Thông tin dự án
+- React 19, TypeScript
+- TanStack Start / Router, Vite
+- Supabase Auth, PostgreSQL và Row Level Security (RLS)
+- AI SDK và các tích hợp AI phía server
+- Vercel
+- Node.js 24, npm 11
 
-Học phần: Ý tưởng khởi nghiệp
-Trường: Trường Đại học Công nghiệp TP. Hồ Chí Minh (IUH)
+## Thống kê tự động
 
-Fashion Dream – Bringing AI into the fashion shopping experience.
+Bảng dưới được sinh từ GitHub Repository API, trạng thái GitHub Actions và metadata trong `fashion-dream-try-on-main/package.json`. Workflow cập nhật khi có thay đổi mã nguồn và định kỳ mỗi 6 giờ; số liệu phụ thuộc quyền truy cập API và lịch sử workflow thực tế.
 
-<!-- rollback deployment trigger -->
+<!-- AUTO-REPO-STATS:START -->
+<!-- Tự động cập nhật bởi .github/workflows/readme-stats.yml. -->
+| Nguồn | Chỉ số | Giá trị hiện tại |
+|---|---|---|
+| Repository | Stars / Forks / Issues-PR | Sẽ được điền ở lần chạy đầu tiên |
+| GitHub Actions | CI gần nhất trên nhánh đang chạy | Sẽ được điền ở lần chạy đầu tiên |
+| Dữ liệu dự án | Stack, dependencies và scripts | Sẽ được điền ở lần chạy đầu tiên |
+<!-- AUTO-REPO-STATS:END -->
+
+## Phát triển local
+
+Ứng dụng nằm trong thư mục `fashion-dream-try-on-main/`.
+
+```bash
+cd fashion-dream-try-on-main
+npm ci --legacy-peer-deps
+npm run dev
+```
+
+Các lệnh kiểm tra được khai báo trong `package.json`:
+
+```bash
+npm run lint
+npm run typecheck
+npm run build
+npm run test:smoke
+npm run test:customer-experience
+npm run audit:architecture
+npm run audit:dependencies
+```
+
+## Tài liệu dự án
+
+- [README ứng dụng và kiến trúc thương hiệu](fashion-dream-try-on-main/README.md)
+- [Architecture](fashion-dream-try-on-main/docs/ARCHITECTURE.md)
+- [Development workflow](fashion-dream-try-on-main/docs/DEVELOPMENT.md)
+- [Brand system](fashion-dream-try-on-main/docs/BRAND-SYSTEM.md)
+- [Admin authentication & RLS runbook](fashion-dream-try-on-main/docs/ADMIN-AUTH-RUNBOOK.md)
+- [Deployment runbook](fashion-dream-try-on-main/docs/DEPLOYMENT-RUNBOOK.md)
+
+## Nguyên tắc phát triển
+
+- Giữ thay đổi nhỏ, bám theo kiến trúc hiện có.
+- Xác định rõ CRUD, quyền truy cập và RLS cho tính năng dữ liệu.
+- Không expose Supabase service-role key hoặc API secret ở phía client.
+- Không coi commit hay build thành công là bằng chứng đủ để xác nhận tính năng production.
+- WEARO là thương hiệu hướng tới khách hàng; UpThink là lớp quản trị nội bộ trong kiến trúc ứng dụng.
