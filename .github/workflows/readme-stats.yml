@@ -1,0 +1,56 @@
+name: README repository statistics
+
+on:
+  push:
+    branches:
+      - "**"
+    paths-ignore:
+      - "README.md"
+      - ".github/scripts/update_readme_stats.py"
+      - ".github/workflows/readme-stats.yml"
+  schedule:
+    - cron: "17 */6 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  actions: read
+
+concurrency:
+  group: readme-stats-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  update-statistics:
+    name: Refresh README statistics
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout current branch
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref_name }}
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Generate statistics from GitHub and project metadata
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+          GITHUB_REF_NAME: ${{ github.ref_name }}
+        run: python .github/scripts/update_readme_stats.py
+
+      - name: Commit README only when it changed
+        run: |
+          if git diff --quiet -- README.md; then
+            echo "README statistics are already current."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add README.md
+          git commit -m "docs: refresh repository statistics"
+          git push
