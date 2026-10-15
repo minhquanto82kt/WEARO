@@ -15,6 +15,15 @@ const STYLES = ["Street", "Minimal", "Smart casual", "Y2K"];
 const OCCASIONS = ["Đi học", "Đi làm", "Hẹn hò", "Đi chơi"];
 const CONSENT_KEY = "wearo-ai-studio-consent-v2";
 
+function AiLoader({ label }: { label: string }) {
+  return (
+    <div className="wearo-ai-loader-state" role="status" aria-live="polite">
+      <span className="wearo-ai-loader" aria-hidden="true"><span /><span /><span /></span>
+      <span>{label}</span>
+    </div>
+  );
+}
+
 type AiProduct = Awaited<ReturnType<typeof listAiProducts>>[number];
 type StylistRecommendation = Awaited<ReturnType<typeof getStylistRecommendations>>["recommendations"][number];
 type TryOnStatus = "idle" | "uploading" | "processing" | "completed" | "failed";
@@ -291,7 +300,9 @@ function TryOnStudio({
               <img src={resultImage} alt="Kết quả thử đồ ảo WEARO" className="mx-auto max-h-[620px] w-full object-contain" />
             ) : (
               <div className="flex min-h-[270px] items-center justify-center text-center text-sm leading-6 text-silver">
-                {status === "uploading" ? "Đang gửi ảnh…" : status === "processing" ? "Đang thử đồ…" : status === "failed" ? "Chưa tạo được kết quả. Kiểm tra ảnh và thử lại." : "Chọn sản phẩm, tải ảnh phù hợp rồi bấm “Thử đồ bằng AI”."}
+                {status === "uploading" || status === "processing" ? (
+                  <AiLoader label={status === "uploading" ? "Đang gửi ảnh đến AI…" : "AI đang tạo ảnh thử đồ…"} />
+                ) : status === "failed" ? "Chưa tạo được kết quả. Kiểm tra ảnh và thử lại." : "Chọn sản phẩm, tải ảnh phù hợp rồi bấm “Thử đồ bằng AI”."}
               </div>
             )}
           </div>
@@ -497,7 +508,11 @@ function AiPage() {
                     </div>
                   ) : (
                     <div className="wearo-ai-result-empty">
-                      <div><div className="wearo-ai-result-mark">{isLoading ? "…" : "✦"}</div><h3>{isLoading ? "Đang tạo outfit…" : "Sẵn sàng tạo concept"}</h3><p>{isLoading ? "WEARO AI Stylist đang xây dựng gợi ý dựa trên lựa chọn của bạn." : "Chọn một phong cách và một dịp, thêm mô tả nếu muốn, rồi bấm “Tạo concept”."}</p></div>
+                      <div>
+                        {isLoading ? <AiLoader label="WEARO AI Stylist đang tạo outfit…" /> : <div className="wearo-ai-result-mark">✦</div>}
+                        <h3>{isLoading ? "Đang tạo outfit…" : "Sẵn sàng tạo concept"}</h3>
+                        <p>{isLoading ? "WEARO AI Stylist đang xây dựng gợi ý dựa trên lựa chọn của bạn." : "Chọn một phong cách và một dịp, thêm mô tả nếu muốn, rồi bấm “Tạo concept”."}</p>
+                      </div>
                     </div>
                   )}
 
@@ -516,7 +531,7 @@ function AiPage() {
               </div>
               <div className="wearo-ai-card-body">
                 {recommendationsLoading ? (
-                  <p className="text-sm text-silver">Đang đối chiếu concept với sản phẩm WEARO đã xuất bản…</p>
+                  <AiLoader label="Đang đối chiếu concept với sản phẩm WEARO đã xuất bản…" />
                 ) : recommendationsError ? (
                   <div className="border border-red-200 bg-red-50 p-4 text-sm leading-6 text-red-800" role="alert">{recommendationsError}</div>
                 ) : recommendations.length ? (
@@ -561,7 +576,7 @@ function AiPage() {
             <div className="mt-6">
               {productsLoading ? (
                 <section className="wearo-ai-card">
-                  <div className="wearo-ai-card-body text-sm text-silver">Đang tải sản phẩm đã xuất bản cho AI Try-On…</div>
+                  <div className="wearo-ai-card-body"><AiLoader label="Đang tải sản phẩm đã xuất bản cho AI Try-On…" /></div>
                 </section>
               ) : productsError ? (
                 <section className="wearo-ai-card">
