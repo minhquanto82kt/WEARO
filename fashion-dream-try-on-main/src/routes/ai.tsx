@@ -2,7 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
 import { useMutation } from "@tanstack/react-query";
 import { useMemo, useRef, useState } from "react";
-import { Loader2, Upload } from "lucide-react";
+import { Upload } from "lucide-react";
 import { toast } from "sonner";
 import { SiteNav } from "@/components/site-nav";
 import { SiteFooter } from "@/components/site-footer";
@@ -92,7 +92,7 @@ function ResultPanel({
     <div className="flex aspect-[3/4] items-center justify-center border border-border bg-card">
       {pending ? (
         <div className="flex flex-col items-center gap-3 text-silver">
-          <Loader2 className="size-6 animate-spin text-primary" />
+          <span className="wearo-ai-loader" aria-hidden="true"><span /><span /><span /></span>
           <span className="text-xs uppercase tracking-[0.2em]">AI đang dựng ảnh…</span>
         </div>
       ) : image ? (
