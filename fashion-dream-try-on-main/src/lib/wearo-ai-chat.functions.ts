@@ -9,7 +9,7 @@ const ChatMessage = z.object({
 });
 
 const ChatInput = z.object({
-  accessToken: z.string().min(1),
+  accessToken: z.string().trim().min(1).optional(),
   messages: z.array(ChatMessage).max(40),
 });
 
@@ -22,12 +22,9 @@ const SYSTEM_PROMPT = [
   "If the user needs a real product recommendation, tell them that catalogue search will be connected in the next layer rather than fabricating a product.",
 ].join("\n");
 
-async function verifyStylistEntitlement(accessToken: string) {
-  const context = await resolveCustomerContext(accessToken);
-  if (context.kind === "guest") {
-    throw new Error("MEMBER_REQUIRED");
-  }
-  return context;
+async function verifyStylistEntitlement(accessToken?: string) {
+  // Guests may use AI Stylist; a token is only used to identify an existing session.
+  return resolveCustomerContext(accessToken);
 }
 
 export const generateWearoAiReply = createServerFn({ method: "POST" })
