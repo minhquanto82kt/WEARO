@@ -1,0 +1,64 @@
+/* Shared three-dot loader for WEARO AI workflows.
+   Scoped to AI surfaces and uses the existing WEARO palette. */
+.wearo-ai-loader-state {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  color: var(--ai-muted, #687985);
+  font-size: 12px;
+  line-height: 1.6;
+  text-align: left;
+}
+
+.wearo-ai-loader {
+  display: inline-block;
+  width: 60px;
+  flex: 0 0 60px;
+  aspect-ratio: 2;
+  --_g: no-repeat radial-gradient(circle closest-side, var(--ai-blue, #54728C) 90%, transparent);
+  background:
+    var(--_g) 0% 50%,
+    var(--_g) 50% 50%,
+    var(--_g) 100% 50%;
+  background-size: calc(100% / 3) 50%;
+  animation: wearo-ai-loader-dots 1s infinite linear;
+}
+
+.wearo-ai-loader-state .wearo-ai-loader {
+  display: block;
+}
+
+@keyframes wearo-ai-loader-dots {
+  20% { background-position: 0% 0%, 50% 50%, 100% 50%; }
+  40% { background-position: 0% 100%, 50% 0%, 100% 50%; }
+  60% { background-position: 0% 50%, 50% 100%, 100% 0%; }
+  80% { background-position: 0% 50%, 50% 50%, 100% 100%; }
+}
+
+body:has(.wearo-ai-phase2) .wearo-ai-loader-state {
+  flex-direction: column;
+  gap: 12px;
+  text-align: center;
+}
+
+.wearo-ai-thread .wearo-ai-typing-state {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 0 10px 38px;
+  color: var(--ai-muted, #687985);
+  font-size: 12px;
+}
+
+.wearo-ai-thread .wearo-ai-typing-state .wearo-ai-loader {
+  width: 48px;
+  flex-basis: 48px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wearo-ai-loader {
+    animation: none;
+    background-size: calc(100% / 3) 50%;
+  }
+}
