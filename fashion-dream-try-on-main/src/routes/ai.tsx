@@ -182,10 +182,6 @@ function TryOnStudio({
       return;
     }
     const accessToken = getCustomerAccessToken();
-    if (!accessToken) {
-      setError("Bạn cần đăng nhập tài khoản thành viên WEARO để sử dụng AI Virtual Try-On.");
-      return;
-    }
 
     setStatus("uploading");
     setError("");
@@ -193,7 +189,7 @@ function TryOnStudio({
 
     try {
       const job = await generateTryOn({
-        data: { accessToken, personImage, productId, note: note.trim() || undefined },
+        data: { ...(accessToken ? { accessToken } : {}), personImage, productId, note: note.trim() || undefined },
       });
       setStatus("processing");
       await waitForResult(job.jobId);
@@ -368,10 +364,6 @@ function AiPage() {
 
   async function handleGenerate() {
     const accessToken = getCustomerAccessToken();
-    if (!accessToken) {
-      setError("Bạn cần đăng nhập tài khoản thành viên WEARO để sử dụng AI Stylist.");
-      return;
-    }
     const userBrief = brief.trim() || "Hãy đề xuất một outfit phù hợp với phong cách và dịp đã chọn.";
     setIsLoading(true);
     setError("");
@@ -382,7 +374,7 @@ function AiPage() {
     try {
       const response = await generateWearoAiReply({
         data: {
-          accessToken,
+          ...(accessToken ? { accessToken } : {}),
           messages: [
             {
               role: "user",
