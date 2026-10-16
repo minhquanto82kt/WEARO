@@ -420,6 +420,7 @@ function NewProductPage() {
                   multiple
                   accept="image/png,image/jpeg,image/webp,image/gif"
                   hidden
+                  onClick={(event) => event.stopPropagation()}
                   onChange={(e) => chooseImages(e.target.files)}
                 />
               </div>
