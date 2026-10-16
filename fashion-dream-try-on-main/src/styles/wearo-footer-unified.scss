@@ -424,3 +424,118 @@
   .wearo-footer__newsletter-form button,
   .wearo-footer__socials a { transition: none; }
 }
+
+
+/* WEARO footer interaction pass — cohesive input + clearer hover/focus states */
+.wearo-footer__newsletter-input-wrap {
+  border: 0 !important;
+  border-bottom: 1px solid rgba(255,255,255,.42) !important;
+  border-right: 0 !important;
+  background: transparent !important;
+  padding-inline: 4px !important;
+  transition: border-color .22s ease, box-shadow .22s ease;
+}
+
+.wearo-footer__newsletter-input-wrap:focus-within {
+  border-bottom-color: var(--footer-coral) !important;
+  box-shadow: 0 1px 0 var(--footer-coral);
+}
+
+.wearo-footer__newsletter-input-wrap:focus-within svg {
+  color: var(--footer-coral);
+}
+
+.wearo-footer .wearo-footer__newsletter-form input {
+  caret-color: var(--footer-coral);
+}
+
+.wearo-footer .wearo-footer__newsletter-form input:focus-visible {
+  outline: 0;
+}
+
+.wearo-footer .wearo-footer__newsletter-form button {
+  position: relative;
+  overflow: hidden;
+  transition: background .22s ease, color .22s ease, transform .22s ease, box-shadow .22s ease;
+}
+
+.wearo-footer .wearo-footer__newsletter-form button:hover {
+  color: var(--footer-blue);
+  box-shadow: 0 7px 18px color-mix(in srgb, var(--footer-coral) 28%, transparent);
+  transform: translateY(-2px);
+}
+
+.wearo-footer .wearo-footer__newsletter-form button:active {
+  transform: translateY(0);
+  box-shadow: none;
+}
+
+.wearo-footer__logo:focus-visible,
+.wearo-footer__link:focus-visible,
+.wearo-footer__contact-item[href]:focus-visible,
+.wearo-footer__socials a:focus-visible {
+  outline: 2px solid var(--footer-coral);
+  outline-offset: 4px;
+  border-radius: 2px;
+}
+
+.wearo-footer__contact-item[href] {
+  transition: color .2s ease, transform .2s ease;
+}
+
+.wearo-footer__contact-item[href]:hover,
+.wearo-footer__contact-item[href]:focus-visible {
+  color: var(--footer-blue);
+  transform: translateX(3px);
+}
+
+.wearo-footer__contact-item[href]:hover svg,
+.wearo-footer__contact-item[href]:focus-visible svg,
+.wearo-footer__contact-item[href]:hover .wearo-footer__contact-symbol,
+.wearo-footer__contact-item[href]:focus-visible .wearo-footer__contact-symbol {
+  color: var(--footer-coral);
+}
+
+.wearo-footer__socials a:focus-visible {
+  color: #fff;
+  background: var(--footer-blue);
+  border-color: var(--footer-blue);
+}
+
+.wearo-footer__payments b,
+.wearo-footer__commerce-badge {
+  transition: color .18s ease, background .18s ease, border-color .18s ease, transform .18s ease;
+}
+
+.wearo-footer__payments b:hover,
+.wearo-footer__commerce-badge:hover {
+  color: var(--footer-blue);
+  background: var(--footer-coral);
+  border-color: var(--footer-coral);
+  transform: translateY(-2px);
+}
+
+.wearo-footer__kicker {
+  transition: color .2s ease;
+}
+
+.wearo-footer__section:hover .wearo-footer__kicker {
+  color: var(--footer-blue);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wearo-footer__newsletter-input-wrap,
+  .wearo-footer__newsletter-form button,
+  .wearo-footer__contact-item[href],
+  .wearo-footer__payments b,
+  .wearo-footer__commerce-badge,
+  .wearo-footer__kicker {
+    transition: none !important;
+  }
+
+  .wearo-footer__contact-item[href]:hover,
+  .wearo-footer__payments b:hover,
+  .wearo-footer__commerce-badge:hover {
+    transform: none;
+  }
+}
