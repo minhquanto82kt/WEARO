@@ -427,3 +427,35 @@
 @media (prefers-reduced-motion: reduce) {
   .wearo-shop-page * { scroll-behavior: auto !important; transition-duration: .01ms !important; }
 }
+
+
+/* Full-bleed AI banner: align directly beneath the site navigation. */
+.wearo-shop-page .wearo-shop-main {
+  max-width: none;
+  padding-top: 0;
+  padding-right: 0;
+  padding-left: 0;
+}
+.wearo-shop-page .wearo-shop-banner-slider {
+  width: 100%;
+  border-right: 0;
+  border-left: 0;
+  border-radius: 0;
+  box-shadow: none;
+}
+.wearo-shop-page .wearo-shop-banner-track {
+  min-height: clamp(440px, 42vw, 620px);
+}
+.wearo-shop-page .wearo-shop-toolbar,
+.wearo-shop-page .wearo-shop-main > section[aria-label="Danh sách sản phẩm"] {
+  width: min(calc(100% - 40px), 1280px);
+  margin-right: auto;
+  margin-left: auto;
+}
+@media (max-width: 760px) {
+  .wearo-shop-page .wearo-shop-banner-track { min-height: 500px; }
+  .wearo-shop-page .wearo-shop-toolbar,
+  .wearo-shop-page .wearo-shop-main > section[aria-label="Danh sách sản phẩm"] {
+    width: calc(100% - 32px);
+  }
+}
