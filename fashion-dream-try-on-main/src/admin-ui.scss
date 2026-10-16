@@ -757,3 +757,79 @@
     overflow-y: hidden !important;
   }
 }
+
+
+/* Admin navigation: keep every destination reachable at browser zoom 90–100%. */
+.up-admin-root .up-admin-sidebar {
+  height: 100vh !important;
+  height: 100dvh !important;
+  min-height: 0 !important;
+  overflow-x: hidden !important;
+  overflow-y: auto !important;
+  overscroll-behavior-y: contain;
+  scrollbar-width: thin;
+  scrollbar-color: #5d5d58 #171717;
+  scrollbar-gutter: stable;
+}
+.up-admin-root .up-admin-sidebar::-webkit-scrollbar {
+  width: 6px;
+}
+.up-admin-root .up-admin-sidebar::-webkit-scrollbar-track {
+  background: #171717;
+}
+.up-admin-root .up-admin-sidebar::-webkit-scrollbar-thumb {
+  background: #5d5d58;
+  border-radius: 8px;
+}
+.up-admin-root .up-admin-sidebar nav {
+  flex: 0 0 auto !important;
+  min-height: max-content;
+  padding-bottom: 12px;
+}
+.up-admin-root .up-admin-sidebar nav a,
+.up-admin-root .up-admin-sidebar nav .up-admin-nav-disabled {
+  flex-shrink: 0;
+}
+.up-admin-root .up-admin-logout {
+  flex: 0 0 auto;
+  margin-top: auto !important;
+  position: sticky;
+  bottom: 0;
+  background: var(--fd-admin-paper) !important;
+  z-index: 2;
+}
+@media (max-height: 820px) and (min-width: 761px) {
+  .up-admin-root .up-admin-sidebar {
+    padding-top: 18px !important;
+    padding-bottom: 12px !important;
+  }
+  .up-admin-root .up-admin-sidebar nav {
+    margin-top: 22px !important;
+    gap: 1px !important;
+  }
+  .up-admin-root .up-admin-nav-section {
+    margin-top: 13px !important;
+    margin-bottom: 4px !important;
+  }
+  .up-admin-root .up-admin-sidebar nav a,
+  .up-admin-root .up-admin-nav-disabled,
+  .up-admin-root .up-admin-logout {
+    min-height: 36px !important;
+    padding-top: 8px !important;
+    padding-bottom: 8px !important;
+  }
+}
+@media (max-width: 760px) {
+  .up-admin-root .up-admin-sidebar {
+    height: auto !important;
+    max-height: none !important;
+    overflow: visible !important;
+  }
+  .up-admin-root .up-admin-sidebar nav {
+    min-height: 0;
+    padding-bottom: 0;
+  }
+  .up-admin-root .up-admin-logout {
+    position: static;
+  }
+}
