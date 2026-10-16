@@ -714,3 +714,23 @@
     animation-duration: .01ms !important;
   }
 }
+
+/* Inline product status control: Odoo-style, scoped to the admin product table. */
+.up-products-table .up-status-select {
+  max-width: 148px;
+  min-height: 30px;
+  padding: 5px 24px 5px 9px;
+  border: 1px solid transparent;
+  border-radius: 3px;
+  font: inherit;
+  font-size: 11px;
+  line-height: 1.3;
+  cursor: pointer;
+  appearance: auto;
+}
+.up-products-table .up-status-select.published { background: #e2f5eb; color: #176b45; }
+.up-products-table .up-status-select.hidden { background: #f1f1f1; color: #555; }
+.up-products-table .up-status-select.draft { background: #fff1d8; color: #805400; }
+.up-products-table .up-status-select.archived { background: #fbe7e4; color: #a83225; }
+.up-products-table .up-status-select:focus-visible { outline: 2px solid #54728c; outline-offset: 2px; }
+.up-products-table .up-status-select:disabled { cursor: not-allowed; opacity: .8; }
