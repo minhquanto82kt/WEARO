@@ -411,6 +411,13 @@
   color: #fff;
 }
 @media (max-width: 760px) {
+  .wearo-shop-page .wearo-shop-banner-track { min-height: 500px; }
+  .wearo-shop-page .wearo-shop-banner-image { object-position: 62% center; }
+  .wearo-shop-page .wearo-shop-banner-shade { background: linear-gradient(90deg, rgba(248,246,242,.98) 0%, rgba(248,246,242,.91) 56%, rgba(248,246,242,.35) 100%); }
+  .wearo-shop-page .wearo-shop-banner-content { width: 100%; padding: 28px 22px 68px; }
+  .wearo-shop-page .wearo-shop-banner-content h1 { max-width: 440px; font-size: clamp(38px, 10vw, 56px); }
+  .wearo-shop-page .wearo-shop-banner-description { max-width: 360px; }
+  .wearo-shop-page .wearo-shop-banner-controls { right: 14px; bottom: 14px; left: 22px; gap: 12px; }
   .wearo-shop-page .wearo-shop-hero { grid-template-columns: 1fr; padding: 26px 22px; }
   .wearo-shop-page .wearo-shop-ai-card { max-width: none; }
   .wearo-shop-page .wearo-shop-title { font-size: clamp(42px, 13vw, 64px); }
