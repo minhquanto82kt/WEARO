@@ -1053,3 +1053,23 @@
 .up-admin-root .up-variant-generator__stock input[type="number"] {
   font-size: 16px !important;
 }
+
+
+/* Product detail: show the complete image without cropping. */
+.up-admin-root .up-upload-card {
+  height: auto;
+  min-height: 240px;
+  padding: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: visible;
+}
+.up-admin-root .up-upload-card img {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-height: 640px;
+  object-fit: contain !important;
+  object-position: center;
+}
