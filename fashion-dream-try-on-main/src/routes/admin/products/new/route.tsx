@@ -1,5 +1,6 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useRef, useState } from "react";
+import { ChevronLeft, ChevronRight, Trash2 } from "lucide-react";
 import {
   addProductImage,
   createProduct,
@@ -48,27 +49,35 @@ function slugify(value: string) {
 function NewProductPage() {
   const navigate = useNavigate();
   const [form, setForm] = useState(emptyForm);
-  const [imageFile, setImageFile] = useState<File | null>(null);
-  const [preview, setPreview] = useState("");
+  const [imageFiles, setImageFiles] = useState<File[]>([]);
+  const [previews, setPreviews] = useState<string[]>([]);
+  const [activePreview, setActivePreview] = useState(0);
   const [saving, setSaving] = useState(false);
   const [message, setMessage] = useState("");
   const fileRef = useRef<HTMLInputElement>(null);
 
-  function chooseImage(file?: File) {
-    if (!file) return;
-
-    if (!file.type.startsWith("image/")) {
-      setMessage("File ảnh không hợp lệ.");
+  function chooseImages(files?: FileList | null) {
+    if (!files?.length) return;
+    const incoming = Array.from(files);
+    const invalid = incoming.find((file) => !file.type.startsWith("image/") || file.size > 10 * 1024 * 1024);
+    if (invalid) {
+      setMessage(!invalid.type.startsWith("image/") ? "Có tệp không phải ảnh." : `Ảnh "${invalid.name}" vượt quá 10 MB.`);
+      if (fileRef.current) fileRef.current.value = "";
       return;
     }
+    setImageFiles((current) => [...current, ...incoming]);
+    setPreviews((current) => [...current, ...incoming.map((file) => URL.createObjectURL(file))]);
+    setActivePreview((current) => current === 0 && previews.length === 0 ? 0 : current);
+    setMessage("");
+    if (fileRef.current) fileRef.current.value = "";
+  }
 
-    if (file.size > 10 * 1024 * 1024) {
-      setMessage("Ảnh phải nhỏ hơn hoặc bằng 10 MB.");
-      return;
-    }
-
-    setImageFile(file);
-    setPreview(URL.createObjectURL(file));
+  function removeImage(index: number) {
+    const previewUrl = previews[index];
+    if (previewUrl) URL.revokeObjectURL(previewUrl);
+    setImageFiles((current) => current.filter((_, i) => i !== index));
+    setPreviews((current) => current.filter((_, i) => i !== index));
+    setActivePreview((current) => Math.max(0, Math.min(current > index ? current - 1 : current, previews.length - 2)));
     setMessage("");
   }
 
@@ -113,15 +122,15 @@ function NewProductPage() {
 
       const product = await createProduct(payload);
 
-      if (imageFile) {
+      if (imageFiles.length > 0) {
         try {
-          const url = await uploadProductImage(product.id, imageFile);
-
-          await addProductImage(product.id, url, true);
-
-          await updateProduct(product.id, {
-            image: url,
-          });
+          const uploadedUrls: string[] = [];
+          for (const [index, file] of imageFiles.entries()) {
+            const url = await uploadProductImage(product.id, file);
+            await addProductImage(product.id, url, index === 0, index);
+            uploadedUrls.push(url);
+          }
+          await updateProduct(product.id, { image: uploadedUrls[0] });
         } catch (imageError) {
           setMessage(
             imageError instanceof Error
@@ -382,4 +391,59 @@ function NewProductPage() {
       </section>
     </div>
   );
-}
+}            <div className="up-product-image-manager">
+              <div
+                className="up-upload-card"
+                onClick={() => fileRef.current?.click()}
+                role="button"
+                tabIndex={0}
+                onKeyDown={(event) => {
+                  if (event.key === "Enter" || event.key === " ") {
+                    event.preventDefault();
+                    fileRef.current?.click();
+                  }
+                }}
+                aria-label="Thêm ảnh sản phẩm"
+              >
+                {previews.length > 0 ? (
+                  <img src={previews[activePreview] ?? previews[0]} alt={`Ảnh xem trước ${activePreview + 1}`} />
+                ) : (
+                  <div>
+                    <b>＋</b>
+                    <span>TẢI ẢNH SẢN PHẨM</span>
+                    <small>PNG, JPG, WEBP · tối đa 10 MB/ảnh</small>
+                  </div>
+                )}
+                <input
+                  ref={fileRef}
+                  type="file"
+                  multiple
+                  accept="image/png,image/jpeg,image/webp,image/gif"
+                  hidden
+                  onChange={(e) => chooseImages(e.target.files)}
+                />
+              </div>
+              {previews.length > 0 && (
+                <>
+                  <div className="up-new-product-gallery" role="list" aria-label="Băng chuyền ảnh xem trước">
+                    {previews.map((image, index) => (
+                      <div className={`up-new-product-gallery__item ${index === activePreview ? "is-active" : ""}`} key={`${image}-${index}`}>
+                        <button type="button" onClick={() => setActivePreview(index)} aria-label={`Xem ảnh ${index + 1}`} aria-current={index === activePreview}>
+                          <img src={image} alt="" />
+                        </button>
+                        <button type="button" className="up-new-product-gallery__remove" onClick={() => removeImage(index)} aria-label={`Xóa ảnh ${index + 1}`} title="Xóa ảnh">
+                          <Trash2 size={13} />
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                  <div className="up-new-product-gallery__controls">
+                    <button type="button" onClick={() => setActivePreview((current) => Math.max(0, current - 1))} disabled={activePreview === 0} aria-label="Ảnh trước"><ChevronLeft size={16} /> ẢNH TRƯỚC</button>
+                    <span>{activePreview + 1} / {previews.length}</span>
+                    <button type="button" onClick={() => setActivePreview((current) => Math.min(previews.length - 1, current + 1))} disabled={activePreview === previews.length - 1} aria-label="Ảnh tiếp theo">ẢNH TIẾP <ChevronRight size={16} /></button>
+                  </div>
+                  <p className="up-new-product-gallery__hint">Ảnh đầu tiên là ảnh đại diện. Dùng nút thùng rác để bỏ ảnh trước khi tạo sản phẩm.</p>
+                </>
+              )}
+              <button type="button" className="up-new-product-gallery__add" onClick={() => fileRef.current?.click()}>＋ THÊM ẢNH</button>
+            </div>
