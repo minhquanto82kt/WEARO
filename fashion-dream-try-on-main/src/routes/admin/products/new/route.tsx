@@ -296,34 +296,62 @@ function NewProductPage() {
           </div>
 
           <div className="up-editor-right">
-            <div
-              className="up-upload-card"
-              onClick={() => fileRef.current?.click()}
-            >
-              {preview ? (
-                <img
-                  src={preview}
-                  alt="Product preview"
+            <div className="up-product-image-manager">
+              <div
+                className="up-upload-card"
+                onClick={() => fileRef.current?.click()}
+                role="button"
+                tabIndex={0}
+                onKeyDown={(event) => {
+                  if (event.key === "Enter" || event.key === " ") {
+                    event.preventDefault();
+                    fileRef.current?.click();
+                  }
+                }}
+                aria-label="Thêm ảnh sản phẩm"
+              >
+                {previews.length > 0 ? (
+                  <img src={previews[activePreview] ?? previews[0]} alt={`Ảnh xem trước ${activePreview + 1}`} />
+                ) : (
+                  <div>
+                    <b>＋</b>
+                    <span>TẢI ẢNH SẢN PHẨM</span>
+                    <small>PNG, JPG, WEBP · tối đa 10 MB/ảnh</small>
+                  </div>
+                )}
+                <input
+                  ref={fileRef}
+                  type="file"
+                  multiple
+                  accept="image/png,image/jpeg,image/webp,image/gif"
+                  hidden
+                  onClick={(event) => event.stopPropagation()}
+                  onChange={(e) => chooseImages(e.target.files)}
                 />
-              ) : (
-                <div>
-                  <b>＋</b>
-                  <span>TẢI ẢNH SẢN PHẨM</span>
-                  <small>
-                    PNG, JPG, WEBP · tối đa 10 MB
-                  </small>
-                </div>
+              </div>
+              {previews.length > 0 && (
+                <>
+                  <div className="up-new-product-gallery" role="list" aria-label="Băng chuyền ảnh xem trước">
+                    {previews.map((image, index) => (
+                      <div className={`up-new-product-gallery__item ${index === activePreview ? "is-active" : ""}`} key={`${image}-${index}`}>
+                        <button type="button" onClick={() => setActivePreview(index)} aria-label={`Xem ảnh ${index + 1}`} aria-current={index === activePreview}>
+                          <img src={image} alt="" />
+                        </button>
+                        <button type="button" className="up-new-product-gallery__remove" onClick={() => removeImage(index)} aria-label={`Xóa ảnh ${index + 1}`} title="Xóa ảnh">
+                          <Trash2 size={13} />
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                  <div className="up-new-product-gallery__controls">
+                    <button type="button" onClick={() => setActivePreview((current) => Math.max(0, current - 1))} disabled={activePreview === 0} aria-label="Ảnh trước"><ChevronLeft size={16} /> ẢNH TRƯỚC</button>
+                    <span>{activePreview + 1} / {previews.length}</span>
+                    <button type="button" onClick={() => setActivePreview((current) => Math.min(previews.length - 1, current + 1))} disabled={activePreview === previews.length - 1} aria-label="Ảnh tiếp theo">ẢNH TIẾP <ChevronRight size={16} /></button>
+                  </div>
+                  <p className="up-new-product-gallery__hint">Ảnh đầu tiên là ảnh đại diện. Dùng nút thùng rác để bỏ ảnh trước khi tạo sản phẩm.</p>
+                </>
               )}
-
-              <input
-                ref={fileRef}
-                type="file"
-                accept="image/png,image/jpeg,image/webp,image/gif"
-                hidden
-                onChange={(e) =>
-                  chooseImage(e.target.files?.[0])
-                }
-              />
+              <button type="button" className="up-new-product-gallery__add" onClick={() => fileRef.current?.click()}>＋ THÊM ẢNH</button>
             </div>
 
             <label>
@@ -391,60 +419,4 @@ function NewProductPage() {
       </section>
     </div>
   );
-}            <div className="up-product-image-manager">
-              <div
-                className="up-upload-card"
-                onClick={() => fileRef.current?.click()}
-                role="button"
-                tabIndex={0}
-                onKeyDown={(event) => {
-                  if (event.key === "Enter" || event.key === " ") {
-                    event.preventDefault();
-                    fileRef.current?.click();
-                  }
-                }}
-                aria-label="Thêm ảnh sản phẩm"
-              >
-                {previews.length > 0 ? (
-                  <img src={previews[activePreview] ?? previews[0]} alt={`Ảnh xem trước ${activePreview + 1}`} />
-                ) : (
-                  <div>
-                    <b>＋</b>
-                    <span>TẢI ẢNH SẢN PHẨM</span>
-                    <small>PNG, JPG, WEBP · tối đa 10 MB/ảnh</small>
-                  </div>
-                )}
-                <input
-                  ref={fileRef}
-                  type="file"
-                  multiple
-                  accept="image/png,image/jpeg,image/webp,image/gif"
-                  hidden
-                  onClick={(event) => event.stopPropagation()}
-                  onChange={(e) => chooseImages(e.target.files)}
-                />
-              </div>
-              {previews.length > 0 && (
-                <>
-                  <div className="up-new-product-gallery" role="list" aria-label="Băng chuyền ảnh xem trước">
-                    {previews.map((image, index) => (
-                      <div className={`up-new-product-gallery__item ${index === activePreview ? "is-active" : ""}`} key={`${image}-${index}`}>
-                        <button type="button" onClick={() => setActivePreview(index)} aria-label={`Xem ảnh ${index + 1}`} aria-current={index === activePreview}>
-                          <img src={image} alt="" />
-                        </button>
-                        <button type="button" className="up-new-product-gallery__remove" onClick={() => removeImage(index)} aria-label={`Xóa ảnh ${index + 1}`} title="Xóa ảnh">
-                          <Trash2 size={13} />
-                        </button>
-                      </div>
-                    ))}
-                  </div>
-                  <div className="up-new-product-gallery__controls">
-                    <button type="button" onClick={() => setActivePreview((current) => Math.max(0, current - 1))} disabled={activePreview === 0} aria-label="Ảnh trước"><ChevronLeft size={16} /> ẢNH TRƯỚC</button>
-                    <span>{activePreview + 1} / {previews.length}</span>
-                    <button type="button" onClick={() => setActivePreview((current) => Math.min(previews.length - 1, current + 1))} disabled={activePreview === previews.length - 1} aria-label="Ảnh tiếp theo">ẢNH TIẾP <ChevronRight size={16} /></button>
-                  </div>
-                  <p className="up-new-product-gallery__hint">Ảnh đầu tiên là ảnh đại diện. Dùng nút thùng rác để bỏ ảnh trước khi tạo sản phẩm.</p>
-                </>
-              )}
-              <button type="button" className="up-new-product-gallery__add" onClick={() => fileRef.current?.click()}>＋ THÊM ẢNH</button>
-            </div>
+}
