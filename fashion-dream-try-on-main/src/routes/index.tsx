@@ -206,7 +206,7 @@ function Index() {
             {CATEGORIES.map((category) => <button key={category.slug} type="button" className={activeCategory === category.slug ? "is-active" : ""} onClick={() => setActiveCategory(category.slug)}>{category.label}</button>)}
           </div>
         </div>
-        <div className="wearo-reference-product-grid">{filteredProducts.map((product) => <ProductCard key={product.id} product={product} />)}</div>
+        <div className="wearo-reference-product-grid">{filteredProducts.length > 0 ? filteredProducts.map((product) => <ProductCard key={product.id} product={product} />) : <div className="wearo-reference-empty-state" role="status"><p className="wearo-reference-section-label">COLLECTION / 0 ITEMS</p><h3>Chưa có sản phẩm trong danh mục này.</h3><p>WEARO đang cập nhật bộ sưu tập. Bạn có thể xem tất cả sản phẩm hoặc quay lại sau.</p><button type="button" onClick={() => setActiveCategory("all")}>Xem tất cả sản phẩm</button></div>}</div>
         <div className="wearo-reference-view-all"><Link to="/shop">XEM TẤT CẢ SẢN PHẨM</Link></div>
       </main>
 
