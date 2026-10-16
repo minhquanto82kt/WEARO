@@ -283,8 +283,6 @@ function ProductDetailPage() {
       <header className="up-admin-topbar">
         <div>
           <div className="up-admin-kicker">CATALOG / PRODUCT DETAIL</div>
-          <h1>{product.name}</h1>
-          <p>{product.slug} · {money(product.price)}</p>
         </div>
         <div style={{ display: "flex", gap: 8, flexWrap: "wrap", justifyContent: "flex-end" }}>
           <Link className="up-admin-secondary" to="/admin/products">← SẢN PHẨM</Link>
