@@ -90,9 +90,7 @@ export function SiteFooter() {
             <div className="wearo-footer__social-label">{t("KẾT NỐI", "CONNECT")}</div>
             <div className="wearo-footer__socials" aria-label={t("Mạng xã hội", "Social media")}>
               <a href="#instagram" aria-label="Instagram"><Instagram size={17} /></a>
-              <a href="#facebook" aria-label="Facebook"><Facebook size={17} /></a>
-              <a href="#tiktok" aria-label="TikTok"><Music2 size={17} /></a>
-              <a href="#youtube" aria-label="YouTube"><Youtube size={17} /></a>
+              <a href="https://www.facebook.com/profile.php?id=61595224420277&open_field=address&sk=directory_basic_info" aria-label="Facebook"><Facebook size={17} /></a>
             </div>
           </section>
         </div>
