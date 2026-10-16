@@ -90,12 +90,12 @@ function ShopPage() {
         <section className="wearo-shop-toolbar" aria-label="Tìm kiếm và lọc sản phẩm">
           <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
             <div className="flex min-w-0 flex-1 flex-col gap-3 sm:flex-row sm:items-center">
-              <label className="wearo-shop-search w-full sm:max-w-md">
+              <div className="wearo-shop-search w-full sm:max-w-md" role="search">
                 <Search size={17} className="ml-4 shrink-0 text-[#54728C]" aria-hidden="true" />
-                <span className="sr-only">Tìm kiếm sản phẩm</span>
+                <label htmlFor="shop-search" className="sr-only">Tìm kiếm sản phẩm</label>
                 <input id="shop-search" value={search} onChange={(event) => { const value = event.target.value; setSearch(value); updateUrl({ search: value }); }} placeholder="Tìm theo tên, phong cách..." className="h-12 min-w-0 flex-1 bg-transparent px-3 text-sm outline-none" />
                 {search && <button type="button" onClick={clearSearch} className="mr-2 grid size-8 shrink-0 place-items-center text-[#54728C] hover:text-[#171717]" aria-label="Xóa tìm kiếm"><X size={15} /></button>}
-              </label>
+              </div>
               <button type="button" onClick={() => setFiltersOpen((open) => !open)} className="wearo-shop-control shrink-0" aria-expanded={filtersOpen}>
                 <SlidersHorizontal size={14} aria-hidden="true" /> Bộ lọc{activeFilterCount > 0 ? ` · ${activeFilterCount}` : ""}
               </button>
