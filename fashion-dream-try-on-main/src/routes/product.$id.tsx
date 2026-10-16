@@ -48,6 +48,7 @@ export const Route = createFileRoute("/product/$id")({
     return { meta: [{ title: `${p.name} — ${formatVnd(p.price)} | WEARO` }, { name: "description", content: (p.shortDescription ?? p.description).slice(0, 155) }, { property: "og:title", content: `${p.name} | WEARO` }, { property: "og:description", content: (p.shortDescription ?? p.description).slice(0, 155) }, { property: "og:image", content: p.image }, { name: "twitter:image", content: p.image }], links: [canonicalLink(`/product/${encodeURIComponent(p.id)}`)], scripts: [jsonLdScript(productSchema), jsonLdScript(breadcrumbSchema)] };
   },
   component: ProductPage,
+  notFoundComponent: () => <div className="min-h-screen"><SiteNav /><main className="mx-auto flex max-w-3xl flex-col items-center px-6 pb-24 pt-40 text-center"><p className="eyebrow">WEARO / PRODUCT UNAVAILABLE</p><h1 className="mt-4 text-4xl leading-tight sm:text-5xl">Sản phẩm này hiện không còn khả dụng.</h1><p className="mt-5 max-w-xl text-sm leading-6 text-silver">Sản phẩm có thể đã được ẩn khỏi gian hàng hoặc không còn được mở bán. Hãy quay lại cửa hàng để khám phá những lựa chọn khác.</p><Link to="/shop" className="mt-8 border border-primary px-6 py-3 text-xs uppercase tracking-[0.15em] text-primary transition-colors hover:bg-primary hover:text-primary-foreground">Quay lại cửa hàng</Link></main><SiteFooter /></div>,
 });
 
 function ProductPage() {
