@@ -1007,3 +1007,49 @@
   .up-variant-generator__footer { align-items: stretch; flex-direction: column; }
   .up-variant-generator__footer button { width: 100%; }
 }
+
+
+/* Improve readability of editable fields throughout the Admin CMS.
+   Scoped to admin only; covers product details and other CRUD forms. */
+.up-admin-root input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="color"]),
+.up-admin-root select,
+.up-admin-root textarea,
+.fd-admin-login-page input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="color"]),
+.fd-admin-login-page select,
+.fd-admin-login-page textarea {
+  font-size: 16px !important;
+  line-height: 1.5;
+}
+.up-admin-root input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="color"]),
+.up-admin-root select,
+.up-admin-root textarea {
+  min-height: 44px;
+  padding: 10px 12px;
+}
+.up-admin-root textarea,
+.fd-admin-login-page textarea {
+  min-height: 104px;
+}
+.up-admin-root input::placeholder,
+.up-admin-root textarea::placeholder,
+.fd-admin-login-page input::placeholder,
+.fd-admin-login-page textarea::placeholder {
+  font-size: 15px;
+  opacity: .78;
+}
+.up-admin-root input:focus-visible,
+.up-admin-root select:focus-visible,
+.up-admin-root textarea:focus-visible {
+  outline: 2px solid var(--fd-admin-accent, #54728c);
+  outline-offset: 2px;
+}
+.up-admin-root .up-variant-form input,
+.up-admin-root .up-variant-form select,
+.up-admin-root .up-variant-generator input[type="number"] {
+  font-size: 16px !important;
+  line-height: 1.45;
+  min-height: 46px;
+}
+.up-admin-root .up-variant-generator__stock input[type="number"] {
+  font-size: 16px !important;
+}
