@@ -72,6 +72,11 @@ function ProductDetailPage() {
   const [form, setForm] = useState<ProductForm | null>(null);
   const [editingVariant, setEditingVariant] = useState<ProductVariant | null>(null);
   const [variantForm, setVariantForm] = useState<VariantForm>(emptyVariant);
+  const [generatorOpen, setGeneratorOpen] = useState(false);
+  const [generatorSizes, setGeneratorSizes] = useState<string[]>([]);
+  const [generatorColors, setGeneratorColors] = useState<string[]>([]);
+  const [generatorStock, setGeneratorStock] = useState("0");
+  const [generatingVariants, setGeneratingVariants] = useState(false);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [deleting, setDeleting] = useState(false);
@@ -200,6 +205,60 @@ function ProductDetailPage() {
     } finally { setSaving(false); }
   }
 
+  async function handleGenerateVariants() {
+    if (!product) return;
+    if (!generatorSizes.length || !generatorColors.length) {
+      setError("Hãy chọn ít nhất một size và một màu để tạo ma trận variant.");
+      return;
+    }
+    const stock = Number(generatorStock);
+    if (!Number.isInteger(stock) || stock < 0) {
+      setError("Tồn kho mặc định phải là số nguyên từ 0 trở lên.");
+      return;
+    }
+
+    const existing = new Set(variants.map((variant) => `${variant.size.toLowerCase()}::${variant.color.toLowerCase()}`));
+    const combos = generatorSizes.flatMap((size) => generatorColors
+      .filter((color) => !existing.has(`${size.toLowerCase()}::${color.toLowerCase()}`))
+      .map((color) => ({ size, color })));
+    if (!combos.length) {
+      setMessage("Các tổ hợp đã chọn đều tồn tại. Không có variant trùng được tạo.");
+      setError("");
+      return;
+    }
+
+    const skuBase = (product.slug || product.name).normalize("NFD").replace(/[\\u0300-\\u036f]/g, "").toUpperCase().replace(/[^A-Z0-9]+/g, "-").replace(/^-|-$/g, "");
+    const colorCode = (color: string) => color.normalize("NFD").replace(/[\\u0300-\\u036f]/g, "").toUpperCase().replace(/[^A-Z0-9]+/g, "").slice(0, 4) || "COLOR";
+    setGeneratingVariants(true); setError(""); setMessage("");
+    let created = 0;
+    const failures: string[] = [];
+    try {
+      for (const combo of combos) {
+        try {
+          await createProductVariant({
+            product_id: id,
+            size: combo.size,
+            color: combo.color,
+            sku: `${skuBase}-${colorCode(combo.color)}-${combo.size.toUpperCase().replace(/[^A-Z0-9]+/g, "")}`,
+            stock,
+          });
+          created += 1;
+        } catch (cause) {
+          failures.push(`${combo.size}/${combo.color}: ${cause instanceof Error ? cause.message : "Lỗi không xác định"}`);
+        }
+      }
+      await load();
+      if (failures.length) {
+        setError(`Đã tạo ${created}/${combos.length} variant. Một số tổ hợp chưa tạo được: ${failures.slice(0, 3).join("; ")}`);
+      } else {
+        setMessage(`Đã tạo ${created} variant; bỏ qua các tổ hợp đã tồn tại. Hãy kiểm tra SKU trước khi đưa sản phẩm lên cửa hàng.`);
+        setGeneratorOpen(false);
+      }
+    } finally {
+      setGeneratingVariants(false);
+    }
+  }
+
   async function handleVariantDelete(variant: ProductVariant) {
     if (!window.confirm(`Xóa variant ${variant.size} / ${variant.color}?`)) return;
     setSaving(true); setMessage(""); setError("");
@@ -274,6 +333,19 @@ function ProductDetailPage() {
         <div><span>HẾT HÀNG</span><strong>{inventory.out}</strong></div>
       </section>
 
+      <section className="up-admin-table-wrap up-variant-generator" style={{ marginBottom: 16 }}>
+        <div className="up-variant-generator__header">
+          <div><div className="up-admin-kicker">BULK VARIANT GENERATOR</div><h2>Tạo variant hàng loạt</h2><p>Tự tạo tổ hợp Size × Color còn thiếu, không tạo trùng variant đã có.</p></div>
+          <button className="up-row-action" type="button" onClick={() => setGeneratorOpen((open) => !open)} aria-expanded={generatorOpen}>{generatorOpen ? "ĐÓNG" : "MỞ BỘ TẠO"}</button>
+        </div>
+        {generatorOpen && <form className="up-variant-generator__form" onSubmit={(event) => { event.preventDefault(); void handleGenerateVariants(); }}>
+          <fieldset><legend>SIZE</legend><div className="up-variant-options">{sizes.map((size) => <label key={size}><input type="checkbox" checked={generatorSizes.includes(size)} onChange={(event) => setGeneratorSizes((current) => event.target.checked ? [...current, size] : current.filter((value) => value !== size))} disabled={generatingVariants || saving || deleting} />{size}</label>)}</div></fieldset>
+          <fieldset><legend>MÀU SẮC</legend><div className="up-variant-options">{colors.map((color) => <label key={color}><input type="checkbox" checked={generatorColors.includes(color)} onChange={(event) => setGeneratorColors((current) => event.target.checked ? [...current, color] : current.filter((value) => value !== color))} disabled={generatingVariants || saving || deleting} /><i style={{ background: colorValue(color) }} />{color}</label>)}</div></fieldset>
+          <label className="up-variant-generator__stock">Tồn kho ban đầu cho mỗi SKU<input type="number" min="0" step="1" value={generatorStock} onChange={(event) => setGeneratorStock(event.target.value)} disabled={generatingVariants || saving || deleting} /></label>
+          <div className="up-variant-generator__footer"><span>{generatorSizes.length * generatorColors.length} tổ hợp được chọn · hệ thống tự bỏ qua tổ hợp đã tồn tại</span><button className="up-admin-primary" type="submit" disabled={generatingVariants || saving || deleting || !generatorSizes.length || !generatorColors.length}>{generatingVariants ? "ĐANG TẠO…" : "TẠO VARIANT"}</button></div>
+        </form>}
+      </section>
+
       <section className="up-admin-table-wrap" style={{ marginBottom: 24 }}>
         <div style={{ padding: 20, borderBottom: "1px solid #e5e7eb" }}>
           <div className="up-admin-kicker">INVENTORY / VARIANTS</div>
@@ -281,7 +353,7 @@ function ProductDetailPage() {
           <p style={{ margin: "6px 0 0", opacity: 0.65 }}>Chọn Size và Color từ bộ giá trị đang có trong kho; Stock là tồn kho thực tế của variant.</p>
         </div>
 
-        <form onSubmit={handleVariantSubmit} style={{ display: "grid", gridTemplateColumns: "repeat(4, minmax(0, 1fr)) auto", gap: 12, padding: 20 }}>
+        <form onSubmit={handleVariantSubmit} className="up-variant-form">
           <label>SIZE<select value={variantForm.size} onChange={(e) => setVariantForm((c) => ({ ...c, size: e.target.value }))} disabled={saving || deleting}><option value="">Chọn size</option>{sizes.map((size) => <option key={size}>{size}</option>)}</select></label>
           <label>COLOR
             <select value={variantForm.color} onChange={(e) => setVariantForm((c) => ({ ...c, color: e.target.value }))} disabled={saving || deleting}>
