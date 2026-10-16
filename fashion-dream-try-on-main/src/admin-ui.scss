@@ -734,3 +734,26 @@
 .up-products-table .up-status-select.archived { background: #fbe7e4; color: #a83225; }
 .up-products-table .up-status-select:focus-visible { outline: 2px solid #54728c; outline-offset: 2px; }
 .up-products-table .up-status-select:disabled { cursor: not-allowed; opacity: .8; }
+
+/* Product list: let the table grow naturally; paginate only when needed. */
+.up-products-admin .up-admin-table-wrap {
+  height: auto !important;
+  max-height: none !important;
+  overflow: visible !important;
+}
+.up-products-admin .up-products-pagination-current {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.up-products-admin .up-products-pagination-current small {
+  margin-left: 8px;
+  color: var(--fd-admin-muted);
+  font-size: 11px;
+}
+@media (max-width: 760px) {
+  .up-products-admin .up-admin-table-wrap {
+    overflow-x: auto !important;
+    overflow-y: hidden !important;
+  }
+}
