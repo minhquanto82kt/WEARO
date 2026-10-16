@@ -539,3 +539,12 @@
     transform: none;
   }
 }
+
+
+/* Keep global form-focus styles from reintroducing a box around the newsletter field. */
+.wearo-footer .wearo-footer__newsletter-form input:focus,
+.wearo-footer .wearo-footer__newsletter-form input:focus-visible {
+  background: transparent !important;
+  box-shadow: none !important;
+  outline: 0;
+}
