@@ -4,11 +4,13 @@ Thư mục lưu trữ banner quảng bá và hình ảnh giới thiệu tính n�
 
 ## 1. Danh sách banner
 
+Banner AI Stylist hiện được lưu tại `wearo-ai-stylist-banner.webp` và được sử dụng trong slider trang `/shop`.
+
 | File | Mục đích | Trạng thái |
 |---|---|---|
-| `wearo-ai-virtual-tryon-banner.png` | Giới thiệu tính năng AI Virtual Try-On trên trang `/shop` | Dự kiến sử dụng |
-| `wearo-shop-collection-2026.png` | Giới thiệu bộ sưu tập năm 2026 | Dự kiến sử dụng |
-| `wearo-promotion-banner.png` | Banner chương trình khuyến mãi | Dự kiến sử dụng |
+| `wearo-ai-virtual-try-on-banner.webp` | Banner AI Virtual Try-On trên trang `/shop` | Đã có trong repository |
+| `wearo-shop-collection-2026.webp` | Giới thiệu bộ sưu tập năm 2026 | Chưa xác minh có file |
+| `wearo-promotion-banner.webp` | Banner chương trình khuyến mãi | Chưa xác minh có file |
 
 > Danh sách trên ghi nhận quy hoạch tên file; không có nghĩa các ảnh đã được thêm vào repository.
 
@@ -32,13 +34,13 @@ Các tệp nằm trong `public/` được phục vụ từ URL gốc, không bao
 
 Ví dụ URL công khai:
 
-`/images/banners/wearo-ai-virtual-tryon-banner.png`
+`/images/banners/wearo-ai-virtual-try-on-banner.webp`
 
 Ví dụ React:
 
 ```tsx
 <img
-  src="/images/banners/wearo-ai-virtual-tryon-banner.png"
+  src="/images/banners/wearo-ai-virtual-try-on-banner.webp"
   alt="WEARO AI Virtual Try-On"
 />
 ```
