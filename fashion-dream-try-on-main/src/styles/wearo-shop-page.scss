@@ -1,0 +1,253 @@
+/* WEARO shop page — scoped storefront polish. Uses the existing brand palette only. */
+.wearo-shop-page {
+  --shop-ink: #171717;
+  --shop-blue: #54728C;
+  --shop-blue-soft: #7794A6;
+  --shop-peach: #F2CEAE;
+  --shop-taupe: #D9BBA9;
+  --shop-coral: #F2AD94;
+  --shop-paper: #F8F6F2;
+  background: var(--shop-paper) !important;
+  color: var(--shop-ink);
+}
+.wearo-shop-page .wearo-shop-main { background: transparent !important; }
+.wearo-shop-page .wearo-shop-hero {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1.35fr) minmax(240px, .65fr);
+  gap: clamp(24px, 4vw, 56px);
+  align-items: end;
+  overflow: hidden;
+  padding: clamp(28px, 5vw, 64px);
+  background: #fff;
+  border: 1px solid rgba(84,114,140,.22);
+}
+.wearo-shop-page .wearo-shop-hero::after {
+  content: "";
+  position: absolute;
+  width: 270px;
+  height: 270px;
+  right: -95px;
+  top: -120px;
+  border: 1px solid rgba(84,114,140,.18);
+  border-radius: 50%;
+  pointer-events: none;
+}
+.wearo-shop-page .wearo-shop-kicker,
+.wearo-shop-page .wearo-shop-section-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  color: var(--shop-blue);
+  font: 700 10px/1.5 var(--wearo-font-body, "Lexend", sans-serif);
+  letter-spacing: .16em;
+  text-transform: uppercase;
+}
+.wearo-shop-page .wearo-shop-kicker::before {
+  content: "";
+  width: 20px;
+  height: 1px;
+  background: var(--shop-coral);
+}
+.wearo-shop-page .wearo-shop-title {
+  margin-top: 18px;
+  max-width: 850px;
+  font-family: var(--wearo-font-display, "Space Grotesk", sans-serif);
+  font-size: clamp(44px, 6vw, 84px);
+  font-weight: 700;
+  line-height: .94;
+  letter-spacing: -.065em;
+  text-transform: uppercase;
+}
+.wearo-shop-page .wearo-shop-title-accent { color: var(--shop-blue); }
+.wearo-shop-page .wearo-shop-description {
+  max-width: 570px;
+  margin-top: 22px;
+  color: rgba(23,23,23,.66);
+  font-size: 14px;
+  line-height: 1.8;
+}
+.wearo-shop-page .wearo-shop-ai-card {
+  position: relative;
+  z-index: 1;
+  padding: 24px;
+  border: 1px solid rgba(84,114,140,.28);
+  background: linear-gradient(145deg, rgba(84,114,140,.09), rgba(242,206,174,.28));
+}
+.wearo-shop-page .wearo-shop-ai-card-label {
+  color: var(--shop-blue);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+}
+.wearo-shop-page .wearo-shop-ai-card h2 {
+  margin-top: 14px;
+  font-family: var(--wearo-font-display, "Space Grotesk", sans-serif);
+  font-size: clamp(22px, 2.3vw, 30px);
+  font-weight: 700;
+  line-height: 1.08;
+  letter-spacing: -.04em;
+}
+.wearo-shop-page .wearo-shop-ai-card p {
+  margin-top: 10px;
+  color: rgba(23,23,23,.68);
+  font-size: 12px;
+  line-height: 1.7;
+}
+.wearo-shop-page .wearo-shop-ai-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 18px;
+  padding-bottom: 5px;
+  border-bottom: 1px solid var(--shop-blue);
+  color: var(--shop-blue);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+}
+.wearo-shop-page .wearo-shop-toolbar {
+  margin-top: 28px;
+  padding: 20px 0;
+  border-top: 1px solid rgba(84,114,140,.22);
+  border-bottom: 1px solid rgba(84,114,140,.22);
+}
+.wearo-shop-page .wearo-shop-search {
+  display: flex;
+  min-height: 48px;
+  align-items: center;
+  border: 1px solid rgba(84,114,140,.3);
+  background: #fff;
+  transition: border-color .18s ease, box-shadow .18s ease;
+}
+.wearo-shop-page .wearo-shop-search:focus-within {
+  border-color: var(--shop-blue);
+  box-shadow: 0 0 0 3px rgba(84,114,140,.1);
+}
+.wearo-shop-page .wearo-shop-search input { color: var(--shop-ink); }
+.wearo-shop-page .wearo-shop-search input::placeholder { color: rgba(23,23,23,.48); }
+.wearo-shop-page .wearo-shop-control {
+  display: inline-flex;
+  min-height: 40px;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 9px 13px;
+  border: 1px solid rgba(84,114,140,.3);
+  background: #fff;
+  color: var(--shop-blue);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: .09em;
+  text-transform: uppercase;
+  transition: background .18s ease, color .18s ease, border-color .18s ease;
+}
+.wearo-shop-page .wearo-shop-control:hover,
+.wearo-shop-page .wearo-shop-control[aria-expanded="true"] {
+  border-color: var(--shop-blue);
+  background: var(--shop-blue);
+  color: #fff;
+}
+.wearo-shop-page .wearo-shop-sort-label,
+.wearo-shop-page .wearo-shop-count {
+  color: rgba(23,23,23,.58);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+}
+.wearo-shop-page .wearo-shop-sort {
+  padding: 8px 0;
+  border-bottom: 1px solid transparent;
+  color: rgba(23,23,23,.58);
+  font-size: 11px;
+  transition: color .18s ease, border-color .18s ease;
+}
+.wearo-shop-page .wearo-shop-sort:hover,
+.wearo-shop-page .wearo-shop-sort.is-active {
+  border-color: var(--shop-coral);
+  color: var(--shop-blue);
+}
+.wearo-shop-page .wearo-shop-filter-panel {
+  margin-top: 18px;
+  padding-top: 18px;
+  border-top: 1px solid rgba(84,114,140,.18);
+}
+.wearo-shop-page .wearo-shop-category {
+  min-height: 38px;
+  padding: 9px 14px;
+  border: 1px solid rgba(84,114,140,.26);
+  background: #fff;
+  color: rgba(23,23,23,.7);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  transition: background .18s ease, color .18s ease, border-color .18s ease;
+}
+.wearo-shop-page .wearo-shop-category:hover,
+.wearo-shop-page .wearo-shop-category.is-active {
+  border-color: var(--shop-blue);
+  background: var(--shop-blue);
+  color: #fff;
+}
+.wearo-shop-page .wearo-shop-results-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+.wearo-shop-page .wearo-shop-results-title {
+  font-family: var(--wearo-font-display, "Space Grotesk", sans-serif);
+  font-size: clamp(22px, 3vw, 34px);
+  font-weight: 700;
+  letter-spacing: -.045em;
+}
+.wearo-shop-page .wearo-shop-empty {
+  padding: clamp(40px, 7vw, 84px) 20px;
+  border: 1px solid rgba(84,114,140,.22);
+  background: #fff;
+  text-align: center;
+}
+.wearo-shop-page .wearo-shop-empty h2 {
+  margin-top: 12px;
+  font-family: var(--wearo-font-display, "Space Grotesk", sans-serif);
+  font-size: clamp(25px, 4vw, 38px);
+  font-weight: 700;
+  line-height: 1.08;
+  letter-spacing: -.04em;
+}
+.wearo-shop-page .wearo-shop-empty p:not(.wearo-shop-section-label) {
+  max-width: 440px;
+  margin: 12px auto 0;
+  color: rgba(23,23,23,.64);
+  font-size: 13px;
+  line-height: 1.7;
+}
+.wearo-shop-page .wearo-shop-reset {
+  min-height: 44px;
+  margin-top: 22px;
+  padding: 12px 18px;
+  border: 1px solid var(--shop-blue);
+  background: var(--shop-blue);
+  color: #fff;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  transition: background .18s ease, color .18s ease;
+}
+.wearo-shop-page .wearo-shop-reset:hover { background: #fff; color: var(--shop-blue); }
+@media (max-width: 760px) {
+  .wearo-shop-page .wearo-shop-hero { grid-template-columns: 1fr; padding: 26px 22px; }
+  .wearo-shop-page .wearo-shop-ai-card { max-width: none; }
+  .wearo-shop-page .wearo-shop-title { font-size: clamp(42px, 13vw, 64px); }
+  .wearo-shop-page .wearo-shop-toolbar { margin-top: 20px; }
+  .wearo-shop-page .wearo-shop-results-head { align-items: flex-start; flex-direction: column; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .wearo-shop-page * { scroll-behavior: auto !important; transition-duration: .01ms !important; }
+}
