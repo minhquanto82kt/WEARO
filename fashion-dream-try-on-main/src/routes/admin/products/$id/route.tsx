@@ -129,7 +129,7 @@ function ProductDetailPage() {
     return { total: variants.reduce((sum, variant) => sum + variant.stock, 0), low, out };
   }, [variants]);
 
-  const statusLabel = product?.status === "published" ? "Đang hoạt động" : product?.status === "draft" ? "Bản nháp" : "Đã ẩn";
+  const statusLabel = product?.status === "published" ? (product.active ? "Đang hoạt động" : "Đã ẩn") : product?.status === "draft" ? "Bản nháp" : "Trong thùng rác";
 
   function resetVariantForm() {
     setEditingVariant(null);
@@ -218,7 +218,7 @@ function ProductDetailPage() {
 
   async function handleProductDelete() {
     if (!product) return;
-    if (!window.confirm(`Bạn có chắc muốn ẩn sản phẩm "${product.name}"?\n\nSản phẩm sẽ được chuyển sang trạng thái Đã ẩn và không bị xóa khỏi lịch sử dữ liệu.`)) return;
+    if (!window.confirm(`Chuyển "${product.name}" vào thùng rác?\n\nSản phẩm sẽ bị ẩn khỏi cửa hàng nhưng vẫn được lưu trong database để bảo toàn lịch sử. Bạn có thể khôi phục từ danh sách sản phẩm.`)) return;
     setDeleting(true); setMessage(""); setError("");
     try {
       await deleteProduct(product.id);
@@ -344,7 +344,7 @@ function ProductDetailPage() {
 
       <section className="up-admin-editor">
         <div className="up-editor-head">
-          <div><div className="up-admin-kicker">PRODUCT INFORMATION</div><h2>Thông tin sản phẩm</h2><p>READ / UPDATE dữ liệu sản phẩm hiện tại.</p></div>
+          <div><div className="up-admin-kicker">PRODUCT INFORMATION</div><h2>Thông tin sản phẩm</h2><p>READ / UPDATE thông tin, ảnh và biến thể của sản phẩm theo ID.</p></div>
           <span className={`up-status ${product.status}`}>{statusLabel}</span>
         </div>
         <div className="up-editor-grid">
@@ -382,7 +382,7 @@ function ProductDetailPage() {
             <div className="up-editor-actions">
               <Link className="up-secondary" to="/admin/products">HỦY</Link>
               <button className="up-admin-primary" type="submit" disabled={saving || deleting}>{saving ? "ĐANG LƯU…" : "LƯU THAY ĐỔI"}</button>
-              <button className="up-row-action up-row-action-danger" type="button" onClick={() => void handleProductDelete()} disabled={saving || deleting}>{deleting ? "ĐANG ẨN…" : "ẨN SẢN PHẨM"}</button>
+              <button className="up-row-action up-row-action-danger" type="button" onClick={() => void handleProductDelete()} disabled={saving || deleting}>{deleting ? "ĐANG CHUYỂN…" : "CHUYỂN VÀO THÙNG RÁC"}</button>
             </div>
           </form>
         </div>
