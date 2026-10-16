@@ -1,7 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { createServerFn } from "@tanstack/react-start";
-import { ArrowUpRight, Search, SlidersHorizontal, X } from "lucide-react";
-import { useMemo, useState } from "react";
+import { ArrowUpRight, ChevronLeft, ChevronRight, Search, SlidersHorizontal, X } from "lucide-react";
+import { useEffect, useMemo, useState } from "react";
 import { SiteNav } from "@/components/site-nav";
 import { SiteFooter } from "@/components/site-footer";
 import { ProductCard } from "@/components/product-card";
@@ -37,6 +37,33 @@ function ShopPage() {
   const [sort, setSort] = useState<string>("featured");
   const [search, setSearch] = useState(() => { if (typeof window === "undefined") return ""; return new URLSearchParams(window.location.search).get("search") ?? ""; });
   const [filtersOpen, setFiltersOpen] = useState(false);
+  const [activeBanner, setActiveBanner] = useState(0);
+  const banners = [
+    {
+      id: "virtual-try-on",
+      eyebrow: "01 / WEARO AI STUDIO",
+      title: "Thử outfit trên chính ảnh của bạn.",
+      description: "Hình dung diện mạo mới với AI Virtual Try-On trước khi quyết định chọn mua.",
+      image: "/images/banners/wearo-ai-virtual-tryon-banner.png",
+      alt: "WEARO AI Virtual Try-On — trải nghiệm thử outfit bằng AI",
+      cta: "Trải nghiệm AI Virtual Try-On",
+      href: "/ai",
+    },
+    {
+      id: "ai-stylist",
+      eyebrow: "02 / WEARO AI STYLIST",
+      title: "Phối đồ theo gu riêng.",
+      description: "Khám phá gợi ý outfit, phối màu và lựa chọn trang phục phù hợp với phong cách cá nhân.",
+      image: "/images/banners/wearo-ai-stylist-banner.png",
+      alt: "WEARO AI Stylist — gợi ý phối đồ theo phong cách cá nhân",
+      cta: "Khám phá AI Stylist",
+      href: "/ai",
+    },
+  ];
+  useEffect(() => {
+    const timer = window.setInterval(() => setActiveBanner((current) => (current + 1) % banners.length), 6500);
+    return () => window.clearInterval(timer);
+  }, []);
   const normalizedSearch = search.trim().toLowerCase();
   const list = useMemo(() => [...products]
     .filter((product) => cat === "all" || product.category === cat)
@@ -69,22 +96,46 @@ function ShopPage() {
     <div className="wearo-page wearo-shop-page min-h-screen">
       <SiteNav />
       <main className="wearo-shop-main mx-auto max-w-7xl px-5 pb-20 pt-28 sm:px-10 lg:px-16">
-        <section className="wearo-shop-hero">
-          <div>
-            <p className="wearo-shop-kicker">WEARO / SHOP / COLLECTION 2026</p>
-            <h1 className="wearo-shop-title">
-              {normalizedSearch ? <>Tìm thấy <span className="wearo-shop-title-accent">phong cách.</span></> : cat === "all" ? <>Mặc theo <span className="wearo-shop-title-accent">cách riêng.</span></> : <>{categoryName ?? "Bộ sưu tập"} <span className="wearo-shop-title-accent">WEARO.</span></>}
-            </h1>
-            <p className="wearo-shop-description">
-              Thời trang everyday hiện đại, dễ phối và dành cho mọi giới tính. Tìm món đồ phù hợp với bạn — sau đó khám phá cách AI giúp bạn hình dung outfit trước khi chọn mua.
-            </p>
+        <section className="wearo-shop-banner-slider" aria-label="Khám phá công nghệ AI của WEARO">
+          <div className="wearo-shop-banner-track" aria-live="polite">
+            {banners.map((banner, index) => (
+              <article
+                key={banner.id}
+                className={`wearo-shop-banner-slide ${activeBanner === index ? "is-active" : ""}`}
+                aria-hidden={activeBanner !== index}
+              >
+                <img className="wearo-shop-banner-image" src={banner.image} alt={banner.alt} />
+                <div className="wearo-shop-banner-shade" />
+                <div className="wearo-shop-banner-content">
+                  <p className="wearo-shop-banner-eyebrow">{banner.eyebrow}</p>
+                  <h1>{banner.title}</h1>
+                  <p className="wearo-shop-banner-description">{banner.description}</p>
+                  <Link to={banner.href} className="wearo-shop-banner-cta">
+                    {banner.cta} <ArrowUpRight size={16} aria-hidden="true" />
+                  </Link>
+                </div>
+              </article>
+            ))}
           </div>
-          <aside className="wearo-shop-ai-card">
-            <span className="wearo-shop-ai-card-label">01 / WEARO AI STUDIO</span>
-            <h2>Thử outfit trên chính ảnh của bạn.</h2>
-            <p>Khám phá trải nghiệm AI Virtual Try-On và nhận gợi ý phối đồ theo phong cách cá nhân.</p>
-            <Link to="/ai" className="wearo-shop-ai-link">Khám phá AI Studio <ArrowUpRight size={15} aria-hidden="true" /></Link>
-          </aside>
+          <div className="wearo-shop-banner-controls">
+            <div className="wearo-shop-banner-dots" role="group" aria-label="Chọn banner">
+              {banners.map((banner, index) => (
+                <button
+                  key={banner.id}
+                  type="button"
+                  className={`wearo-shop-banner-dot ${activeBanner === index ? "is-active" : ""}`}
+                  onClick={() => setActiveBanner(index)}
+                  aria-label={`Hiển thị banner ${index + 1}: ${banner.id === "virtual-try-on" ? "AI Virtual Try-On" : "AI Stylist"}`}
+                  aria-pressed={activeBanner === index}
+                />
+              ))}
+            </div>
+            <span className="wearo-shop-banner-count">0{activeBanner + 1} <span>/ 0{banners.length}</span></span>
+            <div className="wearo-shop-banner-arrows">
+              <button type="button" onClick={() => setActiveBanner((activeBanner + banners.length - 1) % banners.length)} aria-label="Banner trước"><ChevronLeft size={18} /></button>
+              <button type="button" onClick={() => setActiveBanner((activeBanner + 1) % banners.length)} aria-label="Banner tiếp theo"><ChevronRight size={18} /></button>
+            </div>
+          </div>
         </section>
 
         <section className="wearo-shop-toolbar" aria-label="Tìm kiếm và lọc sản phẩm">
