@@ -85,6 +85,14 @@ function Index() {
   const [content, setContent] = useState<SiteContentFields>(DEFAULT_CONTENT);
   const [journal, setJournal] = useState<JournalArticle[]>([]);
   const [activeCategory, setActiveCategory] = useState<(typeof CATEGORIES)[number]["slug"]>("all");
+  const [activeHeroSlide, setActiveHeroSlide] = useState(0);
+
+  useEffect(() => {
+    const interval = window.setInterval(() => {
+      setActiveHeroSlide((current) => (current + 1) % 4);
+    }, 5000);
+    return () => window.clearInterval(interval);
+  }, []);
 
   useEffect(() => {
     let mounted = true;
@@ -147,18 +155,49 @@ function Index() {
 
       <section className="wearo-reference-hero wearo-home-hero" aria-label="WEARO — Wear your own way">
         <div className="wearo-home-hero-desktop">
-          <img
-            className="wearo-home-hero-banner"
-            src="/images/wearo-facebook-cover.webp"
-            alt="WEARO — Wear your own way. Thời trang unisex, AI Virtual Try-On và AI Stylist."
-            fetchPriority="high"
-            decoding="async"
-          />
-          <Link
-            to="/shop"
-            className="wearo-home-hero-desktop-cta"
-            aria-label="Khám phá phong cách WEARO"
-          />
+          <div className="wearo-home-hero-slider" aria-label="Bộ sưu tập hình ảnh WEARO">
+            {[1, 2, 3, 4].map((slide, index) => (
+              <img
+                key={slide}
+                className={`wearo-home-hero-banner${activeHeroSlide === index ? " is-active" : ""}`}
+                src={`/images/hero-slider/wearo-banner-variation-${slide}.webp`}
+                alt={`WEARO — Bộ sưu tập thời trang unisex, hình ${slide} trên 4`}
+                fetchPriority={index === 0 ? "high" : "auto"}
+                loading={index === 0 ? "eager" : "lazy"}
+                decoding="async"
+                aria-hidden={activeHeroSlide !== index}
+              />
+            ))}
+            <Link
+              to="/shop"
+              className="wearo-home-hero-desktop-cta"
+              aria-label="Khám phá phong cách WEARO"
+            />
+            <button
+              type="button"
+              className="wearo-home-hero-arrow wearo-home-hero-arrow--prev"
+              onClick={() => setActiveHeroSlide((current) => (current + 3) % 4)}
+              aria-label="Ảnh trước"
+            >‹</button>
+            <button
+              type="button"
+              className="wearo-home-hero-arrow wearo-home-hero-arrow--next"
+              onClick={() => setActiveHeroSlide((current) => (current + 1) % 4)}
+              aria-label="Ảnh tiếp theo"
+            >›</button>
+            <div className="wearo-home-hero-dots" aria-label="Chọn ảnh banner">
+              {[0, 1, 2, 3].map((slide) => (
+                <button
+                  key={slide}
+                  type="button"
+                  className={activeHeroSlide === slide ? "is-active" : ""}
+                  onClick={() => setActiveHeroSlide(slide)}
+                  aria-label={`Chuyển đến ảnh ${slide + 1}`}
+                  aria-current={activeHeroSlide === slide ? "true" : undefined}
+                />
+              ))}
+            </div>
+          </div>
         </div>
         <div className="wearo-home-hero-mobile">
           <div className="wearo-home-hero-mobile-brand" aria-label="WEARO">
