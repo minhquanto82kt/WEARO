@@ -5,10 +5,14 @@ import {
   deleteProduct,
   deleteProductVariant,
   getProduct,
+  listProductImages,
   listProductVariants,
+  deleteProductImage,
+  setPrimaryProductImage,
   updateProduct,
   updateProductVariant,
   type Product,
+  type ProductImage,
   type ProductVariant,
 } from "@/lib/upthink-supabase";
 
@@ -69,6 +73,8 @@ function ProductDetailPage() {
   const navigate = useNavigate();
   const [product, setProduct] = useState<Product | null>(null);
   const [variants, setVariants] = useState<ProductVariant[]>([]);
+  const [images, setImages] = useState<ProductImage[]>([]);
+  const [imageActionId, setImageActionId] = useState<string | null>(null);
   const [form, setForm] = useState<ProductForm | null>(null);
   const [editingVariant, setEditingVariant] = useState<ProductVariant | null>(null);
   const [variantForm, setVariantForm] = useState<VariantForm>(emptyVariant);
@@ -87,7 +93,7 @@ function ProductDetailPage() {
     setLoading(true);
     setError("");
     try {
-      const [productData, variantData] = await Promise.all([getProduct(id), listProductVariants(id)]);
+      const [productData, variantData, imageData] = await Promise.all([getProduct(id), listProductVariants(id), listProductImages(id)]);
       if (!productData) {
         setProduct(null);
         setForm(null);
@@ -97,6 +103,7 @@ function ProductDetailPage() {
       }
       setProduct(productData);
       setVariants(variantData);
+      setImages(imageData);
       setForm({
         name: productData.name,
         slug: productData.slug,
@@ -134,6 +141,48 @@ function ProductDetailPage() {
     setVariantForm({ size: variant.size, color: variant.color, sku: variant.sku ?? "", stock: String(variant.stock) });
     setMessage("");
     setError("");
+  }
+
+  async function handleImageDelete(image: ProductImage) {
+    if (!image.id) return setError("Ảnh này thiếu ID nên không thể xóa an toàn.");
+    if (!window.confirm("Xóa ảnh sản phẩm này khỏi thư viện ảnh? Thao tác này không thể hoàn tác.")) return;
+    setImageActionId(image.id); setMessage(""); setError("");
+    try {
+      const remaining = images.filter((item) => item.id !== image.id);
+      await deleteProductImage(image.id);
+      setImages(remaining);
+      if (image.is_primary || product?.image === image.image_url) {
+        const nextPrimary = remaining[0];
+        if (nextPrimary?.id) {
+          await setPrimaryProductImage(id, nextPrimary.id);
+          setImages(remaining.map((item) => ({ ...item, is_primary: item.id === nextPrimary.id })));
+          await updateProduct(id, { image: nextPrimary.image_url });
+          setProduct((current) => current ? { ...current, image: nextPrimary.image_url } : current);
+        } else {
+          await updateProduct(id, { image: null });
+          setProduct((current) => current ? { ...current, image: null } : current);
+        }
+      }
+      setMessage("Đã xóa ảnh khỏi danh sách ảnh sản phẩm.");
+    } catch (cause) {
+      setError(cause instanceof Error ? cause.message : "Không thể xóa ảnh sản phẩm.");
+      await load();
+    } finally { setImageActionId(null); }
+  }
+
+  async function handleSetPrimaryImage(image: ProductImage) {
+    if (!image.id || !product) return;
+    setImageActionId(image.id); setMessage(""); setError("");
+    try {
+      await setPrimaryProductImage(id, image.id);
+      await updateProduct(id, { image: image.image_url });
+      setImages((current) => current.map((item) => ({ ...item, is_primary: item.id === image.id })));
+      setProduct((current) => current ? { ...current, image: image.image_url } : current);
+      setMessage("Đã đặt ảnh chính cho sản phẩm.");
+    } catch (cause) {
+      setError(cause instanceof Error ? cause.message : "Không thể đổi ảnh chính.");
+      await load();
+    } finally { setImageActionId(null); }
   }
 
   async function handleProductSave(event: React.FormEvent) {
@@ -303,6 +352,21 @@ function ProductDetailPage() {
             <div className="up-upload-card">
               {product.image ? <img src={product.image} alt={product.name} /> : <div><b>NO IMAGE</b><span>Sản phẩm chưa có ảnh</span></div>}
             </div>
+            <section className="up-product-image-manager" aria-label="Quản lý ảnh sản phẩm">
+              <div className="up-product-image-manager__head">
+                <div><strong>ẢNH SẢN PHẨM</strong><span>{images.length} ảnh đã lưu</span></div>
+                <small>Chọn ảnh chính hoặc xóa ảnh không còn sử dụng.</small>
+              </div>
+              {images.length ? <div className="up-product-image-grid">
+                {images.map((image, index) => <article className="up-product-image-item" key={image.id ?? image.image_url}>
+                  <div className="up-product-image-item__preview"><img src={image.image_url} alt={image.alt_text || product.name + " - ảnh " + (index + 1)} loading="lazy" />{image.is_primary && <span className="up-product-image-primary-badge">ẢNH CHÍNH</span>}</div>
+                  <div className="up-product-image-item__actions">
+                    {!image.is_primary && <button type="button" className="up-row-action" onClick={() => void handleSetPrimaryImage(image)} disabled={Boolean(imageActionId) || saving || deleting}>ĐẶT ẢNH CHÍNH</button>}
+                    <button type="button" className="up-row-action up-row-action-danger" onClick={() => void handleImageDelete(image)} disabled={Boolean(imageActionId) || saving || deleting}>{imageActionId === image.id ? "ĐANG XỬ LÝ…" : "XÓA ẢNH SẢN PHẨM"}</button>
+                  </div>
+                </article>)}
+              </div> : <p className="up-product-image-manager__empty">Chưa có ảnh trong bảng thư viện ảnh của sản phẩm. Ảnh đại diện hiện tại vẫn được hiển thị ở khung phía trên nếu có.</p>}
+            </section>
           </div>
           <form className="up-editor-right" onSubmit={handleProductSave}>
             <label>Tên sản phẩm<input value={form.name} onChange={(e) => setForm((c) => c && ({ ...c, name: e.target.value }))} disabled={saving || deleting} /></label>
