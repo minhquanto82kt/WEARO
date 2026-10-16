@@ -145,35 +145,39 @@ function Index() {
       {content.announcement_enabled && content.announcement_text && <div className="wearo-reference-announcement">{content.announcement_text}</div>}
       <SiteNav />
 
-      <section className="wearo-reference-hero">
-        <div className="wearo-reference-container">
-          <div className="wearo-reference-hero-grid">
-            <div className="wearo-reference-hero-copy">
-              <div className="wearo-reference-kicker"><WandSparkles size={13} /> FASHION TECH NEXT-GEN</div>
-              <h1>THỜI TRANG MODERN<br /><span>HỖ TRỢ BỞI AI.</span></h1>
-              <p>{content.hero_description}</p>
-              <div className="wearo-reference-actions">
-                <Link to="/shop" className="wearo-reference-btn">{content.hero_cta_label || "Khám phá cửa hàng"}<span>→</span></Link>
-                <Link to="/ai" className="wearo-reference-btn wearo-reference-btn--outline"><WandSparkles size={14} /> AI Virtual Try-On</Link>
-              </div>
-              <div className="wearo-reference-stats">
-                <div><strong>99.8%</strong><span>Độ chuẩn Form AI</span></div>
-                <div><strong>1-Click</strong><span>Phối trọn bộ Full-Set</span></div>
-                <div><strong>100%</strong><span>Chất Unisex Modern</span></div>
-              </div>
-            </div>
-            <div className="wearo-reference-hero-visual">
-              <div className="wearo-reference-image-card">
-                <img src={REFERENCE_IMAGES.hero} alt="WEARO AI fashion model" fetchPriority="high" />
-                <div className="wearo-reference-ai-badge"><i /> AI Virtual Try-On Active</div>
-                <div className="wearo-reference-stylist-card">
-                  <div className="wearo-reference-stylist-head"><strong>✦ AI Personal Stylist</strong><span>Match 98%</span></div>
-                  <p>"Set đồ Oversized Jacket + Straight Cargo Pant tôn chiều cao & che khuyết điểm hiệu quả."</p>
-                  <Link to="/ai">THỬ ĐỒ TRỰC TIẾP LÊN ẢNH CỦA BẠN</Link>
-                </div>
-              </div>
-            </div>
+      <section className="wearo-reference-hero wearo-home-hero" aria-label="WEARO — Wear your own way">
+        <div className="wearo-home-hero-desktop">
+          <img
+            className="wearo-home-hero-banner"
+            src="/images/wearo-facebook-cover.webp"
+            alt="WEARO — Wear your own way. Thời trang unisex, AI Virtual Try-On và AI Stylist."
+            fetchPriority="high"
+            decoding="async"
+          />
+          <Link
+            to="/shop"
+            className="wearo-home-hero-desktop-cta"
+            aria-label="Khám phá phong cách WEARO"
+          />
+        </div>
+        <div className="wearo-home-hero-mobile">
+          <div className="wearo-home-hero-mobile-brand" aria-label="WEARO">
+            <span className="wearo-home-hero-mobile-mark" aria-hidden="true">W</span>
+            <span>WEARO</span>
           </div>
+          <p className="wearo-home-hero-mobile-eyebrow">UNISEX FASHION · PERSONAL STYLE</p>
+          <h1>WEAR YOUR<br /><span>OWN WAY.</span></h1>
+          <p className="wearo-home-hero-mobile-description">
+            Thời trang không có giới hạn. Chỉ có phong cách của bạn.
+          </p>
+          <div className="wearo-home-hero-mobile-features">
+            <span>AI Virtual Try-On</span>
+            <span>AI Personal Stylist</span>
+            <span>Thiết kế độc quyền</span>
+          </div>
+          <Link to="/shop" className="wearo-home-hero-mobile-cta">
+            Khám phá phong cách <span aria-hidden="true">→</span>
+          </Link>
         </div>
       </section>
 
