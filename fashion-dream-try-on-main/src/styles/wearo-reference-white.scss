@@ -108,3 +108,141 @@
 @media (max-width: 700px) {
   .wearo-reference-page { background: #fff !important; }
 }
+
+
+/* Homepage Hero: supplied WEARO cover on desktop, native HTML content on mobile. */
+.wearo-home-hero {
+  padding: 0 !important;
+  margin: 0 !important;
+  overflow: hidden;
+  background: #54728C !important;
+}
+.wearo-home-hero .wearo-home-hero-desktop {
+  position: relative;
+  display: block;
+  width: 100%;
+  line-height: 0;
+}
+.wearo-home-hero .wearo-home-hero-banner {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-width: none;
+  object-fit: contain;
+}
+.wearo-home-hero .wearo-home-hero-desktop-cta {
+  position: absolute;
+  left: 6.15%;
+  top: 52.65%;
+  width: 14.45%;
+  height: 7.2%;
+  border-radius: 999px;
+  background: transparent;
+  outline-offset: 4px;
+}
+.wearo-home-hero .wearo-home-hero-desktop-cta:focus-visible {
+  outline: 3px solid #F2AD94;
+}
+.wearo-home-hero .wearo-home-hero-mobile {
+  display: none;
+}
+@media (max-width: 700px) {
+  .wearo-home-hero {
+    padding: 0 !important;
+    background: linear-gradient(155deg, #eaf1f5 0%, #dce8ee 52%, #f2ceae 100%) !important;
+    color: #54728C !important;
+  }
+  .wearo-home-hero .wearo-home-hero-desktop {
+    display: none;
+  }
+  .wearo-home-hero .wearo-home-hero-mobile {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    min-height: 490px;
+    padding: clamp(28px, 8vw, 42px) clamp(22px, 6vw, 30px) 34px;
+    box-sizing: border-box;
+  }
+  .wearo-home-hero-mobile-brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    color: #54728C;
+    font-size: 1.12rem;
+    font-weight: 800;
+    letter-spacing: .18em;
+  }
+  .wearo-home-hero-mobile-mark {
+    display: grid;
+    place-items: center;
+    width: 38px;
+    height: 38px;
+    border-radius: 12px 12px 12px 4px;
+    background: #54728C;
+    color: #fff;
+    font-size: 1.2rem;
+    letter-spacing: -.08em;
+  }
+  .wearo-home-hero-mobile-eyebrow {
+    margin: 42px 0 14px;
+    color: #54728C;
+    font-size: .66rem;
+    font-weight: 700;
+    letter-spacing: .16em;
+    line-height: 1.6;
+  }
+  .wearo-home-hero-mobile h1 {
+    margin: 0;
+    color: #54728C !important;
+    font-size: clamp(2.7rem, 12vw, 4rem);
+    font-weight: 400;
+    letter-spacing: -.055em;
+    line-height: .98;
+  }
+  .wearo-home-hero-mobile h1 span {
+    color: #7794A6;
+  }
+  .wearo-home-hero-mobile-description {
+    max-width: 290px;
+    margin: 22px 0 0;
+    color: #425f73;
+    font-size: .95rem;
+    line-height: 1.7;
+  }
+  .wearo-home-hero-mobile-features {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 24px;
+  }
+  .wearo-home-hero-mobile-features span {
+    padding: 8px 10px;
+    border: 1px solid rgba(84,114,140,.25);
+    border-radius: 999px;
+    color: #54728C;
+    background: rgba(255,255,255,.55);
+    font-size: .7rem;
+    line-height: 1.2;
+  }
+  .wearo-home-hero .wearo-home-hero-mobile-cta {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+    min-height: 48px;
+    margin-top: 28px;
+    padding: 0 22px;
+    border-radius: 999px;
+    background: #54728C;
+    color: #fff;
+    font-size: .83rem;
+    font-weight: 700;
+    text-decoration: none;
+    text-transform: uppercase;
+    letter-spacing: .035em;
+  }
+  .wearo-home-hero .wearo-home-hero-mobile-cta:focus-visible {
+    outline: 3px solid #F2AD94;
+    outline-offset: 3px;
+  }
+}
