@@ -23,7 +23,6 @@ export function SiteFooter() {
         {!hideNewsletter && (
         <section className="wearo-footer__newsletter" aria-labelledby="wearo-newsletter-title">
           <div className="wearo-footer__newsletter-copy">
-            <span className="wearo-footer__newsletter-kicker">[ {t("PRE-FOOTER: KHỐI ĐĂNG KÝ NHẬN TIN", "PRE-FOOTER: NEWSLETTER SIGN-UP")} ]</span>
             <h2 id="wearo-newsletter-title">
               {t(
                 "Mặc theo cách của riêng bạn — Nhận ngay ưu đãi 10% cho đơn hàng đầu tiên",
