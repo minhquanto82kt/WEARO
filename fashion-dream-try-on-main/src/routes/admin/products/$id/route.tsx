@@ -227,8 +227,8 @@ function ProductDetailPage() {
       return;
     }
 
-    const skuBase = (product.slug || product.name).normalize("NFD").replace(/[\\u0300-\\u036f]/g, "").toUpperCase().replace(/[^A-Z0-9]+/g, "-").replace(/^-|-$/g, "");
-    const colorCode = (color: string) => color.normalize("NFD").replace(/[\\u0300-\\u036f]/g, "").toUpperCase().replace(/[^A-Z0-9]+/g, "").slice(0, 4) || "COLOR";
+    const skuBase = (product.slug || product.name).normalize("NFD").replace(/[\u0300-\u036f]/g, "").toUpperCase().replace(/[^A-Z0-9]+/g, "-").replace(/^-|-$/g, "");
+    const colorCode = (color: string) => color.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toUpperCase().replace(/[^A-Z0-9]+/g, "").slice(0, 4) || "COLOR";
     setGeneratingVariants(true); setError(""); setMessage("");
     let created = 0;
     const failures: string[] = [];
