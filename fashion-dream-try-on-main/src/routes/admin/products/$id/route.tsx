@@ -1,6 +1,7 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import {
+  addProductImage,
   createProductVariant,
   deleteProduct,
   deleteProductVariant,
@@ -10,6 +11,7 @@ import {
   deleteProductImage,
   setPrimaryProductImage,
   updateProduct,
+  uploadProductImage,
   updateProductVariant,
   type Product,
   type ProductImage,
@@ -75,6 +77,9 @@ function ProductDetailPage() {
   const [variants, setVariants] = useState<ProductVariant[]>([]);
   const [images, setImages] = useState<ProductImage[]>([]);
   const [imageActionId, setImageActionId] = useState<string | null>(null);
+  const [uploadingImages, setUploadingImages] = useState(false);
+  const [makeUploadedPrimary, setMakeUploadedPrimary] = useState(true);
+  const imageInputRef = useRef<HTMLInputElement>(null);
   const [form, setForm] = useState<ProductForm | null>(null);
   const [editingVariant, setEditingVariant] = useState<ProductVariant | null>(null);
   const [variantForm, setVariantForm] = useState<VariantForm>(emptyVariant);
@@ -141,6 +146,43 @@ function ProductDetailPage() {
     setVariantForm({ size: variant.size, color: variant.color, sku: variant.sku ?? "", stock: String(variant.stock) });
     setMessage("");
     setError("");
+  }
+
+  async function handleImageUpload(event: React.ChangeEvent<HTMLInputElement>) {
+    const files = Array.from(event.currentTarget.files ?? []);
+    event.currentTarget.value = "";
+    if (!files.length || !product) return;
+
+    const invalid = files.find((file) => !file.type.startsWith("image/") || file.size > 10 * 1024 * 1024);
+    if (invalid) {
+      setError(!invalid.type.startsWith("image/") ? "Vui lòng chỉ chọn tệp ảnh." : `Ảnh "${invalid.name}" vượt quá 10 MB.`);
+      return;
+    }
+
+    setUploadingImages(true);
+    setMessage("");
+    setError("");
+    try {
+      let nextSortOrder = images.reduce((max, image) => Math.max(max, Number(image.sort_order) || 0), -1) + 1;
+      let firstUploaded: ProductImage | null = null;
+      for (const file of files) {
+        const imageUrl = await uploadProductImage(id, file);
+        const created = await addProductImage(id, imageUrl, false, nextSortOrder++);
+        if (!firstUploaded) firstUploaded = created;
+      }
+
+      if (firstUploaded && (makeUploadedPrimary || !images.some((image) => image.is_primary))) {
+        await setPrimaryProductImage(id, firstUploaded.id!);
+        await updateProduct(id, { image: firstUploaded.image_url });
+      }
+      await load();
+      setMessage(`Đã tải lên ${files.length} ảnh sản phẩm.${firstUploaded && (makeUploadedPrimary || !images.some((image) => image.is_primary)) ? " Ảnh đầu tiên đã được đặt làm ảnh chính." : ""}`);
+    } catch (cause) {
+      setError(cause instanceof Error ? cause.message : "Không thể tải ảnh sản phẩm lên.");
+      await load();
+    } finally {
+      setUploadingImages(false);
+    }
   }
 
   async function handleImageDelete(image: ProductImage) {
@@ -356,6 +398,27 @@ function ProductDetailPage() {
               <div className="up-product-image-manager__head">
                 <div><strong>ẢNH SẢN PHẨM</strong><span>{images.length} ảnh đã lưu</span></div>
                 <small>Chọn ảnh chính hoặc xóa ảnh không còn sử dụng.</small>
+              </div>
+              <div className="up-product-image-upload">
+                <input
+                  ref={imageInputRef}
+                  type="file"
+                  accept="image/png,image/jpeg,image/webp,image/gif"
+                  multiple
+                  hidden
+                  onChange={(event) => void handleImageUpload(event)}
+                  disabled={uploadingImages || saving || deleting}
+                />
+                <div className="up-product-image-upload__controls">
+                  <button type="button" className="up-admin-primary" onClick={() => imageInputRef.current?.click()} disabled={uploadingImages || saving || deleting}>
+                    {uploadingImages ? "ĐANG TẢI ẢNH…" : "＋ THÊM ẢNH MỚI"}
+                  </button>
+                  <label className="up-product-image-upload__primary">
+                    <input type="checkbox" checked={makeUploadedPrimary} onChange={(event) => setMakeUploadedPrimary(event.target.checked)} disabled={uploadingImages || saving || deleting} />
+                    Đặt ảnh đầu tiên vừa tải làm ảnh chính
+                  </label>
+                </div>
+                <small>PNG, JPG, WEBP hoặc GIF · tối đa 10 MB/ảnh. Muốn thay ảnh cũ, tải ảnh mới lên rồi xóa ảnh cũ bên dưới.</small>
               </div>
               {images.length ? <div className="up-product-image-grid">
                 {images.map((image, index) => <article className="up-product-image-item" key={image.id ?? image.image_url}>
