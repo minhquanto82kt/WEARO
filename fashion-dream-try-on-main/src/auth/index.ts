@@ -9,7 +9,6 @@ export {
   requestPasswordReset,
   updateCustomerPassword,
   refreshCustomerSession,
-  handleOAuthCallback,
   getSafeReturnPath,
   startCustomerSessionWatcher,
 } from "@/lib/auth";
