@@ -54,7 +54,7 @@ mustMatch(order, /verifiedUserId = \(await resolveCustomerFromToken\(data\.acces
 mustMatch(order, /p_user_id: verifiedUserId/, "member order is associated with the verified user id");
 mustMatch(order, /customerType: verifiedUserId \? "member" : "guest"/, "order creation distinguishes member and guest");
 mustMatch(history, /listMyOrders\(\{ data: \{ accessToken: session\.access_token/, "member history loads with the authenticated access token");
-mustMatch(history, /to="/account/orders/\$id"/, "member history links to order detail");
+mustMatch(history, /to="\/account\/orders\/\$id"/, "member history links to order detail");
 mustMatch(detail, /getMyOrder\(\{ data: \{ accessToken: session\.access_token/, "member order detail uses the authenticated access token");
 mustMatch(detail, /order\.items\.map/, "member order detail renders persisted order items");
 mustMatch(checkout, /memberMode \? "\/account\/orders" : "\/account"/, "member success page links directly to order history");
