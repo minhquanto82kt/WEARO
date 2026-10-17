@@ -1,0 +1,58 @@
+/* Homepage brand-introduction background — scoped to the About section only. */
+.wearo-reference-page > .wearo-reference-about {
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  align-items: center;
+  min-height: 320px;
+  padding: clamp(64px, 8vw, 100px) 0;
+  overflow: hidden;
+  border-top: 1px solid rgba(84, 114, 140, .22);
+  background: #fff url("/images/fashion-5-people-bg.webp") center 46% / cover no-repeat !important;
+  color: #171717 !important;
+  text-align: center;
+}
+
+.wearo-reference-page > .wearo-reference-about::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, .76) 0%,
+    rgba(255, 255, 255, .64) 50%,
+    rgba(255, 255, 255, .76) 100%
+  );
+  pointer-events: none;
+}
+
+.wearo-reference-page > .wearo-reference-about .wearo-reference-container {
+  position: relative;
+  z-index: 1;
+  width: min(100% - 40px, 820px);
+}
+
+.wearo-reference-page > .wearo-reference-about h2 {
+  color: #171717 !important;
+  text-shadow: 0 1px 10px rgba(255, 255, 255, .2);
+}
+
+.wearo-reference-page > .wearo-reference-about p {
+  color: rgba(23, 23, 23, .82) !important;
+  max-width: 760px;
+  margin-inline: auto;
+  text-shadow: 0 1px 8px rgba(255, 255, 255, .18);
+}
+
+@media (max-width: 700px) {
+  .wearo-reference-page > .wearo-reference-about {
+    min-height: 280px;
+    padding: 58px 0;
+    background-position: center center !important;
+  }
+
+  .wearo-reference-page > .wearo-reference-about::before {
+    background: rgba(255, 255, 255, .76);
+  }
+}
