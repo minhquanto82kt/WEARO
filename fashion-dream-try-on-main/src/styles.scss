@@ -53,3 +53,6 @@
 
 /* Final public-storefront color-ratio layer; admin styles/layout remain unchanged. */
 @import "./styles/wearo-color-ratio.scss";
+
+/* Homepage WEARO brand-introduction background; scoped and loaded after theme overrides. */
+@import "./styles/wearo-about-background.scss";
