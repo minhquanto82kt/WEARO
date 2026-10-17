@@ -13,7 +13,14 @@ Supabase `try_on_jobs` is the durable source of truth. The provider layer remain
 
 `POST /api/try-on/internal/worker/reconcile` is protected by `CRON_SECRET` and processes a bounded batch. `GET /api/try-on/internal/worker/metrics` uses the same secret.
 
-**Scheduling status:** no schedule is currently declared in `vercel.json`. The linked Vercel workspace is on Hobby, which permits only daily Cron execution; that cadence is not appropriate for a responsive Try-On queue. Do not add a frequent Vercel Cron expression on Hobby because Vercel rejects it during deployment. For automatic background reconciliation, use a plan/scheduler that supports frequent invocations, configure `CRON_SECRET` in the scheduler and Python runtime, and invoke `POST /api/try-on/internal/worker/reconcile?limit=10` with `Authorization: Bearer <CRON_SECRET>`. Keep the secret server-side.
+**Scheduling status:** no schedule is declared in `vercel.json`. The linked Vercel workspace is on Hobby, which permits only daily Cron execution; that cadence is not appropriate for a responsive Try-On queue. Do not add a frequent Vercel Cron expression on Hobby because Vercel rejects it during deployment.
+
+A GitHub Actions scheduler is provided at `.github/workflows/try-on-worker.yml` (every 5 minutes plus manual dispatch). It becomes active only after the workflow is merged into the repository's default branch. Configure these repository Actions secrets before relying on it:
+
+- `WEARO_PRODUCTION_URL`: production base URL, for example `https://wearo.vn`.
+- `WEARO_CRON_SECRET`: the same random secret configured as `CRON_SECRET` in Vercel/Python.
+
+The workflow invokes `POST /api/try-on/internal/worker/reconcile?limit=10` with `Authorization: Bearer <CRON_SECRET>`. If either secret is missing, the job exits with a warning and skips processing. Keep both values server-side.
 
 ## Required runtime configuration
 
