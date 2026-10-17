@@ -164,9 +164,6 @@ function TryOnStudio({
         setStatus("completed");
         return;
       }
-      if (job.status === "failed") {
-        throw new Error("AI Try-On thất bại. Vui lòng thử lại.");
-      }
       setStatus("processing");
     }
     throw new Error("AI Try-On mất quá nhiều thời gian. Bạn có thể kiểm tra lại sau.");
