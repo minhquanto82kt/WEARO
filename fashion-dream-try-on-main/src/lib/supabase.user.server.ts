@@ -30,7 +30,7 @@ export async function supabaseUserRequest<T>(
   if (!user.id) throw new Error("Authentication required");
 
   const client: SupabaseUserClient = {
-    async request<R>(path, options = {}) {
+    async request<R>(path: string, options: RequestInit = {}) {
       const response = await fetchWithTimeoutAndRetry(`${url}/rest/v1/${path}`, {
         ...options,
         headers: {
