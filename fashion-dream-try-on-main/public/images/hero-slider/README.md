@@ -1,6 +1,6 @@
 # Hero Slider Images
 
-Thư mục này lưu trữ các hình ảnh dùng cho khu vực **hero slider** (banner/slide nổi bật) của website Fashion Dream Try-On Shop.
+Thư mục này lưu trữ các hình ảnh dùng cho khu vực **hero slider** (banner/slide nổi bật) của website WEARO.
 
 ## Mục đích
 
