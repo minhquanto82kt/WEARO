@@ -10,13 +10,14 @@ class ProductNotFoundError(Exception):
 
 
 def list_active_products() -> list[dict[str, Any]]:
-    """Return active products from public.products, newest first."""
+    """Return published, active products from public.products, newest first."""
 
     response = (
         get_supabase_client()
         .table("products")
         .select("*")
         .eq("active", True)
+        .eq("status", "published")
         .order("created_at", desc=True)
         .execute()
     )
@@ -32,6 +33,7 @@ def get_active_product(product_id: str) -> dict[str, Any]:
         .select("*")
         .eq("id", product_id)
         .eq("active", True)
+        .eq("status", "published")
         .limit(1)
         .execute()
     )
