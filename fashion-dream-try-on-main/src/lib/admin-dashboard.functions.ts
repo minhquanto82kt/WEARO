@@ -97,7 +97,7 @@ export const getAdminDashboardStats = createServerFn({ method: "POST" })
 
     const outOfStockProducts = products.filter((product) => {
       const stocks = variantsByProduct.get(product.id);
-      return Boolean(stocks?.length) && stocks.every((stock) => stock <= 0);
+      return stocks !== undefined && stocks.length > 0 && stocks.every((stock) => stock <= 0);
     }).length;
 
     return {
