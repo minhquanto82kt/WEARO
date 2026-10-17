@@ -548,3 +548,87 @@
   box-shadow: none !important;
   outline: 0;
 }
+
+
+/* Newsletter now lives directly below the brand intro in the first footer column. */
+.wearo-footer__brand {
+  align-self: start;
+}
+
+.wearo-footer .wearo-footer__newsletter--brand {
+  display: flex;
+  flex-direction: column;
+  gap: 13px;
+  width: 100%;
+  margin-top: 24px;
+  padding: 20px 18px 16px;
+  border: 1px solid color-mix(in srgb, var(--footer-peach) 24%, transparent);
+  background: var(--footer-blue);
+  box-shadow: 0 10px 26px color-mix(in srgb, var(--footer-blue) 14%, transparent);
+}
+
+.wearo-footer__newsletter--brand .wearo-footer__newsletter-kicker {
+  margin-bottom: 8px;
+  color: var(--footer-peach);
+  font-size: 9px;
+}
+
+.wearo-footer__newsletter--brand h2 {
+  max-width: 100%;
+  font-size: clamp(16px, 1.25vw, 19px);
+  line-height: 1.3;
+}
+
+.wearo-footer__newsletter--brand .wearo-footer__newsletter-description {
+  margin: 9px 0 0;
+  color: rgba(255,255,255,.78);
+  font: 400 11px/1.6 "Space Grotesk", Arial, sans-serif;
+}
+
+.wearo-footer .wearo-footer__newsletter--brand .wearo-footer__newsletter-form {
+  display: flex !important;
+  flex-direction: column;
+  gap: 10px;
+  max-width: none;
+  min-height: 0;
+}
+
+.wearo-footer .wearo-footer__newsletter--brand .wearo-footer__newsletter-input-wrap {
+  min-height: 42px;
+  padding-inline: 2px !important;
+  border-bottom: 1px solid rgba(255,255,255,.42) !important;
+}
+
+.wearo-footer .wearo-footer__newsletter--brand .wearo-footer__newsletter-form input {
+  min-height: 40px;
+  font-size: 12px;
+}
+
+.wearo-footer .wearo-footer__newsletter--brand .wearo-footer__newsletter-form button {
+  min-height: 42px;
+  padding-inline: 12px;
+  font-size: 9px;
+}
+
+.wearo-footer__newsletter--brand .wearo-footer__newsletter-status {
+  margin: 0;
+  color: rgba(255,255,255,.68);
+  font: 400 10px/1.5 "Space Grotesk", Arial, sans-serif;
+}
+
+.wearo-footer__newsletter--brand .wearo-footer__newsletter-status:not(:empty) {
+  overflow-wrap: anywhere;
+}
+
+@media (max-width: 960px) {
+  .wearo-footer .wearo-footer__newsletter--brand {
+    max-width: 460px;
+  }
+}
+
+@media (max-width: 430px) {
+  .wearo-footer .wearo-footer__newsletter--brand {
+    max-width: none;
+    padding: 18px 16px 14px;
+  }
+}
