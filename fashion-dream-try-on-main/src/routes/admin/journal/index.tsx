@@ -91,7 +91,7 @@ function JournalAdminPage() {
           <h1>Journal</h1>
           <p>Quản lý bài viết SEO, trạng thái xuất bản và lịch đăng của WEARO.</p>
         </div>
-        <Link className="up-admin-primary" to="/admin/journal/new">＋ BÀI VIẾT MỚI</Link>
+        <Link className="up-admin-primary" to="/admin/journal/$id" params={{ id: "new" }}>＋ BÀI VIẾT MỚI</Link>
       </header>
 
       <section className="up-admin-stats">
