@@ -26,8 +26,9 @@ storage_service = TryOnStorageService()
 reconciliation_service = TryOnReconciliationService(job_service, provider_service, storage_service)
 worker_service = TryOnWorkerService(job_service, reconciliation_service)
 
-MAX_POLL_ATTEMPTS = 60
-MAX_POLL_AGE_SECONDS = 5 * 60
+# A shopper can resume polling after the first UI window; allow enough time for slow hosted jobs.
+MAX_POLL_ATTEMPTS = 120
+MAX_POLL_AGE_SECONDS = 10 * 60
 
 
 class InternalTryOnInput(BaseModel):
