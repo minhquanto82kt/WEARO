@@ -1,5 +1,6 @@
+import { useState } from "react";
 import { Link, useLocation } from "@tanstack/react-router";
-import { Clock, Facebook, Instagram, Mail, MapPin, Music2, Phone, Youtube } from "lucide-react";
+import { Clock, Facebook, Instagram, Mail, MapPin, Phone } from "lucide-react";
 import { useI18n } from "@/lib/i18n";
 
 const linkClass = "wearo-footer__link";
@@ -7,6 +8,7 @@ const linkClass = "wearo-footer__link";
 export function SiteFooter() {
   const { t } = useI18n();
   const pathname = useLocation({ select: (location) => location.pathname });
+  const [newsletterNotice, setNewsletterNotice] = useState("");
   const hideNewsletter =
     pathname === "/cart" ||
     pathname === "/checkout" ||
@@ -15,33 +17,21 @@ export function SiteFooter() {
     pathname === "/account" ||
     pathname.startsWith("/account/orders");
 
+  function handleNewsletterSubmit(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    setNewsletterNotice(
+      t(
+        "Tính năng đăng ký email đang được hoàn thiện. Email của bạn chưa được lưu.",
+        "Email sign-up is being set up. Your email has not been saved.",
+      ),
+    );
+  }
+
   return (
     <footer className="wearo-footer" aria-label={t("Chân trang WEARO", "WEARO footer")}>
       <div className="wearo-footer__accent" aria-hidden="true" />
 
       <div className="wearo-footer__inner">
-        {!hideNewsletter && (
-        <section className="wearo-footer__newsletter" aria-labelledby="wearo-newsletter-title">
-          <div className="wearo-footer__newsletter-copy">
-            <h2 id="wearo-newsletter-title">
-              {t(
-                "Mặc theo cách của riêng bạn — Nhận ngay ưu đãi 10% cho đơn hàng đầu tiên",
-                "Wear it your way — Get 10% off your first order",
-              )}
-            </h2>
-          </div>
-
-          <form className="wearo-footer__newsletter-form" onSubmit={(event) => event.preventDefault()}>
-            <label className="sr-only" htmlFor="wearo-newsletter-email">Email</label>
-            <div className="wearo-footer__newsletter-input-wrap">
-              <Mail size={16} aria-hidden="true" />
-              <input id="wearo-newsletter-email" name="email" type="email" autoComplete="email" placeholder={t("Nhập địa chỉ email của bạn...", "Enter your email address...")} required />
-            </div>
-            <button type="submit">{t("ĐĂNG KÝ NGAY", "SUBSCRIBE NOW")}</button>
-          </form>
-        </section>
-        )}
-
         <div className="wearo-footer__grid">
           <section className="wearo-footer__brand">
             <Link to="/" className="wearo-footer__logo" aria-label="WEARO home">
@@ -53,6 +43,53 @@ export function SiteFooter() {
                 "Modern casual, streetwear & unisex fashion supported by AI.",
               )}
             </p>
+
+            {!hideNewsletter && (
+              <section
+                className="wearo-footer__newsletter wearo-footer__newsletter--brand"
+                aria-labelledby="wearo-newsletter-title"
+              >
+                <div className="wearo-footer__newsletter-copy">
+                  <span className="wearo-footer__newsletter-kicker">
+                    {t("WEARO LETTER / 01", "WEARO LETTER / 01")}
+                  </span>
+                  <h2 id="wearo-newsletter-title">
+                    {t("Đừng bỏ lỡ gu riêng của bạn.", "Stay in tune with your style.")}
+                  </h2>
+                  <p className="wearo-footer__newsletter-description">
+                    {t(
+                      "Bộ sưu tập mới, cảm hứng phối đồ và ưu đãi dành riêng cho bạn.",
+                      "New collections, styling inspiration, and offers picked for you.",
+                    )}
+                  </p>
+                </div>
+
+                <form className="wearo-footer__newsletter-form" onSubmit={handleNewsletterSubmit}>
+                  <label className="sr-only" htmlFor="wearo-newsletter-email">Email</label>
+                  <div className="wearo-footer__newsletter-input-wrap">
+                    <Mail size={16} aria-hidden="true" />
+                    <input
+                      id="wearo-newsletter-email"
+                      name="email"
+                      type="email"
+                      autoComplete="email"
+                      placeholder={t("Email của bạn", "Your email address")}
+                      aria-describedby="wearo-newsletter-status"
+                      required
+                    />
+                  </div>
+                  <button type="submit">{t("ĐĂNG KÝ ↗", "SUBSCRIBE ↗")}</button>
+                </form>
+                <p
+                  id="wearo-newsletter-status"
+                  className="wearo-footer__newsletter-status"
+                  role="status"
+                  aria-live="polite"
+                >
+                  {newsletterNotice || t("Không gửi thư rác. Hủy đăng ký bất cứ lúc nào.", "No spam. Unsubscribe anytime.")}
+                </p>
+              </section>
+            )}
           </section>
 
           <section className="wearo-footer__section">
