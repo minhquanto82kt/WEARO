@@ -6,6 +6,7 @@ import { SiteFooter } from "@/components/site-footer";
 import { formatVnd } from "@/data/products";
 import { useCart } from "@/lib/cart";
 import { createOrder } from "@/lib/order.functions";
+import { cancelCustomerOrder } from "@/lib/order-cancel.functions";
 import { getCustomerSession } from "@/lib/auth";
 import { isMockUserMode } from "@/lib/mock-user";
 import { getInvoiceData, type InvoiceData } from "@/lib/invoice.functions";
@@ -235,6 +236,9 @@ function CheckoutPage() {
               setErrorMessage(null);
               const form = new FormData(event.currentTarget);
               const phone = String(form.get("phone") || "").trim();
+              let createdOrderId: string | null = null;
+              let createdOrderAccessToken: string | null = null;
+              let paymentInitializationPending = false;
               try {
                 const session = mockMode ? null : getCustomerSession();
                 const orderItems = items.map((item) => {
@@ -266,6 +270,8 @@ function CheckoutPage() {
                   accessToken: session?.access_token,
                   idempotencyKey,
                 }});
+                createdOrderId = result.orderId;
+                createdOrderAccessToken = session?.access_token ?? null;
 
                 if (paymentMethod === "vietqr") {
                   clear();
@@ -274,12 +280,14 @@ function CheckoutPage() {
                 }
 
                 if (paymentMethod === "momo" || paymentMethod === "mastercard") {
+                  paymentInitializationPending = true;
                   sessionStorage.setItem(PENDING_INVOICE_KEY, JSON.stringify({ orderCode: result.orderCode, phone, createdAt: Date.now() } satisfies PendingInvoice));
                   const endpoint = paymentMethod === "momo" ? "/api/momo/create" : "/api/mastercard/create";
                   const response = await fetch(endpoint, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ orderCode: result.orderCode }) });
                   const payload = await response.json() as { success?: boolean; error?: string; payment?: { payUrl?: string; redirectUrl?: string } };
                   const redirectUrl = paymentMethod === "momo" ? payload.payment?.payUrl : payload.payment?.redirectUrl;
                   if (!response.ok || !payload.success || !redirectUrl) throw new Error(payload.error || "Không thể khởi tạo thanh toán.");
+                  paymentInitializationPending = false;
                   clear();
                   window.location.assign(redirectUrl);
                   return;
@@ -289,7 +297,18 @@ function CheckoutPage() {
                 await finish(data);
               } catch (error) {
                 sessionStorage.removeItem(PENDING_INVOICE_KEY);
-                setErrorMessage(error instanceof Error ? error.message : "Không thể tạo đơn hàng.");
+                let message = error instanceof Error ? error.message : "Không thể tạo đơn hàng.";
+                if (paymentInitializationPending && createdOrderId && createdOrderAccessToken) {
+                  try {
+                    await cancelCustomerOrder({ data: { accessToken: createdOrderAccessToken, orderId: createdOrderId } });
+                    message = `Không thể khởi tạo thanh toán. Đơn hàng ${createdOrderId} đã được hủy và tồn kho được hoàn lại. ${message}`;
+                  } catch {
+                    message = `Không thể khởi tạo thanh toán và chưa thể tự động hủy đơn hàng. Vui lòng liên hệ hỗ trợ với mã đơn ${createdOrderId}. ${message}`;
+                  }
+                } else if (paymentInitializationPending && createdOrderId) {
+                  message = `Không thể khởi tạo thanh toán. Đơn hàng ${createdOrderId} vẫn ở trạng thái chờ xử lý; vui lòng liên hệ hỗ trợ để được kiểm tra. ${message}`;
+                }
+                setErrorMessage(message);
               } finally {
                 setSubmitting(false);
               }
