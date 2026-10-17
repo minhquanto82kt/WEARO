@@ -32,7 +32,8 @@ export function SiteFooter() {
       <div className="wearo-footer__accent" aria-hidden="true" />
 
       <div className="wearo-footer__inner">
-        <div className="wearo-footer__grid">
+        <div className="wearo-footer__panel">
+          <div className="wearo-footer__grid">
           <section className="wearo-footer__brand">
             <Link to="/" className="wearo-footer__logo" aria-label="WEARO home">
               <img src="/brand/wearo-logo-header.svg" alt="WEARO" />
@@ -129,14 +130,31 @@ export function SiteFooter() {
               <a href="https://www.facebook.com/profile.php?id=61595224420277&open_field=address&sk=directory_basic_info" aria-label="Facebook"><Facebook size={17} /></a>
             </div>
           </section>
+          </div>
+        </div>
+
+        <div className="wearo-footer__payment-bar" aria-label={t("Đơn vị thanh toán", "Payment methods")}>
+          <span className="wearo-footer__payment-label">{t("THANH TOÁN AN TOÀN", "SECURE PAYMENTS")}</span>
+          <div className="wearo-footer__payment-logos">
+            <span className="wearo-footer__payment-logo wearo-footer__payment-logo--visa" aria-label="Visa">
+              <svg viewBox="0 0 64 24" role="img" aria-hidden="true"><text x="2" y="19">VISA</text></svg>
+            </span>
+            <span className="wearo-footer__payment-logo wearo-footer__payment-logo--mastercard" aria-label="Mastercard">
+              <svg viewBox="0 0 48 28" role="img" aria-hidden="true"><circle cx="18" cy="14" r="11" /><circle cx="30" cy="14" r="11" /></svg>
+            </span>
+            <span className="wearo-footer__payment-logo wearo-footer__payment-logo--momo" aria-label="MoMo">
+              <svg viewBox="0 0 64 24" role="img" aria-hidden="true"><text x="2" y="18">MoMo</text></svg>
+            </span>
+            <span className="wearo-footer__payment-logo wearo-footer__payment-logo--vietqr" aria-label="VietQR">
+              <svg viewBox="0 0 74 24" role="img" aria-hidden="true"><text x="2" y="17">VietQR</text><path d="M55 4h5v5h-5zM63 4h5v5h-5zM55 12h5v5h-5zM63 12h5v5h-5z" /></svg>
+            </span>
+          </div>
+          <span className="wearo-footer__commerce-badge">BỘ CÔNG THƯƠNG</span>
         </div>
 
         <div className="wearo-footer__bottom">
           <p>© 2026 WEARO — Đại học Công nghiệp TP.HCM / IUH. {t("Bảo lưu mọi quyền.", "All rights reserved.")}</p>
-          <div className="wearo-footer__trust">
-            <span className="wearo-footer__payments" aria-label={t("Phương thức thanh toán", "Payment methods")}><b>VISA</b><b>MC</b><b>MOMO</b><b>VNPAY</b><b>ZALOPAY</b><b>COD</b></span>
-            <span className="wearo-footer__commerce-badge">BỘ CÔNG THƯƠNG</span>
-          </div>
+          <span>{t("Thời trang có cá tính. Trải nghiệm có công nghệ.", "Fashion with identity. Experience with technology.")}</span>
         </div>
       </div>
     </footer>
