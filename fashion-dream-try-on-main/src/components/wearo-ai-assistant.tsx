@@ -51,12 +51,6 @@ function WearoThread() {
   return (
     <ThreadPrimitive.Root className="wearo-ai-thread">
       <ThreadPrimitive.Viewport className="wearo-ai-thread-viewport"><ThreadPrimitive.Messages>{({ message }) => (message.role === "user" ? <UserMessage /> : <WearoMessage />)}</ThreadPrimitive.Messages></ThreadPrimitive.Viewport>
-      <ThreadPrimitive.If condition="running">
-        <div className="wearo-ai-typing-state" role="status" aria-live="polite">
-          <span className="wearo-ai-loader" aria-hidden="true" />
-          <span>WEARO AI Stylist đang soạn câu trả lời…</span>
-        </div>
-      </ThreadPrimitive.If>
       <div className="wearo-ai-composer-wrap">
         <ComposerPrimitive.Root className="wearo-ai-composer">
           <ComposerPrimitive.Input placeholder="Ví dụ: Phối gì với hoodie beige để đi học?" rows={2} className="wearo-ai-composer-input" />
