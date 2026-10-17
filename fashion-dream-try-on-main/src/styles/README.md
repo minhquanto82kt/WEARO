@@ -2,8 +2,8 @@
 
 ## Ownership boundaries
 
-- `components/_header.scss`: single import boundary for the header cascade. The React component's interactive behavior remains in `src/components/site-nav.tsx`; its responsive and visual rules live in `src/styles/header-enhancements.scss`.
-- `components/_footer.scss`: import boundary for the footer visual system in `src/styles/wearo-footer-unified.scss`. Footer markup stays in `src/components/site-footer.tsx`.
+- `components/_header.scss`: single import boundary for the header cascade. The React component's interactive behavior remains in `src/components/site-nav.tsx`; its responsive and visual rules live in `src/styles/components/header-enhancements.scss`.
+- `components/_footer.scss`: import boundary for the footer visual system in `src/styles/components/footer-unified.scss`. Footer markup stays in `src/components/site-footer.tsx`.
 - `palette.scss` (in `src/`): source of truth for WEARO palette tokens. Component styles should consume `--wearo-blue`, `--wearo-blue-light`, `--wearo-peach`, `--wearo-beige`, and `--wearo-coral` rather than introducing unrelated brand colors.
 - `ux-foundation.scss` (in `src/`): shared typography, touch-target, focus and reduced-motion guardrails.
 - `styles.scss` (in `src/`): global import manifest. Import order is behavior: later compatibility layers can override earlier declarations.
@@ -20,7 +20,7 @@
 
 ## Current refactor boundary
 
-The stylesheet directory contains accumulated feature, compatibility and polish layers. This pass introduces explicit header/footer component entry points and documents ownership without bulk-moving legacy files. A bulk move is intentionally avoided until duplicate selectors and import dependencies have been mapped; changing paths and cascade order at once would risk regressions across the storefront and admin pages.
+The stylesheet directory still contains accumulated feature, compatibility and polish layers, but the header and footer styles now live under `styles/components/` with explicit entry points. This pass moves only these two component groups and preserves their import order; other page/style groups remain in place until their dependencies and cascade effects can be mapped safely.
 
 ## Suggested next migration order
 
