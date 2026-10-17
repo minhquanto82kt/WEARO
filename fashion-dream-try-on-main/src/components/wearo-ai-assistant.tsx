@@ -13,8 +13,8 @@ import { getCustomerAccessToken } from "@/lib/auth";
 
 const modelAdapter: ChatModelAdapter = {
   async run({ messages }) {
-    const session = getCustomerSession();
-    if (!session?.access_token) throw new Error("MEMBER_REQUIRED");
+    const accessToken = getCustomerAccessToken();
+    if (!accessToken) throw new Error("MEMBER_REQUIRED");
     const normalized = messages
       .map((message) => ({
         role: message.role === "user" ? "user" as const : "assistant" as const,
