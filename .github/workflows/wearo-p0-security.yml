@@ -37,8 +37,10 @@ jobs:
       - name: Dependency audit
         run: npm audit --audit-level=high
 
-      - name: Typecheck
-        run: npm run typecheck
-
+      # TanStack Router generates routeTree.gen during the Vite build.
+      # Build first so typecheck validates the current route tree instead of a missing/stale generated file.
       - name: Production build
         run: npm run build
+
+      - name: Typecheck
+        run: npm run typecheck
