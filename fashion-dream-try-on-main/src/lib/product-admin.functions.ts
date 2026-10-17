@@ -288,13 +288,26 @@ export const setPrimaryAdminProductImage = createServerFn({ method: "POST" })
   .validator((data: AdminContext & { productId: string; imageId: string }) => data)
   .handler(async ({ data }) => {
     await requireAdmin(data.accessToken);
+
+    const productId = data.productId.trim();
+    const imageId = data.imageId.trim();
+    if (!productId || !imageId) throw new Error("Sản phẩm hoặc hình ảnh không hợp lệ.");
+
+    // Validate ownership before changing any primary-image flags.
+    const target = await supabaseRequest<Pick<AdminProductImage, "id">[]>(
+      `product_images?id=eq.${encodeURIComponent(imageId)}&product_id=eq.${encodeURIComponent(productId)}&select=id&limit=1`,
+      { method: "GET" },
+    );
+    if (!target.length) throw new Error("Hình ảnh không thuộc sản phẩm đã chọn.");
+
     await supabaseRequest<unknown>(
-      `product_images?product_id=eq.${encodeURIComponent(data.productId)}`,
+      `product_images?product_id=eq.${encodeURIComponent(productId)}`,
       { method: "PATCH", body: JSON.stringify({ is_primary: false }) },
     );
     const rows = await supabaseRequest<AdminProductImage[]>(
-      `product_images?id=eq.${encodeURIComponent(data.imageId)}`,
+      `product_images?id=eq.${encodeURIComponent(imageId)}&product_id=eq.${encodeURIComponent(productId)}`,
       { method: "PATCH", body: JSON.stringify({ is_primary: true }) },
     );
+    if (!rows[0]) throw new Error("Không thể đặt hình ảnh chính.");
     return rows[0];
   });
