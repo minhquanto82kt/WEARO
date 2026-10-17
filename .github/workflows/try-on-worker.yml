@@ -1,0 +1,36 @@
+name: WEARO Try-On Worker
+
+on:
+  schedule:
+    - cron: "*/5 * * * *"
+  workflow_dispatch:
+
+concurrency:
+  group: wearo-try-on-worker
+  cancel-in-progress: false
+
+jobs:
+  reconcile:
+    name: Reconcile pending Try-On jobs
+    runs-on: ubuntu-latest
+    timeout-minutes: 2
+    steps:
+      - name: Invoke protected worker endpoint
+        env:
+          WEARO_PRODUCTION_URL: ${{ secrets.WEARO_PRODUCTION_URL }}
+          WEARO_CRON_SECRET: ${{ secrets.WEARO_CRON_SECRET }}
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          if [[ -z "${WEARO_PRODUCTION_URL}" || -z "${WEARO_CRON_SECRET}" ]]; then
+            echo "::warning::Set WEARO_PRODUCTION_URL and WEARO_CRON_SECRET repository secrets to enable scheduled reconciliation."
+            exit 0
+          fi
+
+          base_url="${WEARO_PRODUCTION_URL%/}"
+          curl --fail --silent --show-error --max-time 90 \
+            --request POST \
+            "${base_url}/api/try-on/internal/worker/reconcile?limit=10" \
+            --header "Authorization: Bearer ${WEARO_CRON_SECRET}" \
+            --header "Accept: application/json"
