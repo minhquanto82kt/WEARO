@@ -113,7 +113,17 @@ export function SiteNav() {
         </Link>
 
         <div className="fashion-nav__links" aria-label={t("Điều hướng trang chính", "Primary navigation")}>
-          <div className={`fashion-shop-nav ${shopOpen ? "is-open" : ""}`} onMouseEnter={() => setShopOpen(true)} onMouseLeave={() => setShopOpen(false)}>
+          <div
+            className={`fashion-shop-nav ${shopOpen ? "is-open" : ""}`}
+            onMouseEnter={() => setShopOpen(true)}
+            onMouseLeave={() => setShopOpen(false)}
+            onFocus={() => setShopOpen(true)}
+            onBlur={(event) => {
+              if (!event.currentTarget.contains(event.relatedTarget as Node | null)) {
+                setShopOpen(false);
+              }
+            }}
+          >
             <Link to="/shop" className="fashion-nav-link fashion-shop-trigger" activeProps={{ className: "fashion-nav-link fashion-shop-trigger is-active" }} aria-expanded={shopOpen} aria-haspopup="true" onClick={() => { setSearchOpen(false); setMobileOpen(false); }}>
               <span>{t("Cửa hàng", "Shop")}</span><ChevronDown size={15} strokeWidth={2} aria-hidden="true" />
             </Link>
