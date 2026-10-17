@@ -33,7 +33,6 @@ def get_active_product(product_id: str) -> dict[str, Any]:
         .select("*")
         .eq("id", product_id)
         .eq("active", True)
-        .eq("status", "published")
         .limit(1)
         .execute()
     )
