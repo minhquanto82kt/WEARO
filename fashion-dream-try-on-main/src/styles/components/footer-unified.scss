@@ -1,0 +1,770 @@
+/* WEARO Footer — unified pre-footer, four-column footer and sub-footer */
+
+.wearo-footer {
+  --footer-blue: var(--wearo-blue, #54728C);
+  --footer-blue-light: var(--wearo-blue-light, #7794A6);
+  --footer-peach: var(--wearo-peach, #F2CEAE);
+  --footer-beige: var(--wearo-beige, #D9BBA9);
+  --footer-coral: var(--wearo-coral, #F2AD94);
+  position: relative;
+  overflow: hidden;
+  background: var(--footer-peach);
+  color: var(--footer-blue);
+  border-top: 1px solid color-mix(in srgb, var(--footer-blue) 18%, transparent);
+}
+
+.wearo-footer__accent {
+  width: 100%;
+  height: 3px;
+  background: linear-gradient(90deg, var(--footer-coral) 0%, var(--footer-peach) 38%, var(--footer-blue-light) 72%, var(--footer-coral) 100%);
+}
+
+.wearo-footer__inner {
+  width: min(1320px, calc(100% - 56px));
+  margin: 0 auto;
+  padding: 42px 0 0;
+}
+
+/* PRE-FOOTER / NEWSLETTER */
+.wearo-footer__newsletter {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 30px 34px 34px;
+  border: 1px solid color-mix(in srgb, var(--footer-blue) 18%, transparent);
+  background: var(--footer-blue);
+  box-shadow: 0 14px 34px color-mix(in srgb, var(--footer-blue) 16%, transparent);
+}
+
+.wearo-footer__newsletter-copy {
+  min-width: 0;
+}
+
+.wearo-footer__newsletter-kicker {
+  display: block;
+  margin: 0 0 7px;
+  color: var(--footer-peach);
+  font: 750 10px/1.2 "Space Grotesk", Arial, sans-serif;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+}
+
+.wearo-footer__newsletter h2 {
+  max-width: 980px;
+  margin: 0;
+  color: #fff;
+  font: 650 clamp(17px, 1.8vw, 23px)/1.25 "Space Grotesk", Arial, sans-serif;
+  letter-spacing: -.015em;
+}
+
+/* Explicit grid contract: input LEFT, CTA RIGHT. */
+.wearo-footer .wearo-footer__newsletter-form {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) 210px !important;
+  grid-template-areas: "input button" !important;
+  direction: ltr !important;
+  width: 100% !important;
+  max-width: 920px;
+  min-width: 0;
+  min-height: 52px;
+  margin: 0;
+  align-items: stretch;
+}
+
+.wearo-footer .wearo-footer__newsletter-input-wrap {
+  grid-area: input !important;
+  min-width: 0;
+  width: auto !important;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0 16px;
+  border: 1px solid rgba(255,255,255,.34);
+  border-right: 0;
+  background: rgba(255,255,255,.08);
+}
+
+.wearo-footer .wearo-footer__newsletter-input-wrap svg {
+  flex: 0 0 auto;
+  color: var(--footer-peach);
+}
+
+.wearo-footer .wearo-footer__newsletter-form input {
+  grid-area: input;
+  display: block !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  height: 100%;
+  margin: 0;
+  border: 0 !important;
+  outline: 0;
+  padding: 0 !important;
+  color: #fff;
+  background: transparent !important;
+  font: 500 13px/1 "Space Grotesk", Arial, sans-serif;
+}
+
+.wearo-footer .wearo-footer__newsletter-form input::placeholder {
+  color: rgba(255,255,255,.64);
+}
+
+.wearo-footer .wearo-footer__newsletter-form button {
+  grid-area: button !important;
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  width: 100% !important;
+  min-width: 0 !important;
+  min-height: 52px;
+  margin: 0;
+  border: 1px solid var(--footer-coral) !important;
+  padding: 0 18px;
+  color: var(--footer-blue);
+  background: var(--footer-coral);
+  cursor: pointer;
+  font: 750 10px/1 "Space Grotesk", Arial, sans-serif;
+  letter-spacing: .11em;
+  transition: background .2s ease, transform .2s ease, border-color .2s ease;
+}
+
+.wearo-footer .wearo-footer__newsletter-form button:hover {
+  background: var(--footer-peach);
+  border-color: var(--footer-peach) !important;
+  transform: translateY(-1px);
+}
+
+.wearo-footer .wearo-footer__newsletter-form button:focus-visible {
+  outline: 2px solid var(--footer-peach);
+  outline-offset: -4px;
+}
+
+/* MAIN FOOTER */
+.wearo-footer__grid {
+  display: grid;
+  grid-template-columns: 1.35fr 1fr 1.05fr 1.2fr;
+  gap: clamp(28px, 4.5vw, 58px);
+  padding: 54px 0 48px;
+}
+
+.wearo-footer__brand,
+.wearo-footer__section { min-width: 0; }
+
+.wearo-footer__logo {
+  display: inline-flex;
+  align-items: center;
+  width: 106px;
+  height: 66px;
+  text-decoration: none;
+  transition: transform .2s cubic-bezier(.22,1,.36,1), opacity .2s ease;
+}
+
+.wearo-footer__logo img {
+  display: block;
+  width: 106px;
+  height: 66px;
+  object-fit: contain;
+}
+
+.wearo-footer__logo:hover { transform: translateY(-2px); opacity: .92; }
+
+.wearo-footer__description {
+  max-width: 300px;
+  margin: 18px 0 0;
+  color: color-mix(in srgb, var(--footer-blue) 80%, transparent);
+  font: 500 13px/1.75 "Space Grotesk", Arial, sans-serif;
+}
+
+.wearo-footer__kicker {
+  margin: 5px 0 18px;
+  color: var(--footer-coral);
+  font: 750 10px/1.2 "Space Grotesk", Arial, sans-serif;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+}
+
+.wearo-footer__links {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
+}
+
+.wearo-footer__link {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  min-height: 29px;
+  color: color-mix(in srgb, var(--footer-blue) 78%, transparent);
+  font: 500 13px/1.35 "Space Grotesk", Arial, sans-serif;
+  text-decoration: none;
+  transition: color .18s ease, transform .18s ease;
+}
+
+.wearo-footer__link::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 3px;
+  width: 100%;
+  height: 1px;
+  background: var(--footer-coral);
+  transform: scaleX(0);
+  transform-origin: right center;
+  transition: transform .2s ease;
+}
+
+.wearo-footer__link:hover,
+.wearo-footer__link:focus-visible {
+  color: var(--footer-blue);
+  transform: translateX(3px);
+}
+
+.wearo-footer__link:hover::after,
+.wearo-footer__link:focus-visible::after {
+  transform: scaleX(1);
+  transform-origin: left center;
+}
+
+/* CONTACT */
+.wearo-footer__contact-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.wearo-footer__contact-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 9px;
+  color: color-mix(in srgb, var(--footer-blue) 80%, transparent);
+  font: 500 13px/1.55 "Space Grotesk", Arial, sans-serif;
+  text-decoration: none;
+}
+
+.wearo-footer__contact-item svg {
+  flex: 0 0 auto;
+  margin-top: 2px;
+  color: var(--footer-coral);
+  stroke-width: 1.9;
+}
+
+.wearo-footer__contact-symbol {
+  width: 15px;
+  color: var(--footer-coral);
+  font-weight: 800;
+  text-align: center;
+}
+
+.wearo-footer__social-label {
+  margin-top: 21px;
+  margin-bottom: 9px;
+  color: var(--footer-blue-light);
+  font: 750 9px/1.2 "Space Grotesk", Arial, sans-serif;
+  letter-spacing: .14em;
+}
+
+.wearo-footer__socials {
+  display: flex;
+  gap: 8px;
+}
+
+.wearo-footer__socials a {
+  width: 34px;
+  height: 34px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--footer-blue);
+  border: 1px solid color-mix(in srgb, var(--footer-blue) 25%, transparent);
+  background: rgba(255,255,255,.28);
+  text-decoration: none;
+  transition: color .18s ease, background .18s ease, border-color .18s ease, transform .18s ease;
+}
+
+.wearo-footer__socials a:hover {
+  color: #fff;
+  background: var(--footer-blue);
+  border-color: var(--footer-blue);
+  transform: translateY(-2px);
+}
+
+/* SUB-FOOTER */
+.wearo-footer__bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  padding: 18px 0 20px;
+  border-top: 1px solid color-mix(in srgb, var(--footer-blue) 20%, transparent);
+  color: var(--footer-blue-light);
+  font: 600 9px/1.5 "Space Grotesk", Arial, sans-serif;
+}
+
+.wearo-footer__bottom p { margin: 0; }
+
+.wearo-footer__trust {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.wearo-footer__payments {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  flex-wrap: wrap;
+}
+
+.wearo-footer__payments b {
+  padding: 5px 6px;
+  border: 1px solid color-mix(in srgb, var(--footer-blue) 22%, transparent);
+  color: var(--footer-blue);
+  background: rgba(255,255,255,.36);
+  font: 800 7px/1 "Space Grotesk", Arial, sans-serif;
+  letter-spacing: .03em;
+}
+
+.wearo-footer__commerce-badge {
+  padding: 7px 9px;
+  border: 1px solid color-mix(in srgb, var(--footer-blue) 28%, transparent);
+  color: var(--footer-blue);
+  background: rgba(255,255,255,.24);
+  font: 800 7px/1.15 "Space Grotesk", Arial, sans-serif;
+  letter-spacing: .06em;
+  white-space: nowrap;
+}
+
+/* Hero readability: preserve the existing WEARO hero treatment. */
+.fashion-hero__copy { isolation: isolate; }
+
+.fashion-hero__copy::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: min(760px, 70vw);
+  pointer-events: none;
+  background: linear-gradient(90deg, rgba(20,29,36,.42) 0%, rgba(20,29,36,.22) 52%, transparent 100%);
+}
+
+.fashion-hero__lede { color: rgba(255,255,255,.92); opacity: 1; }
+.fashion-hero__meta { color: rgba(255,255,255,.76); }
+
+/* TABLET */
+@media (max-width: 960px) {
+  .wearo-footer__grid {
+    grid-template-columns: 1.25fr 1fr 1fr;
+  }
+
+  .wearo-footer__brand { grid-column: 1 / -1; }
+
+  .wearo-footer__bottom {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .wearo-footer__trust { justify-content: flex-start; }
+}
+
+/* MOBILE */
+@media (max-width: 680px) {
+  .wearo-footer__inner { width: calc(100% - 32px); }
+
+  .wearo-footer__newsletter {
+    padding: 26px 22px 28px;
+    gap: 16px;
+  }
+
+  .wearo-footer .wearo-footer__newsletter-form {
+    grid-template-columns: minmax(0, 1fr) 158px !important;
+    grid-template-areas: "input button" !important;
+  }
+
+  .wearo-footer__newsletter-form button {
+    min-height: 48px;
+  }
+
+  .wearo-footer__grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 34px 24px;
+    padding: 42px 0 38px;
+  }
+
+  .wearo-footer__brand { grid-column: 1 / -1; }
+}
+
+@media (max-width: 520px) {
+  .wearo-footer .wearo-footer__newsletter-form {
+    grid-template-columns: 1fr !important;
+    grid-template-areas: "input" "button" !important;
+    gap: 8px;
+  }
+
+  .wearo-footer .wearo-footer__newsletter-input-wrap {
+    min-height: 48px;
+    border-right: 1px solid rgba(255,255,255,.34);
+  }
+}
+
+@media (max-width: 430px) {
+  .wearo-footer__grid { grid-template-columns: 1fr; }
+  .wearo-footer__brand,
+  .wearo-footer__section { grid-column: auto; }
+
+  .wearo-footer__newsletter h2 { font-size: 17px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wearo-footer__logo,
+  .wearo-footer__link,
+  .wearo-footer__newsletter-form button,
+  .wearo-footer__socials a { transition: none; }
+}
+
+
+/* WEARO footer interaction pass — cohesive input + clearer hover/focus states */
+.wearo-footer__newsletter-input-wrap {
+  border: 0 !important;
+  border-bottom: 1px solid rgba(255,255,255,.42) !important;
+  border-right: 0 !important;
+  background: transparent !important;
+  padding-inline: 4px !important;
+  transition: border-color .22s ease, box-shadow .22s ease;
+}
+
+.wearo-footer__newsletter-input-wrap:focus-within {
+  border-bottom-color: var(--footer-coral) !important;
+  box-shadow: 0 1px 0 var(--footer-coral);
+}
+
+.wearo-footer__newsletter-input-wrap:focus-within svg {
+  color: var(--footer-coral);
+}
+
+.wearo-footer .wearo-footer__newsletter-form input {
+  caret-color: var(--footer-coral);
+}
+
+.wearo-footer .wearo-footer__newsletter-form input:focus-visible {
+  outline: 0;
+}
+
+.wearo-footer .wearo-footer__newsletter-form button {
+  position: relative;
+  overflow: hidden;
+  transition: background .22s ease, color .22s ease, transform .22s ease, box-shadow .22s ease;
+}
+
+.wearo-footer .wearo-footer__newsletter-form button:hover {
+  color: var(--footer-blue);
+  box-shadow: 0 7px 18px color-mix(in srgb, var(--footer-coral) 28%, transparent);
+  transform: translateY(-2px);
+}
+
+.wearo-footer .wearo-footer__newsletter-form button:active {
+  transform: translateY(0);
+  box-shadow: none;
+}
+
+.wearo-footer__logo:focus-visible,
+.wearo-footer__link:focus-visible,
+.wearo-footer__contact-item[href]:focus-visible,
+.wearo-footer__socials a:focus-visible {
+  outline: 2px solid var(--footer-coral);
+  outline-offset: 4px;
+  border-radius: 2px;
+}
+
+.wearo-footer__contact-item[href] {
+  transition: color .2s ease, transform .2s ease;
+}
+
+.wearo-footer__contact-item[href]:hover,
+.wearo-footer__contact-item[href]:focus-visible {
+  color: var(--footer-blue);
+  transform: translateX(3px);
+}
+
+.wearo-footer__contact-item[href]:hover svg,
+.wearo-footer__contact-item[href]:focus-visible svg,
+.wearo-footer__contact-item[href]:hover .wearo-footer__contact-symbol,
+.wearo-footer__contact-item[href]:focus-visible .wearo-footer__contact-symbol {
+  color: var(--footer-coral);
+}
+
+.wearo-footer__socials a:focus-visible {
+  color: #fff;
+  background: var(--footer-blue);
+  border-color: var(--footer-blue);
+}
+
+.wearo-footer__payments b,
+.wearo-footer__commerce-badge {
+  transition: color .18s ease, background .18s ease, border-color .18s ease, transform .18s ease;
+}
+
+.wearo-footer__payments b:hover,
+.wearo-footer__commerce-badge:hover {
+  color: var(--footer-blue);
+  background: var(--footer-coral);
+  border-color: var(--footer-coral);
+  transform: translateY(-2px);
+}
+
+.wearo-footer__kicker {
+  transition: color .2s ease;
+}
+
+.wearo-footer__section:hover .wearo-footer__kicker {
+  color: var(--footer-blue);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wearo-footer__newsletter-input-wrap,
+  .wearo-footer__newsletter-form button,
+  .wearo-footer__contact-item[href],
+  .wearo-footer__payments b,
+  .wearo-footer__commerce-badge,
+  .wearo-footer__kicker {
+    transition: none !important;
+  }
+
+  .wearo-footer__contact-item[href]:hover,
+  .wearo-footer__payments b:hover,
+  .wearo-footer__commerce-badge:hover {
+    transform: none;
+  }
+}
+
+
+/* Keep global form-focus styles from reintroducing a box around the newsletter field. */
+.wearo-footer .wearo-footer__newsletter-form input:focus,
+.wearo-footer .wearo-footer__newsletter-form input:focus-visible {
+  background: transparent !important;
+  box-shadow: none !important;
+  outline: 0;
+}
+
+
+/* Newsletter now lives directly below the brand intro in the first footer column. */
+.wearo-footer__brand {
+  align-self: start;
+}
+
+.wearo-footer .wearo-footer__newsletter--brand {
+  display: flex;
+  flex-direction: column;
+  gap: 13px;
+  width: 100%;
+  margin-top: 24px;
+  padding: 20px 18px 16px;
+  border: 1px solid color-mix(in srgb, var(--footer-peach) 24%, transparent);
+  background: var(--footer-blue);
+  box-shadow: 0 10px 26px color-mix(in srgb, var(--footer-blue) 14%, transparent);
+}
+
+.wearo-footer__newsletter--brand .wearo-footer__newsletter-kicker {
+  margin-bottom: 8px;
+  color: var(--footer-peach);
+  font-size: 9px;
+}
+
+.wearo-footer__newsletter--brand h2 {
+  max-width: 100%;
+  font-size: clamp(16px, 1.25vw, 19px);
+  line-height: 1.3;
+}
+
+.wearo-footer__newsletter--brand .wearo-footer__newsletter-description {
+  margin: 9px 0 0;
+  color: rgba(255,255,255,.78);
+  font: 400 11px/1.6 "Space Grotesk", Arial, sans-serif;
+}
+
+.wearo-footer .wearo-footer__newsletter--brand .wearo-footer__newsletter-form {
+  display: flex !important;
+  flex-direction: column;
+  gap: 10px;
+  max-width: none;
+  min-height: 0;
+}
+
+.wearo-footer .wearo-footer__newsletter--brand .wearo-footer__newsletter-input-wrap {
+  min-height: 42px;
+  padding-inline: 2px !important;
+  border-bottom: 1px solid rgba(255,255,255,.42) !important;
+}
+
+.wearo-footer .wearo-footer__newsletter--brand .wearo-footer__newsletter-form input {
+  min-height: 40px;
+  font-size: 12px;
+}
+
+.wearo-footer .wearo-footer__newsletter--brand .wearo-footer__newsletter-form button {
+  min-height: 42px;
+  padding-inline: 12px;
+  font-size: 9px;
+}
+
+.wearo-footer__newsletter--brand .wearo-footer__newsletter-status {
+  margin: 0;
+  color: rgba(255,255,255,.68);
+  font: 400 10px/1.5 "Space Grotesk", Arial, sans-serif;
+}
+
+.wearo-footer__newsletter--brand .wearo-footer__newsletter-status:not(:empty) {
+  overflow-wrap: anywhere;
+}
+
+@media (max-width: 960px) {
+  .wearo-footer .wearo-footer__newsletter--brand {
+    max-width: 460px;
+  }
+}
+
+@media (max-width: 430px) {
+  .wearo-footer .wearo-footer__newsletter--brand {
+    max-width: none;
+    padding: 18px 16px 14px;
+  }
+}
+
+ 
+/* FOOTER STRUCTURE — framed information panel + separate payment strip */
+.wearo-footer {
+  background: color-mix(in srgb, var(--footer-peach) 30%, #fff);
+  padding-bottom: 22px;
+}
+
+.wearo-footer__inner {
+  padding-top: clamp(26px, 3vw, 42px);
+}
+
+.wearo-footer__panel {
+  position: relative;
+  padding: clamp(24px, 3.4vw, 44px);
+  border: 1px solid color-mix(in srgb, var(--footer-blue) 22%, transparent);
+  background: #fff;
+  box-shadow: 0 16px 42px color-mix(in srgb, var(--footer-blue) 8%, transparent);
+}
+
+.wearo-footer__panel .wearo-footer__grid {
+  padding: 0;
+}
+
+.wearo-footer__payment-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  min-height: 76px;
+  margin-top: 16px;
+  padding: 14px clamp(18px, 3vw, 34px);
+  border: 1px solid color-mix(in srgb, var(--footer-blue) 24%, transparent);
+  background: rgba(255,255,255,.86);
+}
+
+.wearo-footer__payment-label {
+  color: var(--footer-blue-light);
+  font: 750 9px/1.4 "Space Grotesk", Arial, sans-serif;
+  letter-spacing: .13em;
+  white-space: nowrap;
+}
+
+.wearo-footer__payment-logos {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.wearo-footer__payment-logo {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 76px;
+  height: 38px;
+  padding: 5px 12px;
+  border: 1px solid color-mix(in srgb, var(--footer-blue) 17%, transparent);
+  background: #fff;
+  transition: border-color .18s ease, transform .18s ease, box-shadow .18s ease;
+}
+
+.wearo-footer__payment-logo:hover {
+  transform: translateY(-2px);
+  border-color: var(--footer-blue-light);
+  box-shadow: 0 5px 12px color-mix(in srgb, var(--footer-blue) 10%, transparent);
+}
+
+.wearo-footer__payment-logo svg {
+  display: block;
+  width: 100%;
+  max-width: 62px;
+  height: 24px;
+  overflow: visible;
+}
+
+.wearo-footer__payment-logo--visa svg text {
+  fill: #1a1f71;
+  font: italic 900 21px/1 Arial, sans-serif;
+  letter-spacing: -1px;
+}
+
+.wearo-footer__payment-logo--mastercard svg circle:first-child { fill: #eb001b; }
+.wearo-footer__payment-logo--mastercard svg circle:last-child { fill: #f79e1b; fill-opacity: .96; }
+
+.wearo-footer__payment-logo--momo svg text {
+  fill: #a50064;
+  font: 900 19px/1 Arial, sans-serif;
+  letter-spacing: -.6px;
+}
+
+.wearo-footer__payment-logo--vietqr svg text {
+  fill: #b71c2c;
+  font: 900 16px/1 Arial, sans-serif;
+  letter-spacing: -.5px;
+}
+
+.wearo-footer__payment-logo--vietqr svg path { fill: #b71c2c; }
+
+.wearo-footer__payment-bar .wearo-footer__commerce-badge {
+  flex: 0 0 auto;
+  padding: 9px 11px;
+  font-size: 8px;
+  background: #fff;
+}
+
+.wearo-footer__bottom {
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid color-mix(in srgb, var(--footer-blue) 18%, transparent);
+}
+
+@media (max-width: 960px) {
+  .wearo-footer__panel { padding: 28px; }
+  .wearo-footer__payment-bar {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .wearo-footer__payment-label { width: 100%; text-align: center; }
+}
+
+@media (max-width: 680px) {
+  .wearo-footer { padding-bottom: 12px; }
+  .wearo-footer__panel { padding: 22px 18px; }
+  .wearo-footer__payment-bar { gap: 14px; padding: 18px 14px; }
+  .wearo-footer__payment-logos { gap: 7px; }
+  .wearo-footer__payment-logo { min-width: 68px; height: 36px; padding: 5px 9px; }
+  .wearo-footer__payment-bar .wearo-footer__commerce-badge { margin-inline: auto; }
+  .wearo-footer__bottom { gap: 10px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wearo-footer__payment-logo { transition: none; }
+  .wearo-footer__payment-logo:hover { transform: none; }
+}
