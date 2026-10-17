@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, type FormEvent } from "react";
 import { Link, useLocation } from "@tanstack/react-router";
 import { Clock, Facebook, Instagram, Mail, MapPin, Phone } from "lucide-react";
 import { useI18n } from "@/lib/i18n";
@@ -17,7 +17,7 @@ export function SiteFooter() {
     pathname === "/account" ||
     pathname.startsWith("/account/orders");
 
-  function handleNewsletterSubmit(event: React.FormEvent<HTMLFormElement>) {
+  function handleNewsletterSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setNewsletterNotice(
       t(
