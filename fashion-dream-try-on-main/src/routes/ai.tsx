@@ -121,6 +121,8 @@ function TryOnStudio({
   const [productId, setProductId] = useState(initialProductId ?? products[0]?.id ?? "");
   const [note, setNote] = useState("");
   const [status, setStatus] = useState<TryOnStatus>("idle");
+  const [activeJobId, setActiveJobId] = useState("");
+  const [isPolling, setIsPolling] = useState(false);
   const [resultImage, setResultImage] = useState("");
   const [error, setError] = useState("");
 
@@ -156,20 +158,41 @@ function TryOnStudio({
   }
 
   async function waitForResult(jobId: string) {
-    for (let attempt = 0; attempt < 24; attempt += 1) {
-      await new Promise((resolve) => setTimeout(resolve, 1500));
-      const job = await getTryOnJob({ data: { jobId } });
-      if (job.status === "completed" && job.image) {
-        setResultImage(job.image);
-        setStatus("completed");
-        return;
+    setIsPolling(true);
+    setError("");
+    try {
+      for (let attempt = 0; attempt < 24; attempt += 1) {
+        await new Promise((resolve) => setTimeout(resolve, 1500));
+        const job = await getTryOnJob({ data: { jobId } });
+        if (job.status === "completed" && job.image) {
+          setResultImage(job.image);
+          setStatus("completed");
+          setActiveJobId("");
+          return;
+        }
+        setStatus("processing");
       }
+
+      // The provider job remains durable in Supabase; let the shopper resume polling
+      // instead of treating a slow provider response as a failed job.
       setStatus("processing");
+      setError("Tác vụ vẫn đang xử lý. Bạn có thể bấm “Kiểm tra kết quả” để tiếp tục kiểm tra mà không tạo job mới.");
+    } finally {
+      setIsPolling(false);
     }
-    throw new Error("AI Try-On mất quá nhiều thời gian. Bạn có thể kiểm tra lại sau.");
   }
 
   async function handleTryOn() {
+    if (activeJobId && status === "processing" && !isPolling) {
+      try {
+        await waitForResult(activeJobId);
+      } catch (tryOnError) {
+        setStatus("failed");
+        setError(tryOnError instanceof Error ? tryOnError.message : "Không thể kiểm tra kết quả AI Try-On.");
+      }
+      return;
+    }
+
     if (!personImage) {
       setError("Hãy tải ảnh toàn thân hoặc ảnh người rõ ràng trước.");
       return;
@@ -188,6 +211,7 @@ function TryOnStudio({
       const job = await generateTryOn({
         data: { ...(accessToken ? { accessToken } : {}), personImage, productId, note: note.trim() || undefined },
       });
+      setActiveJobId(job.jobId);
       setStatus("processing");
       await waitForResult(job.jobId);
     } catch (tryOnError) {
@@ -277,9 +301,9 @@ function TryOnStudio({
                 type="button"
                 className="wearo-ai-generate"
                 onClick={handleTryOn}
-                disabled={status === "uploading" || status === "processing" || !products.length}
+                disabled={status === "uploading" || (status === "processing" && isPolling) || !products.length}
               >
-                {status === "uploading" ? "Đang gửi…" : status === "processing" ? "Đang xử lý…" : "Thử đồ bằng AI"}
+                {status === "uploading" ? "Đang gửi…" : status === "processing" ? (isPolling ? "Đang xử lý…" : "Kiểm tra kết quả") : "Thử đồ bằng AI"}
               </button>
             </div>
 
