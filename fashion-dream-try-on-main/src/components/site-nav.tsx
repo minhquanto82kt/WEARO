@@ -5,7 +5,7 @@ import { CATEGORIES } from "@/data/products";
 import { useCart } from "@/lib/cart";
 import { getCustomerUser } from "@/lib/auth";
 import { useI18n, type Language } from "@/lib/i18n";
-import "@/styles/header-enhancements.scss";
+import "@/styles/components/header-enhancements.scss";
 import "@/styles/wearo-language-modal.scss";
 
 const DISCOVERY_LINKS = [
