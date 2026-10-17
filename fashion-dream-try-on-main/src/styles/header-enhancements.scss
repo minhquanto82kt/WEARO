@@ -353,3 +353,65 @@ body .fashion-nav .fashion-shop-mega .fashion-shop-category::after {
   content: none !important;
   display: none !important;
 }
+
+
+/* WEARO UX pass — keep the established header layout, align it to brand tokens. */
+.fashion-nav {
+  --wearo-orange: var(--wearo-blue, #54728C);
+  --wearo-orange-hot: var(--wearo-coral, #F2AD94);
+  --wearo-paper: var(--wearo-beige, #D9BBA9);
+  color: var(--wearo-ink, #171717);
+  background: rgba(248, 246, 242, .97);
+  border-bottom-color: color-mix(in srgb, var(--wearo-beige, #D9BBA9) 78%, transparent);
+  box-shadow: 0 8px 28px rgba(23, 23, 23, .08);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+}
+
+.fashion-nav__announcement {
+  background: var(--wearo-blue, #54728C);
+  color: var(--wearo-white, #fff);
+}
+
+.fashion-nav__links a,
+.fashion-nav__links .fashion-shop-trigger,
+.fashion-nav__actions .fashion-icon-btn,
+.fashion-nav__actions .fashion-cart-btn,
+.fashion-nav__actions .fashion-language-switcher,
+.fashion-nav__actions .fashion-mobile-btn {
+  color: var(--wearo-ink, #171717);
+}
+
+.fashion-nav :is(a, button, input):focus-visible {
+  outline: 2px solid var(--wearo-blue, #54728C);
+  outline-offset: 3px;
+}
+
+.fashion-nav__actions .fashion-cart-btn span {
+  background: var(--wearo-coral, #F2AD94);
+  color: var(--wearo-ink, #171717);
+  border-color: var(--wearo-off-white, #F8F6F2);
+}
+
+.fashion-nav .fashion-ai-nav:hover,
+.fashion-nav .fashion-ai-nav.is-active,
+.fashion-nav .fashion-nav-link:hover,
+.fashion-nav .fashion-nav-link.is-active,
+.fashion-nav .fashion-nav-link[aria-expanded="true"] {
+  color: var(--wearo-blue, #54728C) !important;
+}
+
+@media (max-width: 900px) {
+  .fashion-nav { --wearo-header-height: 68px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fashion-nav *,
+  .fashion-nav *::before,
+  .fashion-nav *::after {
+    scroll-behavior: auto !important;
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .01ms !important;
+  }
+}
