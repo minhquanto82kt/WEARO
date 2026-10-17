@@ -16,7 +16,7 @@ const StylistInput = z.object({
 
 type StylistResponse = {
   recommendations: Array<{
-    product: Record<string, unknown>;
+    product: Record<string, string | number | boolean | null | string[] | number[]>;
     score: number;
     reason: string;
   }>;
