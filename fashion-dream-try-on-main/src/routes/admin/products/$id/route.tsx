@@ -32,6 +32,7 @@ type ProductForm = {
   long_description: string;
   status: Product["status"];
   featured: boolean;
+  new_arrival: boolean;
 };
 
 type VariantForm = {
@@ -118,6 +119,7 @@ function ProductDetailPage() {
         long_description: productData.long_description ?? "",
         status: productData.status,
         featured: productData.featured,
+        new_arrival: productData.new_arrival ?? false,
       });
     } catch (cause) {
       setError(cause instanceof Error ? cause.message : "Không thể tải dữ liệu sản phẩm.");
