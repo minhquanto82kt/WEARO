@@ -109,6 +109,8 @@ function NewProductPage() {
 
   async function confirmCreateProduct() {
     if (saving) return;
+    const slug = form.slug.trim() || slugify(form.name);
+    const price = Number(form.price);
     setSaving(true);
     setMessage("");
 
