@@ -121,7 +121,7 @@ function ProductDetailPage() {
         status: productData.status,
         featured: productData.featured,
         new_arrival: productData.new_arrival ?? false,
-        fashion_style: productData.fashion_style ?? "Street",
+        fashion_style: productData.fashion_style ?? "Casual",
       });
     } catch (cause) {
       setError(cause instanceof Error ? cause.message : "Không thể tải dữ liệu sản phẩm.");
@@ -447,7 +447,7 @@ function ProductDetailPage() {
             <label>Mô tả ngắn<textarea rows={3} value={form.short_description} onChange={(e) => setForm((c) => c && ({ ...c, short_description: e.target.value }))} disabled={saving || deleting} /></label>
             <label>Mô tả chi tiết<textarea rows={7} value={form.long_description} onChange={(e) => setForm((c) => c && ({ ...c, long_description: e.target.value }))} disabled={saving || deleting} /></label>
             <label>Trạng thái<select value={form.status} onChange={(e) => setForm((c) => c && ({ ...c, status: e.target.value as Product["status"] }))} disabled={saving || deleting}><option value="draft">Bản nháp</option><option value="published">Đang hoạt động</option><option value="archived">Đã ẩn</option></select></label>
-            <label>Phong cách thời trang<select value={form.fashion_style} onChange={(e) => setForm((current) => current && ({ ...current, fashion_style: e.target.value }))} disabled={saving || deleting}><option value="Street">Street</option><option value="Minimal">Minimal</option><option value="Smart casual">Smart casual</option><option value="Y2K">Y2K</option></select><small className="up-style-helper">Phong cách được lưu cùng sản phẩm.</small></label>
+            <label>Phong cách thời trang<select value={form.fashion_style} onChange={(e) => setForm((current) => current && ({ ...current, fashion_style: e.target.value }))} disabled={saving || deleting}><option value="Casual">Casual</option><option value="Basic">Basic</option><option value="Streetwear">Streetwear</option><option value="Outing Style">Outing Style</option></select><small className="up-style-helper">Phong cách được lưu cùng sản phẩm.</small></label>
             <label className="up-check up-new-arrival-check"><input type="checkbox" checked={form.new_arrival} onChange={(e) => setForm((current) => current && ({ ...current, new_arrival: e.target.checked }))} disabled={saving || deleting} /><span><strong>NEW ARRIVAL</strong><small>Hiển thị nhãn nổi bật trên sản phẩm.</small></span></label>
             <label className="up-check"><input type="checkbox" checked={form.featured} onChange={(e) => setForm((c) => c && ({ ...c, featured: e.target.checked }))} disabled={saving || deleting} />Sản phẩm nổi bật</label>
             <div className="up-editor-actions">
