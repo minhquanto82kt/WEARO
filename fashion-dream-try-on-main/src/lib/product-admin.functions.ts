@@ -168,6 +168,10 @@ export const updateAdminProduct = createServerFn({ method: "POST" })
     const current = currentRows[0];
     if (!current) throw new Error("Không tìm thấy sản phẩm cần cập nhật.");
 
+    if (patch.active === true && patch.status === undefined && current.status !== "published") {
+      throw new Error("Không thể bật hiển thị trực tiếp cho sản phẩm chưa ở trạng thái Đang hoạt động. Hãy chọn trạng thái xuất bản một cách rõ ràng.");
+    }
+
     if (patch.status !== undefined) {
       if (current.status === "archived" && patch.status === "published") {
         throw new Error("Không thể xuất bản trực tiếp sản phẩm trong thùng rác. Hãy khôi phục về bản nháp trước.");
