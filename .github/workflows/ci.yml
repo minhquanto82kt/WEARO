@@ -57,6 +57,15 @@ jobs:
       - name: Architecture boundary audit
         run: npm run audit:architecture
 
+      - name: Phase B-C invariant tests
+        run: npm run test:phase-b-c
+
+      - name: Phase D-E invariant tests
+        run: npm run test:phase-d-e
+
+      - name: Customer commerce flow contract tests
+        run: npm run test:customer-flows
+
       - name: Start local app for route and customer smoke tests
         shell: bash
         run: |
@@ -80,3 +89,8 @@ jobs:
         env:
           BASE_URL: http://127.0.0.1:8080
         run: npm run test:customer-experience
+
+      - name: Security smoke tests
+        env:
+          BASE_URL: http://127.0.0.1:8080
+        run: npm run test:phase-f-security
