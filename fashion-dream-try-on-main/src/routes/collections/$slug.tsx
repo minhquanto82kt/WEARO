@@ -84,11 +84,11 @@ const COLLECTIONS = {
     description: "Phom dáng phóng khoáng và chi tiết cá tính cho nhịp sống đô thị.",
     kicker: "03 / CITY EXPRESSION",
   },
-  outerwear: {
-    title: "OUTERWEAR",
-    subtitle: "Layer with intention.",
-    description: "Những lớp khoác hoàn thiện outfit, cân bằng công năng và phong cách.",
-    kicker: "04 / LAYERING SYSTEM",
+  "outing-style": {
+    title: "OUTING STYLE",
+    subtitle: "Outside, in your own style.",
+    description: "Trang phục unisex dành cho những buổi đi chơi, dạo phố và hoạt động ngoài trời — thoải mái, linh hoạt, dễ vận động và dễ phối.",
+    kicker: "04 / CITY & OUTDOOR LIFE",
   },
 } as const;
 
