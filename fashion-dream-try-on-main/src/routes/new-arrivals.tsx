@@ -9,24 +9,40 @@ import { canonicalLink } from "@/lib/seo";
 import "@/styles/wearo-new-arrivals.scss";
 
 type DbCatalogProduct = {
-  id: string; name: string; description: string; price: number;
-  category: Product["category"]; image: string | null; featured: boolean;
-  sizes: string[]; colors: string[]; gallery: string[]; total_stock: number;
+  id: string; name: string; description: string | null; short_description: string | null;
+  price: number; category: Product["category"]; image: string | null; new_arrival: boolean;
 };
+type DbVariant = { product_id: string; size: string; color: string; stock: number };
+type DbImage = { product_id: string; image_url: string; sort_order: number; is_primary: boolean };
 
 const getNewArrivals = createServerFn({ method: "GET" }).handler(async () => {
   const { supabaseRequest } = await import("@/lib/supabase.server");
-  // This RPC filters to active, published products and orders them by products.created_at DESC.
-  const rows = await supabaseRequest<DbCatalogProduct[]>("rpc/get_published_catalog", { method: "POST", body: "{}" });
+  const rows = await supabaseRequest<DbCatalogProduct[]>(
+    "products?select=id,name,description,short_description,price,category,image,new_arrival&new_arrival=eq.true&status=eq.published&active=eq.true&order=created_at.desc",
+    { method: "GET" },
+  );
+  if (!rows.length) return [];
+
+  const ids = rows.map((product) => product.id);
+  const filter = `in.(${ids.join(",")})`;
+  const [variants, images] = await Promise.all([
+    supabaseRequest<DbVariant[]>(`product_variants?select=product_id,size,color,stock&product_id=${filter}&order=size.asc,color.asc`, { method: "GET" }),
+    supabaseRequest<DbImage[]>(`product_images?select=product_id,image_url,sort_order,is_primary&product_id=${filter}&order=sort_order.asc`, { method: "GET" }),
+  ]);
   return rows.map((product): Product => {
-    const gallery = product.gallery ?? [];
+    const productVariants = variants.filter((variant) => variant.product_id === product.id);
+    const productImages = images.filter((image) => image.product_id === product.id).sort((a, b) => Number(b.is_primary) - Number(a.is_primary) || a.sort_order - b.sort_order);
+    const gallery = [...new Set(productImages.map((image) => image.image_url).filter(Boolean))];
     const primaryImage = gallery[0] ?? product.image ?? "";
     return {
       id: product.id, name: product.name, price: Number(product.price),
       category: product.category, image: primaryImage,
       gallery: gallery.length ? gallery : [primaryImage],
-      sizes: product.sizes ?? [], colors: product.colors ?? [],
-      description: product.description,
+      sizes: [...new Set(productVariants.map((variant) => variant.size))],
+      colors: [...new Set(productVariants.map((variant) => variant.color))],
+      description: product.description ?? product.short_description ?? "",
+      shortDescription: product.short_description ?? undefined,
+      badge: "NEW ARRIVAL",
     };
   });
 });
