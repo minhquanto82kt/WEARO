@@ -15,6 +15,7 @@ export type AdminProduct = {
   status: "draft" | "published" | "archived";
   featured: boolean;
   new_arrival: boolean;
+  fashion_style: string | null;
   created_at: string;
   updated_at: string;
 };
