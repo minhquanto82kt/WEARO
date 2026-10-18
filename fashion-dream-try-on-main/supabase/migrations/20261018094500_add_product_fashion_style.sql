@@ -4,4 +4,4 @@ ALTER TABLE public.products
 
 ALTER TABLE public.products
   ADD CONSTRAINT products_fashion_style_check
-  CHECK (fashion_style IS NULL OR fashion_style IN ('Street', 'Minimal', 'Smart casual', 'Y2K'));
+  CHECK (fashion_style IS NULL OR fashion_style IN ('Casual', 'Basic', 'Streetwear', 'Outing Style'));
