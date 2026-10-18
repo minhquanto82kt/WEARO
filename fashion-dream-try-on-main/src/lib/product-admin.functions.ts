@@ -116,7 +116,7 @@ export const getAdminProduct = createServerFn({ method: "POST" })
   });
 
 export const createAdminProduct = createServerFn({ method: "POST" })
-  .validator((data: AdminContext & { product: { name: string; slug: string; price: number; category: string; description?: string | null; short_description?: string | null; long_description?: string | null; image?: string | null; active?: boolean; status?: AdminProduct["status"]; featured?: boolean; new_arrival?: boolean } }) => data)
+  .validator((data: AdminContext & { product: { name: string; slug: string; price: number; category: string; description?: string | null; short_description?: string | null; long_description?: string | null; image?: string | null; active?: boolean; status?: AdminProduct["status"]; featured?: boolean; new_arrival?: boolean; fashion_style?: string | null } }) => data)
   .handler(async ({ data }) => {
     await requireAdmin(data.accessToken);
     const name = data.product.name.trim();
