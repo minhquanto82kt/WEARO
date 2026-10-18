@@ -36,6 +36,10 @@ type DbHomeProduct = { id: string; name: string; description: string; price: num
 const getHomeProducts = createServerFn({ method: "GET" }).handler(async () => {
   const { supabaseRequest } = await import("@/lib/supabase.server");
   const rows = await supabaseRequest<DbHomeProduct[]>("rpc/get_published_catalog", { method: "POST", body: "{}" });
+  const styleRows = rows.length
+    ? await supabaseRequest<{ id: string; fashion_style: Product["fashionStyle"] }[]>(`products?select=id,fashion_style&id=in.(${rows.map((product) => product.id).join(",")})`, { method: "GET" })
+    : [];
+  const styleById = new Map(styleRows.map((row) => [row.id, row.fashion_style]));
   return rows.map((product): Product => {
     const gallery = product.gallery ?? [];
     const primaryImage = gallery[0] ?? product.image ?? "";
@@ -52,7 +56,7 @@ const getHomeProducts = createServerFn({ method: "GET" }).handler(async () => {
       sizes: product.sizes ?? [],
       colors: product.colors ?? [],
       badge: product.featured ? "New drop" : undefined,
-      fashionStyle: product.fashion_style ?? null,
+      fashionStyle: styleById.get(product.id) ?? product.fashion_style ?? null,
       tags: categoryTags,
       description: product.description,
     };
