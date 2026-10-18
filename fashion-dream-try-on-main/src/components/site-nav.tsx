@@ -9,9 +9,10 @@ import "@/styles/components/header-enhancements.scss";
 import "@/styles/wearo-language-modal.scss";
 
 const DISCOVERY_LINKS = [
-  { label: "New Arrivals", vi: "Hàng mới về", to: "/shop" },
-  { label: "Collections", vi: "Bộ sưu tập", to: "/shop" },
-  { label: "Best Sellers", vi: "Bán chạy", to: "/shop" },
+  { label: "Casual", vi: "Casual", to: "/collections/casual" },
+  { label: "Basic", vi: "Basic", to: "/collections/basic" },
+  { label: "Streetwear", vi: "Streetwear", to: "/collections/streetwear" },
+  { label: "Outerwear", vi: "Outerwear", to: "/collections/outerwear" },
 ] as const;
 
 export function SiteNav() {
