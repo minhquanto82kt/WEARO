@@ -223,14 +223,14 @@ function TryOnStudio({
   return (
     <section className="wearo-ai-card mt-6">
       <div className="wearo-ai-card-header">
-        <span className="wearo-ai-card-title">01–04 · Quy trình thử đồ</span>
-        <span className="wearo-ai-kicker">AI / IMAGE</span>
+        <span className="wearo-ai-card-title">AI Virtual Try-on</span>
+        <span className="wearo-ai-kicker">THỬ ĐỒ ẢO</span>
       </div>
 
       <div className="wearo-ai-card-body">
         <div className="grid gap-6 lg:grid-cols-[1fr_1fr]">
           <div>
-            <span className="wearo-ai-field-label">03 · Tải ảnh của bạn</span>
+            <span className="wearo-ai-field-label">01 · Ảnh của bạn</span>
             <label className="mt-2 flex min-h-[260px] cursor-pointer items-center justify-center border border-[rgba(84,114,140,.18)] bg-[rgba(242,206,174,.10)] p-4 text-center">
               {personPreview ? (
                 <img src={personPreview} alt="Ảnh người dùng đã tải lên" className="max-h-[330px] w-full object-contain" />
@@ -256,7 +256,7 @@ function TryOnStudio({
           </div>
 
           <div>
-            <label htmlFor="wearo-tryon-product" className="wearo-ai-field-label">02 · Chọn sản phẩm WEARO</label>
+            <label htmlFor="wearo-tryon-product" className="wearo-ai-field-label">02 · Chọn sản phẩm</label>
             <select
               id="wearo-tryon-product"
               value={productId}
@@ -272,17 +272,36 @@ function TryOnStudio({
               ))}
             </select>
 
-            {productId ? (
-              <div className="mt-4 border border-[rgba(84,114,140,.16)] bg-[rgba(242,206,174,.12)] p-3">
-                <p className="text-xs font-semibold text-[#54728C]">SẢN PHẨM ĐƯỢC CHỌN</p>
-                <p className="mt-1 text-sm text-[#171717]">
-                  {products.find((product) => product.id === productId)?.name ?? "Sản phẩm"}
-                </p>
-              </div>
-            ) : null}
+            {(() => {
+              const selectedProduct = products.find((product) => product.id === productId);
+              if (!selectedProduct) return (
+                <div className="mt-3 border border-dashed border-[rgba(84,114,140,.24)] p-4 text-sm text-silver">
+                  Chọn một sản phẩm để xem ảnh trước khi thử đồ.
+                </div>
+              );
+              return (
+                <article className="mt-3 grid grid-cols-[104px_minmax(0,1fr)] gap-3 border border-[rgba(84,114,140,.16)] bg-[rgba(242,206,174,.10)] p-3 sm:grid-cols-[124px_minmax(0,1fr)]">
+                  <div className="flex min-h-[124px] items-center justify-center bg-white">
+                    <img
+                      src={selectedProduct.image}
+                      alt={selectedProduct.name}
+                      loading="lazy"
+                      className="h-full max-h-[160px] w-full object-contain"
+                    />
+                  </div>
+                  <div className="min-w-0 self-center">
+                    <p className="text-[10px] font-semibold uppercase tracking-[.14em] text-[#54728C]">Ảnh sản phẩm</p>
+                    <h3 className="mt-1 text-sm font-semibold leading-5 text-[#171717]">{selectedProduct.name}</h3>
+                    <p className="mt-1 text-xs text-silver">{selectedProduct.category}</p>
+                    {selectedProduct.price > 0 ? <p className="mt-2 text-sm font-semibold text-[#54728C]">{selectedProduct.price.toLocaleString("vi-VN")} ₫</p> : null}
+                    <p className="mt-2 text-[11px] leading-4 text-silver">Ảnh tham khảo trước khi tạo kết quả AI.</p>
+                  </div>
+                </article>
+              );
+            })()}
 
             <div className="mt-5">
-              <label htmlFor="wearo-tryon-note" className="wearo-ai-field-label">Ghi chú phối đồ · không bắt buộc</label>
+              <label htmlFor="wearo-tryon-note" className="wearo-ai-field-label">Ghi chú thêm <small>· không bắt buộc</small></label>
               <textarea
                 id="wearo-tryon-note"
                 value={note}
@@ -316,7 +335,7 @@ function TryOnStudio({
         </div>
 
         <div className="mt-7 border-t border-[rgba(84,114,140,.14)] pt-6">
-          <span className="wearo-ai-field-label">04 · Kết quả thử đồ</span>
+          <span className="wearo-ai-field-label">03 · Kết quả thử đồ</span>
           <div className="mt-2 min-h-[300px] border border-[rgba(84,114,140,.18)] bg-[rgba(242,206,174,.08)] p-4">
             {resultImage ? (
               <img src={resultImage} alt="Kết quả thử đồ ảo WEARO" className="mx-auto max-h-[620px] w-full object-contain" />
