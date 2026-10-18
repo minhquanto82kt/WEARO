@@ -12,7 +12,7 @@ import { type Product, formatVnd, getProduct } from "@/data/products";
 import { useCart } from "@/lib/cart";
 import { absoluteUrl, canonicalLink, jsonLdScript } from "@/lib/seo";
 
-type DbProduct = { id: string; name: string; description: string; price: number; category: Product["category"]; image: string | null; active: boolean; status: string; featured: boolean; };
+type DbProduct = { id: string; name: string; description: string; price: number; category: Product["category"]; image: string | null; active: boolean; status: string; featured: boolean; fashion_style: string | null; };
 type DbVariant = { id: string; product_id: string; size: string; color: string; stock: number; };
 type DbImage = { id: string; product_id: string; image_url: string; sort_order: number; is_primary: boolean; };
 type ProductDetailResult = { product: Product; variants: DbVariant[]; related: Product[] };
@@ -20,7 +20,7 @@ type ProductDetailResult = { product: Product; variants: DbVariant[]; related: P
 const getProductDetail = createServerFn({ method: "GET" }).validator((productId: string) => productId).handler(async ({ data: productId }) => {
   const { supabaseRequest } = await import("@/lib/supabase.server");
   const [products, variants, images] = await Promise.all([
-    supabaseRequest<DbProduct[]>(`products?id=eq.${encodeURIComponent(productId)}&active=eq.true&status=eq.published&select=id,name,description,price,category,image,active,status,featured`),
+    supabaseRequest<DbProduct[]>(`products?id=eq.${encodeURIComponent(productId)}&active=eq.true&status=eq.published&select=id,name,description,price,category,image,active,status,featured,fashion_style`),
     supabaseRequest<DbVariant[]>(`product_variants?product_id=eq.${encodeURIComponent(productId)}&select=id,product_id,size,color,stock&order=size.asc`),
     supabaseRequest<DbImage[]>(`product_images?product_id=eq.${encodeURIComponent(productId)}&select=id,product_id,image_url,sort_order,is_primary&order=sort_order.asc`),
   ]);
@@ -29,9 +29,9 @@ const getProductDetail = createServerFn({ method: "GET" }).validator((productId:
   const localMeta = getProduct(productId);
   const gallery = images.sort((a, b) => a.sort_order - b.sort_order).map((image) => image.image_url);
   const primaryImage = images.find((image) => image.is_primary)?.image_url ?? gallery[0] ?? dbProduct.image ?? localMeta?.image ?? "";
-  const product: Product = { id: dbProduct.id, name: dbProduct.name, price: Number(dbProduct.price), category: dbProduct.category, image: primaryImage, gallery: gallery.length > 0 ? gallery : [primaryImage], sizes: Array.from(new Set(variants.map((variant) => variant.size))), colors: Array.from(new Set(variants.map((variant) => variant.color))), badge: dbProduct.featured ? "Featured" : localMeta?.badge, tags: localMeta?.tags, shortDescription: localMeta?.shortDescription ?? dbProduct.description, description: dbProduct.description, details: localMeta?.details, sku: localMeta?.sku ?? dbProduct.id };
-  const relatedProducts = await supabaseRequest<DbProduct[]>(`products?active=eq.true&status=eq.published&id=neq.${encodeURIComponent(productId)}&select=id,name,description,price,category,image,active,status,featured&order=created_at.desc&limit=3`);
-  const related: Product[] = relatedProducts.map((item) => { const meta = getProduct(item.id); return { id: item.id, name: item.name, price: Number(item.price), category: item.category, image: item.image ?? meta?.image ?? "", gallery: [item.image ?? meta?.image ?? ""].filter(Boolean), sizes: meta?.sizes ?? [], colors: meta?.colors ?? [], badge: item.featured ? "Featured" : meta?.badge, tags: meta?.tags, shortDescription: meta?.shortDescription ?? item.description, description: item.description, details: meta?.details, sku: meta?.sku ?? item.id }; });
+  const product: Product = { id: dbProduct.id, name: dbProduct.name, price: Number(dbProduct.price), category: dbProduct.category, image: primaryImage, gallery: gallery.length > 0 ? gallery : [primaryImage], sizes: Array.from(new Set(variants.map((variant) => variant.size))), colors: Array.from(new Set(variants.map((variant) => variant.color))), badge: dbProduct.featured ? "Featured" : localMeta?.badge, tags: localMeta?.tags, shortDescription: localMeta?.shortDescription ?? dbProduct.description, description: dbProduct.description, details: { ...localMeta?.details, style: dbProduct.fashion_style ?? localMeta?.details?.style }, sku: localMeta?.sku ?? dbProduct.id };
+  const relatedProducts = await supabaseRequest<DbProduct[]>(`products?active=eq.true&status=eq.published&id=neq.${encodeURIComponent(productId)}&select=id,name,description,price,category,image,active,status,featured,fashion_style&order=created_at.desc&limit=3`);
+  const related: Product[] = relatedProducts.map((item) => { const meta = getProduct(item.id); return { id: item.id, name: item.name, price: Number(item.price), category: item.category, image: item.image ?? meta?.image ?? "", gallery: [item.image ?? meta?.image ?? ""].filter(Boolean), sizes: meta?.sizes ?? [], colors: meta?.colors ?? [], badge: item.featured ? "Featured" : meta?.badge, tags: meta?.tags, shortDescription: meta?.shortDescription ?? item.description, description: item.description, details: { ...meta?.details, style: item.fashion_style ?? meta?.details?.style }, sku: meta?.sku ?? item.id }; });
   return { product, variants, related } satisfies ProductDetailResult;
 });
 
