@@ -5,6 +5,7 @@ const root = new URL("../../", import.meta.url);
 const provider = await readFile(new URL("src/lib/ai-provider.server.ts", root), "utf8");
 const envExample = await readFile(new URL(".env.example", root), "utf8");
 const packageJson = JSON.parse(await readFile(new URL("package.json", root), "utf8"));
+const aiRoute = await readFile(new URL("src/routes/ai.tsx", root), "utf8");
 
 assert.match(provider, /if \(provider === "replicate"\) return replicateProvider/);
 assert.match(provider, /REPLICATE_API_TOKEN/);
