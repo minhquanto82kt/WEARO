@@ -452,7 +452,12 @@ function AiPage() {
             <header>
               <p className="wearo-ai-kicker">WEARO / AI STUDIO · BETA</p>
               <h1 className="wearo-ai-title wearo-ai-display">
-                WEARO <span className="wearo-ai-title-accent">AI Studio</span>
+                <img
+                  src="/brand/wearo-logo-header.svg"
+                  alt="WEARO"
+                  className="inline-block h-[0.82em] w-auto max-w-[4.5em] align-middle object-contain"
+                />{" "}
+                <span className="wearo-ai-title-accent">AI Studio</span>
               </h1>
               <p className="wearo-ai-lede">Bắt đầu bằng cách tạo outfit theo phong cách của bạn hoặc chọn một sản phẩm để thử trực tiếp.</p>
             </header>
