@@ -31,7 +31,7 @@ const DEFAULT_CONTENT: SiteContentFields = {
   social_image_url: REFERENCE_IMAGES.hero,
 };
 
-type DbHomeProduct = { id: string; name: string; description: string; price: number; category: Product["category"]; image: string | null; featured: boolean; sizes: string[]; colors: string[]; gallery: string[]; total_stock: number; };
+type DbHomeProduct = { id: string; name: string; description: string; price: number; category: Product["category"]; image: string | null; featured: boolean; sizes: string[]; colors: string[]; gallery: string[]; total_stock: number; fashion_style?: "Street" | "Minimal" | "Smart casual" | "Y2K" | null; };
 
 const getHomeProducts = createServerFn({ method: "GET" }).handler(async () => {
   const { supabaseRequest } = await import("@/lib/supabase.server");
@@ -52,6 +52,7 @@ const getHomeProducts = createServerFn({ method: "GET" }).handler(async () => {
       sizes: product.sizes ?? [],
       colors: product.colors ?? [],
       badge: product.featured ? "New drop" : undefined,
+      fashionStyle: product.fashion_style ?? null,
       tags: categoryTags,
       description: product.description,
     };
