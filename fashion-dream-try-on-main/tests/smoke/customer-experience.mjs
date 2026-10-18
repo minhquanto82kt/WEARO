@@ -1,7 +1,9 @@
 import { spawnSync } from "node:child_process";
 
+// Route coverage is owned by `npm run test:smoke` (routes.mjs).
+// Keep this customer gate focused on invariant and security checks so routes
+// are not executed twice in the same CI job.
 const commands = [
-  ["routes", "tests/smoke/routes.mjs"],
   ["phase-b-c", "tests/smoke/phase-b-c-invariants.mjs"],
   ["phase-d-e", "tests/smoke/phase-d-e-invariants.mjs"],
   ["phase-f-security", "tests/security/phase-f-security.mjs"],
