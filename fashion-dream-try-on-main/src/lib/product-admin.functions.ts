@@ -14,6 +14,7 @@ export type AdminProduct = {
   active: boolean;
   status: "draft" | "published" | "archived";
   featured: boolean;
+  new_arrival: boolean;
   created_at: string;
   updated_at: string;
 };
@@ -114,7 +115,7 @@ export const getAdminProduct = createServerFn({ method: "POST" })
   });
 
 export const createAdminProduct = createServerFn({ method: "POST" })
-  .validator((data: AdminContext & { product: { name: string; slug: string; price: number; category: string; description?: string | null; short_description?: string | null; long_description?: string | null; image?: string | null; active?: boolean; status?: AdminProduct["status"]; featured?: boolean } }) => data)
+  .validator((data: AdminContext & { product: { name: string; slug: string; price: number; category: string; description?: string | null; short_description?: string | null; long_description?: string | null; image?: string | null; active?: boolean; status?: AdminProduct["status"]; featured?: boolean; new_arrival?: boolean } }) => data)
   .handler(async ({ data }) => {
     await requireAdmin(data.accessToken);
     const name = data.product.name.trim();
