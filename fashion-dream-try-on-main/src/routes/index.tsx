@@ -1,10 +1,11 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
+import { createServerFn } from "@tanstack/react-start";
 import { WandSparkles } from "lucide-react";
 import { SiteNav } from "@/components/site-nav";
 import { SiteFooter } from "@/components/site-footer";
 import { ProductCard } from "@/components/product-card";
-import { PRODUCTS } from "@/data/products";
+import { type Product } from "@/data/products";
 import { readPublishedSiteContent, type SiteContentFields } from "@/lib/site-content";
 import { canonicalLink } from "@/lib/seo";
 import { listPublishedJournalArticles, type JournalArticle } from "@/lib/journal.functions";
@@ -29,6 +30,33 @@ const DEFAULT_CONTENT: SiteContentFields = {
   favicon_url: null,
   social_image_url: REFERENCE_IMAGES.hero,
 };
+
+type DbHomeProduct = { id: string; name: string; description: string; price: number; category: Product["category"]; image: string | null; featured: boolean; sizes: string[]; colors: string[]; gallery: string[]; total_stock: number; };
+
+const getHomeProducts = createServerFn({ method: "GET" }).handler(async () => {
+  const { supabaseRequest } = await import("@/lib/supabase.server");
+  const rows = await supabaseRequest<DbHomeProduct[]>("rpc/get_published_catalog", { method: "POST", body: "{}" });
+  return rows.map((product): Product => {
+    const gallery = product.gallery ?? [];
+    const primaryImage = gallery[0] ?? product.image ?? "";
+    const categoryTags = product.category === "hoodies" || product.category === "tees" || product.category === "outerwear"
+      ? ["Streetwear", "Casual", "Unisex"]
+      : ["Casual", "Unisex"];
+    return {
+      id: product.id,
+      name: product.name,
+      price: Number(product.price),
+      category: product.category,
+      image: primaryImage,
+      gallery: gallery.length > 0 ? gallery : [primaryImage],
+      sizes: product.sizes ?? [],
+      colors: product.colors ?? [],
+      badge: product.featured ? "Featured" : undefined,
+      tags: categoryTags,
+      description: product.description,
+    };
+  });
+});
 
 const CATEGORIES = [
   { slug: "all", label: "Tất cả" },
@@ -84,6 +112,8 @@ function applyContentMeta(content: SiteContentFields) {
 function Index() {
   const [content, setContent] = useState<SiteContentFields>(DEFAULT_CONTENT);
   const [journal, setJournal] = useState<JournalArticle[]>([]);
+  const [products, setProducts] = useState<Product[]>([]);
+  const [productsLoading, setProductsLoading] = useState(true);
   const [activeCategory, setActiveCategory] = useState<(typeof CATEGORIES)[number]["slug"]>("all");
   const [activeHeroSlide, setActiveHeroSlide] = useState(0);
 
@@ -92,6 +122,23 @@ function Index() {
       setActiveHeroSlide((current) => (current + 1) % 4);
     }, 5000);
     return () => window.clearInterval(interval);
+  }, []);
+
+  useEffect(() => {
+    let mounted = true;
+    void getHomeProducts()
+      .then((publishedProducts) => {
+        if (mounted) setProducts(publishedProducts);
+      })
+      .catch(() => {
+        if (mounted) setProducts([]);
+      })
+      .finally(() => {
+        if (mounted) setProductsLoading(false);
+      });
+    return () => {
+      mounted = false;
+    };
   }, []);
 
   useEffect(() => {
@@ -140,7 +187,7 @@ function Index() {
     };
   }, []);
 
-  const filteredProducts = PRODUCTS.filter((product) => {
+  const filteredProducts = products.filter((product) => {
     if (activeCategory === "all") return true;
     if (activeCategory === "streetwear") return product.tags?.some((tag) => /street|utility/i.test(tag)) ?? false;
     if (activeCategory === "casual") return product.tags?.some((tag) => /casual|everyday/i.test(tag)) ?? false;
@@ -249,7 +296,7 @@ function Index() {
             {CATEGORIES.map((category) => <button key={category.slug} type="button" className={activeCategory === category.slug ? "is-active" : ""} onClick={() => setActiveCategory(category.slug)}>{category.label}</button>)}
           </div>
         </div>
-        <div className="wearo-reference-product-grid">{filteredProducts.length > 0 ? filteredProducts.map((product) => <ProductCard key={product.id} product={product} />) : <div className="wearo-reference-empty-state" role="status"><p className="wearo-reference-section-label">COLLECTION / 0 ITEMS</p><h3>Chưa có sản phẩm trong danh mục này.</h3><p>WEARO đang cập nhật bộ sưu tập. Bạn có thể xem tất cả sản phẩm hoặc quay lại sau.</p><button type="button" onClick={() => setActiveCategory("all")}>Xem tất cả sản phẩm</button></div>}</div>
+        <div className="wearo-reference-product-grid">{productsLoading ? <div className="wearo-reference-empty-state" role="status"><p>Đang tải sản phẩm...</p></div> : filteredProducts.length > 0 ? filteredProducts.map((product) => <ProductCard key={product.id} product={product} />) : <div className="wearo-reference-empty-state" role="status"><p className="wearo-reference-section-label">COLLECTION / 0 ITEMS</p><h3>Chưa có sản phẩm trong danh mục này.</h3><p>WEARO đang cập nhật bộ sưu tập. Bạn có thể xem tất cả sản phẩm hoặc quay lại sau.</p><button type="button" onClick={() => setActiveCategory("all")}>Xem tất cả sản phẩm</button></div>}</div>
         <div className="wearo-reference-view-all"><Link to="/shop">XEM TẤT CẢ SẢN PHẨM</Link></div>
       </main>
 
