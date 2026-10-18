@@ -1,0 +1,90 @@
+name: Package Manager Benchmark
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  benchmark:
+    name: Compare npm and Bun on the same runner
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    defaults:
+      run:
+        working-directory: fashion-dream-try-on-main
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+
+      - name: Setup Bun (setup time excluded from measurements)
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
+      - name: Benchmark clean install and production build
+        shell: bash
+        run: |
+          set -uo pipefail
+
+          measure() {
+            local label="$1"
+            shift
+            local start end elapsed status
+            start="$(date +%s%3N)"
+            "$@"
+            status=$?
+            end="$(date +%s%3N)"
+            elapsed=$((end - start))
+            printf '%s\t%s\t%s\n' "$label" "$elapsed" "$status" >> /tmp/package-manager-benchmark.tsv
+            echo "$label: ${elapsed} ms (exit ${status})"
+            return "$status"
+          }
+
+          : > /tmp/package-manager-benchmark.tsv
+
+          echo "### npm baseline" >> "$GITHUB_STEP_SUMMARY"
+          if ! measure "npm ci" npm ci --legacy-peer-deps --no-audit --no-fund; then
+            echo "npm ci failed; cannot establish a valid baseline." >> "$GITHUB_STEP_SUMMARY"
+            exit 1
+          fi
+          if ! measure "npm build" npm run build; then
+            echo "npm build failed; cannot compare package managers." >> "$GITHUB_STEP_SUMMARY"
+            exit 1
+          fi
+
+          rm -rf node_modules
+
+          echo "### Bun candidate" >> "$GITHUB_STEP_SUMMARY"
+          bun_install_status=0
+          measure "bun install" bun install --no-save --no-progress || bun_install_status=$?
+          bun_build_status=0
+          if [ "$bun_install_status" -eq 0 ]; then
+            measure "bun build" npm run build || bun_build_status=$?
+          else
+            echo "Bun build skipped because install failed."
+          fi
+
+          {
+            echo ""
+            echo "### Results (same Ubuntu runner, sequential clean installs, no dependency cache)"
+            echo "| Step | Duration (ms) | Exit code |"
+            echo "|---|---:|---:|"
+            while IFS=$'\t' read -r label elapsed status; do
+              echo "| $label | $elapsed | $status |"
+            done < /tmp/package-manager-benchmark.tsv
+            echo ""
+            echo "Bun setup/download time is excluded. npm uses the committed package-lock.json and the CI flags; Bun is tested without committing a Bun lockfile. Treat timings as a single-run signal, not a final migration decision."
+          } >> "$GITHUB_STEP_SUMMARY"
+
+          if [ "$bun_install_status" -ne 0 ] || [ "$bun_build_status" -ne 0 ]; then
+            exit 1
+          fi
+
+          git diff --exit-code -- package-lock.json
