@@ -252,8 +252,9 @@ function ProductDetailPage() {
         status: form.status,
         active: form.status === "published",
         featured: form.featured,
+        new_arrival: form.new_arrival,
       });
-      setProduct(updated ?? { ...product, name, slug, category: form.category, price, status: form.status, featured: form.featured });
+      setProduct(updated ?? { ...product, name, slug, category: form.category, price, status: form.status, featured: form.featured, new_arrival: form.new_arrival });
       setMessage("Đã cập nhật sản phẩm.");
     } catch (cause) {
       setError(cause instanceof Error ? cause.message : "Không thể cập nhật sản phẩm.");
@@ -443,6 +444,7 @@ function ProductDetailPage() {
             <label>Mô tả ngắn<textarea rows={3} value={form.short_description} onChange={(e) => setForm((c) => c && ({ ...c, short_description: e.target.value }))} disabled={saving || deleting} /></label>
             <label>Mô tả chi tiết<textarea rows={7} value={form.long_description} onChange={(e) => setForm((c) => c && ({ ...c, long_description: e.target.value }))} disabled={saving || deleting} /></label>
             <label>Trạng thái<select value={form.status} onChange={(e) => setForm((c) => c && ({ ...c, status: e.target.value as Product["status"] }))} disabled={saving || deleting}><option value="draft">Bản nháp</option><option value="published">Đang hoạt động</option><option value="archived">Đã ẩn</option></select></label>
+            <label className="up-check up-new-arrival-check"><input type="checkbox" checked={form.new_arrival} onChange={(e) => setForm((current) => current && ({ ...current, new_arrival: e.target.checked }))} disabled={saving || deleting} /><span><strong>NEW ARRIVAL</strong><small>Hiển thị nhãn nổi bật trên sản phẩm.</small></span></label>
             <label className="up-check"><input type="checkbox" checked={form.featured} onChange={(e) => setForm((c) => c && ({ ...c, featured: e.target.checked }))} disabled={saving || deleting} />Sản phẩm nổi bật</label>
             <div className="up-editor-actions">
               <Link className="up-secondary" to="/admin/products">HỦY</Link>
