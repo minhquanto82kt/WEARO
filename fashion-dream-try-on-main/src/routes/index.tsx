@@ -51,7 +51,7 @@ const getHomeProducts = createServerFn({ method: "GET" }).handler(async () => {
       gallery: gallery.length > 0 ? gallery : [primaryImage],
       sizes: product.sizes ?? [],
       colors: product.colors ?? [],
-      badge: product.featured ? "Featured" : undefined,
+      badge: product.featured ? "New drop" : undefined,
       tags: categoryTags,
       description: product.description,
     };
