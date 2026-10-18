@@ -125,6 +125,14 @@ export const createAdminProduct = createServerFn({ method: "POST" })
     if (!name || !slug) throw new Error("Tên sản phẩm và slug là bắt buộc.");
     if (!Number.isFinite(price) || price < 0) throw new Error("Giá sản phẩm không hợp lệ.");
 
+    const archivedSlugMatches = await supabaseRequest<Array<{ id: string }>>(
+      `products?slug=eq.${encodeURIComponent(slug)}&status=eq.archived&select=id&limit=1`,
+      { method: "GET" },
+    );
+    if (archivedSlugMatches.length) {
+      throw new Error("Slug này đang thuộc một sản phẩm trong thùng rác. Hãy đổi slug trước khi tạo sản phẩm mới.");
+    }
+
     const rows = await supabaseRequest<AdminProduct[]>(
       "products",
       {
@@ -152,7 +160,32 @@ export const updateAdminProduct = createServerFn({ method: "POST" })
     if (patch.price !== undefined && (!Number.isFinite(Number(patch.price)) || Number(patch.price) < 0)) {
       throw new Error("Giá sản phẩm không hợp lệ.");
     }
-    if (patch.status !== undefined) patch.active = patch.status === "published";
+
+    const currentRows = await supabaseRequest<Array<Pick<AdminProduct, "id" | "slug" | "status">>>(
+      `products?id=eq.${encodeURIComponent(data.id)}&select=id,slug,status&limit=1`,
+      { method: "GET" },
+    );
+    const current = currentRows[0];
+    if (!current) throw new Error("Không tìm thấy sản phẩm cần cập nhật.");
+
+    if (patch.status !== undefined) {
+      if (current.status === "archived" && patch.status === "published") {
+        throw new Error("Không thể xuất bản trực tiếp sản phẩm trong thùng rác. Hãy khôi phục về bản nháp trước.");
+      }
+      patch.active = patch.status === "published";
+    }
+
+    const nextSlug = (patch.slug ?? current.slug).trim();
+    const willPublish = patch.status === "published" || (patch.status === undefined && patch.active === true);
+    if (willPublish || patch.slug !== undefined) {
+      const archivedSlugMatches = await supabaseRequest<Array<{ id: string }>>(
+        `products?slug=eq.${encodeURIComponent(nextSlug)}&status=eq.archived&id=neq.${encodeURIComponent(data.id)}&select=id&limit=1`,
+        { method: "GET" },
+      );
+      if (archivedSlugMatches.length && (willPublish || patch.slug !== undefined)) {
+        throw new Error("Slug này đang thuộc một sản phẩm trong thùng rác. Hãy đổi slug trước khi xuất bản hoặc lưu thay đổi.");
+      }
+    }
 
     const rows = await supabaseRequest<AdminProduct[]>(
       `products?id=eq.${encodeURIComponent(data.id)}`,
