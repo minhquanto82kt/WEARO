@@ -65,7 +65,7 @@ function AiConsent({ onAccept }: { onAccept: () => void }) {
           <div className="mt-8 grid gap-3">
             {[
               ["01", "Ảnh & quyền sử dụng", "Chỉ tải lên hình ảnh bạn có quyền sử dụng. Không sử dụng hình ảnh của người khác khi chưa được cho phép."],
-              ["02", "Nội dung & quyền riêng tư", "Không dùng AI để tạo nội dung vi phạm pháp luật hoặc xâm phạm quyền riêng tư, danh dự và sở hữu trí tuệ."],
+              ["02", "Nội dung & quyền riêng tư", "Ảnh tải lên sẽ được gửi đến nhà cung cấp AI bên thứ ba đang được cấu hình để xử lý. Không tải lên ảnh riêng tư hoặc thông tin nhạy cảm; không dùng AI để xâm phạm quyền riêng tư, danh dự hoặc sở hữu trí tuệ."],
               ["03", "Kết quả AI", "Màu sắc, kích thước, form và hình ảnh tạo bởi AI có thể khác sản phẩm thực tế và không phải cam kết về sản phẩm."],
               ["04", "Thông tin cung cấp", "Không nhập thông tin nhạy cảm. Chỉ cung cấp thông tin cần thiết để WEARO hỗ trợ bạn."],
               ["05", "Trách nhiệm sử dụng", "Bạn chịu trách nhiệm về nội dung mình cung cấp và xác nhận đã đọc, hiểu các quy định khi tiếp tục."],
