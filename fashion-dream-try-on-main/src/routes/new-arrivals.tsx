@@ -10,7 +10,7 @@ import "@/styles/wearo-new-arrivals.scss";
 
 type DbCatalogProduct = {
   id: string; name: string; description: string | null; short_description: string | null;
-  price: number; category: Product["category"]; image: string | null; new_arrival: boolean; fashion_style?: "Street" | "Minimal" | "Smart casual" | "Y2K" | null;
+  price: number; category: Product["category"]; image: string | null; new_arrival: boolean; fashion_style?: "Casual" | "Basic" | "Streetwear" | "Outing Style" | null;
 };
 type DbVariant = { product_id: string; size: string; color: string; stock: number };
 type DbImage = { product_id: string; image_url: string; sort_order: number; is_primary: boolean };
