@@ -1,5 +1,6 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useRef, useState } from "react";
+import "@/styles/admin-new-product.scss";
 import { ChevronLeft, ChevronRight, Trash2 } from "lucide-react";
 import {
   addProductImage,
