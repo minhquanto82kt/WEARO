@@ -70,6 +70,7 @@ export function ProductCard({ product }: { product: Product }) {
         {secondaryImage && <img src={secondaryImage} alt="" aria-hidden="true" loading="lazy" decoding="async" sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw" className="fashion-product-image__secondary" />}
         <div className="fashion-product-labels" aria-label="Product labels">
           {product.badge && <span className={`fashion-product-badge${product.badge.toLowerCase().includes("new arrival") ? " fashion-product-badge--new-arrival" : ""}`}>{product.badge}</span>}
+          {product.fashionStyle && <span className={`fashion-product-style fashion-product-style--${product.fashionStyle.toLowerCase().replace(/\s+/g, "-")}`}>{product.fashionStyle}</span>}
           {hasSale && <span className="fashion-product-badge fashion-product-badge--sale">SALE</span>}
           {tags.map((tag) => <span key={tag} className="fashion-product-tag">{tag}</span>)}
         </div>
