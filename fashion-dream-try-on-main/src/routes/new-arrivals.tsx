@@ -10,7 +10,7 @@ import "@/styles/wearo-new-arrivals.scss";
 
 type DbCatalogProduct = {
   id: string; name: string; description: string | null; short_description: string | null;
-  price: number; category: Product["category"]; image: string | null; new_arrival: boolean;
+  price: number; category: Product["category"]; image: string | null; new_arrival: boolean; fashion_style?: "Street" | "Minimal" | "Smart casual" | "Y2K" | null;
 };
 type DbVariant = { product_id: string; size: string; color: string; stock: number };
 type DbImage = { product_id: string; image_url: string; sort_order: number; is_primary: boolean };
@@ -18,7 +18,7 @@ type DbImage = { product_id: string; image_url: string; sort_order: number; is_p
 const getNewArrivals = createServerFn({ method: "GET" }).handler(async () => {
   const { supabaseRequest } = await import("@/lib/supabase.server");
   const rows = await supabaseRequest<DbCatalogProduct[]>(
-    "products?select=id,name,description,short_description,price,category,image,new_arrival&new_arrival=eq.true&status=eq.published&active=eq.true&order=created_at.desc",
+    "products?select=id,name,description,short_description,price,category,image,new_arrival,fashion_style&new_arrival=eq.true&status=eq.published&active=eq.true&order=created_at.desc",
     { method: "GET" },
   );
   if (!rows.length) return [];
@@ -43,6 +43,7 @@ const getNewArrivals = createServerFn({ method: "GET" }).handler(async () => {
       description: product.description ?? product.short_description ?? "",
       shortDescription: product.short_description ?? undefined,
       badge: "NEW ARRIVAL",
+      fashionStyle: product.fashion_style ?? null,
     };
   });
 });
