@@ -171,13 +171,6 @@ function CollectionPage() {
           )}
         </section>
 
-        <nav className="wearo-collection-switcher" aria-label="Các bộ sưu tập">
-          {Object.entries(COLLECTIONS).map(([key, item]) => (
-            <Link key={key} to="/collections/$slug" params={{ slug: key }} className={key === slug ? "is-active" : ""}>
-              <span>{item.kicker}</span>{item.title}<ArrowUpRight size={15} />
-            </Link>
-          ))}
-        </nav>
       </main>
       <SiteFooter />
     </div>
