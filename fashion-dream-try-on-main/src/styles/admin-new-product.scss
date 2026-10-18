@@ -1,0 +1,89 @@
+/* Admin product creation: New Arrival flag and explicit confirmation modal. */
+.up-new-arrival-check {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 14px 15px;
+  border: 1px solid #e6b09b;
+  background: #fff8f4;
+  color: #22211f;
+}
+.up-new-arrival-check input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  margin-top: 2px;
+  accent-color: #20201e;
+  flex: 0 0 auto;
+}
+.up-new-arrival-check span { display: grid; gap: 4px; }
+.up-new-arrival-check strong {
+  color: #20201e;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: .12em;
+}
+.up-new-arrival-check small {
+  color: #706b66;
+  font-size: 12px;
+  line-height: 1.5;
+}
+.up-admin-new-arrival-pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 6px 8px;
+  border: 1px solid #20201e;
+  background: #20201e;
+  color: #fff;
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: .1em;
+  white-space: nowrap;
+}
+.up-product-confirm-backdrop {
+  position: fixed;
+  z-index: 1000;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: 20px;
+  background: rgba(20, 20, 18, .58);
+  backdrop-filter: blur(4px);
+}
+.up-product-confirm-modal {
+  width: min(100%, 520px);
+  padding: clamp(22px, 4vw, 34px);
+  border: 1px solid #e7e2dc;
+  background: #fff;
+  color: #20201e;
+  box-shadow: 0 24px 90px rgba(0, 0, 0, .22);
+}
+.up-product-confirm-modal h2 {
+  margin: 8px 0 12px;
+  font-size: clamp(24px, 4vw, 32px);
+  font-weight: 700;
+  letter-spacing: -.04em;
+  line-height: 1.1;
+}
+.up-product-confirm-modal > p:not(.up-admin-kicker) {
+  margin: 0 0 20px;
+  color: #686660;
+  font-size: 14px;
+  line-height: 1.7;
+}
+.up-confirm-new-arrival { margin-bottom: 22px; }
+.up-product-confirm-actions {
+  display: flex;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.up-product-confirm-actions button {
+  min-height: 42px;
+  padding: 11px 15px;
+  font-size: 10px;
+  letter-spacing: .08em;
+}
+@media (max-width: 480px) {
+  .up-product-confirm-actions { flex-direction: column-reverse; }
+  .up-product-confirm-actions button { width: 100%; }
+}
