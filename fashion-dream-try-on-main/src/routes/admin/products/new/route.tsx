@@ -35,6 +35,7 @@ const emptyForm = {
   long_description: "",
   status: "draft" as Product["status"],
   featured: false,
+  new_arrival: true,
 };
 
 function slugify(value: string) {
@@ -53,6 +54,7 @@ function NewProductPage() {
   const [previews, setPreviews] = useState<string[]>([]);
   const [activePreview, setActivePreview] = useState(0);
   const [saving, setSaving] = useState(false);
+  const [confirmOpen, setConfirmOpen] = useState(false);
   const [message, setMessage] = useState("");
   const fileRef = useRef<HTMLInputElement>(null);
 
@@ -83,6 +85,7 @@ function NewProductPage() {
 
   async function handleSave(event: React.FormEvent) {
     event.preventDefault();
+    if (saving) return;
 
     if (!form.name.trim()) {
       return setMessage("Vui lòng nhập tên sản phẩm.");
@@ -99,6 +102,12 @@ function NewProductPage() {
       return setMessage("Giá không hợp lệ.");
     }
 
+    setMessage("");
+    setConfirmOpen(true);
+  }
+
+  async function confirmCreateProduct() {
+    if (saving) return;
     setSaving(true);
     setMessage("");
 
@@ -118,6 +127,7 @@ function NewProductPage() {
         status: form.status,
         active: form.status === "published",
         featured: form.featured,
+        new_arrival: form.new_arrival,
       };
 
       const product = await createProduct(payload);
@@ -141,6 +151,7 @@ function NewProductPage() {
         }
       }
 
+      setConfirmOpen(false);
       await navigate({
         to: "/admin/products",
       });
@@ -381,6 +392,15 @@ function NewProductPage() {
               </select>
             </label>
 
+            <label className="up-check up-new-arrival-check">
+              <input
+                type="checkbox"
+                checked={form.new_arrival}
+                onChange={(e) => setForm({ ...form, new_arrival: e.target.checked })}
+              />
+              <span><strong>NEW ARRIVAL</strong><small>Gắn nhãn nổi bật cho sản phẩm này trên cửa hàng.</small></span>
+            </label>
+
             <label className="up-check">
               <input
                 type="checkbox"
@@ -417,6 +437,24 @@ function NewProductPage() {
           </div>
         </form>
       </section>
+
+      {confirmOpen && (
+        <div className="up-product-confirm-backdrop" role="presentation" onMouseDown={(event) => { if (event.target === event.currentTarget && !saving) setConfirmOpen(false); }}>
+          <section className="up-product-confirm-modal" role="dialog" aria-modal="true" aria-labelledby="up-product-confirm-title">
+            <p className="up-admin-kicker">CONFIRM PRODUCT</p>
+            <h2 id="up-product-confirm-title">Xác nhận thêm sản phẩm?</h2>
+            <p>WEARO sẽ lưu <strong>{form.name.trim() || "sản phẩm mới"}</strong> vào danh mục. Bạn có thể quay lại chỉnh sửa nếu cần.</p>
+            <label className="up-check up-new-arrival-check up-confirm-new-arrival">
+              <input type="checkbox" checked={form.new_arrival} onChange={(event) => setForm({ ...form, new_arrival: event.target.checked })} />
+              <span><strong>Đánh dấu NEW ARRIVAL</strong><small>{form.new_arrival ? "Sản phẩm sẽ có nhãn NEW ARRIVAL nổi bật khi được hiển thị." : "Sản phẩm sẽ không mang nhãn NEW ARRIVAL."}</small></span>
+            </label>
+            <div className="up-product-confirm-actions">
+              <button type="button" className="up-admin-secondary" disabled={saving} onClick={() => setConfirmOpen(false)}>QUAY LẠI</button>
+              <button type="button" className="up-admin-primary" disabled={saving} onClick={() => void confirmCreateProduct()}>{saving ? "ĐANG LƯU…" : "XÁC NHẬN THÊM SẢN PHẨM"}</button>
+            </div>
+          </section>
+        </div>
+      )}
     </div>
   );
 }
