@@ -14,7 +14,11 @@ type DbCatalogProduct = { id: string; name: string; description: string; price: 
 const getShopProducts = createServerFn({ method: "GET" }).handler(async () => {
   const { supabaseRequest } = await import("@/lib/supabase.server");
   const rows = await supabaseRequest<DbCatalogProduct[]>("rpc/get_published_catalog", { method: "POST", body: "{}" });
-  return rows.map((product): Product => { const gallery = product.gallery ?? []; const primaryImage = gallery[0] ?? product.image ?? ""; return { id: product.id, name: product.name, price: Number(product.price), category: product.category, image: primaryImage, gallery: gallery.length > 0 ? gallery : [primaryImage], sizes: product.sizes ?? [], colors: product.colors ?? [], badge: product.featured ? "Featured" : undefined, fashionStyle: product.fashion_style ?? null, description: product.description }; });
+  const styleRows = rows.length
+    ? await supabaseRequest<{ id: string; fashion_style: Product["fashionStyle"] }[]>(`products?select=id,fashion_style&id=in.(${rows.map((product) => product.id).join(",")})`, { method: "GET" })
+    : [];
+  const styleById = new Map(styleRows.map((row) => [row.id, row.fashion_style]));
+  return rows.map((product): Product => { const gallery = product.gallery ?? []; const primaryImage = gallery[0] ?? product.image ?? ""; return { id: product.id, name: product.name, price: Number(product.price), category: product.category, image: primaryImage, gallery: gallery.length > 0 ? gallery : [primaryImage], sizes: product.sizes ?? [], colors: product.colors ?? [], badge: product.featured ? "Featured" : undefined, fashionStyle: styleById.get(product.id) ?? product.fashion_style ?? null, description: product.description }; });
 });
 
 export const Route = createFileRoute("/shop")({
