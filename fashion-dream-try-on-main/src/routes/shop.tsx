@@ -9,7 +9,7 @@ import { CATEGORIES, type Product } from "@/data/products";
 import { canonicalLink } from "@/lib/seo";
 import "@/styles/wearo-shop-page.scss";
 
-type DbCatalogProduct = { id: string; name: string; description: string; price: number; category: Product["category"]; image: string | null; featured: boolean; sizes: string[]; colors: string[]; gallery: string[]; total_stock: number; fashion_style?: "Street" | "Minimal" | "Smart casual" | "Y2K" | null; };
+type DbCatalogProduct = { id: string; name: string; description: string; price: number; category: Product["category"]; image: string | null; featured: boolean; sizes: string[]; colors: string[]; gallery: string[]; total_stock: number; fashion_style?: "Casual" | "Basic" | "Streetwear" | "Outing Style" | null; };
 
 const getShopProducts = createServerFn({ method: "GET" }).handler(async () => {
   const { supabaseRequest } = await import("@/lib/supabase.server");
