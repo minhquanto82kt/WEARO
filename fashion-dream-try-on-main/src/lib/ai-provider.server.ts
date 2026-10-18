@@ -19,8 +19,8 @@ export type AiProvider = {
 const OPENAI_IMAGE_MODEL = process.env.AI_IMAGE_MODEL?.trim() || "openai/gpt-image-2.5-flare";
 const REPLICATE_MODEL = process.env.REPLICATE_TRYON_MODEL?.trim() || "prunaai/p-image-try-on";
 const MAX_PROVIDER_ATTEMPTS = 2;
-const REPLICATE_WAIT_SECONDS = 45;
-const REPLICATE_DEADLINE_MS = 54_000;
+const REPLICATE_WAIT_SECONDS = 40;
+const REPLICATE_DEADLINE_MS = 45_000;
 
 type ReplicatePrediction = {
   id?: string;
@@ -79,7 +79,7 @@ async function fetchReplicateImage(url: string): Promise<AiImageOutput> {
   if (parsedUrl.protocol !== "https:" || !(parsedUrl.hostname === "replicate.delivery" || parsedUrl.hostname.endsWith(".replicate.delivery"))) {
     throw new Error("Replicate returned an unsupported image host.");
   }
-  const response = await fetchWithTimeoutAndRetry(parsedUrl, {}, { timeoutMs: 12_000, retries: 1 });
+  const response = await fetchWithTimeoutAndRetry(parsedUrl, {}, { timeoutMs: 8_000, retries: 0 });
   if (!response.ok) throw new Error(`Could not download Replicate output (${response.status}).`);
 
   const mediaType = response.headers.get("content-type")?.split(";")[0]?.trim().toLowerCase() || "image/webp";
