@@ -37,6 +37,7 @@ const emptyForm = {
   status: "draft" as Product["status"],
   featured: false,
   new_arrival: true,
+  fashion_style: "Street",
 };
 
 function slugify(value: string) {
@@ -131,6 +132,7 @@ function NewProductPage() {
         active: form.status === "published",
         featured: form.featured,
         new_arrival: form.new_arrival,
+        fashion_style: form.fashion_style,
       };
 
       const product = await createProduct(payload);
@@ -241,6 +243,16 @@ function NewProductPage() {
             </label>
 
             <div className="up-two-col">
+              <label>
+                Phong cách thời trang
+                <select value={form.fashion_style} onChange={(e) => setForm({ ...form, fashion_style: e.target.value })}>
+                  <option value="Street">Street</option>
+                  <option value="Minimal">Minimal</option>
+                  <option value="Smart casual">Smart casual</option>
+                  <option value="Y2K">Y2K</option>
+                </select>
+                <small className="up-style-helper">Phong cách này được lưu cùng sản phẩm và dùng để hiển thị thông tin trên trang sản phẩm.</small>
+              </label>
               <label>
                 Danh mục
 
