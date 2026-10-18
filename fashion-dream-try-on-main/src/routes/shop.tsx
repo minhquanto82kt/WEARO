@@ -35,6 +35,7 @@ function ShopPage() {
   const products = Route.useLoaderData();
   const [cat, setCat] = useState<string>(() => { if (typeof window === "undefined") return "all"; return new URLSearchParams(window.location.search).get("category") ?? "all"; });
   const [sort, setSort] = useState<string>("featured");
+  const [viewColumns, setViewColumns] = useState<3 | 4>(3);
   const [search, setSearch] = useState(() => { if (typeof window === "undefined") return ""; return new URLSearchParams(window.location.search).get("search") ?? ""; });
   const [filtersOpen, setFiltersOpen] = useState(false);
   const [activeBanner, setActiveBanner] = useState(0);
@@ -237,11 +238,17 @@ function ShopPage() {
               <p className="wearo-shop-section-label">WEARO / CURATED EVERYDAY</p>
               <h2 className="wearo-shop-results-title mt-2">{normalizedSearch ? `Kết quả cho “${search.trim()}”` : cat === "all" ? "Khám phá bộ sưu tập" : categoryName ?? "Bộ sưu tập"}</h2>
             </div>
-            {(activeFilterCount > 0 || sort !== "featured") && <button type="button" onClick={clearFilters} className="text-xs font-semibold text-[#54728C] underline underline-offset-4 hover:text-[#171717]">Đặt lại</button>}
+            <div className="flex flex-wrap items-center gap-3">
+              <div className="flex items-center gap-1" role="group" aria-label="Chế độ hiển thị sản phẩm">
+                <button type="button" onClick={() => setViewColumns(3)} aria-pressed={viewColumns === 3} className={`wearo-shop-view-mode ${viewColumns === 3 ? "is-active" : ""}`}>3 cột</button>
+                <button type="button" onClick={() => setViewColumns(4)} aria-pressed={viewColumns === 4} className={`wearo-shop-view-mode ${viewColumns === 4 ? "is-active" : ""}`}>4 cột</button>
+              </div>
+              {(activeFilterCount > 0 || sort !== "featured") && <button type="button" onClick={clearFilters} className="text-xs font-semibold text-[#54728C] underline underline-offset-4 hover:text-[#171717]">Đặt lại</button>}
+            </div>
           </div>
 
           {list.length > 0 ? (
-            <div className="grid gap-x-5 gap-y-10 sm:grid-cols-2 lg:grid-cols-3" aria-live="polite">
+            <div className={`grid gap-x-4 gap-y-10 sm:grid-cols-2 ${viewColumns === 4 ? "lg:grid-cols-4" : "lg:grid-cols-3"}`} aria-live="polite">
               {list.map((product) => <ProductCard key={product.id} product={product} />)}
             </div>
           ) : (
