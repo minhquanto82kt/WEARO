@@ -46,6 +46,19 @@ npm run build
 npm run test:smoke
 ```
 
+## Virtual Try-On provider
+
+The Try-On server provider is selected with the server-only `AI_IMAGE_PROVIDER` variable:
+
+- `openai` (default): uses the existing AI SDK / OpenAI Gateway integration.
+- `replicate`: uses Replicate's HTTPS API and the `prunaai/p-image-try-on` model by default.
+
+For Replicate, configure `REPLICATE_API_TOKEN` as a server-side Vercel Environment Variable. Optionally set `REPLICATE_TRYON_MODEL` to another compatible Replicate model in `owner/model` format. Keep the token out of source control and never prefix it with `VITE_`.
+
+The Replicate provider is used by Virtual Try-On jobs; the separate AI Concept generation flow remains on its existing AI SDK model. The AI Studio consent notice discloses that uploaded images are processed by a third-party AI provider.
+
+Run the provider configuration/invariant check with `npm run test:replicate-provider`. This check validates the integration wiring; a real end-to-end test still requires a valid Replicate token and successful provider response.
+
 ## Documentation
 
 - [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) — layers, ownership and data boundaries
