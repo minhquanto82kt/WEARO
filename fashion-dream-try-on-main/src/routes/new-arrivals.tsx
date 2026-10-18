@@ -26,7 +26,7 @@ const getNewArrivals = createServerFn({ method: "GET" }).handler(async () => {
       category: product.category, image: primaryImage,
       gallery: gallery.length ? gallery : [primaryImage],
       sizes: product.sizes ?? [], colors: product.colors ?? [],
-      badge: "New drop", description: product.description,
+      description: product.description,
     };
   });
 });
