@@ -11,7 +11,7 @@ import { generateWearoAiReply } from "@/lib/wearo-ai-chat.functions";
 import { getStylistRecommendations } from "@/lib/stylist.functions";
 import { getCustomerAccessToken } from "@/lib/auth";
 
-const STYLES = ["Street", "Minimal", "Smart casual", "Y2K"];
+const STYLES = ["Casual", "Basic", "Streetwear", "Outing Style"];
 const OCCASIONS = ["Đi học", "Đi làm", "Hẹn hò", "Đi chơi"];
 const CONSENT_KEY = "wearo-ai-studio-consent-v2";
 
@@ -339,7 +339,7 @@ function AiPage() {
   const search = Route.useSearch();
   const [consented, setConsented] = useState(false);
   const [consentReady, setConsentReady] = useState(false);
-  const [style, setStyle] = useState("Street");
+  const [style, setStyle] = useState("Casual");
   const [occasion, setOccasion] = useState("Đi chơi");
   const [brief, setBrief] = useState("");
   const [result, setResult] = useState("");
@@ -463,8 +463,8 @@ function AiPage() {
             </header>
 
             <div className="wearo-ai-start-choices" role="group" aria-label="Chọn cách bắt đầu">
-              <button type="button" data-active={mode === "concept"} onClick={() => setMode("concept")}><span>01</span><strong>Tạo outfit với AI</strong><small>Chọn phong cách và dịp sử dụng</small></button>
-              <button type="button" data-active={mode === "tryon"} onClick={() => setMode("tryon")}><span>02</span><strong>Thử một sản phẩm</strong><small>Chọn sản phẩm và tải ảnh của bạn</small></button>
+              <button type="button" data-active={mode === "tryon"} onClick={() => setMode("tryon")}><span>01</span><strong>AI Virtual Try-on</strong><small>Tải ảnh của bạn và thử sản phẩm trực tiếp</small></button>
+              <button type="button" data-active={mode === "concept"} onClick={() => setMode("concept")}><span>02</span><strong>AI Stylist</strong><small>Tạo outfit theo phong cách và dịp sử dụng</small></button>
             </div>
 
             {mode === "concept" ? <>
@@ -532,7 +532,6 @@ function AiPage() {
                     </div>
                   ) : result ? (
                     <div className="min-h-[330px] border border-[rgba(84,114,140,.18)] bg-[rgba(242,206,174,.12)] p-5">
-                      <p className="mb-4 text-[10px] font-semibold uppercase tracking-[.16em] text-[#54728C]">WEARO AI Stylist</p>
                       <p className="whitespace-pre-wrap text-sm leading-7 text-[#171717]">{result}</p>
                     </div>
                   ) : (
@@ -546,8 +545,9 @@ function AiPage() {
                   )}
 
                   <div className="wearo-ai-tools">
-                    <Link to="/ai/assistant" className="wearo-ai-tool"><strong>AI Stylist</strong><span>Trò chuyện trực tiếp để tinh chỉnh outfit.</span></Link>
-                    <Link to="/shop" className="wearo-ai-tool"><strong>Shop</strong><span>Khám phá sản phẩm sau khi có concept.</span></Link>
+                    <Link to="/shop" className="wearo-ai-tool" aria-label="Mở cửa hàng WEARO" title="Mở cửa hàng WEARO">
+                      <img src="/brand/wearo-shop-icon.svg" alt="" aria-hidden="true" className="h-6 w-6" />
+                    </Link>
                   </div>
                 </div>
               </aside>
