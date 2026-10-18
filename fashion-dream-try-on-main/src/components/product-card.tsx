@@ -69,7 +69,7 @@ export function ProductCard({ product }: { product: Product }) {
         <img src={product.image} alt={product.name} loading="lazy" decoding="async" sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw" className="fashion-product-image__primary" />
         {secondaryImage && <img src={secondaryImage} alt="" aria-hidden="true" loading="lazy" decoding="async" sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw" className="fashion-product-image__secondary" />}
         <div className="fashion-product-labels" aria-label="Product labels">
-          {product.badge && <span className="fashion-product-badge">{product.badge}</span>}
+          {product.badge && <span className={`fashion-product-badge${product.badge.toLowerCase().includes("new arrival") ? " fashion-product-badge--new-arrival" : ""}`}>{product.badge}</span>}
           {hasSale && <span className="fashion-product-badge fashion-product-badge--sale">SALE</span>}
           {tags.map((tag) => <span key={tag} className="fashion-product-tag">{tag}</span>)}
         </div>
