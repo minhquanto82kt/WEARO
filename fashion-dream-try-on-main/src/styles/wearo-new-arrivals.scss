@@ -176,3 +176,19 @@
 @media (prefers-reduced-motion: reduce) {
   .wearo-new-arrivals-page * { transition-duration: .01ms !important; }
 }
+
+/* High-contrast merchandising label for explicitly selected new products. */
+.wearo-new-arrivals-page .fashion-product-badge--new-arrival {
+  display: inline-flex;
+  align-items: center;
+  min-height: 28px;
+  padding: 7px 10px;
+  border: 1px solid #20201e;
+  background: #20201e;
+  color: #fff;
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: .13em;
+  line-height: 1;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, .16);
+}
