@@ -21,6 +21,7 @@
     "test:phase-b-c": "node tests/smoke/phase-b-c-invariants.mjs",
     "test:phase-d-e": "node tests/smoke/phase-d-e-invariants.mjs",
     "test:phase-f-security": "node tests/security/phase-f-security.mjs",
+    "test:replicate-provider": "node tests/smoke/replicate-provider-invariants.mjs",
     "test:customer-experience": "node tests/smoke/customer-experience.mjs",
     "audit:architecture": "node scripts/audit-architecture.mjs",
     "audit:dependencies": "npm audit --audit-level=high",
