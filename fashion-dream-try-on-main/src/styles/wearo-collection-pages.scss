@@ -2,7 +2,7 @@
 .wearo-collection-page {
   --collection-ink: #171717;
   --collection-primary: #54728C;
-  --collection-secondary: #7794A6;
+  --collection-secondary: #8EAD91;
   --collection-accent: #F2CEAE;
   --collection-paper: #F8F6F2;
   min-height: 100vh;
@@ -21,11 +21,11 @@
   --collection-accent: #D7F27C;
   --collection-paper: #F3F4EE;
 }
-.wearo-collection-page[data-collection="outerwear"] {
-  --collection-primary: #344653;
+.wearo-collection-page[data-collection="outing-style"] {
+  --collection-primary: #355C4A;
   --collection-secondary: #7794A6;
-  --collection-accent: #D9BBA9;
-  --collection-paper: #F7F4EF;
+  --collection-accent: #E7B879;
+  --collection-paper: #F2F4ED;
 }
 .wearo-collection-main { width: min(100% - 40px, 1320px); margin: 0 auto; padding: 22px 0 72px; }
 .wearo-collection-breadcrumb { display: flex; align-items: center; gap: 10px; color: rgba(23,23,23,.52); font-size: 11px; letter-spacing: .08em; text-transform: uppercase; }
