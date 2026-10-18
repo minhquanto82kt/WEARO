@@ -9,12 +9,12 @@ import { CATEGORIES, type Product } from "@/data/products";
 import { canonicalLink } from "@/lib/seo";
 import "@/styles/wearo-shop-page.scss";
 
-type DbCatalogProduct = { id: string; name: string; description: string; price: number; category: Product["category"]; image: string | null; featured: boolean; sizes: string[]; colors: string[]; gallery: string[]; total_stock: number; };
+type DbCatalogProduct = { id: string; name: string; description: string; price: number; category: Product["category"]; image: string | null; featured: boolean; sizes: string[]; colors: string[]; gallery: string[]; total_stock: number; fashion_style?: "Street" | "Minimal" | "Smart casual" | "Y2K" | null; };
 
 const getShopProducts = createServerFn({ method: "GET" }).handler(async () => {
   const { supabaseRequest } = await import("@/lib/supabase.server");
   const rows = await supabaseRequest<DbCatalogProduct[]>("rpc/get_published_catalog", { method: "POST", body: "{}" });
-  return rows.map((product): Product => { const gallery = product.gallery ?? []; const primaryImage = gallery[0] ?? product.image ?? ""; return { id: product.id, name: product.name, price: Number(product.price), category: product.category, image: primaryImage, gallery: gallery.length > 0 ? gallery : [primaryImage], sizes: product.sizes ?? [], colors: product.colors ?? [], badge: product.featured ? "Featured" : undefined, description: product.description }; });
+  return rows.map((product): Product => { const gallery = product.gallery ?? []; const primaryImage = gallery[0] ?? product.image ?? ""; return { id: product.id, name: product.name, price: Number(product.price), category: product.category, image: primaryImage, gallery: gallery.length > 0 ? gallery : [primaryImage], sizes: product.sizes ?? [], colors: product.colors ?? [], badge: product.featured ? "Featured" : undefined, fashionStyle: product.fashion_style ?? null, description: product.description }; });
 });
 
 export const Route = createFileRoute("/shop")({
