@@ -123,6 +123,46 @@
   background: rgba(255, 255, 255, 0.82);
 }
 
+/* Fashion style labels use distinct, brand-palette-only color combinations. */
+.fashion-product-style {
+  display: inline-flex;
+  min-height: 22px;
+  align-items: center;
+  padding: 4px 8px;
+  border: 1px solid transparent;
+  border-radius: 3px;
+  font-size: 8px;
+  font-weight: 800;
+  letter-spacing: .12em;
+  line-height: 1;
+  text-transform: uppercase;
+  backdrop-filter: blur(8px);
+}
+
+.fashion-product-style--street {
+  color: #F2CEAE;
+  background: #54728C;
+  border-color: #54728C;
+}
+
+.fashion-product-style--minimal {
+  color: #54728C;
+  background: #F2CEAE;
+  border-color: #D9BBA9;
+}
+
+.fashion-product-style--smart-casual {
+  color: #F2CEAE;
+  background: #7794A6;
+  border-color: #54728C;
+}
+
+.fashion-product-style--y2k {
+  color: #54728C;
+  background: #F2AD94;
+  border-color: #D9BBA9;
+}
+
 .fashion-product-card:hover .fashion-product-badge,
 .fashion-product-card:hover .fashion-product-tag {
   transform: translateY(-1px);
