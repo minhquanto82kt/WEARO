@@ -2,9 +2,17 @@
 
 This directory contains shared application logic used by routes and UI components. Keep one source of truth for each responsibility and keep server-only code separate from browser-safe helpers.
 
-## Inventory checked on `feature/product-admin`
+## Current refactor status
 
-The directory contains **56 entries including this README** (55 TypeScript/TSX source files and this documentation file). The list below is a directory inventory by filename. Responsibilities are inferred from names and from the contents of the files inspected; filenames alone are not proof that two modules are interchangeable.
+The first low-risk domain migration has been applied on `feature/product-admin`:
+
+- Implementations for appearance branding, content, palettes, and theme workflow now live in `appearance/`.
+- The original root-level paths remain as compatibility re-exports, so existing imports can continue working while consumers are migrated deliberately.
+- `theme.ts` remains at the root because it imports global style sheets and branding side effects and is used as a shared theme entry point.
+- No Supabase modules have been moved or merged. The two similarly named user-Supabase modules expose different APIs and need a complete caller/security review first.
+- AI server functions and order functions have not been moved yet; their server-function boundaries and dynamic imports need dedicated checks.
+
+## Current top-level modules by domain
 
 ### AI and try-on
 - `ai-jobs.server.ts`
@@ -43,10 +51,8 @@ The directory contains **56 entries including this README** (55 TypeScript/TSX s
 - `security-headers.ts`
 
 ### Appearance, brand and design system
-- `appearance-branding.ts`
-- `appearance-content.ts`
-- `appearance-palettes.ts`
-- `appearance-theme-workflow.ts`
+- `appearance/` — migrated implementation modules
+- `appearance-branding.ts`, `appearance-content.ts`, `appearance-palettes.ts`, `appearance-theme-workflow.ts` — compatibility re-exports
 - `brand.ts`
 - `branding.ts`
 - `design-system.ts`
@@ -59,7 +65,6 @@ The directory contains **56 entries including this README** (55 TypeScript/TSX s
 - `journal-markdown.tsx`
 - `journal.functions.ts`
 - `site-content.ts`
-- `wearo-ai-chat.ts`
 
 ### Shared UI, analytics, errors and utilities
 - `analytics.ts`
@@ -74,43 +79,29 @@ The directory contains **56 entries including this README** (55 TypeScript/TSX s
 - `wishlist.ts`
 - `product-reviews.ts`
 
-## Findings and refactor decision
+## Important dependency and security findings
 
-### 1. Do not merge similarly named Supabase modules yet
+### Supabase modules are not confirmed duplicates
 
-Both `supabase-user.server.ts` and `supabase.user.server.ts` exist. The inspected contents show that they expose different APIs:
+- `supabase-user.server.ts` exports `supabaseUserRequest(path, accessToken, options?)`.
+- `supabase.user.server.ts` exports `supabaseUserRequest(accessToken, requestCallback)`, verifies the user through Auth, and provides a request client plus verified user ID.
 
-- `supabase-user.server.ts` exports `supabaseUserRequest(path, accessToken, options?)` and performs a REST request using the provided access token.
-- `supabase.user.server.ts` exports `supabaseUserRequest(accessToken, requestCallback)`, verifies the user through Auth, then supplies a request client and verified user ID to the callback.
+Do not merge or rename these modules without tracing all call sites and reviewing authorization semantics. Keep privileged server code and secrets out of browser modules.
 
-They are **not drop-in duplicates**. Do not delete, rename, or consolidate either one until every import and call site has been traced and their security/authorization semantics have been reviewed.
+### Other similar names
 
-### 2. Similar suffixes are not sufficient reason to move files
-
-- `.functions.ts` is used for server-function modules, but the modules represent different domains and may be imported directly by routes/components.
-- `.server.ts` marks server-oriented modules; do not move code in a way that weakens the server/client boundary.
-- `wearo-ai-chat.ts` is a tiny prompt constant while `wearo-ai-chat.functions.ts` contains server logic. Their similar names do not mean they should be combined automatically.
+- `wearo-ai-chat.ts` contains prompt configuration; `wearo-ai-chat.functions.ts` contains server logic.
 - `admin-tags.ts` and `admin-product-tags.ts` serve different endpoints; the latter imports the `AdminTag` type from the former.
+- The `.functions.ts` and `.server.ts` suffixes describe execution boundaries and should not be treated as evidence of duplication.
 
-### 3. Proposed target organization — not applied
+## Validation still required
 
-A future structure could group modules by domain:
+This change was committed directly to `feature/product-admin`, but the repository has not been built or tested in a local branch checkout in this session. Do not treat the migration as verified until these pass:
 
-- `ai/`: try-on, provider, jobs, stylist and chat modules.
-- `orders/`: order, cancellation and admin order modules.
-- `appearance/`: appearance branding, content, palettes and theme workflow.
-- `supabase/`: only after a verified import graph and server/client boundary review.
+1. `npm run lint`
+2. `npm run typecheck`
+3. `npm run build`
+4. `npm run audit:architecture`
+5. Relevant smoke/security tests and the resulting Vercel deployment
 
-This is a proposal only. Moving files requires updating every static and dynamic import, aliases, tests, architecture checks and any path-based tooling in the same change. The available code-search results did not provide a complete, branch-specific import graph, so they are not sufficient evidence to perform a safe bulk move.
-
-## Safe next step
-
-1. Use a branch-local checkout or a complete branch-specific Git tree/code search to map every import and dynamic import of each candidate file.
-2. Review `scripts/audit-architecture.mjs` and tests for assumptions about current paths.
-3. Choose one cohesive, low-risk domain and move it atomically with all import updates.
-4. Run `npm run lint`, `npm run typecheck`, `npm run build`, and relevant smoke/security tests.
-5. Verify the new commit's CI and Vercel deployment before declaring success.
-
-## Maintenance rule
-
-Add a subfolder README only when the folder has meaningful architecture, security, or usage rules that are not obvious from its filenames. Do not create README files merely to fill every directory.
+The original import paths are retained as shims specifically to reduce migration risk. Do not remove those shims until every consumer has been moved and the full checks pass.
