@@ -2,13 +2,13 @@
 
 **Phạm vi:** trang collection Outing Style.
 
-| Vai trò | HEX |
-|---|---|
-| Primary — màu chính | `#355C4A` |
-| Secondary — màu phụ | `#8EAD91` |
-| Accent — màu nhấn | `#E7B879` |
-| Paper — nền trang | `#F2F4ED` |
-| Ink — chữ mặc định | `#171717` |
+| Vai trò | Preview | HEX |
+|---|---|---|
+| Primary — màu chính | ![#355C4A](https://img.shields.io/badge/-%23355C4A-355C4A?style=flat-square) | `#355C4A` |
+| Secondary — màu phụ | ![#8EAD91](https://img.shields.io/badge/-%238EAD91-8EAD91?style=flat-square) | `#8EAD91` |
+| Accent — màu nhấn | ![#E7B879](https://img.shields.io/badge/-%23E7B879-E7B879?style=flat-square) | `#E7B879` |
+| Paper — nền trang | ![#F2F4ED](https://img.shields.io/badge/-%23F2F4ED-F2F4ED?style=flat-square) | `#F2F4ED` |
+| Ink — chữ mặc định | ![#171717](https://img.shields.io/badge/-%23171717-171717?style=flat-square) | `#171717` |
 
 ## CSS variables
 
