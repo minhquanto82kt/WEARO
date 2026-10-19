@@ -7,10 +7,11 @@ This directory contains shared application logic used by routes and UI component
 The first low-risk domain migration has been applied on `feature/product-admin`:
 
 - Implementations for appearance branding, content, palettes, and theme workflow now live in `appearance/`.
+- Customer order, cancellation, and admin order server functions now live in `orders/`.
 - The original root-level paths remain as compatibility re-exports, so existing imports can continue working while consumers are migrated deliberately.
 - `theme.ts` remains at the root because it imports global style sheets and branding side effects and is used as a shared theme entry point.
 - No Supabase modules have been moved or merged. The two similarly named user-Supabase modules expose different APIs and need a complete caller/security review first.
-- AI server functions and order functions have not been moved yet; their server-function boundaries and dynamic imports need dedicated checks.
+- AI server functions have not been moved yet; their server-function boundaries and dynamic imports need dedicated checks.
 
 ## Current top-level modules by domain
 
@@ -24,12 +25,12 @@ The first low-risk domain migration has been applied on `feature/product-admin`:
 
 ### Admin, product, inventory and order
 - `admin-dashboard.functions.ts`
-- `admin-order.functions.ts`
+- `admin-order.functions.ts` — compatibility re-export; implementation lives in `orders/`
 - `admin-product-tags.ts`
 - `admin-tags.ts`
 - `product-admin.functions.ts`
-- `order.functions.ts`
-- `order-cancel.functions.ts`
+- `orders/` — moved customer order and cancellation implementations
+- `order.functions.ts`, `order-cancel.functions.ts` — compatibility re-exports
 
 ### Cart, customer and authentication
 - `auth.ts`
