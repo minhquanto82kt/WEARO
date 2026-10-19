@@ -17,6 +17,7 @@ export type AiProvider = {
 };
 
 const OPENAI_IMAGE_MODEL = process.env.AI_IMAGE_MODEL?.trim() || "openai/gpt-image-2.5-flare";
+const OPENAI_IMAGE_FALLBACK_MODEL = process.env.AI_IMAGE_FALLBACK_MODEL?.trim() || "openai/gpt-image-2.5-sunburst";
 const REPLICATE_MODEL = process.env.REPLICATE_TRYON_MODEL?.trim() || "prunaai/p-image-try-on";
 const MAX_PROVIDER_ATTEMPTS = 2;
 const REPLICATE_WAIT_SECONDS = 40;
@@ -157,25 +158,34 @@ const replicateProvider: AiProvider = {
 const openAiGatewayProvider: AiProvider = {
   name: "openai-gateway",
   async generateImage(input) {
-    let lastError: unknown;
-    for (let attempt = 1; attempt <= MAX_PROVIDER_ATTEMPTS; attempt += 1) {
-      try {
-        const prompt = input.images?.length ? { text: input.prompt, images: input.images } : input.prompt;
-        const result = await generateImage({
-          model: OPENAI_IMAGE_MODEL,
-          prompt,
-          n: 1,
-        });
-        const image = result.image;
-        if (!image?.base64) throw new Error("AI provider returned no image.");
-        return { base64: image.base64, mediaType: image.mediaType };
-      } catch (error) {
-        lastError = error;
-        if (attempt >= MAX_PROVIDER_ATTEMPTS || !isRetryable(error)) break;
-        await new Promise((resolve) => setTimeout(resolve, 500 * attempt));
+    const models = [...new Set([OPENAI_IMAGE_MODEL, OPENAI_IMAGE_FALLBACK_MODEL].filter(Boolean))];
+    const failures: string[] = [];
+
+    for (const model of models) {
+      let lastError: unknown;
+      for (let attempt = 1; attempt <= MAX_PROVIDER_ATTEMPTS; attempt += 1) {
+        try {
+          const prompt = input.images?.length ? { text: input.prompt, images: input.images } : input.prompt;
+          const result = await generateImage({
+            model,
+            prompt,
+            n: 1,
+          });
+          const image = result.image;
+          if (!image?.base64) throw new Error("AI provider returned no image.");
+          return { base64: image.base64, mediaType: image.mediaType };
+        } catch (error) {
+          lastError = error;
+          if (attempt >= MAX_PROVIDER_ATTEMPTS || !isRetryable(error)) break;
+          await new Promise((resolve) => setTimeout(resolve, 500 * attempt));
+        }
       }
+
+      const detail = lastError instanceof Error ? lastError.message.slice(0, 300) : "unknown provider error";
+      failures.push(`${model}: ${detail}`);
     }
-    throw lastError instanceof Error ? lastError : new Error("AI image provider failed.");
+
+    throw new Error(`GPT Image primary and fallback models failed. ${failures.join(" | ")}`);
   },
 };
 
