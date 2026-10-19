@@ -415,3 +415,31 @@ body .fashion-nav .fashion-shop-mega .fashion-shop-category::after {
     transition-duration: .01ms !important;
   }
 }
+
+/* Mega-menu clarity: product types and style collections are separate groups. */
+body .fashion-nav .fashion-shop-mega .fashion-shop-category-grid::before {
+  content: "01 / PRODUCT CATEGORIES";
+  grid-column: 1 / -1;
+  color: #54728C;
+  font: 700 10px/1.2 "Space Grotesk", Arial, sans-serif;
+  letter-spacing: .1em;
+  margin-bottom: 2px;
+}
+body .fashion-nav .fashion-shop-mega .fashion-shop-discovery-grid::before {
+  content: "02 / SHOP BY STYLE";
+  color: #54728C;
+  font: 700 10px/1.2 "Space Grotesk", Arial, sans-serif;
+  letter-spacing: .1em;
+  margin-bottom: 2px;
+}
+body .fashion-nav .fashion-shop-mega .fashion-shop-ai-shortcut {
+  border-color: rgba(242,173,148,.8) !important;
+  background: rgba(242,206,174,.18) !important;
+}
+body .fashion-nav .fashion-shop-mega .fashion-shop-ai-shortcut::before {
+  background: #54728C !important;
+}
+body .fashion-nav .fashion-shop-mega .fashion-shop-category-grid > .fashion-menu-label,
+body .fashion-nav .fashion-shop-mega .fashion-shop-discovery-grid > .fashion-menu-label {
+  display: none !important;
+}
