@@ -1,108 +1,123 @@
 # `src/lib` — Application Logic
 
-This directory contains shared application logic used by routes and UI components. Keep one source of truth for each responsibility and keep server-only code separate from browser-safe helpers.
+Shared application logic for routes and UI components. Keep one source of truth per responsibility, preserve server/client boundaries, and avoid moving modules until their callers and security semantics have been reviewed.
 
-## Current refactor status
+## Directory map
 
-The first low-risk domain migration has been applied on `feature/product-admin`:
+The tree below reflects the **current repository state** on `feature/product-admin`. It distinguishes implementation folders from root-level compatibility entry points so a reader can see what has actually been migrated.
 
-- Implementations for appearance branding, content, palettes, and theme workflow now live in `appearance/`.
-- Customer order, cancellation, and admin order server functions now live in `orders/`.
-- The original root-level paths remain as compatibility re-exports, so existing imports can continue working while consumers are migrated deliberately.
-- `theme.ts` remains at the root because it imports global style sheets and branding side effects and is used as a shared theme entry point.
-- No Supabase modules have been moved or merged. The two similarly named user-Supabase modules expose different APIs and need a complete caller/security review first.
-- AI server functions have not been moved yet; their server-function boundaries and dynamic imports need dedicated checks.
+```text
+src/lib/
+├── README.md
+├── appearance/                         # Appearance implementation
+│   ├── branding / content / palettes
+│   └── theme workflow
+├── orders/                              # Order implementation
+│   ├── customer order functions
+│   ├── cancellation functions
+│   └── admin order functions
+│
+├── AI & virtual try-on
+│   ├── ai-jobs.server.ts
+│   ├── ai-provider.server.ts
+│   ├── ai.functions.ts
+│   ├── stylist.functions.ts
+│   ├── wearo-ai-chat.functions.ts
+│   └── wearo-ai-chat.ts
+│
+├── Admin, products & inventory
+│   ├── admin-dashboard.functions.ts
+│   ├── admin-product-tags.ts
+│   ├── admin-tags.ts
+│   └── product-admin.functions.ts
+│
+├── Cart, customers & authentication
+│   ├── auth.ts
+│   ├── cart.server.functions.ts
+│   ├── cart.tsx
+│   ├── customer-context.server.ts
+│   ├── member.functions.ts
+│   ├── mock-user.functions.ts
+│   └── mock-user.ts
+│
+├── Supabase & server infrastructure
+│   ├── supabase.server.ts
+│   ├── supabase-user.server.ts
+│   ├── supabase.user.server.ts
+│   ├── upthink-supabase.ts
+│   ├── server-reliability.ts
+│   ├── feature-flags.server.ts
+│   ├── rate-limit.server.ts
+│   ├── request-security.server.ts
+│   ├── security-headers.ts
+│   └── momo.server.ts
+│
+├── Appearance, brand & design system
+│   ├── appearance-branding.ts             # Compatibility re-export
+│   ├── appearance-content.ts              # Compatibility re-export
+│   ├── appearance-palettes.ts             # Compatibility re-export
+│   ├── appearance-theme-workflow.ts       # Compatibility re-export
+│   ├── brand.ts
+│   ├── branding.ts
+│   ├── design-system.ts
+│   ├── theme.ts                           # Shared theme entry point; stays at root
+│   └── wearo-color-system.ts
+│
+├── Content, invoices & communication
+│   ├── invoice.client.ts
+│   ├── invoice.functions.ts
+│   ├── journal-markdown.tsx
+│   ├── journal.functions.ts
+│   └── site-content.ts
+│
+└── Shared UI, analytics, errors & utilities
+    ├── analytics.ts
+    ├── error-capture.ts
+    ├── error-page.ts
+    ├── i18n.tsx
+    ├── index.tsx
+    ├── lovable-error-reporting.ts
+    ├── product-reviews.ts
+    ├── seo.ts
+    ├── utils.ts
+    ├── vietqr.ts
+    └── wishlist.ts
+```
 
-## Current top-level modules by domain
+> **Reading note:** The category labels in this diagram are visual groupings, not physical directories. The actual directories currently present are `appearance/` and `orders/`; other modules remain at the root until import paths and execution boundaries are verified.
 
-### AI and try-on
-- `ai-jobs.server.ts`
-- `ai-provider.server.ts`
-- `ai.functions.ts`
-- `stylist.functions.ts`
-- `wearo-ai-chat.functions.ts`
-- `wearo-ai-chat.ts`
+## Current migration status
 
-### Admin, product, inventory and order
-- `admin-dashboard.functions.ts`
-- `admin-order.functions.ts` — compatibility re-export; implementation lives in `orders/`
-- `admin-product-tags.ts`
-- `admin-tags.ts`
-- `product-admin.functions.ts`
-- `orders/` — moved customer order and cancellation implementations
-- `order.functions.ts`, `order-cancel.functions.ts` — compatibility re-exports
+- `appearance/` contains the implementations for appearance branding, content, palettes, and theme workflow.
+- `orders/` contains the migrated customer order, cancellation, and admin order implementations.
+- Root-level `appearance-*.ts`, `admin-order.functions.ts`, `order.functions.ts`, and `order-cancel.functions.ts` paths are compatibility re-exports. Keep them until consumers have been migrated and checks pass.
+- `theme.ts` stays at the root because it imports global style sheets and branding side effects and is used as a shared theme entry point.
+- No Supabase modules have been moved or merged. `supabase-user.server.ts` and `supabase.user.server.ts` expose different APIs; review all callers and authorization semantics before changing either.
+- AI server functions remain at the root until server-function boundaries and dynamic imports are reviewed.
 
-### Cart, customer and authentication
-- `auth.ts`
-- `cart.server.functions.ts`
-- `cart.tsx`
-- `customer-context.server.ts`
-- `member.functions.ts`
-- `mock-user.functions.ts`
-- `mock-user.ts`
-
-### Supabase and server infrastructure
-- `supabase.server.ts`
-- `supabase-user.server.ts`
-- `supabase.user.server.ts`
-- `server-reliability.ts`
-- `feature-flags.server.ts`
-- `rate-limit.server.ts`
-- `request-security.server.ts`
-- `security-headers.ts`
-
-### Appearance, brand and design system
-- `appearance/` — migrated implementation modules
-- `appearance-branding.ts`, `appearance-content.ts`, `appearance-palettes.ts`, `appearance-theme-workflow.ts` — compatibility re-exports
-- `brand.ts`
-- `branding.ts`
-- `design-system.ts`
-- `theme.ts`
-- `wearo-color-system.ts`
-
-### Content, invoices and communication
-- `invoice.client.ts`
-- `invoice.functions.ts`
-- `journal-markdown.tsx`
-- `journal.functions.ts`
-- `site-content.ts`
-
-### Shared UI, analytics, errors and utilities
-- `analytics.ts`
-- `error-capture.ts`
-- `error-page.ts`
-- `i18n.tsx`
-- `index.tsx`
-- `lovable-error-reporting.ts`
-- `seo.ts`
-- `utils.ts`
-- `vietqr.ts`
-- `wishlist.ts`
-- `product-reviews.ts`
-
-## Important dependency and security findings
+## Module boundaries and cautions
 
 ### Supabase modules are not confirmed duplicates
 
 - `supabase-user.server.ts` exports `supabaseUserRequest(path, accessToken, options?)`.
 - `supabase.user.server.ts` exports `supabaseUserRequest(accessToken, requestCallback)`, verifies the user through Auth, and provides a request client plus verified user ID.
 
-Do not merge or rename these modules without tracing all call sites and reviewing authorization semantics. Keep privileged server code and secrets out of browser modules.
+Do not merge or rename these modules without tracing call sites and reviewing authorization. Keep privileged server code and secrets out of browser modules.
 
 ### Other similar names
 
 - `wearo-ai-chat.ts` contains prompt configuration; `wearo-ai-chat.functions.ts` contains server logic.
 - `admin-tags.ts` and `admin-product-tags.ts` serve different endpoints; the latter imports the `AdminTag` type from the former.
-- The `.functions.ts` and `.server.ts` suffixes describe execution boundaries and should not be treated as evidence of duplication.
+- The `.functions.ts` and `.server.ts` suffixes describe execution boundaries and are not evidence of duplication.
 
-## Validation still required
+## Validation required before further moves
 
-This change was committed directly to `feature/product-admin`, but the repository has not been built or tested in a local branch checkout in this session. Do not treat the migration as verified until these pass:
+The migration has not been verified by a local build in this session. Before moving more modules or removing compatibility re-exports, run:
 
 1. `npm run lint`
 2. `npm run typecheck`
 3. `npm run build`
 4. `npm run audit:architecture`
-5. Relevant smoke/security tests and the resulting Vercel deployment
+5. Relevant smoke/security tests and verify the resulting Vercel deployment.
 
-The original import paths are retained as shims specifically to reduce migration risk. Do not remove those shims until every consumer has been moved and the full checks pass.
+GitHub commits alone do not prove that runtime imports, server/client boundaries, or production behavior remain correct.
