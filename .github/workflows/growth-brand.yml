@@ -24,14 +24,16 @@ jobs:
           node-version: 24
       - name: Verify Growth/SEO foundations
         run: |
+          test -f src/lib/seo/seo.ts
+          test -f src/lib/analytics/analytics.ts
           test -f src/lib/seo.ts
           test -f src/lib/analytics.ts
-          grep -q 'canonicalLink' src/lib/seo.ts
-          grep -q 'organizationSchema' src/lib/seo.ts
-          grep -q 'websiteSchema' src/lib/seo.ts
-          grep -q 'product_view' src/lib/analytics.ts
-          grep -q 'purchase_complete' src/lib/analytics.ts
-          grep -q 'ai_try_on_start' src/lib/analytics.ts
+          grep -q 'canonicalLink' src/lib/seo/seo.ts
+          grep -q 'organizationSchema' src/lib/seo/seo.ts
+          grep -q 'websiteSchema' src/lib/seo/seo.ts
+          grep -q 'product_view' src/lib/analytics/analytics.ts
+          grep -q 'purchase_complete' src/lib/analytics/analytics.ts
+          grep -q 'ai_try_on_start' src/lib/analytics/analytics.ts
           echo 'Growth foundation: PASS'
       - name: Run WEARO brand governance
         run: node scripts/ci/brand-governance.mjs
