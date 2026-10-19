@@ -2,13 +2,13 @@
 
 **Phạm vi:** trang collection Casual.
 
-| Vai trò | HEX | Xem màu |
+| Vai trò | Preview | HEX |
 |---|---|---|
-| Primary — màu chính | `#54728C` | <span style="display:inline-block;width:1.5em;height:1em;background:#54728C;border:1px solid #aaa"></span> |
-| Secondary — màu phụ | `#7794A6` | <span style="display:inline-block;width:1.5em;height:1em;background:#7794A6;border:1px solid #aaa"></span> |
-| Accent — màu nhấn | `#F2CEAE` | <span style="display:inline-block;width:1.5em;height:1em;background:#F2CEAE;border:1px solid #aaa"></span> |
-| Paper — nền trang | `#F8F6F2` | <span style="display:inline-block;width:1.5em;height:1em;background:#F8F6F2;border:1px solid #aaa"></span> |
-| Ink — chữ mặc định | `#171717` | <span style="display:inline-block;width:1.5em;height:1em;background:#171717;border:1px solid #aaa"></span> |
+| Primary — màu chính | ![#54728C](https://img.shields.io/badge/-%2354728C-54728C?style=flat-square) | `#54728C` |
+| Secondary — màu phụ | ![#7794A6](https://img.shields.io/badge/-%237794A6-7794A6?style=flat-square) | `#7794A6` |
+| Accent — màu nhấn | ![#F2CEAE](https://img.shields.io/badge/-%23F2CEAE-F2CEAE?style=flat-square) | `#F2CEAE` |
+| Paper — nền trang | ![#F8F6F2](https://img.shields.io/badge/-%23F8F6F2-F8F6F2?style=flat-square) | `#F8F6F2` |
+| Ink — chữ mặc định | ![#171717](https://img.shields.io/badge/-%23171717-171717?style=flat-square) | `#171717` |
 
 ## CSS variables
 
