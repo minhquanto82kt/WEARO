@@ -75,13 +75,19 @@ export async function saveAppearanceContent(value: Omit<AppearanceContent, "id" 
   const { url, key } = config();
   const accessToken = token();
   const payload = { id: "global", ...value, updated_at: new Date().toISOString() };
-  const response = await fetch(`${url}${ENDPOINT}?id=eq.global`, {
-    method: "PATCH",
-    headers: { apikey: key, Authorization: `Bearer ${accessToken}`, "Content-Type": "application/json", Prefer: "return=representation" },
+  const response = await fetch(`${url}${ENDPOINT}?on_conflict=id`, {
+    method: "POST",
+    headers: {
+      apikey: key,
+      Authorization: `Bearer ${accessToken}`,
+      "Content-Type": "application/json",
+      Prefer: "resolution=merge-duplicates,return=representation",
+    },
     body: JSON.stringify(payload),
   });
   if (!response.ok) throw new Error(`Appearance content save failed (${response.status}).`);
   const rows = await response.json() as Record<string, unknown>[];
+  if (!rows[0]) throw new Error("Appearance content save returned no record.");
   const result = mapRow(rows[0]);
   window.dispatchEvent(new CustomEvent("upthink:appearance:content", { detail: result }));
   return result;
@@ -100,11 +106,23 @@ export async function uploadAppearanceAsset(file: File, path: "dark-logo" | "mon
   if (!upload.ok) throw new Error(`Asset upload failed (${upload.status}).`);
   const publicUrl = `${url}/storage/v1/object/public/${BUCKET}/${path}?v=${Date.now()}`;
   const column = path === "dark-logo" ? "dark_logo_url" : path === "monogram" ? "monogram_url" : "social_image_url";
-  const response = await fetch(`${url}${ENDPOINT}?id=eq.global`, {
-    method: "PATCH",
-    headers: { apikey: key, Authorization: `Bearer ${accessToken}`, "Content-Type": "application/json", Prefer: "return=representation" },
-    body: JSON.stringify({ [column]: publicUrl, updated_at: new Date().toISOString() }),
+  const response = await fetch(`${url}${ENDPOINT}?on_conflict=id`, {
+    method: "POST",
+    headers: {
+      apikey: key,
+      Authorization: `Bearer ${accessToken}`,
+      "Content-Type": "application/json",
+      Prefer: "resolution=merge-duplicates,return=representation",
+    },
+    body: JSON.stringify({
+      id: "global",
+      ...DEFAULTS,
+      [column]: publicUrl,
+      updated_at: new Date().toISOString(),
+    }),
   });
   if (!response.ok) throw new Error(`Asset setting save failed (${response.status}).`);
+  const rows = await response.json() as Record<string, unknown>[];
+  if (!rows[0]) throw new Error("Asset setting save returned no record.");
   return publicUrl;
 }
