@@ -33,9 +33,9 @@ export const CATEGORIES = [
   { slug: "hoodies", name: "Hoodies", image: px("18956666", 800) },
   { slug: "tees", name: "Tees", image: px("1311588", 800) },
   { slug: "outerwear", name: "Outerwear", image: px("19273260", 800) },
-  { slug: "accessories", name: "Accessories", image: px("30989278", 800) },
-  { slug: "cap", name: "Caps", image: px("6612173", 800) },
-  { slug: "sunglass", name: "Sunglasses", image: px("30989278", 800) },
+  { slug: "accessories", name: "Accessories", image: "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?auto=format&fit=crop&w=800&q=80" },
+  { slug: "cap", name: "Caps", image: "https://images.unsplash.com/photo-1588850561407-ed78c282e89b?auto=format&fit=crop&w=800&q=80" },
+  { slug: "sunglass", name: "Sunglasses", image: "https://images.unsplash.com/photo-1511499767150-a48a237f0083?auto=format&fit=crop&w=800&q=80" },
 ] as const;
 
 export const PRODUCTS: Product[] = [
@@ -75,8 +75,8 @@ export const PRODUCTS: Product[] = [
     details: { material: "Rib knit", fit: "Freesize", style: "Unisex / Everyday", care: "Giặt tay nhẹ", origin: "Designed by WEARO" }, sku: "WR-ACC-BNM"
   },
   {
-    id: "crossbody-utility", name: "Crossbody Utility", price: 590000, category: "accessories", image: px("30989278"),
-    gallery: [px("30989278"), px("28484979")], sizes: ["Freesize"], colors: ["Black"],
+    id: "crossbody-utility", name: "Crossbody Utility", price: 590000, category: "accessories", image: "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?auto=format&fit=crop&w=900&q=80",
+    gallery: ["https://images.unsplash.com/photo-1553062407-98eeb64c6a62?auto=format&fit=crop&w=900&q=80", px("28484979")], sizes: ["Freesize"], colors: ["Black"],
     tags: ["Utility", "Unisex", "Everyday"], shortDescription: "Túi cordura 3 ngăn với dây bản to điều chỉnh nhanh.",
     description: "Túi đeo chéo vải cordura, 3 ngăn, dây bản to điều chỉnh nhanh — thực dụng và dễ dùng cho cả nam lẫn nữ.",
     details: { material: "Cordura fabric", fit: "Adjustable", style: "Utility / Unisex", care: "Lau sạch", origin: "Designed by WEARO" }, sku: "WR-BAG-CBU"
@@ -96,15 +96,15 @@ export const PRODUCTS: Product[] = [
     details: { material: "Cotton fleece", fit: "Regular", style: "Unisex / Campus", care: "Giặt máy ở nhiệt độ thấp", origin: "Designed by WEARO" }, sku: "WR-SWT-CCN"
   },
   {
-    id: "street-cap", name: "Street Cap", price: 490000, category: "cap", image: px("6612173"),
-    gallery: [px("6612173"), px("30989278")], sizes: ["Freesize"], colors: ["Black", "Electric"], badge: "New accessory",
+    id: "street-cap", name: "Street Cap", price: 490000, category: "cap", image: "https://images.unsplash.com/photo-1588850561407-ed78c282e89b?auto=format&fit=crop&w=900&q=80",
+    gallery: ["https://images.unsplash.com/photo-1588850561407-ed78c282e89b?auto=format&fit=crop&w=900&q=80", px("30989278")], sizes: ["Freesize"], colors: ["Black", "Electric"], badge: "New accessory",
     tags: ["Unisex", "Accessory", "Everyday"], shortDescription: "Mũ cotton 6 mảnh với logo thêu nổi và khóa điều chỉnh.",
     description: "Mũ lưỡi trai cotton 6 mảnh, logo thêu nổi và khóa điều chỉnh phía sau. Dễ phối cho mọi outfit.",
     details: { material: "Cotton", fit: "Freesize", style: "Unisex / Everyday", care: "Lau sạch", origin: "Designed by WEARO" }, sku: "WR-CAP-STC"
   },
   {
-    id: "shade-runner", name: "Shade Runner", price: 750000, category: "sunglass", image: px("30989278"),
-    gallery: [px("30989278"), px("28484979")], sizes: ["Freesize"], colors: ["Black"],
+    id: "shade-runner", name: "Shade Runner", price: 750000, category: "sunglass", image: "https://images.unsplash.com/photo-1511499767150-a48a237f0083?auto=format&fit=crop&w=900&q=80",
+    gallery: ["https://images.unsplash.com/photo-1511499767150-a48a237f0083?auto=format&fit=crop&w=900&q=80", px("28484979")], sizes: ["Freesize"], colors: ["Black"],
     tags: ["Unisex", "Accessory", "Casual"], shortDescription: "Kính râm gọng vuông nhẹ với thiết kế casual hiện đại.",
     description: "Kính râm gọng vuông nhẹ, tròng tối và thiết kế gọn cho phong cách casual hiện đại.",
     details: { material: "Acetate blend", fit: "Freesize", style: "Unisex / Casual", care: "Lau bằng khăn mềm", origin: "Designed by WEARO" }, sku: "WR-EYE-SHR"
