@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { createServerFn } from "@tanstack/react-start";
-import { ArrowLeft, ArrowUpRight } from "lucide-react";
+import { ArrowLeft, ArrowRight, ArrowUpRight } from "lucide-react";
 import { SiteNav } from "@/components/site-nav";
 import { SiteFooter } from "@/components/site-footer";
 import { ProductCard } from "@/components/product-card";
@@ -92,6 +92,8 @@ const COLLECTIONS = {
   },
 } as const;
 
+const COLLECTION_ORDER = Object.keys(COLLECTIONS) as Array<keyof typeof COLLECTIONS>;
+
 export const Route = createFileRoute("/collections/$slug")({
   staleTime: 30_000,
   loader: () => getCollectionData(),
@@ -117,6 +119,12 @@ function CollectionPage() {
 
   if (!collection) return <CollectionNotFound />;
 
+  const currentCollectionIndex = COLLECTION_ORDER.indexOf(slug as keyof typeof COLLECTIONS);
+  const previousSlug = COLLECTION_ORDER[(currentCollectionIndex - 1 + COLLECTION_ORDER.length) % COLLECTION_ORDER.length];
+  const nextSlug = COLLECTION_ORDER[(currentCollectionIndex + 1) % COLLECTION_ORDER.length];
+  const previousCollection = COLLECTIONS[previousSlug];
+  const nextCollection = COLLECTIONS[nextSlug];
+
   const styleProductIds = new Set(styleTags.filter((tag) => tag.tag_slug === slug).map((tag) => tag.product_id));
   const collectionProducts = products.filter((product) => styleProductIds.has(product.id));
 
@@ -129,6 +137,26 @@ function CollectionPage() {
           <span>/</span>
           <span>{collection.title}</span>
         </div>
+
+        <nav className="wearo-collection-neighbor-nav" aria-label="Chuyển đổi phong cách thời trang">
+          <Link className="wearo-collection-neighbor-nav__link wearo-collection-neighbor-nav__link--previous" to="/collections/$slug" params={{ slug: previousSlug }} aria-label={`Chuyển đến phong cách trước: ${previousCollection.title}`}>
+            <span className="wearo-collection-neighbor-nav__icon" aria-hidden="true"><ArrowLeft size={17} /></span>
+            <span className="wearo-collection-neighbor-nav__copy">
+              <span className="wearo-collection-neighbor-nav__eyebrow">PHONG CÁCH TRƯỚC</span>
+              <span className="wearo-collection-neighbor-nav__name">{previousCollection.title}</span>
+            </span>
+          </Link>
+          <span className="wearo-collection-neighbor-nav__position" aria-label={`Phong cách ${currentCollectionIndex + 1} trên ${COLLECTION_ORDER.length}`}>
+            <span>0{currentCollectionIndex + 1}</span><span className="wearo-collection-neighbor-nav__divider">/</span><span>0{COLLECTION_ORDER.length}</span>
+          </span>
+          <Link className="wearo-collection-neighbor-nav__link wearo-collection-neighbor-nav__link--next" to="/collections/$slug" params={{ slug: nextSlug }} aria-label={`Chuyển đến phong cách tiếp theo: ${nextCollection.title}`}>
+            <span className="wearo-collection-neighbor-nav__copy">
+              <span className="wearo-collection-neighbor-nav__eyebrow">PHONG CÁCH TIẾP</span>
+              <span className="wearo-collection-neighbor-nav__name">{nextCollection.title}</span>
+            </span>
+            <span className="wearo-collection-neighbor-nav__icon" aria-hidden="true"><ArrowRight size={17} /></span>
+          </Link>
+        </nav>
 
         <section className="wearo-collection-hero" aria-labelledby="collection-title">
           <div className="wearo-collection-hero__copy">
