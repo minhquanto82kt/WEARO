@@ -8,7 +8,7 @@
 | Secondary — màu phụ | ![#171A18](https://img.shields.io/badge/-%23171A18-171A18?style=flat-square) | `#171A18` |
 | Accent — màu nhấn | ![#D7F27C](https://img.shields.io/badge/-%23D7F27C-D7F27C?style=flat-square) | `#D7F27C` |
 | Paper — nền trang | ![#F3F4EE](https://img.shields.io/badge/-%23F3F4EE-F3F4EE?style=flat-square) | `#F3F4EE` |
-| Ink — chữ mặc định | ![#171717](https://img.shields.io/badge/-%23171717-171A18?style=flat-square) | `#171717` |
+| Ink — chữ mặc định | ![#171717](https://img.shields.io/badge/-%23171717-171717?style=flat-square) | `#171717` |
 
 ## CSS variables
 
