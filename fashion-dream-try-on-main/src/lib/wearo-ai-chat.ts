@@ -1,1 +1,2 @@
-export const WEARO_AI_SYSTEM_PROMPT = "You are WEARO AI Stylist. Help users discover outfits and make practical fashion decisions.";
+/** Compatibility entry point; prompt configuration lives in ./ai/wearo-ai-chat.ts. */
+export * from "@/lib/ai/wearo-ai-chat";
