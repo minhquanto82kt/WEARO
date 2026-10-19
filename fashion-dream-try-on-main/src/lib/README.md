@@ -2,44 +2,114 @@
 
 This directory contains shared application logic used by routes and UI components. Keep one source of truth for each responsibility and keep server-only code separate from browser-safe helpers.
 
-## Verified file map
+## Inventory checked on `feature/product-admin`
 
-The following files were checked on branch `feature/product-admin`. This is a focused inventory of the files inspected for the current cleanup, not a guarantee that it lists every file in this directory.
+The directory contains **56 entries including this README** (55 TypeScript/TSX source files and this documentation file). The list below is a directory inventory by filename. Responsibilities are inferred from names and from the contents of the files inspected; filenames alone are not proof that two modules are interchangeable.
 
-| File | Responsibility | Dependency / boundary notes |
-|---|---|---|
-| `ai.functions.ts` | AI try-on and concept-image server functions | Uses TanStack Start server functions, validation, customer context and feature flags. Keep provider secrets and server operations server-side. |
-| `ai-provider.server.ts` | Image-provider selection and generation | Server-side provider abstraction; uses `server-reliability.ts`. |
-| `stylist.functions.ts` | AI Stylist recommendations | Server functions; keep catalog data grounded in trusted application/database responses. |
-| `wearo-ai-chat.functions.ts` | WEARO AI chat endpoint and response validation | Server functions; depends on customer context and AI SDK. |
-| `supabase.server.ts` | Privileged server-side Supabase requests and product mapping | Reads server environment variables; never import into browser-facing modules. |
-| `supabase-user.server.ts` | Supabase requests using a user's access token | Server-side authenticated requests; depends on `server-reliability.ts`. |
-| `upthink-supabase.ts` | Browser-safe Supabase configuration and helpers for catalog/auth/admin UI | Imports product-admin server functions; uses publishable client configuration, not a service-role secret. |
-| `product-admin.functions.ts` | Product and inventory administration server functions | Depends on `supabase.server.ts`; privileged writes must remain server-side and respect authorization/RLS. |
-| `order.functions.ts` | Order-related operations and types | Depends on server-side Supabase request helpers and reliability utilities. |
-| `server-reliability.ts` | Shared request IDs, timeout/retry and server logging helpers | Cross-cutting server utility; avoid creating competing implementations in feature folders. |
-| `feature-flags.server.ts` | Server-side Vercel feature-flag evaluation | Fails closed when the flag configuration is absent. |
+### AI and try-on
+- `ai-jobs.server.ts`
+- `ai-provider.server.ts`
+- `ai.functions.ts`
+- `stylist.functions.ts`
+- `wearo-ai-chat.functions.ts`
+- `wearo-ai-chat.ts`
 
-## Current grouping recommendation
+### Admin, product, inventory and order
+- `admin-dashboard.functions.ts`
+- `admin-order.functions.ts`
+- `admin-product-tags.ts`
+- `admin-tags.ts`
+- `product-admin.functions.ts`
+- `order.functions.ts`
+- `order-cancel.functions.ts`
 
-Do **not** move files just because several filenames end in `.functions.ts` or `.server.ts`. Those suffixes communicate execution boundaries, not necessarily duplicate responsibilities.
+### Cart, customer and authentication
+- `auth.ts`
+- `cart.server.functions.ts`
+- `cart.tsx`
+- `customer-context.server.ts`
+- `member.functions.ts`
+- `mock-user.functions.ts`
+- `mock-user.ts`
 
-Potential grouping to consider after the full import graph is checked:
+### Supabase and server infrastructure
+- `supabase.server.ts`
+- `supabase-user.server.ts`
+- `supabase.user.server.ts`
+- `server-reliability.ts`
+- `feature-flags.server.ts`
+- `rate-limit.server.ts`
+- `request-security.server.ts`
+- `security-headers.ts`
 
-- `ai/`: AI provider, try-on, stylist and chat modules.
-- `orders/`: order functions and order-specific helpers, only if the wider import graph shows a coherent boundary.
-- `supabase/`: shared Supabase transport/client helpers, only if moving them does not blur the server/client boundary.
-- Keep cross-cutting utilities such as `server-reliability.ts` at the shared `lib` level unless a broader architecture review supports moving them.
+### Appearance, brand and design system
+- `appearance-branding.ts`
+- `appearance-content.ts`
+- `appearance-palettes.ts`
+- `appearance-theme-workflow.ts`
+- `brand.ts`
+- `branding.ts`
+- `design-system.ts`
+- `theme.ts`
+- `wearo-color-system.ts`
 
-These are **proposals, not current paths**. No files have been moved as part of this audit.
+### Content, invoices and communication
+- `invoice.client.ts`
+- `invoice.functions.ts`
+- `journal-markdown.tsx`
+- `journal.functions.ts`
+- `site-content.ts`
+- `wearo-ai-chat.ts`
 
-## Rules before moving a file
+### Shared UI, analytics, errors and utilities
+- `analytics.ts`
+- `error-capture.ts`
+- `error-page.ts`
+- `i18n.tsx`
+- `index.tsx`
+- `lovable-error-reporting.ts`
+- `seo.ts`
+- `utils.ts`
+- `vietqr.ts`
+- `wishlist.ts`
+- `product-reviews.ts`
 
-1. Search all imports and dynamic references to the exact path.
-2. Check whether the module imports `.server.ts` code or privileged environment variables.
-3. Move one cohesive group at a time and update every import in the same commit.
-4. Run `npm run lint`, `npm run typecheck`, `npm run build`, and the relevant smoke/security tests.
-5. Verify the resulting Vercel deployment; a successful GitHub commit alone is not a deployment check.
+## Findings and refactor decision
+
+### 1. Do not merge similarly named Supabase modules yet
+
+Both `supabase-user.server.ts` and `supabase.user.server.ts` exist. The inspected contents show that they expose different APIs:
+
+- `supabase-user.server.ts` exports `supabaseUserRequest(path, accessToken, options?)` and performs a REST request using the provided access token.
+- `supabase.user.server.ts` exports `supabaseUserRequest(accessToken, requestCallback)`, verifies the user through Auth, then supplies a request client and verified user ID to the callback.
+
+They are **not drop-in duplicates**. Do not delete, rename, or consolidate either one until every import and call site has been traced and their security/authorization semantics have been reviewed.
+
+### 2. Similar suffixes are not sufficient reason to move files
+
+- `.functions.ts` is used for server-function modules, but the modules represent different domains and may be imported directly by routes/components.
+- `.server.ts` marks server-oriented modules; do not move code in a way that weakens the server/client boundary.
+- `wearo-ai-chat.ts` is a tiny prompt constant while `wearo-ai-chat.functions.ts` contains server logic. Their similar names do not mean they should be combined automatically.
+- `admin-tags.ts` and `admin-product-tags.ts` serve different endpoints; the latter imports the `AdminTag` type from the former.
+
+### 3. Proposed target organization — not applied
+
+A future structure could group modules by domain:
+
+- `ai/`: try-on, provider, jobs, stylist and chat modules.
+- `orders/`: order, cancellation and admin order modules.
+- `appearance/`: appearance branding, content, palettes and theme workflow.
+- `supabase/`: only after a verified import graph and server/client boundary review.
+
+This is a proposal only. Moving files requires updating every static and dynamic import, aliases, tests, architecture checks and any path-based tooling in the same change. The available code-search results did not provide a complete, branch-specific import graph, so they are not sufficient evidence to perform a safe bulk move.
+
+## Safe next step
+
+1. Use a branch-local checkout or a complete branch-specific Git tree/code search to map every import and dynamic import of each candidate file.
+2. Review `scripts/audit-architecture.mjs` and tests for assumptions about current paths.
+3. Choose one cohesive, low-risk domain and move it atomically with all import updates.
+4. Run `npm run lint`, `npm run typecheck`, `npm run build`, and relevant smoke/security tests.
+5. Verify the new commit's CI and Vercel deployment before declaring success.
 
 ## Maintenance rule
 
