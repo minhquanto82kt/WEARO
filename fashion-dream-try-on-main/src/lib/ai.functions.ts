@@ -6,6 +6,7 @@ import { getAiTryOnEnabled } from "@/lib/feature-flags.server";
 import { assertTryOnEntitlement, resolveCustomerContext } from "@/lib/customer-context.server";
 
 const CONCEPT_IMAGE_MODEL = "openai/gpt-image-2.5-flare";
+const CONCEPT_IMAGE_FALLBACK_MODEL = "openai/gpt-image-2.5-sunburst";
 const MAX_PERSON_IMAGE_BYTES = 6 * 1024 * 1024;
 const MAX_NOTE_LENGTH = 400;
 const ALLOWED_IMAGE_MIME_TYPES = ["image/jpeg", "image/png", "image/webp"] as const;
@@ -24,17 +25,24 @@ type InternalTryOnJob = {
 };
 
 async function generateFashionImage(prompt: string, images: string[] = []): Promise<GeneratedImage> {
-  try {
-    const imagePrompt = images.length ? { text: prompt, images } : prompt;
-    const result = await generateImage({ model: CONCEPT_IMAGE_MODEL, prompt: imagePrompt, n: 1 });
-    const image = result.image;
-    if (!image) throw new Error("AI không trả về hình ảnh.");
-    return { image: `data:${image.mediaType};base64,${image.base64}`, text: "" };
-  } catch (error) {
-    console.error("AI image generation error:", error);
-    if (error instanceof Error) throw new Error(`AI tạo ảnh thất bại: ${error.message}`);
-    throw new Error("AI tạo ảnh thất bại. Vui lòng thử lại.");
+  const imagePrompt = images.length ? { text: prompt, images } : prompt;
+  const models = [...new Set([CONCEPT_IMAGE_MODEL, CONCEPT_IMAGE_FALLBACK_MODEL])];
+  const failures: string[] = [];
+
+  for (const model of models) {
+    try {
+      const result = await generateImage({ model, prompt: imagePrompt, n: 1 });
+      const image = result.image;
+      if (!image) throw new Error("AI không trả về hình ảnh.");
+      return { image: `data:${image.mediaType};base64,${image.base64}`, text: "" };
+    } catch (error) {
+      const detail = error instanceof Error ? error.message.slice(0, 300) : "unknown provider error";
+      failures.push(`${model}: ${detail}`);
+      console.error("AI image generation model failed:", model, error);
+    }
   }
+
+  throw new Error(`AI tạo ảnh thất bại với cả model chính và dự phòng. ${failures.join(" | ")}`);
 }
 
 async function getPublishedProduct(productId?: string) {
