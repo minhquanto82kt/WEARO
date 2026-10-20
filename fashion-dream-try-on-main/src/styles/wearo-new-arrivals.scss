@@ -208,3 +208,17 @@
   line-height: 1;
   box-shadow: 0 3px 10px rgba(0, 0, 0, .16);
 }
+
+
+/* Keep blue WEARO merchandising blocks readable on the New Arrivals route. */
+.wearo-new-arrivals-page .fashion-product-style--streetwear,
+.wearo-new-arrivals-page .fashion-product-style--casual {
+  background-color: #54728C !important;
+  border-color: #54728C !important;
+  color: #F2CEAE !important;
+  text-shadow: none;
+}
+.wearo-new-arrivals-page .fashion-product-style--basic,
+.wearo-new-arrivals-page .fashion-product-style--outing-style {
+  color: #263746 !important;
+}
