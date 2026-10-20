@@ -1,5 +1,5 @@
 import { Link } from "@tanstack/react-router";
-import { ArrowUpRight, Heart } from "lucide-react";
+import { ArrowUpRight, ChevronRight, Heart } from "lucide-react";
 import { useEffect, useState, type MouseEvent } from "react";
 import type { Product } from "@/data/products";
 import { formatPrice, useI18n } from "@/lib/i18n";
@@ -10,6 +10,7 @@ import "@/styles/wearo-product-card-v1.scss";
 export function ProductCard({ product }: { product: Product }) {
   const { language } = useI18n();
   const [saved, setSaved] = useState(false);
+  const [showSecondaryImage, setShowSecondaryImage] = useState(false);
   const [saving, setSaving] = useState(false);
   const tags = product.tags?.slice(0, 2) ?? [];
   const secondaryImage = product.gallery?.[1];
@@ -65,7 +66,7 @@ export function ProductCard({ product }: { product: Product }) {
   };
 
   return (
-    <article className="fashion-product-card">
+    <article className={`fashion-product-card ${showSecondaryImage ? "is-gallery-secondary" : ""}`}>
       <Link to="/product/$id" params={{ id: product.id }} className={`fashion-product-image${secondaryImage ? " has-hover-gallery" : ""}`}>
         <img src={product.image} alt={product.name} loading="lazy" decoding="async" sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw" className="fashion-product-image__primary" />
         {secondaryImage && <img src={secondaryImage} alt="" aria-hidden="true" loading="lazy" decoding="async" sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw" className="fashion-product-image__secondary" />}
@@ -77,6 +78,7 @@ export function ProductCard({ product }: { product: Product }) {
         </div>
         <span className="fashion-product-arrow" aria-hidden="true"><ArrowUpRight size={16} /></span>
       </Link>
+      {secondaryImage && <button type="button" className="fashion-product-mobile-gallery" onClick={() => setShowSecondaryImage((show) => !show)} aria-label={showSecondaryImage ? "Xem ảnh sản phẩm đầu tiên" : "Xem ảnh sản phẩm tiếp theo"} aria-pressed={showSecondaryImage}><ChevronRight size={15} aria-hidden="true" /><span>{showSecondaryImage ? "2 / 2" : "1 / 2"}</span></button>}
       <div className="fashion-product-meta">
         <div className="min-w-0">
           <p className="fashion-product-category">{product.category}</p>
