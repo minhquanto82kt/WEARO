@@ -222,3 +222,29 @@
 .wearo-new-arrivals-page .fashion-product-style--outing-style {
   color: #263746 !important;
 }
+
+
+/* Fix inherited/global blue surface leaking into the New Arrivals hero. */
+.wearo-new-arrivals-page .wearo-new-arrivals-heading {
+  position: relative;
+  background: #fff !important;
+  background-color: #fff !important;
+  color: #20201e !important;
+}
+.wearo-new-arrivals-page .wearo-new-arrivals-heading::before,
+.wearo-new-arrivals-page .wearo-new-arrivals-heading::after {
+  background: transparent !important;
+  box-shadow: none !important;
+}
+.wearo-new-arrivals-page .wearo-new-arrivals-heading .wearo-new-arrivals-eyebrow,
+.wearo-new-arrivals-page .wearo-new-arrivals-heading h1,
+.wearo-new-arrivals-page .wearo-new-arrivals-heading h1 span,
+.wearo-new-arrivals-page .wearo-new-arrivals-heading > p:not(.wearo-new-arrivals-eyebrow) {
+  background: transparent !important;
+  color: #20201e !important;
+}
+.wearo-new-arrivals-page .wearo-new-arrivals-heading .wearo-new-arrivals-eyebrow,
+.wearo-new-arrivals-page .wearo-new-arrivals-heading h1 span,
+.wearo-new-arrivals-page .wearo-new-arrivals-heading > p:not(.wearo-new-arrivals-eyebrow) {
+  color: #6d6d68 !important;
+}
