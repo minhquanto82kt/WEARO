@@ -278,7 +278,15 @@ function Index() {
             <div className="wearo-reference-ai-grid">
               <div>
                 <span className="wearo-reference-section-label">ĐỘT PHÁ TRẢI NGHIỆM</span>
-                <h2>WEARO AI STUDIO 2.0</h2>
+                <h2 className="wearo-reference-ai-title">
+                  <img
+                    src="/brand/wearo-logo-header.svg"
+                    alt="WEARO"
+                    className="inline-block h-[1.05em] w-auto max-w-[4.2em] align-[-0.12em] object-contain"
+                    loading="lazy"
+                  />{" "}
+                  AI STUDIO
+                </h2>
                 <p>Không còn e ngại mua hàng online không hợp form hay tốn thời gian suy nghĩ cách phối đồ. Hãy để AI Virtual Try-On giúp bạn thử trang phục lên chính ảnh chụp của mình chỉ trong vài giây.</p>
                 <div className="wearo-reference-actions">
                   <Link to="/ai" className="wearo-reference-btn wearo-reference-btn--accent"><WandSparkles size={14} /> Tải Ảnh Cá Nhân Thử Đồ</Link>
