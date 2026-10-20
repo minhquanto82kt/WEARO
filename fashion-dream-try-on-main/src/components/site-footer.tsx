@@ -108,11 +108,11 @@ export function SiteFooter() {
           <section className="wearo-footer__section">
             <p className="wearo-footer__kicker">02 / {t("Hỗ trợ & pháp lý", "SUPPORT & LEGAL")}</p>
             <nav className="wearo-footer__links" aria-label={t("Hỗ trợ và pháp lý", "Support and legal")}>
-              <Link to="/about" className={linkClass}>{t("Hướng dẫn chọn size", "Size Guide")}</Link>
-              <Link to="/about" className={linkClass}>{t("Hướng dẫn mua hàng", "Shopping Guide")}</Link>
-              <Link to="/about" className={linkClass}>{t("Chính sách đổi trả", "Returns & Refunds")}</Link>
-              <Link to="/about" className={linkClass}>{t("Chính sách bảo mật", "Privacy Policy")}</Link>
-              <Link to="/about" className={linkClass}>{t("Điều khoản dịch vụ", "Terms of Service")}</Link>
+              <span className={linkClass} aria-disabled="true">{t("Hướng dẫn chọn size", "Size Guide")} <small>({t("Đang cập nhật", "Coming soon")})</small></span>
+              <span className={linkClass} aria-disabled="true">{t("Hướng dẫn mua hàng", "Shopping Guide")} <small>({t("Đang cập nhật", "Coming soon")})</small></span>
+              <span className={linkClass} aria-disabled="true">{t("Chính sách đổi trả", "Returns & Refunds")} <small>({t("Đang cập nhật", "Coming soon")})</small></span>
+              <span className={linkClass} aria-disabled="true">{t("Chính sách bảo mật", "Privacy Policy")} <small>({t("Đang cập nhật", "Coming soon")})</small></span>
+              <span className={linkClass} aria-disabled="true">{t("Điều khoản dịch vụ", "Terms of Service")} <small>({t("Đang cập nhật", "Coming soon")})</small></span>
             </nav>
           </section>
 
