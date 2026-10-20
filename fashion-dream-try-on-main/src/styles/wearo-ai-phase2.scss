@@ -177,9 +177,18 @@ body:has(.wearo-ai-phase2) .wearo-ai-start-choices button:hover {
   transform: translateY(-1px);
 }
 body:has(.wearo-ai-phase2) .wearo-ai-start-choices button:focus-visible,
+body:has(.wearo-ai-phase2) .wearo-ai-upload-label:focus-within,
 body:has(.wearo-ai-phase2) .wearo-ai-text-action:focus-visible {
   outline: 2px solid #54728C;
   outline-offset: 3px;
+}
+@media (prefers-reduced-motion: reduce) {
+  body:has(.wearo-ai-phase2) .wearo-ai-start-choices button,
+  body:has(.wearo-ai-phase2) .wearo-ai-chip,
+  body:has(.wearo-ai-phase2) .wearo-ai-generate {
+    scroll-behavior: auto;
+    transition-duration: .01ms;
+  }
 }
 body:has(.wearo-ai-phase2) .wearo-ai-text-action {
   border: 1px solid rgba(84,114,140,.35);

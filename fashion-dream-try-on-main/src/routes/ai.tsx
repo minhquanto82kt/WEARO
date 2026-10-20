@@ -231,7 +231,7 @@ function TryOnStudio({
         <div className="grid gap-6 lg:grid-cols-[1fr_1fr]">
           <div>
             <span className="wearo-ai-field-label">01 · Ảnh của bạn</span>
-            <label className="mt-2 flex min-h-[260px] cursor-pointer items-center justify-center border border-[rgba(84,114,140,.18)] bg-[rgba(242,206,174,.10)] p-4 text-center">
+            <label className="wearo-ai-upload-label mt-2 flex min-h-[260px] cursor-pointer items-center justify-center border border-[rgba(84,114,140,.18)] bg-[rgba(242,206,174,.10)] p-4 text-center">
               {personPreview ? (
                 <img src={personPreview} alt="Ảnh người dùng đã tải lên" className="max-h-[330px] w-full object-contain" />
               ) : (
@@ -244,6 +244,8 @@ function TryOnStudio({
               <input
                 type="file"
                 accept="image/jpeg,image/png,image/webp"
+                aria-label="Chọn ảnh toàn thân để thử đồ bằng AI"
+                aria-describedby="wearo-tryon-photo-guidance"
                 className="sr-only"
                 onChange={(event) => handlePersonImage(event.target.files?.[0])}
               />
@@ -252,7 +254,7 @@ function TryOnStudio({
               <label className="cursor-pointer font-semibold text-[#54728C] underline underline-offset-4">Thay ảnh<input type="file" accept="image/jpeg,image/png,image/webp" className="sr-only" onChange={(event) => { handlePersonImage(event.target.files?.[0]); event.currentTarget.value = ""; }} /></label>
               <button type="button" className="font-semibold text-[#54728C] underline underline-offset-4" onClick={() => { setPersonImage(""); setPersonPreview(""); setResultImage(""); setStatus("idle"); setError(""); }}>Xóa ảnh</button>
             </div> : null}
-            <p className="mt-2 text-xs leading-5 text-silver">Ảnh được gửi tới pipeline AI để tạo ảnh thử đồ. Tránh tải ảnh nhạy cảm; cách lưu và thời gian lưu phụ thuộc dịch vụ xử lý đang dùng.</p>
+            <p id="wearo-tryon-photo-guidance" className="mt-2 text-xs leading-5 text-silver">Ảnh của bạn được gửi tới nhà cung cấp AI để xử lý. Chỉ dùng ảnh bạn có quyền sử dụng; tránh ảnh riêng tư hoặc thông tin nhạy cảm. Hãy chọn ảnh đủ sáng, thấy rõ toàn thân và chỉ có một người.</p>
           </div>
 
           <div>
@@ -260,7 +262,12 @@ function TryOnStudio({
             <select
               id="wearo-tryon-product"
               value={productId}
-              onChange={(event) => setProductId(event.target.value)}
+              onChange={(event) => {
+                setProductId(event.target.value);
+                setResultImage("");
+                setStatus("idle");
+                setError("");
+              }}
               className="mt-2 w-full border border-[rgba(84,114,140,.18)] bg-background px-3 py-3 text-sm"
               disabled={!products.length || status === "uploading" || status === "processing"}
             >
@@ -314,7 +321,7 @@ function TryOnStudio({
 
             <div className="mt-5 flex flex-wrap items-center justify-between gap-3">
               <p className="wearo-ai-helper">
-                {status === "processing" ? "WEARO đang xử lý ảnh…" : "Kết quả được tạo từ pipeline AI Try-On hiện có."}
+                {status === "processing" ? "Ảnh đã được gửi — AI đang tạo kết quả. Giữ trang này mở để xem tiến trình." : "Ảnh rõ, đủ sáng và chỉ có một người thường giúp kết quả tốt hơn."}
               </p>
               <button
                 type="button"
@@ -322,7 +329,7 @@ function TryOnStudio({
                 onClick={handleTryOn}
                 disabled={status === "uploading" || (status === "processing" && isPolling) || !products.length}
               >
-                {status === "uploading" ? "Đang gửi…" : status === "processing" ? (isPolling ? "Đang xử lý…" : "Kiểm tra kết quả") : "Thử đồ bằng AI"}
+                {status === "uploading" ? "Đang gửi ảnh…" : status === "processing" ? (isPolling ? "Đang kiểm tra…" : "Kiểm tra lại kết quả") : "Thử đồ bằng AI"}
               </button>
             </div>
 
@@ -336,7 +343,7 @@ function TryOnStudio({
 
         <div className="mt-7 border-t border-[rgba(84,114,140,.14)] pt-6">
           <span className="wearo-ai-field-label">03 · Kết quả thử đồ</span>
-          <div className="mt-2 min-h-[300px] border border-[rgba(84,114,140,.18)] bg-[rgba(242,206,174,.08)] p-4">
+          <div aria-live="polite" className="mt-2 min-h-[300px] border border-[rgba(84,114,140,.18)] bg-[rgba(242,206,174,.08)] p-4">
             {resultImage ? (
               <img src={resultImage} alt="Kết quả thử đồ ảo WEARO" className="mx-auto max-h-[620px] w-full object-contain" />
             ) : (
@@ -478,12 +485,12 @@ function AiPage() {
                 />{" "}
                 <span className="wearo-ai-title-accent">AI Studio</span>
               </h1>
-              <p className="wearo-ai-lede">Bắt đầu bằng cách tạo outfit theo phong cách của bạn hoặc chọn một sản phẩm để thử trực tiếp.</p>
+              <p className="wearo-ai-lede">Bạn đã có món đồ muốn thử, hay cần gợi ý mặc gì? Chọn một cách bắt đầu — bạn có thể đổi chế độ bất cứ lúc nào.</p>
             </header>
 
             <div className="wearo-ai-start-choices" role="group" aria-label="Chọn cách bắt đầu">
-              <button type="button" data-active={mode === "tryon"} onClick={() => setMode("tryon")}><span>01</span><strong>AI Virtual Try-on</strong><small>Tải ảnh của bạn và thử sản phẩm trực tiếp</small></button>
-              <button type="button" data-active={mode === "concept"} onClick={() => setMode("concept")}><span>02</span><strong>AI Stylist</strong><small>Tạo outfit theo phong cách và dịp sử dụng</small></button>
+              <button type="button" aria-pressed={mode === "tryon"} data-active={mode === "tryon"} onClick={() => setMode("tryon")}><span aria-hidden="true">01</span><strong>Thử một sản phẩm</strong><small>Chọn ảnh toàn thân và món đồ bạn muốn xem thử bằng AI.</small></button>
+              <button type="button" aria-pressed={mode === "concept"} data-active={mode === "concept"} onClick={() => setMode("concept")}><span aria-hidden="true">02</span><strong>Tìm ý tưởng outfit</strong><small>Chọn phong cách và dịp sử dụng để nhận gợi ý từ AI Stylist.</small></button>
             </div>
 
             {mode === "concept" ? <>
@@ -499,7 +506,7 @@ function AiPage() {
                     <span className="wearo-ai-field-label">01 · Phong cách <small>· chọn một</small></span>
                     <div className="wearo-ai-chip-group">
                       {STYLES.map((item) => (
-                        <button key={item} type="button" className="wearo-ai-chip" data-active={style === item} onClick={() => setStyle(item)}>
+                        <button key={item} type="button" aria-pressed={style === item} className="wearo-ai-chip" data-active={style === item} onClick={() => setStyle(item)}>
                           {item}
                         </button>
                       ))}
@@ -510,7 +517,7 @@ function AiPage() {
                     <span className="wearo-ai-field-label">02 · Dịp sử dụng <small>· chọn một</small></span>
                     <div className="wearo-ai-chip-group">
                       {OCCASIONS.map((item) => (
-                        <button key={item} type="button" className="wearo-ai-chip" data-active={occasion === item} onClick={() => setOccasion(item)}>
+                        <button key={item} type="button" aria-pressed={occasion === item} className="wearo-ai-chip" data-active={occasion === item} onClick={() => setOccasion(item)}>
                           {item}
                         </button>
                       ))}
@@ -530,7 +537,7 @@ function AiPage() {
                   </div>
 
                   <div className="mt-5 flex flex-wrap items-center justify-between gap-3">
-                    <p className="wearo-ai-helper">AI dùng các lựa chọn trên làm context cho Stylist.</p>
+                    <p className="wearo-ai-helper">1. Chọn phong cách và dịp · 2. Thêm mô tả nếu muốn · 3. Tạo concept để xem gợi ý.</p>
                     <button type="button" className="wearo-ai-generate" onClick={handleGenerate} disabled={isLoading}>
                       {isLoading ? "Đang tạo…" : "Tạo concept"}
                     </button>
