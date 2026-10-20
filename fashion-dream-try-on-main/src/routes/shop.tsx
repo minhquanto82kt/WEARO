@@ -44,7 +44,7 @@ export const Route = createFileRoute("/shop")({
     { title: "Cửa hàng WEARO — Casual, Modern & Unisex" },
     { name: "description", content: "Khám phá catalogue WEARO: thời trang casual, hiện đại và unisex cho nam và nữ. Chọn size, thử đồ ảo bằng AI và hoàn thiện outfit theo phong cách riêng." },
     { property: "og:title", content: "Cửa hàng WEARO — Casual, Modern & Unisex" },
-    { property: "og:description", content: "WEARO / Modern everyday fashion for everyone — khám phá sản phẩm, AI Virtual Try-On và AI Personal Stylist." },
+    { property: "og:description", content: "WEARO / Modern everyday fashion for everyone — khám phá sản phẩm, AI Virtual Try-On và AI Stylist." },
   ], links: [canonicalLink("/shop")] }),
   component: ShopPage,
 });

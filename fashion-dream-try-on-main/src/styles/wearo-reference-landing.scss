@@ -113,6 +113,45 @@
 .wearo-reference-btn--accent { background: var(--wr-coral); color: var(--wr-black); }
 .wearo-reference-btn--dark { background: transparent; color: var(--wr-white); border-color: rgba(255,255,255,.25); }
 .wearo-reference-btn--dark:hover { background: rgba(84,114,140,.35); border-color: var(--wr-blue-soft); }
+.wearo-reference-ai-panel .wearo-reference-btn {
+  border-radius: 3px;
+  box-shadow: 0 3px 10px rgba(23, 23, 23, .08);
+  transition: transform .2s ease, background-color .2s ease, color .2s ease, border-color .2s ease, box-shadow .2s ease;
+}
+.wearo-reference-ai-panel .wearo-reference-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 22px rgba(23, 23, 23, .16);
+}
+.wearo-reference-ai-panel .wearo-reference-btn--accent:hover {
+  background: #e9896e;
+  border-color: #e9896e;
+  color: #171717;
+}
+.wearo-reference-ai-panel .wearo-reference-btn--dark:hover {
+  background: #54728c;
+  border-color: #54728c;
+  color: #fff;
+}
+.wearo-reference-ai-panel .wearo-reference-btn:focus-visible {
+  outline: 3px solid #54728c;
+  outline-offset: 4px;
+}
+.wearo-reference-ai-panel .wearo-reference-btn:active {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 10px rgba(23, 23, 23, .12);
+}
+.wearo-reference-ai-panel .wearo-reference-btn--accent:focus-visible {
+  outline-color: #e9896e;
+}
+@media (prefers-reduced-motion: reduce) {
+  .wearo-reference-ai-panel .wearo-reference-btn {
+    transition: none;
+  }
+  .wearo-reference-ai-panel .wearo-reference-btn:hover,
+  .wearo-reference-ai-panel .wearo-reference-btn:active {
+    transform: none;
+  }
+}
 .wearo-reference-stats {
   display: grid;
   grid-template-columns: repeat(3, 1fr);

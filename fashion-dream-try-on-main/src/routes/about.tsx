@@ -6,9 +6,9 @@ export const Route = createFileRoute("/about")({
   head: () => ({
     meta: [
       { title: "Về WEARO — Mặc theo cách của riêng bạn" },
-      { name: "description", content: "WEARO là cửa hàng thời trang trực tuyến tích hợp AI Virtual Try-On, AI Personal Stylist và Hybrid Stylist 1:1." },
+      { name: "description", content: "WEARO là cửa hàng thời trang trực tuyến tích hợp AI Virtual Try-On, AI Stylist và Hybrid Stylist 1:1." },
       { property: "og:title", content: "WEARO — Mặc theo cách của riêng bạn" },
-      { property: "og:description", content: "Thời trang cá nhân hóa với AI Virtual Try-On, AI Personal Stylist và tư vấn Stylist 1:1." },
+      { property: "og:description", content: "Thời trang cá nhân hóa với AI Virtual Try-On, AI Stylist và tư vấn Stylist 1:1." },
     ],
   }),
   component: AboutPage,
@@ -29,7 +29,7 @@ const SOLUTIONS = [
   },
   {
     no: "02",
-    label: "AI PERSONAL STYLIST",
+    label: "AI STYLIST",
     title: "Mua cả một outfit.",
     body: "AI phân tích vóc dáng, tone màu và bối cảnh để đề xuất Full-Set gồm áo, quần/chân váy và phụ kiện.",
   },
@@ -87,7 +87,7 @@ function AboutPage() {
               “WEARO — Mặc theo cách của riêng bạn: Định hình phong cách cá nhân với Thử đồ ảo AI chuẩn dáng.”
             </blockquote>
             <p>
-              Dành cho người trẻ và người đi làm bận rộn từ 16–30 tuổi, WEARO kết hợp AI Virtual Try-On và AI Personal Stylist để giảm nỗi lo mua sai form, rút ngắn thời gian phối đồ và giúp khách hàng tự tin thể hiện bản sắc riêng.
+              Dành cho người trẻ và người đi làm bận rộn từ 16–30 tuổi, WEARO kết hợp AI Virtual Try-On và AI Stylist để giảm nỗi lo mua sai form, rút ngắn thời gian phối đồ và giúp khách hàng tự tin thể hiện bản sắc riêng.
             </p>
           </article>
 

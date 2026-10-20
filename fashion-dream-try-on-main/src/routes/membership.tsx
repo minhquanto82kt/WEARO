@@ -63,7 +63,7 @@ function MembershipPage() {
               <div className="border-l-2 border-[#54728C] pl-6">
                 <p className="text-xs font-semibold leading-6 text-[#4b4b4b]">GUEST → BASIC</p>
                 <p className="mt-2 text-2xl font-bold">MEMBER → LOYALTY</p>
-                <p className="mt-2 text-sm leading-6 text-[#666]">AI Virtual Try-On + AI Personal Stylist + Voucher + Lịch sử mua hàng + đề xuất theo hành vi mua sắm.</p>
+                <p className="mt-2 text-sm leading-6 text-[#666]">AI Virtual Try-On + AI Stylist + Voucher + Lịch sử mua hàng + đề xuất theo hành vi mua sắm.</p>
               </div>
             </div>
           </div>
@@ -73,7 +73,7 @@ function MembershipPage() {
           <div className="mx-auto grid max-w-7xl gap-4 md:grid-cols-2 lg:grid-cols-4">
             {[
               [Sparkles, "AI Virtual Try-On", "Thử sản phẩm trên ảnh của bạn với pipeline AI của WEARO."],
-              [WandSparkles, "AI Personal Stylist", "Nhận đề xuất outfit theo phong cách, dịp sử dụng và nhu cầu."],
+              [WandSparkles, "AI Stylist", "Nhận đề xuất outfit theo phong cách, dịp sử dụng và nhu cầu."],
               [Gift, "Nhiều voucher hơn", "Tài khoản thành viên có khu vực voucher riêng thay vì ưu đãi rời rạc."],
               [History, "Lịch sử mua hàng", "Theo dõi đơn đã mua và dùng dữ liệu đó để cá nhân hóa đề xuất."],
             ].map(([Icon, title, description]) => (

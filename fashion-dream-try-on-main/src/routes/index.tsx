@@ -22,7 +22,7 @@ const DEFAULT_CONTENT: SiteContentFields = {
   announcement_text: "",
   hero_eyebrow: "WEARO / IUH / SAIGON — 2026",
   hero_title: "WEAR IT YOUR WAY.",
-  hero_description: "WEARO kết hợp thời trang, AI Virtual Try-On và AI Personal Stylist để bạn hình dung đúng outfit trên chính mình, chọn trọn bộ và mặc theo cách riêng.",
+  hero_description: "WEARO kết hợp thời trang, AI Virtual Try-On và AI Stylist để bạn hình dung đúng outfit trên chính mình, chọn trọn bộ và mặc theo cách riêng.",
   hero_cta_label: "Khám phá cửa hàng",
   hero_cta_url: "/shop",
   social_title: "WEARO — Mặc theo cách của riêng bạn",
@@ -263,7 +263,7 @@ function Index() {
           </p>
           <div className="wearo-home-hero-mobile-features">
             <span>AI Virtual Try-On</span>
-            <span>AI Personal Stylist</span>
+            <span>AI Stylist</span>
             <span>Thiết kế độc quyền</span>
           </div>
           <Link to="/shop" className="wearo-home-hero-mobile-cta">
@@ -289,8 +289,8 @@ function Index() {
                 </h2>
                 <p>Không còn e ngại mua hàng online không hợp form hay tốn thời gian suy nghĩ cách phối đồ. Hãy để AI Virtual Try-On giúp bạn thử trang phục lên chính ảnh chụp của mình chỉ trong vài giây.</p>
                 <div className="wearo-reference-actions">
-                  <Link to="/ai" className="wearo-reference-btn wearo-reference-btn--accent"><WandSparkles size={14} /> Tải Ảnh Cá Nhân Thử Đồ</Link>
-                  <Link to="/ai" className="wearo-reference-btn wearo-reference-btn--dark">AI Personal Stylist</Link>
+                  <Link to="/ai" search={{ mode: "tryon" }} className="wearo-reference-btn wearo-reference-btn--accent"><WandSparkles size={14} /> Tải Ảnh Cá Nhân Thử Đồ</Link>
+                  <Link to="/ai" search={{ mode: "concept" }} className="wearo-reference-btn wearo-reference-btn--dark">AI Stylist</Link>
                 </div>
               </div>
               <div className="wearo-reference-ai-features">

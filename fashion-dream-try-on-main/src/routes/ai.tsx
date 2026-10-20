@@ -29,8 +29,12 @@ type StylistRecommendation = Awaited<ReturnType<typeof getStylistRecommendations
 type TryOnStatus = "idle" | "uploading" | "processing" | "completed" | "failed";
 
 export const Route = createFileRoute("/ai")({
-  validateSearch: (search: Record<string, unknown>): { product?: string } =>
-    typeof search["product"] === "string" ? { product: search["product"] } : {},
+  validateSearch: (search: Record<string, unknown>): { product?: string; mode?: "concept" | "tryon" } => {
+    const parsed: { product?: string; mode?: "concept" | "tryon" } = {};
+    if (typeof search["product"] === "string") parsed.product = search["product"];
+    if (search["mode"] === "concept" || search["mode"] === "tryon") parsed.mode = search["mode"];
+    return parsed;
+  },
   head: () => ({
     meta: [
       { title: "WEARO AI Studio" },
@@ -377,7 +381,7 @@ function AiPage() {
   const [recommendations, setRecommendations] = useState<StylistRecommendation[]>([]);
   const [recommendationsLoading, setRecommendationsLoading] = useState(false);
   const [recommendationsError, setRecommendationsError] = useState("");
-  const [mode, setMode] = useState<"concept" | "tryon">(search.product ? "tryon" : "concept");
+  const [mode, setMode] = useState<"concept" | "tryon">(search.mode ?? (search.product ? "tryon" : "concept"));
 
   useEffect(() => {
     setConsented(window.localStorage.getItem(CONSENT_KEY) === "accepted");

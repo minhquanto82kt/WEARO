@@ -101,7 +101,7 @@ export function SiteFooter() {
               <Link to="/collections/$slug" params={{ slug: "casual" }} className={linkClass}>{t("Bộ sưu tập", "Collections")}</Link>
               <Link to="/about" className={linkClass}>WEARO Journal</Link>
               <Link to="/ai" className={linkClass}>AI Virtual Try-On</Link>
-              <Link to="/ai" className={linkClass}>AI Personal Stylist</Link>
+              <Link to="/ai" className={linkClass}>AI Stylist</Link>
             </nav>
           </section>
 

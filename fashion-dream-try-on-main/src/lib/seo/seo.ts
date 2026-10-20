@@ -29,7 +29,7 @@ export function websiteSchema() {
     "@type": "WebSite",
     name: "WEARO",
     url: SITE_URL,
-    description: "WEARO — cửa hàng thời trang trực tuyến kết hợp AI Virtual Try-On, AI Personal Stylist và Hybrid Stylist 1:1.",
+    description: "WEARO — cửa hàng thời trang trực tuyến kết hợp AI Virtual Try-On, AI Stylist và Hybrid Stylist 1:1.",
     publisher: {
       "@type": "Organization",
       name: "WEARO",
