@@ -52,12 +52,17 @@ class ReplicateTryOnProvider:
 
         inputs: dict[str, Any] = {
             self.person_field: request.person_image_url,
-            self.garment_field: request.garment_image_url,
+            self.garment_field: (
+                [request.garment_image_url]
+                if self.garment_field == "garment_images"
+                else request.garment_image_url
+            ),
         }
         if self.category_field:
             inputs[self.category_field] = self._category(request.category)
-        if self.description_field:
-            inputs[self.description_field] = str(request.metadata.get("note") or "clothing item")
+        note = request.metadata.get("note")
+        if self.description_field and isinstance(note, str) and note.strip():
+            inputs[self.description_field] = note.strip()
 
         try:
             response = httpx.post(
