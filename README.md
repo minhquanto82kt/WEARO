@@ -56,15 +56,15 @@ Bảng dưới được sinh từ GitHub Repository API, trạng thái GitHub Ac
 | Repository | Dung lượng GitHub ước tính | 55.6 MB |
 | Repository | Nhánh mặc định | `main` |
 | Repository | Nhánh đang thống kê | `feature/product-admin` |
-| Repository | Cập nhật gần nhất | 2026-10-20 02:34 UTC |
-| GitHub Actions | CI gần nhất trên nhánh này | [In Progress](https://github.com/minhquanto82kt/fashion-dream-try-on-shop/actions/runs/39359671017) |
+| Repository | Cập nhật gần nhất | 2026-10-20 02:47 UTC |
+| GitHub Actions | CI gần nhất trên nhánh này | [In Progress](https://github.com/minhquanto82kt/fashion-dream-try-on-shop/actions/runs/39360793614) |
 | Dữ liệu dự án | Package | `tanstack_start_ts` |
 | Dữ liệu dự án | Runtime | Node.js `>=24 <25` · `npm@11` |
 | Dữ liệu dự án | Ngôn ngữ GitHub nhận diện | CSS, JavaScript, Python, TypeScript |
 | Dữ liệu dự án | Dependencies / devDependencies | 54 / 18 |
 | Dữ liệu dự án | Script kiểm tra được khai báo | `lint`, `typecheck`, `build`, `test:smoke`, `test:customer-experience`, `audit:architecture`, `audit:dependencies` |
 
-_Cập nhật tự động: 2026-10-20 02:34 UTC · nhánh `feature/product-admin`._
+_Cập nhật tự động: 2026-10-20 02:47 UTC · nhánh `feature/product-admin`._
 <!-- AUTO-REPO-STATS:END -->
 
 ## Phát triển local
