@@ -97,7 +97,7 @@ export function SiteFooter() {
             <p className="wearo-footer__kicker">01 / {t("Khám phá", "DISCOVER")}</p>
             <nav className="wearo-footer__links" aria-label={t("Khám phá", "Discover")}>
               <Link to="/shop" className={linkClass}>{t("Cửa hàng (Tất cả)", "Shop (All)")}</Link>
-              <Link to="/shop" search={{ category: undefined, search: undefined }} className={linkClass}>{t("Hàng mới về", "New Arrivals")}</Link>
+              <Link to="/shop" className={linkClass}>{t("Hàng mới về", "New Arrivals")}</Link>
               <Link to="/collections/$slug" params={{ slug: "casual" }} className={linkClass}>{t("Bộ sưu tập", "Collections")}</Link>
               <Link to="/about" className={linkClass}>WEARO Journal</Link>
               <Link to="/ai" className={linkClass}>AI Virtual Try-On</Link>
@@ -108,11 +108,11 @@ export function SiteFooter() {
           <section className="wearo-footer__section">
             <p className="wearo-footer__kicker">02 / {t("Hỗ trợ & pháp lý", "SUPPORT & LEGAL")}</p>
             <nav className="wearo-footer__links" aria-label={t("Hỗ trợ và pháp lý", "Support and legal")}>
-              <Link to="/about#size-guide" className={linkClass}>{t("Hướng dẫn chọn size", "Size Guide")}</Link>
-              <Link to="/about#shopping-guide" className={linkClass}>{t("Hướng dẫn mua hàng", "Shopping Guide")}</Link>
-              <Link to="/about#returns" className={linkClass}>{t("Chính sách đổi trả", "Returns & Refunds")}</Link>
-              <Link to="/about#privacy" className={linkClass}>{t("Chính sách bảo mật", "Privacy Policy")}</Link>
-              <Link to="/about#terms" className={linkClass}>{t("Điều khoản dịch vụ", "Terms of Service")}</Link>
+              <Link to="/about" className={linkClass}>{t("Hướng dẫn chọn size", "Size Guide")}</Link>
+              <Link to="/about" className={linkClass}>{t("Hướng dẫn mua hàng", "Shopping Guide")}</Link>
+              <Link to="/about" className={linkClass}>{t("Chính sách đổi trả", "Returns & Refunds")}</Link>
+              <Link to="/about" className={linkClass}>{t("Chính sách bảo mật", "Privacy Policy")}</Link>
+              <Link to="/about" className={linkClass}>{t("Điều khoản dịch vụ", "Terms of Service")}</Link>
             </nav>
           </section>
 
