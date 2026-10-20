@@ -11,6 +11,7 @@ from app.services.fashn_vton_provider import (
     FashnVtonLocalProvider as FashnVtonClient,
     FashnVtonProviderError,
 )
+from app.services.replicate_provider import ReplicateProviderError, ReplicateTryOnProvider
 
 
 @dataclass(frozen=True)
@@ -64,6 +65,21 @@ class FashnProviderAdapter(TryOnProvider):
         return self.provider.get_status(prediction_id)
 
 
+class ReplicateProviderAdapter(TryOnProvider):
+    """Adapt Replicate predictions to the shared Try-On job contract."""
+
+    def __init__(self, provider: ReplicateTryOnProvider | None = None) -> None:
+        self.provider = provider or ReplicateTryOnProvider()
+        self.name = self.provider.name
+
+    def submit(self, request: TryOnRequest) -> ProviderSubmission:
+        prediction = self.provider.submit(request)
+        return ProviderSubmission(provider=self.name, prediction_id=prediction.id)
+
+    def get_status(self, prediction_id: str) -> dict[str, Any]:
+        return self.provider.get_status(prediction_id)
+
+
 class FashnVtonLocalProvider(TryOnProvider):
     """Adapt the self-hosted FASHN VTON GPU service."""
 
@@ -90,6 +106,8 @@ class TryOnService:
         """Construct a provider from the provider identifier persisted with a job."""
 
         normalized = provider_name.strip().lower()
+        if normalized == "replicate":
+            return ReplicateProviderAdapter()
         if normalized == "fashn-v1.6":
             return FashnProviderAdapter()
         if normalized == "fashn-vton-1.5":
@@ -103,6 +121,8 @@ class TryOnService:
         provider_name = get_settings().try_on_provider.strip().lower()
         if provider_name == "fashn":
             return FashnProviderAdapter()
+        if provider_name == "replicate":
+            return ReplicateProviderAdapter()
         if provider_name == "fashn-local":
             return FashnVtonLocalProvider()
         return StubTryOnProvider()
@@ -111,7 +131,7 @@ class TryOnService:
         job_id = str(uuid4())
         try:
             submission = self.provider.submit(request)
-        except (FashnProviderError, FashnVtonProviderError) as exc:
+        except (FashnProviderError, FashnVtonProviderError, ReplicateProviderError) as exc:
             return (
                 TryOnJob(
                     id=job_id,
