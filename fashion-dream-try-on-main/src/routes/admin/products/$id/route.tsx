@@ -239,7 +239,7 @@ function ProductDetailPage() {
     const price = Number(form.price);
     if (!name) return setError("Vui lòng nhập tên sản phẩm.");
     if (!slug) return setError("Vui lòng nhập slug.");
-    if (!Number.isFinite(price) || price < 0) return setError("Giá sản phẩm không hợp lệ.");
+    if (!Number.isFinite(price) || !Number.isInteger(price) || price < 1000) return setError("Giá tối thiểu là 1.000 ₫. Vui lòng nhập giá từ 1000 trở lên.");
 
     setSaving(true); setMessage(""); setError("");
     try {
@@ -442,7 +442,7 @@ function ProductDetailPage() {
             <label>Slug<input value={form.slug} onChange={(e) => setForm((c) => c && ({ ...c, slug: e.target.value }))} disabled={saving || deleting} /></label>
             <div className="up-two-col">
               <label>Danh mục<select value={form.category} onChange={(e) => setForm((c) => c && ({ ...c, category: e.target.value }))} disabled={saving || deleting}>{categories.map((category) => <option key={category}>{category}</option>)}</select></label>
-              <label>Giá (VND)<input type="number" min="0" value={form.price} onChange={(e) => setForm((c) => c && ({ ...c, price: e.target.value }))} disabled={saving || deleting} /></label>
+              <label>Giá (VND)<input type="number" min="1000" step="1" required aria-describedby="product-price-minimum" value={form.price} onChange={(e) => setForm((c) => c && ({ ...c, price: e.target.value }))} disabled={saving || deleting} /><small id="product-price-minimum">Giá tối thiểu: 1.000 ₫.</small></label>
             </div>
             <label>Mô tả ngắn<textarea rows={3} value={form.short_description} onChange={(e) => setForm((c) => c && ({ ...c, short_description: e.target.value }))} disabled={saving || deleting} /></label>
             <label>Mô tả chi tiết<textarea rows={7} value={form.long_description} onChange={(e) => setForm((c) => c && ({ ...c, long_description: e.target.value }))} disabled={saving || deleting} /></label>
