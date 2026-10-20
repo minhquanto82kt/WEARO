@@ -4,7 +4,8 @@ import { createClient } from "@vercel/flags-core";
 const AI_TRY_ON_FLAG = "ai_try_on";
 
 export async function isAiTryOnEnabled() {
-  const sdkKey = process.env.FLAGS;
+  // Vercel currently stores the connection string as FLAGS_SECRET in this project.
+  const sdkKey = process.env.FLAGS ?? process.env.FLAGS_SECRET;
 
   // Fail closed when Vercel Flags is not configured locally or in a deployment.
   if (!sdkKey) return false;
