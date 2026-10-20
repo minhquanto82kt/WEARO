@@ -9,10 +9,10 @@ import "@/styles/components/header-enhancements.scss";
 import "@/styles/wearo-language-modal.scss";
 
 const DISCOVERY_LINKS = [
-  { label: "Casual", vi: "CASUAL", to: "/collections/casual" },
-  { label: "Basic", vi: "BASIC", to: "/collections/basic" },
-  { label: "Streetwear", vi: "STREETWEAR", to: "/collections/streetwear" },
-  { label: "Outing Style", vi: "OUTING STYLE", to: "/collections/outing-style" },
+  { label: "Casual", vi: "CASUAL", slug: "casual" },
+  { label: "Basic", vi: "BASIC", slug: "basic" },
+  { label: "Streetwear", vi: "STREETWEAR", slug: "streetwear" },
+  { label: "Outing Style", vi: "OUTING STYLE", slug: "outing-style" },
 ] as const;
 
 export function SiteNav() {
@@ -131,7 +131,7 @@ export function SiteNav() {
             {shopOpen && (
               <div className="fashion-shop-mega" role="dialog" aria-label={t("Danh mục sản phẩm", "Shop categories")}>
                 <div className="fashion-shop-mega__intro"><span className="fashion-menu-kicker">WEARO / COLLECTIONS</span><h2>{t("Mua theo phong cách", "Shop your style")}</h2><Link to="/shop" onClick={closeMenus} className="fashion-shop-all">{t("Xem tất cả sản phẩm", "View all products")} <ChevronRight size={15} /></Link></div>
-                <div className="fashion-shop-discovery-grid">{DISCOVERY_LINKS.map((link) => <Link key={link.label} to={link.to} onClick={closeMenus} className="fashion-shop-all"><span>{t(link.vi, link.label)}</span><ChevronRight size={15} /></Link>)}<Link to="/ai" onClick={closeMenus} className="fashion-shop-all fashion-shop-ai-shortcut"><span>{t("AI Virtual Try-On", "AI Virtual Try-On")}</span><ChevronRight size={15} /></Link></div>
+                <div className="fashion-shop-discovery-grid">{DISCOVERY_LINKS.map((link) => <Link key={link.label} to="/collections/$slug" params={{ slug: link.slug }} onClick={closeMenus} className="fashion-shop-all"><span>{t(link.vi, link.label)}</span><ChevronRight size={15} /></Link>)}<Link to="/ai" onClick={closeMenus} className="fashion-shop-all fashion-shop-ai-shortcut"><span>{t("AI Virtual Try-On", "AI Virtual Try-On")}</span><ChevronRight size={15} /></Link></div>
                 <div className="fashion-shop-category-grid">{CATEGORIES.map((category) => <Link key={category.slug} to="/shop" search={{ category: category.slug }} onClick={closeMenus} className="fashion-shop-category" aria-label={t(`Xem danh mục ${category.name}`, `Browse ${category.name} category`)}><span className="fashion-shop-category__image"><img src={category.image} alt="" loading="lazy" /></span><span className="fashion-shop-category__meta"><strong>{category.name}</strong><span>{t("Khám phá danh mục", "Explore category")}</span></span><ChevronRight size={15} aria-hidden="true" /></Link>)}</div>
               </div>
             )}
