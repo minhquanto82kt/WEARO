@@ -161,65 +161,6 @@ function ShopPage() {
           </div>
         </section>
 
-        <section className="wearo-shop-style-directory" aria-labelledby="wearo-style-directory-title">
-          <div className="wearo-shop-editorial-heading">
-            <div>
-              <p className="wearo-shop-section-label">WEARO / FIND YOUR STYLE</p>
-              <h2 id="wearo-style-directory-title">Mặc theo cách của bạn.</h2>
-            </div>
-            <p>Khám phá những hướng phong cách phù hợp với nhịp sống mỗi ngày.</p>
-          </div>
-          <div className="wearo-shop-style-grid">
-            <Link to="/collections/$slug" params={{ slug: "casual" }} className="wearo-shop-style-card style-casual">
-              <span className="wearo-shop-style-index">01 / EVERYDAY</span><span className="wearo-shop-style-name">CASUAL</span><span className="wearo-shop-style-description">Thoải mái, linh hoạt, dễ mặc mỗi ngày.</span><span className="wearo-shop-style-link">Khám phá <ArrowUpRight size={15} /></span>
-            </Link>
-            <Link to="/collections/$slug" params={{ slug: "basic" }} className="wearo-shop-style-card style-basic">
-              <span className="wearo-shop-style-index">02 / ESSENTIALS</span><span className="wearo-shop-style-name">BASIC</span><span className="wearo-shop-style-description">Tối giản và dễ phối theo cách riêng.</span><span className="wearo-shop-style-link">Khám phá <ArrowUpRight size={15} /></span>
-            </Link>
-            <Link to="/collections/$slug" params={{ slug: "streetwear" }} className="wearo-shop-style-card style-streetwear">
-              <span className="wearo-shop-style-index">03 / STREET CULTURE</span><span className="wearo-shop-style-name">STREETWEAR</span><span className="wearo-shop-style-description">Cá tính đường phố, nổi bật chất riêng.</span><span className="wearo-shop-style-link">Khám phá <ArrowUpRight size={15} /></span>
-            </Link>
-            <Link to="/collections/$slug" params={{ slug: "outing-style" }} className="wearo-shop-style-card style-outing">
-              <span className="wearo-shop-style-index">04 / OUTSIDE LIFE</span><span className="wearo-shop-style-name">OUTING STYLE</span><span className="wearo-shop-style-description">Sẵn sàng đi chơi, dạo phố và hoạt động ngoài trời.</span><span className="wearo-shop-style-link">Khám phá <ArrowUpRight size={15} /></span>
-            </Link>
-          </div>
-        </section>
-
-        {products.some((product) => product.badge === "Featured") && (
-          <section className="wearo-shop-featured" aria-labelledby="wearo-featured-title">
-            <div className="wearo-shop-editorial-heading">
-              <div>
-                <p className="wearo-shop-section-label">WEARO / SELECTED PIECES</p>
-                <h2 id="wearo-featured-title">Điểm nhấn của hôm nay.</h2>
-              </div>
-              <Link to="/shop" className="wearo-shop-text-link">Xem tất cả <ArrowUpRight size={15} /></Link>
-            </div>
-            <div className="wearo-shop-featured-grid">
-              {products.filter((product) => product.badge === "Featured").slice(0, 4).map((product) => <ProductCard key={product.id} product={product} />)}
-            </div>
-          </section>
-        )}
-
-        <section className="wearo-shop-outfit-story" aria-labelledby="wearo-outfit-story-title">
-          <div className="wearo-shop-story-copy">
-            <p className="wearo-shop-section-label">WEARO / STYLE NOTES 01</p>
-            <h2 id="wearo-outfit-story-title">Một outfit tốt bắt đầu từ cảm giác của chính bạn.</h2>
-            <p>Chọn những món đồ bạn thấy thoải mái, phối theo nhịp sống và để phong cách thể hiện cá tính riêng — không cần chạy theo khuôn mẫu.</p>
-            <Link to="/collections/casual" className="wearo-shop-story-cta">Khám phá phong cách <ArrowUpRight size={16} /></Link>
-          </div>
-          <div className="wearo-shop-story-visual" role="img" aria-label="Khối hình minh họa biên tập thời trang WEARO">
-            <span className="story-orbit story-orbit-one" /><span className="story-orbit story-orbit-two" />
-            <span className="wearo-shop-story-mark">W.</span>
-            <span className="wearo-shop-story-caption">EVERYDAY, YOUR WAY<br />WEARO STYLE JOURNAL</span>
-          </div>
-        </section>
-
-        <section className="wearo-shop-brand-promise" aria-label="Cam kết trải nghiệm WEARO">
-          <div><span className="wearo-shop-promise-number">01</span><h3>Khám phá theo phong cách</h3><p>Bốn hướng phong cách để bắt đầu tìm kiếm theo gu riêng.</p></div>
-          <div><span className="wearo-shop-promise-number">02</span><h3>Thông tin sản phẩm rõ ràng</h3><p>Xem giá, hình ảnh, size và màu sắc trên từng sản phẩm.</p></div>
-          <div><span className="wearo-shop-promise-number">03</span><h3>Khám phá AI Studio</h3><p>Tìm hiểu các trải nghiệm AI hiện có của WEARO.</p><Link to="/ai" className="wearo-shop-promise-link">Khám phá AI <ArrowUpRight size={14} /></Link></div>
-        </section>
-
         <section className="wearo-shop-toolbar" aria-label="Tìm kiếm và lọc sản phẩm">
           <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
             <div className="flex min-w-0 flex-1 flex-col gap-3 sm:flex-row sm:items-center">
@@ -282,6 +223,69 @@ function ShopPage() {
             </div>
           )}
         </section>
+
+
+
+
+        <section className="wearo-shop-style-directory" aria-labelledby="wearo-style-directory-title">
+          <div className="wearo-shop-editorial-heading">
+            <div>
+              <p className="wearo-shop-section-label">WEARO / FIND YOUR STYLE</p>
+              <h2 id="wearo-style-directory-title">Mặc theo cách của bạn.</h2>
+            </div>
+            <p>Khám phá những hướng phong cách phù hợp với nhịp sống mỗi ngày.</p>
+          </div>
+          <div className="wearo-shop-style-grid">
+            <Link to="/collections/$slug" params={{ slug: "casual" }} className="wearo-shop-style-card style-casual">
+              <span className="wearo-shop-style-index">01 / EVERYDAY</span><span className="wearo-shop-style-name">CASUAL</span><span className="wearo-shop-style-description">Thoải mái, linh hoạt, dễ mặc mỗi ngày.</span><span className="wearo-shop-style-link">Khám phá <ArrowUpRight size={15} /></span>
+            </Link>
+            <Link to="/collections/$slug" params={{ slug: "basic" }} className="wearo-shop-style-card style-basic">
+              <span className="wearo-shop-style-index">02 / ESSENTIALS</span><span className="wearo-shop-style-name">BASIC</span><span className="wearo-shop-style-description">Tối giản và dễ phối theo cách riêng.</span><span className="wearo-shop-style-link">Khám phá <ArrowUpRight size={15} /></span>
+            </Link>
+            <Link to="/collections/$slug" params={{ slug: "streetwear" }} className="wearo-shop-style-card style-streetwear">
+              <span className="wearo-shop-style-index">03 / STREET CULTURE</span><span className="wearo-shop-style-name">STREETWEAR</span><span className="wearo-shop-style-description">Cá tính đường phố, nổi bật chất riêng.</span><span className="wearo-shop-style-link">Khám phá <ArrowUpRight size={15} /></span>
+            </Link>
+            <Link to="/collections/$slug" params={{ slug: "outing-style" }} className="wearo-shop-style-card style-outing">
+              <span className="wearo-shop-style-index">04 / OUTSIDE LIFE</span><span className="wearo-shop-style-name">OUTING STYLE</span><span className="wearo-shop-style-description">Sẵn sàng đi chơi, dạo phố và hoạt động ngoài trời.</span><span className="wearo-shop-style-link">Khám phá <ArrowUpRight size={15} /></span>
+            </Link>
+          </div>
+        </section>
+
+        {products.some((product) => product.badge === "Featured") && (
+          <section className="wearo-shop-featured" aria-labelledby="wearo-featured-title">
+            <div className="wearo-shop-editorial-heading">
+              <div>
+                <p className="wearo-shop-section-label">WEARO / SELECTED PIECES</p>
+                <h2 id="wearo-featured-title">Điểm nhấn của hôm nay.</h2>
+              </div>
+              <Link to="/shop" className="wearo-shop-text-link">Xem tất cả <ArrowUpRight size={15} /></Link>
+            </div>
+            <div className="wearo-shop-featured-grid">
+              {products.filter((product) => product.badge === "Featured").slice(0, 4).map((product) => <ProductCard key={product.id} product={product} />)}
+            </div>
+          </section>
+        )}
+
+        <section className="wearo-shop-outfit-story" aria-labelledby="wearo-outfit-story-title">
+          <div className="wearo-shop-story-copy">
+            <p className="wearo-shop-section-label">WEARO / STYLE NOTES 01</p>
+            <h2 id="wearo-outfit-story-title">Một outfit tốt bắt đầu từ cảm giác của chính bạn.</h2>
+            <p>Chọn những món đồ bạn thấy thoải mái, phối theo nhịp sống và để phong cách thể hiện cá tính riêng — không cần chạy theo khuôn mẫu.</p>
+            <Link to="/collections/casual" className="wearo-shop-story-cta">Khám phá phong cách <ArrowUpRight size={16} /></Link>
+          </div>
+          <div className="wearo-shop-story-visual" role="img" aria-label="Khối hình minh họa biên tập thời trang WEARO">
+            <span className="story-orbit story-orbit-one" /><span className="story-orbit story-orbit-two" />
+            <span className="wearo-shop-story-mark">W.</span>
+            <span className="wearo-shop-story-caption">EVERYDAY, YOUR WAY<br />WEARO STYLE JOURNAL</span>
+          </div>
+        </section>
+
+        <section className="wearo-shop-brand-promise" aria-label="Cam kết trải nghiệm WEARO">
+          <div><span className="wearo-shop-promise-number">01</span><h3>Khám phá theo phong cách</h3><p>Bốn hướng phong cách để bắt đầu tìm kiếm theo gu riêng.</p></div>
+          <div><span className="wearo-shop-promise-number">02</span><h3>Thông tin sản phẩm rõ ràng</h3><p>Xem giá, hình ảnh, size và màu sắc trên từng sản phẩm.</p></div>
+          <div><span className="wearo-shop-promise-number">03</span><h3>Khám phá AI Studio</h3><p>Tìm hiểu các trải nghiệm AI hiện có của WEARO.</p><Link to="/ai" className="wearo-shop-promise-link">Khám phá AI <ArrowUpRight size={14} /></Link></div>
+        </section>
+
       </main>
       <SiteFooter />
     </div>
