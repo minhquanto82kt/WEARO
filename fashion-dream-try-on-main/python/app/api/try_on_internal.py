@@ -12,6 +12,7 @@ from app.core.rate_limit import TRY_ON_REQUESTS, TRY_ON_WINDOW_SECONDS, RateLimi
 from app.models.try_on import TryOnCategory, TryOnJob, TryOnRequest, TryOnStatus
 from app.services.fashn_provider import FashnProviderError
 from app.services.fashn_vton_provider import FashnVtonProviderError
+from app.services.replicate_provider import ReplicateProviderError
 from app.services.image_service import normalize_image
 from app.services.try_on_job_service import TryOnJobContext, TryOnJobService
 from app.services.try_on_reconciliation_service import TryOnReconciliationService
@@ -121,7 +122,7 @@ def create_internal_try_on_job(request: InternalTryOnInput) -> TryOnJob:
         if submission.prediction_id:
             metadata["provider_prediction_id"] = submission.prediction_id
         return job_service.create_job(provider_request, user_id=None, provider=job.provider, job_id=job.id, status=job.status, error=job.error, metadata=metadata)
-    except (FashnProviderError, FashnVtonProviderError) as exc:
+    except (FashnProviderError, FashnVtonProviderError, ReplicateProviderError) as exc:
         raise HTTPException(status_code=502, detail=str(exc)) from exc
     except RuntimeError as exc:
         raise HTTPException(status_code=503, detail=str(exc)) from exc
