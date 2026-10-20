@@ -625,3 +625,27 @@
   background: var(--shop-blue);
   color: #fff;
 }
+
+
+/* WEARO shop refinement: compact discovery, responsive banner and accessible controls. */
+.wearo-shop-page .wearo-shop-banner-track { min-height: clamp(300px, 29vw, 420px); }
+.wearo-shop-page .wearo-shop-banner-content h2 { max-width: 640px; margin-top: 18px; color: var(--shop-ink); font-family: var(--wearo-font-display, "Space Grotesk", sans-serif); font-size: clamp(38px, 5.2vw, 72px); font-weight: 700; line-height: .98; letter-spacing: -.065em; text-transform: uppercase; }
+.wearo-shop-page .wearo-shop-style-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; }
+.wearo-shop-page .wearo-shop-style-card { min-height: 0; padding: 16px 18px; gap: 7px; }
+.wearo-shop-page .wearo-shop-style-index { font-size: 9px; }
+.wearo-shop-page .wearo-shop-style-name { font-size: clamp(15px, 1.5vw, 21px); }
+.wearo-shop-page .wearo-shop-style-description { font-size: 11px; line-height: 1.55; }
+.wearo-shop-page .wearo-shop-style-link { margin-top: 3px; }
+.wearo-shop-page .wearo-shop-banner-arrows button { min-width: 40px; min-height: 40px; }
+.wearo-shop-page .wearo-shop-banner-dot { min-width: 24px; min-height: 24px; display: inline-grid; place-items: center; }
+.wearo-shop-page .wearo-shop-control, .wearo-shop-page .wearo-shop-category, .wearo-shop-page .wearo-shop-sort, .wearo-shop-page .wearo-shop-view-mode { min-height: 44px; }
+@media (max-width: 760px) {
+  .wearo-shop-page .wearo-shop-banner-track { min-height: 330px; }
+  .wearo-shop-page .wearo-shop-banner-content { width: min(90%, 520px); padding: 24px 20px 66px; }
+  .wearo-shop-page .wearo-shop-banner-content h1, .wearo-shop-page .wearo-shop-banner-content h2 { font-size: clamp(30px, 8vw, 44px); }
+  .wearo-shop-page .wearo-shop-banner-shade { background: linear-gradient(90deg, rgba(248,246,242,.97), rgba(248,246,242,.83) 65%, rgba(248,246,242,.35)); }
+  .wearo-shop-page .wearo-shop-style-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+  .wearo-shop-page .wearo-shop-style-card { padding: 13px; }
+  .wearo-shop-page .wearo-shop-banner-controls { right: 10px; bottom: 10px; left: 10px; gap: 8px; }
+}
+@media (prefers-reduced-motion: reduce) { .wearo-shop-page .wearo-shop-banner-slide, .wearo-shop-page .wearo-shop-banner-cta { transition: none; } }
