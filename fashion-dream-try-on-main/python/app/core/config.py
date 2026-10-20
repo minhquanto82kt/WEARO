@@ -12,6 +12,7 @@ class Settings(BaseSettings):
     environment: str = "development"
     supabase_url: str = ""
     supabase_service_role_key: str = ""
+    supabase_secret_key: str = ""
     storage_bucket: str = ""
     try_on_provider: str = "stub"
     fashn_api_key: str = ""
