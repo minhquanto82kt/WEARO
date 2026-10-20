@@ -16,13 +16,11 @@ def get_supabase_client() -> Client:
     """
 
     settings = get_settings()
-    if not settings.supabase_url or not settings.supabase_service_role_key:
+    service_role_key = settings.supabase_service_role_key or settings.supabase_secret_key
+    if not settings.supabase_url or not service_role_key:
         raise RuntimeError(
-            "Supabase is not configured. Set SUPABASE_URL and "
-            "SUPABASE_SERVICE_ROLE_KEY in python/.env."
+            "Supabase is not configured. Set SUPABASE_URL and either "
+            "SUPABASE_SERVICE_ROLE_KEY or SUPABASE_SECRET_KEY in the server environment."
         )
 
-    return create_client(
-        settings.supabase_url,
-        settings.supabase_service_role_key,
-    )
+    return create_client(settings.supabase_url, service_role_key)
