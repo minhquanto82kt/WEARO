@@ -56,8 +56,8 @@ Bảng dưới được sinh từ GitHub Repository API, trạng thái GitHub Ac
 | Repository | Dung lượng GitHub ước tính | 55.6 MB |
 | Repository | Nhánh mặc định | `main` |
 | Repository | Nhánh đang thống kê | `feature/product-admin` |
-| Repository | Cập nhật gần nhất | 2026-10-20 06:35 UTC |
-| GitHub Actions | CI gần nhất trên nhánh này | [In Progress](https://github.com/minhquanto82kt/WEARO/actions/runs/39381315953) |
+| Repository | Cập nhật gần nhất | 2026-10-20 06:36 UTC |
+| GitHub Actions | CI gần nhất trên nhánh này | [In Progress](https://github.com/minhquanto82kt/WEARO/actions/runs/39381382924) |
 | Dữ liệu dự án | Package | `tanstack_start_ts` |
 | Dữ liệu dự án | Runtime | Node.js `>=24 <25` · `npm@11` |
 | Dữ liệu dự án | Ngôn ngữ GitHub nhận diện | CSS, JavaScript, Python, TypeScript |
