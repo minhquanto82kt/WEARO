@@ -14,6 +14,7 @@ from app.core.rate_limit import (
 from app.models.try_on import TryOnJob, TryOnRequest, TryOnStatus
 from app.services.fashn_provider import FashnProviderError
 from app.services.fashn_vton_provider import FashnVtonProviderError
+from app.services.replicate_provider import ReplicateProviderError
 from app.services.try_on_job_service import TryOnJobService
 from app.services.try_on_reconciliation_service import TryOnReconciliationService
 from app.services.try_on_service import TryOnService
@@ -61,7 +62,7 @@ def create_try_on_job(
             error=job.error,
             metadata=metadata,
         )
-    except (FashnProviderError, FashnVtonProviderError) as exc:
+    except (FashnProviderError, FashnVtonProviderError, ReplicateProviderError) as exc:
         raise HTTPException(
             status_code=status.HTTP_502_BAD_GATEWAY,
             detail=str(exc),
