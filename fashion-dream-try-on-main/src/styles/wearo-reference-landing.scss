@@ -244,10 +244,64 @@
 .wearo-reference-ai-panel h2 { margin: 8px 0 13px; font: 700 clamp(30px, 3.4vw, 48px)/1 var(--wearo-font-display, var(--ft-impact)); letter-spacing: -.04em; }
 .wearo-reference-ai-panel > .wearo-reference-ai-grid > div:first-child > p { max-width: 650px; margin: 0; color: rgba(255,255,255,.68); font: 13px/1.7 var(--ft-body); }
 .wearo-reference-ai-features { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 14px; }
-.wearo-reference-ai-features article { min-height: 160px; padding: 17px; border: 1px solid rgba(119,148,166,.24); background: rgba(23,23,23,.7); }
-.wearo-reference-ai-features strong { color: var(--wr-coral); font-size: 25px; }
-.wearo-reference-ai-features h3 { margin: 9px 0 5px; font: 700 12px var(--ft-body); }
-.wearo-reference-ai-features p { margin: 0; color: rgba(255,255,255,.52); font: 10px/1.6 var(--ft-body); }
+.wearo-reference-ai-features article {
+  min-height: 164px;
+  padding: 0;
+  overflow: hidden;
+  border: 1px solid rgba(23,23,23,.1);
+  border-radius: 4px;
+  background: #fff;
+  box-shadow: 0 4px 12px rgba(23,23,23,.08);
+  transition: transform .2s ease, box-shadow .2s ease;
+}
+.wearo-reference-ai-features article:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 9px 20px rgba(23,23,23,.15);
+}
+.wearo-reference-ai-feature-thumb {
+  position: relative;
+  height: 78px;
+  overflow: hidden;
+  background: #e7eef2;
+}
+.wearo-reference-ai-feature-thumb::after {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, rgba(84,114,140,.12), transparent 68%);
+  content: "";
+  pointer-events: none;
+}
+.wearo-reference-ai-feature-thumb img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: right center;
+  transform: scale(1.12);
+  transform-origin: right center;
+  transition: transform .45s ease;
+}
+.wearo-reference-ai-feature-thumb--stylist img {
+  object-position: center 48%;
+  transform: scale(1.04);
+}
+.wearo-reference-ai-features article:hover .wearo-reference-ai-feature-thumb img {
+  transform: scale(1.2);
+}
+.wearo-reference-ai-feature-copy { padding: 9px 12px 11px; }
+.wearo-reference-ai-features strong {
+  display: block;
+  margin-bottom: 4px;
+  color: var(--wr-coral);
+  font-size: 15px;
+  line-height: 1;
+}
+.wearo-reference-ai-features h3 {
+  margin: 0 0 4px;
+  color: #171717;
+  font: 700 12px/1.2 var(--ft-body);
+}
+.wearo-reference-ai-features p { margin: 0; color: rgba(23,23,23,.68); font: 10px/1.45 var(--ft-body); }
 
 /* STOREFRONT */
 .wearo-reference-storefront { padding-top: 78px; padding-bottom: 84px; }
