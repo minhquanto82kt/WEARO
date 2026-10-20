@@ -290,13 +290,12 @@ function Index() {
                 <p>Không còn e ngại mua hàng online không hợp form hay tốn thời gian suy nghĩ cách phối đồ. Hãy để AI Virtual Try-On giúp bạn thử trang phục lên chính ảnh chụp của mình chỉ trong vài giây.</p>
                 <div className="wearo-reference-actions">
                   <Link to="/ai" search={{ mode: "tryon" }} className="wearo-reference-btn wearo-reference-btn--accent"><WandSparkles size={14} /> BẮT ĐẦU TRẢI NGHIỆM</Link>
-                  <Link to="/ai" search={{ mode: "concept" }} className="wearo-reference-btn wearo-reference-btn--dark">AI Stylist</Link>
                 </div>
               </div>
               <div className="wearo-reference-ai-features">
                 <article>
                   <div className="wearo-reference-ai-feature-thumb wearo-reference-ai-feature-thumb--tryon">
-                    <img src="/images/banners/wearo-ai-virtual-try-on-banner.webp" alt="" aria-hidden="true" loading="lazy" decoding="async" />
+                    <img src="/images/AI_Virtual_Try-on_thumbnail.webp" alt="" aria-hidden="true" loading="lazy" decoding="async" />
                   </div>
                   <div className="wearo-reference-ai-feature-copy">
                     <strong aria-hidden="true">◈</strong>
@@ -306,7 +305,7 @@ function Index() {
                 </article>
                 <article>
                   <div className="wearo-reference-ai-feature-thumb wearo-reference-ai-feature-thumb--stylist">
-                    <img src="/images/fashion-5-people-bg.webp" alt="" aria-hidden="true" loading="lazy" decoding="async" />
+                    <img src="/images/AI_Stylist_thumbnail.webp" alt="" aria-hidden="true" loading="lazy" decoding="async" />
                   </div>
                   <div className="wearo-reference-ai-feature-copy">
                     <strong aria-hidden="true">✦</strong>
