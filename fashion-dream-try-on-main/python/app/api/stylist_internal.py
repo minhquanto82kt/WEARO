@@ -34,7 +34,8 @@ def _require_internal_secret(
 ) -> None:
     """Allow only the server-side application bridge to call this API."""
 
-    expected = get_settings().supabase_service_role_key.strip()
+    settings = get_settings()
+    expected = (settings.supabase_service_role_key or settings.supabase_secret_key).strip()
     supplied = authorization[7:].strip() if authorization and authorization.lower().startswith("bearer ") else ""
     if not expected or not supplied or supplied != expected:
         raise HTTPException(
