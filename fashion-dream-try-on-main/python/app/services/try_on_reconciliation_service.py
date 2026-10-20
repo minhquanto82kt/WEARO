@@ -10,6 +10,7 @@ from typing import Any
 from app.models.try_on import TryOnJob, TryOnStatus
 from app.services.fashn_provider import FashnProviderError
 from app.services.fashn_vton_provider import FashnVtonProviderError
+from app.services.replicate_provider import ReplicateProviderError
 from app.services.try_on_job_service import TryOnJobContext, TryOnJobService
 from app.services.try_on_service import TryOnService
 from app.services.try_on_storage_service import TryOnStorageError, TryOnStorageService
@@ -24,6 +25,7 @@ def _map_provider_status(provider_status: str) -> TryOnStatus | None:
         "queued": TryOnStatus.QUEUED,
         "processing": TryOnStatus.PROCESSING,
         "completed": TryOnStatus.COMPLETED,
+        "succeeded": TryOnStatus.COMPLETED,
         "failed": TryOnStatus.FAILED,
         "canceled": TryOnStatus.FAILED,
         "cancelled": TryOnStatus.FAILED,
@@ -53,7 +55,7 @@ class TryOnReconciliationService:
             payload = provider.get_status(prediction_id)
         except ValueError as exc:
             return self._fail(job.id, str(exc), user_id=user_id, internal=internal)
-        except (FashnProviderError, FashnVtonProviderError) as exc:
+        except (FashnProviderError, FashnVtonProviderError, ReplicateProviderError) as exc:
             failed = self._update_status(job.id, status=TryOnStatus.FAILED, error=str(exc), user_id=user_id, internal=internal)
             return failed or job
 
