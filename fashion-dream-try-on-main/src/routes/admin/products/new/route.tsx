@@ -100,8 +100,8 @@ function NewProductPage() {
       return setMessage("Vui lòng nhập slug.");
     }
 
-    if (!Number.isFinite(price) || price < 0) {
-      return setMessage("Giá không hợp lệ.");
+    if (!Number.isFinite(price) || !Number.isInteger(price) || price < 1000) {
+      return setMessage("Giá tối thiểu là 1.000 ₫. Vui lòng nhập giá từ 1000 trở lên.");
     }
 
     setMessage("");
@@ -278,7 +278,10 @@ function NewProductPage() {
 
                 <input
                   type="number"
-                  min="0"
+                  min="1000"
+                  step="1"
+                  required
+                  aria-describedby="new-product-price-minimum"
                   value={form.price}
                   onChange={(e) =>
                     setForm({
@@ -287,6 +290,7 @@ function NewProductPage() {
                     })
                   }
                 />
+                <small id="new-product-price-minimum">Giá tối thiểu: 1.000 ₫.</small>
               </label>
             </div>
 
