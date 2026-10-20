@@ -18,7 +18,22 @@ const getShopProducts = createServerFn({ method: "GET" }).handler(async () => {
     ? await supabaseRequest<{ id: string; fashion_style: Product["fashionStyle"] }[]>(`products?select=id,fashion_style&id=in.(${rows.map((product) => product.id).join(",")})`, { method: "GET" })
     : [];
   const styleById = new Map(styleRows.map((row) => [row.id, row.fashion_style]));
-  return rows.map((product): Product => { const gallery = product.gallery ?? []; const primaryImage = gallery[0] ?? product.image ?? ""; return { id: product.id, name: product.name, price: Number(product.price), category: product.category, image: primaryImage, gallery: gallery.length > 0 ? gallery : [primaryImage], sizes: product.sizes ?? [], colors: product.colors ?? [], badge: product.featured ? "Featured" : undefined, fashionStyle: styleById.get(product.id) ?? product.fashion_style ?? null, description: product.description }; });
+  return rows
+    .filter((product) => typeof product.name === "string" && product.name.trim().length > 0)
+    .filter((product) => Number.isFinite(Number(product.price)) && Number(product.price) > 0)
+    .map((product): Product => {
+      const gallery = (product.gallery ?? []).filter((image): image is string => typeof image === "string" && image.trim().length > 0);
+      const primaryImage = gallery[0] ?? product.image ?? "";
+      const sizes = [...new Set((product.sizes ?? []).filter((size): size is string => typeof size === "string" && size.trim().length > 0).map((size) => size.trim()))];
+      const colors = [...new Set((product.colors ?? []).filter((color): color is string => typeof color === "string" && color.trim().length > 0).map((color) => color.trim()))];
+      return {
+        id: product.id, name: product.name.trim(), price: Number(product.price), category: product.category,
+        image: primaryImage, gallery: gallery.length > 0 ? gallery : primaryImage ? [primaryImage] : [], sizes, colors,
+        badge: product.featured ? "Featured" : undefined,
+        fashionStyle: styleById.get(product.id) ?? product.fashion_style ?? null,
+        description: typeof product.description === "string" ? product.description.trim() : "",
+      };
+    });
 });
 
 export const Route = createFileRoute("/shop")({
@@ -43,6 +58,7 @@ function ShopPage() {
   const [search, setSearch] = useState(() => { if (typeof window === "undefined") return ""; return new URLSearchParams(window.location.search).get("search") ?? ""; });
   const [filtersOpen, setFiltersOpen] = useState(false);
   const [activeBanner, setActiveBanner] = useState(0);
+  const [bannerPaused, setBannerPaused] = useState(false);
   const banners = [
     {
       id: "virtual-try-on",
@@ -66,9 +82,10 @@ function ShopPage() {
     },
   ];
   useEffect(() => {
+    if (bannerPaused) return;
     const timer = window.setInterval(() => setActiveBanner((current) => (current + 1) % banners.length), 6500);
     return () => window.clearInterval(timer);
-  }, []);
+  }, [bannerPaused, banners.length]);
   const normalizedSearch = search.trim().toLowerCase();
   const list = useMemo(() => [...products]
     .filter((product) => cat === "all" || product.category === cat)
@@ -113,7 +130,7 @@ function ShopPage() {
                 <div className="wearo-shop-banner-shade" />
                 <div className="wearo-shop-banner-content">
                   <p className="wearo-shop-banner-eyebrow">{banner.eyebrow}</p>
-                  <h1>{banner.title}</h1>
+                  {index === 0 ? <h1>{banner.title}</h1> : <h2>{banner.title}</h2>}
                   <p className="wearo-shop-banner-description">{banner.description}</p>
                   <Link to={banner.href} className="wearo-shop-banner-cta">
                     {banner.cta} <ArrowUpRight size={16} aria-hidden="true" />
@@ -139,6 +156,7 @@ function ShopPage() {
             <div className="wearo-shop-banner-arrows">
               <button type="button" onClick={() => setActiveBanner((activeBanner + banners.length - 1) % banners.length)} aria-label="Banner trước"><ChevronLeft size={18} /></button>
               <button type="button" onClick={() => setActiveBanner((activeBanner + 1) % banners.length)} aria-label="Banner tiếp theo"><ChevronRight size={18} /></button>
+              <button type="button" onClick={() => setBannerPaused((paused) => !paused)} aria-label={bannerPaused ? "Tiếp tục tự động chuyển banner" : "Tạm dừng tự động chuyển banner"} aria-pressed={bannerPaused}>{bannerPaused ? "Tiếp tục" : "Tạm dừng"}</button>
             </div>
           </div>
         </section>
