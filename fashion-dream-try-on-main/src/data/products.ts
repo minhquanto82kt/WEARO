@@ -13,7 +13,7 @@ export type Product = {
   name: string;
   price: number;
   originalPrice?: number;
-  category: "hoodies" | "tees" | "outerwear" | "accessories" | "cap" | "sunglass";
+  category: "hoodies" | "tees" | "outerwear" | "pants" | "accessories" | "cap" | "sunglass";
   image: string;
   gallery: string[];
   sizes: string[];
@@ -33,6 +33,7 @@ export const CATEGORIES = [
   { slug: "hoodies", name: "Hoodies", image: px("18956666", 800) },
   { slug: "tees", name: "Tees", image: px("1311588", 800) },
   { slug: "outerwear", name: "Outerwear", image: px("19273260", 800) },
+  { slug: "pants", name: "Quần", image: px("12104691", 800) },
   { slug: "accessories", name: "Accessories", image: "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?auto=format&fit=crop&w=800&q=80" },
   { slug: "cap", name: "Caps", image: "https://images.unsplash.com/photo-1588850561407-ed78c282e89b?auto=format&fit=crop&w=800&q=80" },
   { slug: "sunglass", name: "Sunglasses", image: "https://images.unsplash.com/photo-1511499767150-a48a237f0083?auto=format&fit=crop&w=800&q=80" },
