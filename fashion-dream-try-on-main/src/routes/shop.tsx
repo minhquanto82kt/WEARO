@@ -21,6 +21,7 @@ const getShopProducts = createServerFn({ method: "GET" }).handler(async () => {
   return rows
     .filter((product) => typeof product.name === "string" && product.name.trim().length > 0)
     .filter((product) => Number.isFinite(Number(product.price)) && Number(product.price) > 0)
+    .filter((product) => Number(product.total_stock) > 0)
     .map((product): Product => {
       const gallery = (product.gallery ?? []).filter((image): image is string => typeof image === "string" && image.trim().length > 0);
       const primaryImage = gallery[0] ?? product.image ?? "";
