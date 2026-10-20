@@ -14,6 +14,7 @@ export function ProductCard({ product }: { product: Product }) {
   const tags = product.tags?.slice(0, 2) ?? [];
   const secondaryImage = product.gallery?.[1];
   const hasSale = typeof product.originalPrice === "number" && product.originalPrice > product.price;
+  const specs = [product.sizes.filter(Boolean).join(" / "), product.colors.filter(Boolean).slice(0, 2).join(" / ")].filter(Boolean).join(" · ");
 
   useEffect(() => {
     let mounted = true;
@@ -81,7 +82,7 @@ export function ProductCard({ product }: { product: Product }) {
           <p className="fashion-product-category">{product.category}</p>
           <Link to="/product/$id" params={{ id: product.id }} className="fashion-product-title">{product.name}</Link>
           {product.shortDescription && <p className="mt-2 line-clamp-2 text-xs leading-5 text-silver">{product.shortDescription}</p>}
-          <p className="fashion-product-spec mt-2">{product.sizes.join(" / ")} · {product.colors.slice(0, 2).join(" / ")}</p>
+          {specs && <p className="fashion-product-spec mt-2">{specs}</p>}
         </div>
         <div className="fashion-product-price-wrap shrink-0">
           <span className="fashion-product-price">{formatPrice(product.price, language)}</span>
