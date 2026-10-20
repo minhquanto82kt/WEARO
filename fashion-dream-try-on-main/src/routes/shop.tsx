@@ -272,7 +272,7 @@ function ShopPage() {
             <p className="wearo-shop-section-label">WEARO / STYLE NOTES 01</p>
             <h2 id="wearo-outfit-story-title">Một outfit tốt bắt đầu từ cảm giác của chính bạn.</h2>
             <p>Chọn những món đồ bạn thấy thoải mái, phối theo nhịp sống và để phong cách thể hiện cá tính riêng — không cần chạy theo khuôn mẫu.</p>
-            <Link to="/collections/casual" className="wearo-shop-story-cta">Khám phá phong cách <ArrowUpRight size={16} /></Link>
+            <Link to="/collections/$slug" params={{ slug: "casual" }} className="wearo-shop-story-cta">Khám phá phong cách <ArrowUpRight size={16} /></Link>
           </div>
           <div className="wearo-shop-story-visual" role="img" aria-label="Khối hình minh họa biên tập thời trang WEARO">
             <span className="story-orbit story-orbit-one" /><span className="story-orbit story-orbit-two" />
