@@ -64,6 +64,7 @@
 }
 @media (max-width: 520px) {
   .fashion-nav__inner { width: calc(100% - 24px); gap: 10px; }
+  .fashion-brand__logo { width: 68px; height: 68px; }
   .fashion-brand { min-width: 0; }
   .fashion-brand__copy { display: none; }
   .fashion-nav__actions { gap: 2px; }
