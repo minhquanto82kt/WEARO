@@ -141,6 +141,55 @@ function ProductDetailPage() {
   }, [variants]);
 
   const statusLabel = product?.status === "published" ? (product.active ? "Đang hoạt động" : "Đã ẩn") : product?.status === "draft" ? "Bản nháp" : "Trong thùng rác";
+  const hasUnsavedChanges = useMemo(() => {
+    if (!product || !form) return false;
+    return form.name !== product.name
+      || form.slug !== product.slug
+      || form.category !== product.category
+      || form.price !== String(product.price)
+      || form.short_description !== (product.short_description ?? "")
+      || form.long_description !== (product.long_description ?? "")
+      || form.status !== product.status
+      || form.featured !== product.featured
+      || form.new_arrival !== (product.new_arrival ?? false)
+      || form.fashion_style !== (product.fashion_style ?? "Casual")
+      || form.gender !== (product.gender ?? "Unisex");
+  }, [form, product]);
+
+  useEffect(() => {
+    if (!hasUnsavedChanges) return;
+    const warnBeforeUnload = (event: BeforeUnloadEvent) => {
+      event.preventDefault();
+      event.returnValue = "";
+    };
+    window.addEventListener("beforeunload", warnBeforeUnload);
+    return () => window.removeEventListener("beforeunload", warnBeforeUnload);
+  }, [hasUnsavedChanges]);
+
+  function resetProductForm() {
+    if (!product) return;
+    setForm({
+      name: product.name,
+      slug: product.slug,
+      category: product.category,
+      price: String(product.price),
+      short_description: product.short_description ?? "",
+      long_description: product.long_description ?? "",
+      status: product.status,
+      featured: product.featured,
+      new_arrival: product.new_arrival ?? false,
+      fashion_style: product.fashion_style ?? "Casual",
+      gender: product.gender ?? "Unisex",
+    });
+    setError("");
+    setMessage("Đã hoàn tác các thay đổi chưa lưu.");
+  }
+
+  function confirmLeaveIfDirty(event: React.MouseEvent<HTMLAnchorElement>) {
+    if (hasUnsavedChanges && !window.confirm("Bạn có thay đổi chưa lưu. Rời trang sẽ làm mất các thay đổi này. Bạn vẫn muốn tiếp tục?")) {
+      event.preventDefault();
+    }
+  }
 
   function resetVariantForm() {
     setEditingVariant(null);
@@ -260,8 +309,37 @@ function ProductDetailPage() {
         fashion_style: form.fashion_style,
         gender: form.gender,
       });
-      setProduct(updated ?? { ...product, name, slug, category: form.category, price, status: form.status, featured: form.featured, new_arrival: form.new_arrival });
-      setMessage("Đã cập nhật sản phẩm.");
+      const savedProduct = updated ?? {
+        ...product,
+        name,
+        slug,
+        category: form.category,
+        price,
+        short_description: form.short_description.trim() || null,
+        long_description: form.long_description.trim() || null,
+        description: form.long_description.trim() || form.short_description.trim() || null,
+        status: form.status,
+        active: form.status === "published",
+        featured: form.featured,
+        new_arrival: form.new_arrival,
+        fashion_style: form.fashion_style,
+        gender: form.gender,
+      };
+      setProduct(savedProduct);
+      setForm({
+        name: savedProduct.name,
+        slug: savedProduct.slug,
+        category: savedProduct.category,
+        price: String(savedProduct.price),
+        short_description: savedProduct.short_description ?? "",
+        long_description: savedProduct.long_description ?? "",
+        status: savedProduct.status,
+        featured: savedProduct.featured,
+        new_arrival: savedProduct.new_arrival ?? false,
+        fashion_style: savedProduct.fashion_style ?? "Casual",
+        gender: savedProduct.gender ?? "Unisex",
+      });
+      setMessage("Đã lưu thay đổi sản phẩm.");
     } catch (cause) {
       setError(cause instanceof Error ? cause.message : "Không thể cập nhật sản phẩm.");
     } finally { setSaving(false); }
@@ -269,7 +347,8 @@ function ProductDetailPage() {
 
   async function handleProductDelete() {
     if (!product) return;
-    if (!window.confirm(`Chuyển "${product.name}" vào thùng rác?\n\nSản phẩm sẽ bị ẩn khỏi cửa hàng nhưng vẫn được lưu trong database để bảo toàn lịch sử. Bạn có thể khôi phục từ danh sách sản phẩm.`)) return;
+    const unsavedWarning = hasUnsavedChanges ? "\n\nLưu ý: các thay đổi chưa lưu sẽ bị bỏ." : "";
+    if (!window.confirm(`Chuyển "${product.name}" vào thùng rác?\n\nSản phẩm sẽ bị ẩn khỏi cửa hàng nhưng vẫn được giữ trong database để bảo toàn lịch sử. Bạn có thể khôi phục từ danh sách sản phẩm.${unsavedWarning}\n\nBạn có chắc muốn tiếp tục?`)) return;
     setDeleting(true); setMessage(""); setError("");
     try {
       await deleteProduct(product.id);
@@ -385,8 +464,8 @@ function ProductDetailPage() {
           <div className="up-admin-kicker">CATALOG / PRODUCT DETAIL</div>
         </div>
         <div style={{ display: "flex", gap: 8, flexWrap: "wrap", justifyContent: "flex-end" }}>
-          <Link className="up-admin-secondary" to="/admin/products">← SẢN PHẨM</Link>
-          <Link className="up-admin-primary" to="/product/$id" params={{ id: product.id }}>XEM TRÊN CỬA HÀNG ↗</Link>
+          <Link className="up-admin-secondary" to="/admin/products" onClick={confirmLeaveIfDirty}>← SẢN PHẨM</Link>
+          <Link className="up-admin-primary" to="/product/$id" params={{ id: product.id }} onClick={confirmLeaveIfDirty}>XEM TRÊN CỬA HÀNG ↗</Link>
         </div>
       </header>
 
@@ -395,7 +474,7 @@ function ProductDetailPage() {
 
       <section className="up-admin-editor">
         <div className="up-editor-head">
-          <div><div className="up-admin-kicker">PRODUCT INFORMATION</div><h2>Thông tin sản phẩm</h2><p>READ / UPDATE thông tin, ảnh và biến thể của sản phẩm theo ID.</p></div>
+          <div><div className="up-admin-kicker">THÔNG TIN SẢN PHẨM</div><h2>Thông tin sản phẩm</h2><p>Chỉnh sửa thông tin, hình ảnh, biến thể và tồn kho cho sản phẩm này.</p></div>
           <span className={`up-status ${product.status}`}>{statusLabel}</span>
         </div>
         <div className="up-editor-grid">
@@ -441,26 +520,47 @@ function ProductDetailPage() {
             </section>
           </div>
           <form className="up-editor-right" onSubmit={handleProductSave}>
+            <section className="up-product-form-section" aria-labelledby="product-basic-heading">
+              <div className="up-product-form-section__heading"><h3 id="product-basic-heading">1. Thông tin cơ bản</h3><p>Tên và đường dẫn định danh của sản phẩm.</p></div>
             <label>Tên sản phẩm<input value={form.name} onChange={(e) => setForm((c) => c && ({ ...c, name: e.target.value }))} disabled={saving || deleting} /></label>
             <label>Slug<input value={form.slug} onChange={(e) => setForm((c) => c && ({ ...c, slug: e.target.value }))} disabled={saving || deleting} /></label>
+            </section>
+            <section className="up-product-form-section" aria-labelledby="product-catalog-heading">
+              <div className="up-product-form-section__heading"><h3 id="product-catalog-heading">2. Giá & phân loại</h3><p>Thông tin giúp khách hàng tìm đúng sản phẩm.</p></div>
             <div className="up-two-col">
               <label>Danh mục<select value={form.category} onChange={(e) => setForm((c) => c && ({ ...c, category: e.target.value }))} disabled={saving || deleting}>{categories.map((category) => <option key={category}>{category}</option>)}</select></label>
               <label>Giới tính<select value={form.gender} onChange={(e) => setForm((c) => c && ({ ...c, gender: e.target.value as ProductForm["gender"] }))} disabled={saving || deleting}><option value="Male">Nam (Male)</option><option value="Female">Nữ (Female)</option><option value="Unisex">Unisex</option></select><small className="up-style-helper">Hiển thị giới tính trên trang sản phẩm.</small></label>
               <label>Giá (VND)<input type="number" min="1000" step="1" required aria-describedby="product-price-minimum" value={form.price} onChange={(e) => setForm((c) => c && ({ ...c, price: e.target.value }))} disabled={saving || deleting} /><small id="product-price-minimum">Giá tối thiểu: 1.000 ₫.</small></label>
             </div>
+            </div>
+            </section>
+            <section className="up-product-form-section" aria-labelledby="product-content-heading">
+              <div className="up-product-form-section__heading"><h3 id="product-content-heading">3. Nội dung</h3><p>Mô tả ngắn hiển thị nhanh; mô tả chi tiết cung cấp thêm thông tin.</p></div>
             <label>Mô tả ngắn<textarea rows={3} value={form.short_description} onChange={(e) => setForm((c) => c && ({ ...c, short_description: e.target.value }))} disabled={saving || deleting} /></label>
             <label>Mô tả chi tiết<textarea rows={7} value={form.long_description} onChange={(e) => setForm((c) => c && ({ ...c, long_description: e.target.value }))} disabled={saving || deleting} /></label>
+            </section>
+            <section className="up-product-form-section" aria-labelledby="product-display-heading">
+              <div className="up-product-form-section__heading"><h3 id="product-display-heading">4. Hiển thị trên cửa hàng</h3><p>Kiểm soát trạng thái xuất bản và các nhãn sản phẩm.</p></div>
             <label>Trạng thái<select value={form.status} onChange={(e) => setForm((c) => c && ({ ...c, status: e.target.value as Product["status"] }))} disabled={saving || deleting}><option value="draft">Bản nháp</option><option value="published">Đang hoạt động</option><option value="archived">Đã ẩn</option></select></label>
             <label>Phong cách thời trang<select value={form.fashion_style} onChange={(e) => setForm((current) => current && ({ ...current, fashion_style: e.target.value }))} disabled={saving || deleting}><option value="Casual">Casual</option><option value="Basic">Basic</option><option value="Streetwear">Streetwear</option><option value="Outing Style">Outing Style</option></select><small className="up-style-helper">Phong cách được lưu cùng sản phẩm.</small></label>
-            <label className="up-check up-new-arrival-check"><input type="checkbox" checked={form.new_arrival} onChange={(e) => setForm((current) => current && ({ ...current, new_arrival: e.target.checked }))} disabled={saving || deleting} /><span><strong>NEW ARRIVAL</strong><small>Hiển thị nhãn nổi bật trên sản phẩm.</small></span></label>
+            <label className="up-check up-new-arrival-check"><input type="checkbox" checked={form.new_arrival} onChange={(e) => setForm((current) => current && ({ ...current, new_arrival: e.target.checked }))} disabled={saving || deleting} /><span><strong>Hàng mới (New Arrival)</strong><small>Gắn nhãn “New Arrival” trên thẻ sản phẩm ở cửa hàng.</small></span></label>
             <label className="up-check"><input type="checkbox" checked={form.featured} onChange={(e) => setForm((c) => c && ({ ...c, featured: e.target.checked }))} disabled={saving || deleting} />Sản phẩm nổi bật</label>
-            <div className="up-editor-actions">
-              <Link className="up-secondary" to="/admin/products">HỦY</Link>
-              <button className="up-admin-primary" type="submit" disabled={saving || deleting}>{saving ? "ĐANG LƯU…" : "LƯU THAY ĐỔI"}</button>
-              <button className="up-row-action up-row-action-danger" type="button" onClick={() => void handleProductDelete()} disabled={saving || deleting}>{deleting ? "ĐANG CHUYỂN…" : "CHUYỂN VÀO THÙNG RÁC"}</button>
+            </section>
+            <div className="up-editor-actions up-editor-actions--sticky">
+              <div className="up-editor-save-state" aria-live="polite">
+                {hasUnsavedChanges ? <><span className="up-save-state-dot is-dirty" />Có thay đổi chưa lưu</> : saving ? <><span className="up-save-state-dot" />Đang lưu…</> : <><span className="up-save-state-dot is-saved" />Đã đồng bộ</>}
+              </div>
+              <div className="up-editor-save-buttons">
+                <button className="up-admin-secondary" type="button" onClick={resetProductForm} disabled={!hasUnsavedChanges || saving || deleting}>Hoàn tác</button>
+                <button className="up-admin-primary" type="submit" disabled={!hasUnsavedChanges || saving || deleting}>{saving ? "ĐANG LƯU…" : "LƯU THAY ĐỔI"}</button>
+              </div>
             </div>
           </form>
         </div>
+        <section className="up-product-danger-zone" aria-labelledby="product-danger-heading">
+          <div><h3 id="product-danger-heading">Vùng thao tác nguy hiểm</h3><p>Chuyển sản phẩm vào thùng rác sẽ ẩn sản phẩm khỏi cửa hàng. Dữ liệu được giữ lại để có thể khôi phục.</p></div>
+          <button className="up-row-action up-row-action-danger" type="button" onClick={() => void handleProductDelete()} disabled={saving || deleting}>{deleting ? "ĐANG CHUYỂN…" : "CHUYỂN VÀO THÙNG RÁC"}</button>
+        </section>
       </section>
 
       <section className="up-admin-stats">
@@ -472,7 +572,7 @@ function ProductDetailPage() {
 
       <section className="up-admin-table-wrap up-variant-generator" style={{ marginBottom: 16 }}>
         <div className="up-variant-generator__header">
-          <div><div className="up-admin-kicker">BULK VARIANT GENERATOR</div><h2>Tạo variant hàng loạt</h2><p>Tự tạo tổ hợp Size × Color còn thiếu, không tạo trùng variant đã có.</p></div>
+          <div><div className="up-admin-kicker">TẠO BIẾN THỂ HÀNG LOẠT</div><h2>Tạo biến thể hàng loạt</h2><p>Chọn size và màu để tạo các tổ hợp còn thiếu; hệ thống bỏ qua biến thể đã tồn tại.</p></div>
           <button className="up-row-action" type="button" onClick={() => setGeneratorOpen((open) => !open)} aria-expanded={generatorOpen}>{generatorOpen ? "ĐÓNG" : "MỞ BỘ TẠO"}</button>
         </div>
         {generatorOpen && <form className="up-variant-generator__form" onSubmit={(event) => { event.preventDefault(); void handleGenerateVariants(); }}>
@@ -485,22 +585,22 @@ function ProductDetailPage() {
 
       <section className="up-admin-table-wrap" style={{ marginBottom: 24 }}>
         <div style={{ padding: 20, borderBottom: "1px solid #e5e7eb" }}>
-          <div className="up-admin-kicker">INVENTORY / VARIANTS</div>
-          <h2 style={{ margin: "4px 0 0" }}>{editingVariant ? "Chỉnh sửa variant" : "Thêm variant"}</h2>
-          <p style={{ margin: "6px 0 0", opacity: 0.65 }}>Chọn Size và Color từ bộ giá trị đang có trong kho; Stock là tồn kho thực tế của variant.</p>
+          <div className="up-admin-kicker">BIẾN THỂ & TỒN KHO</div>
+          <h2 style={{ margin: "4px 0 0" }}>{editingVariant ? "Chỉnh sửa biến thể" : "Thêm biến thể"}</h2>
+          <p style={{ margin: "6px 0 0", opacity: 0.65 }}>Mỗi biến thể là một tổ hợp size và màu. SKU dùng để định danh biến thể; tồn kho là số lượng có thể bán.</p>
         </div>
 
         <form onSubmit={handleVariantSubmit} className="up-variant-form">
-          <label>SIZE<select value={variantForm.size} onChange={(e) => setVariantForm((c) => ({ ...c, size: e.target.value }))} disabled={saving || deleting}><option value="">Chọn size</option>{sizes.map((size) => <option key={size}>{size}</option>)}</select></label>
-          <label>COLOR
+          <label>KÍCH CỠ<select value={variantForm.size} onChange={(e) => setVariantForm((c) => ({ ...c, size: e.target.value }))} disabled={saving || deleting}><option value="">Chọn size</option>{sizes.map((size) => <option key={size}>{size}</option>)}</select></label>
+          <label>MÀU SẮC
             <select value={variantForm.color} onChange={(e) => setVariantForm((c) => ({ ...c, color: e.target.value }))} disabled={saving || deleting}>
               <option value="">Chọn màu</option>
               {colors.map((color) => <option key={color}>{color}</option>)}
             </select>
             {variantForm.color && <span style={{ display: "inline-flex", alignItems: "center", gap: 6, marginTop: 6, fontSize: 12 }}><i style={{ width: 14, height: 14, borderRadius: "50%", display: "inline-block", background: colorValue(variantForm.color), border: "1px solid #999" }} />{variantForm.color}</span>}
           </label>
-          <label>SKU<input value={variantForm.sku} onChange={(e) => setVariantForm((c) => ({ ...c, sku: e.target.value }))} placeholder="FD-TEE-BLK-M" disabled={saving || deleting} /></label>
-          <label>STOCK<input type="number" min="0" step="1" value={variantForm.stock} onChange={(e) => setVariantForm((c) => ({ ...c, stock: e.target.value }))} disabled={saving || deleting} /></label>
+          <label>MÃ SKU<input value={variantForm.sku} onChange={(e) => setVariantForm((c) => ({ ...c, sku: e.target.value }))} placeholder="FD-TEE-BLK-M" disabled={saving || deleting} /></label>
+          <label>TỒN KHO<input type="number" min="0" step="1" value={variantForm.stock} onChange={(e) => setVariantForm((c) => ({ ...c, stock: e.target.value }))} disabled={saving || deleting} /></label>
           <div style={{ display: "flex", alignItems: "end", gap: 8 }}>
             <button className="up-admin-primary" type="submit" disabled={saving || deleting}>{saving ? "ĐANG LƯU…" : editingVariant ? "LƯU" : "THÊM"}</button>
             {editingVariant && <button className="up-row-action" type="button" onClick={resetVariantForm} disabled={saving || deleting}>HỦY</button>}
