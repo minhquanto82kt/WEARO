@@ -4,17 +4,34 @@
 
 with expected_tables(schema_name, table_name) as (
   values
-    ('public','products'),
-    ('public','product_variants'),
-    ('public','product_images'),
-    ('public','orders'),
-    ('public','order_items'),
-    ('public','payments'),
-    ('public','payment_events'),
     ('public','admin_users'),
-    ('public','try_on_jobs'),
+    ('public','ai_usage_daily'),
+    ('public','appearance_branding'),
+    ('public','appearance_palettes'),
+    ('public','appearance_themes'),
+    ('public','cart_items'),
+    ('public','carts'),
+    ('public','inventory_movements'),
+    ('public','journal_articles'),
+    ('public','order_items'),
+    ('public','orders'),
+    ('public','payment_events'),
+    ('public','payments'),
+    ('public','product_images'),
+    ('public','product_reviews'),
+    ('public','product_tags'),
+    ('public','product_variants'),
     ('public','product_vision_attributes'),
-    ('public','site_branding')
+    ('public','products'),
+    ('public','site_branding'),
+    ('public','site_content_settings'),
+    ('public','site_theme_settings'),
+    ('public','tags'),
+    ('public','try_on_jobs'),
+    ('public','user_roles'),
+    ('public','user_vouchers'),
+    ('public','vouchers'),
+    ('public','wishlist_items')
 ),
 table_checks as (
   select
@@ -96,7 +113,7 @@ select
   case when exists (
     select 1 from pg_proc p
     join pg_namespace n on n.oid=p.pronamespace
-    where n.nspname='public' and p.proname='create_order_atomic'
+    where n.nspname='public' and p.proname in ('create_order_atomic','create_order_atomic_v2')
   ) then 'PASS' else 'REVIEW' end as status;
 
 select
@@ -109,3 +126,42 @@ select
 
 -- Review these results together with pg_policies and storage.objects policies.
 -- A PASS here does not prove that the complete live RLS policy set is correct.
+
+-- Live catalog contract checks added 2026-10-21.
+select
+  'products_minimum_price_1000' as check_name,
+  case when exists (
+    select 1 from pg_constraint
+    where conrelid = 'public.products'::regclass
+      and conname = 'products_price_minimum_1000'
+      and pg_get_constraintdef(oid) ilike '%price%1000%'
+  ) then 'PASS' else 'FAIL' end as status;
+
+select
+  'orders_support_momo' as check_name,
+  case when exists (
+    select 1 from pg_constraint
+    where conrelid = 'public.orders'::regclass
+      and conname = 'orders_payment_method_check'
+      and pg_get_constraintdef(oid) ilike '%momo%'
+  ) then 'PASS' else 'FAIL' end as status;
+
+-- Review security-definer RPCs that can be invoked by anon/authenticated.
+-- This is intentionally a report query, not an automatic grant mutation.
+select
+  n.nspname as schema_name,
+  p.proname as function_name,
+  pg_get_function_identity_arguments(p.oid) as arguments,
+  p.prosecdef as security_definer,
+  has_function_privilege('anon', p.oid, 'EXECUTE') as anon_can_execute,
+  has_function_privilege('authenticated', p.oid, 'EXECUTE') as authenticated_can_execute,
+  p.proconfig as function_config
+from pg_proc p
+join pg_namespace n on n.oid = p.pronamespace
+where n.nspname = 'public'
+  and p.prosecdef
+  and (
+    has_function_privilege('anon', p.oid, 'EXECUTE')
+    or has_function_privilege('authenticated', p.oid, 'EXECUTE')
+  )
+order by p.proname;
