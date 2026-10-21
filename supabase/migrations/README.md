@@ -4,7 +4,7 @@ This directory tracks the path from the live Supabase migration history to a rep
 
 ## Current state
 
-The live Supabase project reports **71 applied production migrations**. Their exact versions and names are captured in `production-manifest.json`.
+The live Supabase project reports **78 applied production migrations**. Their exact versions and names are captured in `production-manifest.json`.
 
 The repository does **not** yet contain the SQL bodies of those 71 historical migrations. Therefore this directory is **not yet a replayable migration baseline**.
 
@@ -12,7 +12,7 @@ The repository's `supabase/schema/` files are reconstructed snapshots and must *
 
 ## Required baseline procedure
 
-1. Retrieve/export the exact SQL body for each of the 71 production migrations.
+1. Retrieve/export the exact SQL body for each of the 78 production migrations.
 2. Preserve the original migration version/timestamp and name.
 3. Commit the files in exact version order.
 4. Verify that all tables, columns, constraints, indexes, enums, RLS policies, grants, functions, triggers, storage buckets, and storage policies are represented.
