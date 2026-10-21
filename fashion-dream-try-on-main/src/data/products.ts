@@ -20,6 +20,7 @@ export type Product = {
   colors: string[];
   badge?: string;
   fashionStyle?: "Casual" | "Basic" | "Streetwear" | "Outing Style" | null;
+  gender?: "Male" | "Female" | "Unisex";
   tags?: string[];
   shortDescription?: string;
   description: string;
