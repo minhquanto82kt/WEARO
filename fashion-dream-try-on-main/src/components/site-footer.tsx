@@ -112,7 +112,7 @@ export function SiteFooter() {
                   href={FACEBOOK_URL}
                   target="_blank"
                   rel="noopener noreferrer"
-                  aria-label="Facebook (opens in a new tab)"
+                  aria-label={t("Facebook (mở trong tab mới)", "Facebook (opens in a new tab)")}
                 >
                   <Facebook size={17} aria-hidden="true" />
                 </a>
