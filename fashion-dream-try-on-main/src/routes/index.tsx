@@ -28,7 +28,7 @@ const DEFAULT_CONTENT: SiteContentFields = {
   social_title: "WEARO — Mặc theo cách của riêng bạn",
   social_description: "Thử đồ ảo AI trên ảnh thật và nhận gợi ý outfit trọn bộ theo vóc dáng, bối cảnh và gu cá nhân.",
   favicon_url: null,
-  social_image_url: REFERENCE_IMAGES.hero,
+  social_image_url: "https://raw.githubusercontent.com/minhquanto82kt/WEARO/feature/product-admin/fashion-dream-try-on-main/public/images/wearo-og-2026.jpg",
 };
 
 type DbHomeProduct = { id: string; name: string; description: string; price: number; category: Product["category"]; image: string | null; featured: boolean; sizes: string[]; colors: string[]; gallery: string[]; total_stock: number; fashion_style?: "Casual" | "Basic" | "Streetwear" | "Outing Style" | null; };
@@ -78,8 +78,12 @@ export const Route = createFileRoute("/")({
       { name: "description", content: DEFAULT_CONTENT.social_description },
       { property: "og:title", content: DEFAULT_CONTENT.social_title },
       { property: "og:description", content: DEFAULT_CONTENT.social_description },
-      { property: "og:image", content: DEFAULT_CONTENT.social_image_url ?? REFERENCE_IMAGES.hero },
-      { name: "twitter:image", content: DEFAULT_CONTENT.social_image_url ?? REFERENCE_IMAGES.hero },
+      { property: "og:image", content: DEFAULT_CONTENT.social_image_url ?? "https://raw.githubusercontent.com/minhquanto82kt/WEARO/feature/product-admin/fashion-dream-try-on-main/public/images/wearo-og-2026.jpg" },
+      { property: "og:image:secure_url", content: DEFAULT_CONTENT.social_image_url ?? "https://raw.githubusercontent.com/minhquanto82kt/WEARO/feature/product-admin/fashion-dream-try-on-main/public/images/wearo-og-2026.jpg" },
+      { property: "og:image:width", content: "1200" },
+      { property: "og:image:height", content: "630" },
+      { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:image", content: DEFAULT_CONTENT.social_image_url ?? "https://raw.githubusercontent.com/minhquanto82kt/WEARO/feature/product-admin/fashion-dream-try-on-main/public/images/wearo-og-2026.jpg" },
     ],
     links: [canonicalLink("/")],
   }),
