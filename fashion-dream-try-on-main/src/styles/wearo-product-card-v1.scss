@@ -123,7 +123,9 @@
   background: rgba(255, 255, 255, 0.82);
 }
 
-/* Fashion style labels use distinct, brand-palette-only color combinations. */
+/* Collection badges mirror the canonical palettes in docs/collections.
+ * Each label uses its collection's Primary for the fill, Paper for readable text,
+ * and Accent for the border. */
 .fashion-product-style {
   display: inline-flex;
   min-height: 22px;
@@ -140,27 +142,27 @@
 }
 
 .fashion-product-style--streetwear {
-  color: #F2CEAE;
-  background: #54728C;
-  border-color: #54728C;
+  color: #F3F4EE;
+  background: #26352D;
+  border-color: #D7F27C;
 }
 
 .fashion-product-style--basic {
-  color: #54728C;
-  background: #F2CEAE;
-  border-color: #D9BBA9;
+  color: #F5F3EF;
+  background: #252525;
+  border-color: #D8D5CE;
 }
 
 .fashion-product-style--casual {
-  color: #F2CEAE;
-  background: #7794A6;
-  border-color: #54728C;
+  color: #F8F6F2;
+  background: #54728C;
+  border-color: #F2CEAE;
 }
 
 .fashion-product-style--outing-style {
-  color: #54728C;
-  background: #F2AD94;
-  border-color: #D9BBA9;
+  color: #F2F4ED;
+  background: #355C4A;
+  border-color: #E7B879;
 }
 
 .fashion-product-card:hover .fashion-product-badge,
