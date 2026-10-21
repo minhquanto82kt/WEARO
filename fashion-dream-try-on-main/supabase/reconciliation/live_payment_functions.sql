@@ -3,6 +3,11 @@
 -- Branch source: feature/product-admin
 -- Purpose: source-control snapshot for reconciliation only.
 -- DO NOT apply directly to production. Review grants/policies first.
+-- HISTORICAL / PARTIAL SNAPSHOT (originally captured before the 2026-10-21 audit).
+-- The current live catalog exposes create_order_atomic_v2; this file contains an older
+-- create_order_atomic definition and is NOT the authoritative current function body.
+-- Do not execute this file or use it to recreate production functions without comparing
+-- exact current function definitions, grants, dependencies, and caller behavior.
 
 create or replace function public.create_order_atomic(
   p_order_code text,
