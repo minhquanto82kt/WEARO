@@ -532,7 +532,6 @@ function ProductDetailPage() {
               <label>Giới tính<select value={form.gender} onChange={(e) => setForm((c) => c && ({ ...c, gender: e.target.value as ProductForm["gender"] }))} disabled={saving || deleting}><option value="Male">Nam (Male)</option><option value="Female">Nữ (Female)</option><option value="Unisex">Unisex</option></select><small className="up-style-helper">Hiển thị giới tính trên trang sản phẩm.</small></label>
               <label>Giá (VND)<input type="number" min="1000" step="1" required aria-describedby="product-price-minimum" value={form.price} onChange={(e) => setForm((c) => c && ({ ...c, price: e.target.value }))} disabled={saving || deleting} /><small id="product-price-minimum">Giá tối thiểu: 1.000 ₫.</small></label>
             </div>
-            </div>
             </section>
             <section className="up-product-form-section" aria-labelledby="product-content-heading">
               <div className="up-product-form-section__heading"><h3 id="product-content-heading">3. Nội dung</h3><p>Mô tả ngắn hiển thị nhanh; mô tả chi tiết cung cấp thêm thông tin.</p></div>
@@ -548,7 +547,7 @@ function ProductDetailPage() {
             </section>
             <div className="up-editor-actions up-editor-actions--sticky">
               <div className="up-editor-save-state" aria-live="polite">
-                {hasUnsavedChanges ? <><span className="up-save-state-dot is-dirty" />Có thay đổi chưa lưu</> : saving ? <><span className="up-save-state-dot" />Đang lưu…</> : <><span className="up-save-state-dot is-saved" />Đã đồng bộ</>}
+                {saving ? <><span className="up-save-state-dot" />Đang lưu…</> : hasUnsavedChanges ? <><span className="up-save-state-dot is-dirty" />Có thay đổi chưa lưu</> : <><span className="up-save-state-dot is-saved" />Đã lưu</>}
               </div>
               <div className="up-editor-save-buttons">
                 <button className="up-admin-secondary" type="button" onClick={resetProductForm} disabled={!hasUnsavedChanges || saving || deleting}>Hoàn tác</button>
