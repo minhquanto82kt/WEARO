@@ -1,4 +1,4 @@
--- Fashion Dream Try-On Shop | backend SQL function reference
+-- Fashion Dream Try-On Shop | backend SQL function reference (partial; verified against live catalog 2026-10-21)
 -- Supabase project: oazipcrbutizdncctkcg | Branch: feature/product-admin
 -- Reference only. Production migration history remains authoritative.
 
@@ -24,9 +24,18 @@ begin
 end; $$;
 
 -- Production RPC layer (authoritative definitions live in existing migrations):
--- create_order_atomic
+-- create_order_atomic_v2
 -- create_payment_for_order
 -- verify_payment_status
 -- find_sepay_payment
 -- process_sepay_payment
+-- process_momo_payment
+-- apply_best_member_voucher
+-- publish_appearance_theme
+-- publish_site_content
+-- cancel_my_order
+-- update_order_status_as_manager
+-- consume_ai_quota
+-- record_ai_usage_result
+-- track_guest_order
 -- These SECURITY DEFINER functions are the controlled server/database boundary for order/payment operations.
