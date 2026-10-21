@@ -101,7 +101,7 @@ function JournalAdminPage() {
     <div className="wearo-journal-admin">
       <header className="up-admin-topbar">
         <div>
-          <div className="up-admin-kicker">CONTENT / SEO CMS</div>
+          <div className="up-admin-kicker">NỘI DUNG / SEO CMS</div>
           <h1>Journal</h1>
           <p>Quản lý bài viết SEO, trạng thái xuất bản và lịch đăng của WEARO.</p>
         </div>
@@ -118,7 +118,7 @@ function JournalAdminPage() {
       <section className="wearo-journal-admin-toolbar">
         <div className="wearo-journal-admin-tabs">
           {STATUS_TABS.map((tab) => (
-            <button key={tab.value} type="button" className={status === tab.value ? "is-active" : ""} onClick={() => setStatus(tab.value)}>
+            <button key={tab.value} type="button" className={status === tab.value ? "is-active" : ""} aria-pressed={status === tab.value} onClick={() => setStatus(tab.value)}>
               {tab.label}<b>{counts[tab.value]}</b>
             </button>
           ))}
@@ -137,7 +137,7 @@ function JournalAdminPage() {
             </select>
           </label>
           <button type="button" className="wearo-journal-sort-direction" onClick={() => setSortDirection((current) => current === "desc" ? "asc" : "desc")} aria-label={sortDirection === "desc" ? "Đang giảm dần; bấm để chuyển sang tăng dần" : "Đang tăng dần; bấm để chuyển sang giảm dần"}>
-            {sortDirection === "desc" ? "↓ Mới trước" : "↑ Cũ trước"}
+            {sortBy === "title" ? (sortDirection === "asc" ? "↑ A–Z" : "↓ Z–A") : (sortDirection === "desc" ? "↓ Mới trước" : "↑ Cũ trước")}
           </button>
           {(query || status !== "all") && <button type="button" className="wearo-journal-clear-filters" onClick={() => { setQuery(""); setStatus("all"); }}>Xóa bộ lọc</button>}
         </div>
