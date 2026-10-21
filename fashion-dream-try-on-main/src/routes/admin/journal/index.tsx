@@ -35,6 +35,7 @@ function JournalAdminPage() {
   const [sortDirection, setSortDirection] = useState<"desc" | "asc">("desc");
   const [loading, setLoading] = useState(true);
   const [deletingId, setDeletingId] = useState<string | null>(null);
+  const [openActionsId, setOpenActionsId] = useState<string | null>(null);
   const [message, setMessage] = useState("");
 
   async function load() {
@@ -166,9 +167,16 @@ function JournalAdminPage() {
                 <td>{formatDate(article.updated_at)}</td>
                 <td>
                   <div className="wearo-journal-row-actions">
-                    <Link aria-label={`Sửa bài viết: ${article.title}`} to="/admin/journal/$id" params={{ id: article.id }}>Sửa</Link>
-                    <Link aria-label={`Xem bài viết: ${article.title} (mở tab mới)`} to="/journal/$slug" params={{ slug: article.slug }} target="_blank" rel="noreferrer">Xem</Link>
-                    <button aria-label={`Xóa vĩnh viễn bài viết: ${article.title}`} type="button" disabled={deletingId === article.id} onClick={() => void handleDelete(article)}>{deletingId === article.id ? "Đang xóa…" : "Xóa"}</button>
+                    <button className="wearo-journal-actions-trigger" type="button" aria-label={`Thao tác với bài viết: ${article.title}`} aria-haspopup="menu" aria-expanded={openActionsId === article.id} onClick={() => setOpenActionsId((current) => current === article.id ? null : article.id)}>
+                      <span aria-hidden="true">•••</span>
+                    </button>
+                    {openActionsId === article.id && (
+                      <div className="wearo-journal-actions-menu" role="menu" aria-label={`Thao tác bài viết ${article.title}`}>
+                        <Link role="menuitem" aria-label={`Sửa bài viết: ${article.title}`} to="/admin/journal/$id" params={{ id: article.id }} onClick={() => setOpenActionsId(null)}>Sửa bài viết</Link>
+                        <Link role="menuitem" aria-label={`Xem bài viết: ${article.title} (mở tab mới)`} to="/journal/$slug" params={{ slug: article.slug }} target="_blank" rel="noreferrer" onClick={() => setOpenActionsId(null)}>Xem bài viết</Link>
+                        <button role="menuitem" aria-label={`Xóa bài viết: ${article.title}`} type="button" disabled={deletingId === article.id} onClick={() => { setOpenActionsId(null); void handleDelete(article); }}>{deletingId === article.id ? "Đang xóa…" : "Xóa bài viết"}</button>
+                      </div>
+                    )}
                   </div>
                 </td>
               </tr>
