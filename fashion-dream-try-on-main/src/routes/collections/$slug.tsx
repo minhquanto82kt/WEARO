@@ -84,11 +84,11 @@ const COLLECTIONS = {
     description: "Phom dáng phóng khoáng và chi tiết cá tính cho nhịp sống đô thị.",
     kicker: "03 / CITY EXPRESSION",
   },
-  "outing-style": {
-    title: "OUTING STYLE",
-    subtitle: "Outside, in your own style.",
-    description: "Trang phục unisex dành cho những buổi đi chơi, dạo phố và hoạt động ngoài trời — thoải mái, linh hoạt, dễ vận động và dễ phối.",
-    kicker: "04 / CITY & OUTDOOR LIFE",
+  outerwear: {
+    title: "OUTERWEAR",
+    subtitle: "Layer up, your way.",
+    description: "Những lớp khoác unisex linh hoạt để layer, di chuyển và thích ứng nhiều thời tiết — dễ phối cùng trang phục hằng ngày.",
+    kicker: "04 / EVERYDAY LAYERS",
   },
 } as const;
 
@@ -98,7 +98,8 @@ export const Route = createFileRoute("/collections/$slug")({
   staleTime: 30_000,
   loader: () => getCollectionData(),
   head: ({ params }) => {
-    const collection = COLLECTIONS[params.slug as keyof typeof COLLECTIONS];
+    const collectionSlug = params.slug === "outing-style" ? "outerwear" : params.slug;
+    const collection = COLLECTIONS[collectionSlug as keyof typeof COLLECTIONS];
     const title = collection ? `${collection.title} — WEARO Collections` : "Bộ sưu tập — WEARO";
     return {
       meta: [
@@ -115,21 +116,22 @@ export const Route = createFileRoute("/collections/$slug")({
 function CollectionPage() {
   const { slug } = Route.useParams();
   const { products, styleTags } = Route.useLoaderData();
-  const collection = COLLECTIONS[slug as keyof typeof COLLECTIONS];
+  const collectionSlug = slug === "outing-style" ? "outerwear" : slug;
+  const collection = COLLECTIONS[collectionSlug as keyof typeof COLLECTIONS];
 
   if (!collection) return <CollectionNotFound />;
 
-  const currentCollectionIndex = COLLECTION_ORDER.indexOf(slug as keyof typeof COLLECTIONS);
+  const currentCollectionIndex = COLLECTION_ORDER.indexOf(collectionSlug as keyof typeof COLLECTIONS);
   const previousSlug = COLLECTION_ORDER[(currentCollectionIndex - 1 + COLLECTION_ORDER.length) % COLLECTION_ORDER.length];
   const nextSlug = COLLECTION_ORDER[(currentCollectionIndex + 1) % COLLECTION_ORDER.length];
   const previousCollection = COLLECTIONS[previousSlug];
   const nextCollection = COLLECTIONS[nextSlug];
 
-  const styleProductIds = new Set(styleTags.filter((tag) => tag.tag_slug === slug).map((tag) => tag.product_id));
+  const styleProductIds = new Set(styleTags.filter((tag) => (tag.tag_slug === collectionSlug || (collectionSlug === "outerwear" && tag.tag_slug === "outing-style"))).map((tag) => tag.product_id));
   const collectionProducts = products.filter((product) => styleProductIds.has(product.id));
 
   return (
-    <div className="wearo-collection-page" data-collection={slug}>
+    <div className="wearo-collection-page" data-collection={collectionSlug}>
       <SiteNav />
       <main className="wearo-collection-main">
         <div className="wearo-collection-breadcrumb">
