@@ -16,6 +16,7 @@ export type AdminProduct = {
   featured: boolean;
   new_arrival: boolean;
   fashion_style: string | null;
+  gender: "Male" | "Female" | "Unisex";
   created_at: string;
   updated_at: string;
 };
@@ -88,7 +89,7 @@ export const listAdminInventory = createServerFn({ method: "POST" })
 
     const [products, variants] = await Promise.all([
       supabaseRequest<AdminProduct[]>(
-        "products?select=id,name,slug,description,short_description,long_description,price,category,image,active,status,featured,created_at,updated_at&order=created_at.desc",
+        "products?select=id,name,slug,description,short_description,long_description,price,category,gender,image,active,status,featured,new_arrival,fashion_style,created_at,updated_at&order=created_at.desc",
         { method: "GET" },
       ),
       supabaseRequest<AdminProductVariant[]>(
@@ -116,7 +117,7 @@ export const getAdminProduct = createServerFn({ method: "POST" })
   });
 
 export const createAdminProduct = createServerFn({ method: "POST" })
-  .validator((data: AdminContext & { product: { name: string; slug: string; price: number; category: string; description?: string | null; short_description?: string | null; long_description?: string | null; image?: string | null; active?: boolean; status?: AdminProduct["status"]; featured?: boolean; new_arrival?: boolean; fashion_style?: string | null } }) => data)
+  .validator((data: AdminContext & { product: { name: string; slug: string; price: number; category: string; description?: string | null; short_description?: string | null; long_description?: string | null; image?: string | null; active?: boolean; status?: AdminProduct["status"]; featured?: boolean; new_arrival?: boolean; fashion_style?: string | null; gender?: "Male" | "Female" | "Unisex" } }) => data)
   .handler(async ({ data }) => {
     await requireAdmin(data.accessToken);
     const name = data.product.name.trim();
@@ -142,6 +143,7 @@ export const createAdminProduct = createServerFn({ method: "POST" })
           name,
           slug,
           price,
+          gender: data.product.gender ?? "Unisex",
           id: `product-${crypto.randomUUID()}`,
           active: data.product.status === "published",
         }),
