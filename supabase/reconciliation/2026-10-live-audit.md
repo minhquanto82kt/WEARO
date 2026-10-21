@@ -97,3 +97,7 @@ The advisor also reports `get_public_product_style_tags()` executable by `anon` 
 ## Result
 
 The live migration manifest is current. The table-reference coverage has been expanded with a generated catalog snapshot, and the manifest is current. This is still not a replayable migration baseline: exact historical SQL bodies, complete function/trigger/grant parity, custom types, and Storage policies remain to be exported and verified. No production data or schema was changed during this audit.
+## Performance advisor findings
+
+The live Supabase performance advisor reports two foreign keys without a covering index: `journal_articles.created_by` and `user_vouchers.voucher_id`. It also reports 32 unused indexes at the observation time. The missing FK indexes are candidates for measured, backward-compatible index additions. Do not drop the unused indexes solely from this report; validate query workload and query plans first.
+
