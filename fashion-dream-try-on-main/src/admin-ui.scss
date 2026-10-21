@@ -1378,3 +1378,130 @@
 @media (max-width: 1100px) {
   .up-admin-root .up-product-image-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
+
+
+/* Product editor UX: grouped fields, persistent save actions, and separated danger zone. */
+.up-admin-root .up-product-form-section {
+  display: grid;
+  gap: 14px;
+  min-width: 0;
+  padding: 18px;
+  border: 1px solid color-mix(in oklab, var(--theme-secondary, #7794a6) 24%, #ffffff);
+  border-radius: 12px;
+  background: color-mix(in oklab, var(--theme-surface, #ffffff) 70%, var(--theme-background, #f8f7f4));
+}
+.up-admin-root .up-product-form-section__heading {
+  padding-bottom: 11px;
+  border-bottom: 1px solid color-mix(in oklab, var(--theme-secondary, #7794a6) 22%, #ffffff);
+}
+.up-admin-root .up-product-form-section__heading h3,
+.up-admin-root .up-product-danger-zone h3 {
+  margin: 0;
+  color: var(--theme-foreground, #20201e);
+  font-size: 14px;
+  font-weight: 750;
+  letter-spacing: -.01em;
+}
+.up-admin-root .up-product-form-section__heading p,
+.up-admin-root .up-product-danger-zone p {
+  margin: 5px 0 0;
+  color: var(--theme-muted, #667782);
+  font-size: 12px;
+  line-height: 1.5;
+}
+.up-admin-root .up-editor-actions--sticky {
+  position: sticky;
+  bottom: 12px;
+  z-index: 8;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  flex-wrap: wrap;
+  margin-top: 4px;
+  padding: 12px 14px;
+  border: 1px solid color-mix(in oklab, var(--theme-secondary, #7794a6) 32%, #ffffff);
+  border-radius: 12px;
+  background: color-mix(in oklab, var(--theme-background, #ffffff) 94%, transparent);
+  box-shadow: 0 8px 24px rgba(32, 32, 30, .12);
+  backdrop-filter: blur(12px);
+}
+.up-admin-root .up-editor-save-state {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--theme-muted, #667782);
+  font-size: 12px;
+  font-weight: 650;
+}
+.up-admin-root .up-save-state-dot {
+  width: 8px;
+  height: 8px;
+  flex: 0 0 8px;
+  border-radius: 50%;
+  background: #d49a31;
+}
+.up-admin-root .up-save-state-dot.is-dirty { background: #d49a31; }
+.up-admin-root .up-save-state-dot.is-saved { background: #2f855a; }
+.up-admin-root .up-editor-save-buttons {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+}
+.up-admin-root .up-editor-save-buttons button {
+  min-height: 40px;
+}
+.up-admin-root .up-product-danger-zone {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  margin-top: 20px;
+  padding: 18px;
+  border: 1px solid #e7caca;
+  border-radius: 12px;
+  background: #fff8f7;
+}
+.up-admin-root .up-product-danger-zone h3 { color: #8f2929; }
+.up-admin-root .up-product-danger-zone p { max-width: 600px; color: #7c5656; }
+.up-admin-root .up-variant-preview {
+  display: grid;
+  gap: 7px;
+  min-width: 0;
+}
+.up-admin-root .up-variant-preview > strong {
+  color: var(--theme-foreground, #20201e);
+  font-size: 12px;
+}
+.up-admin-root .up-variant-preview__chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+.up-admin-root .up-variant-preview__chips span {
+  padding: 4px 7px;
+  border: 1px solid color-mix(in oklab, var(--theme-secondary, #7794a6) 28%, #ffffff);
+  border-radius: 6px;
+  color: var(--theme-foreground, #20201e);
+  background: #ffffff;
+  font-size: 11px;
+}
+.up-admin-root .up-variant-preview small {
+  color: var(--theme-muted, #667782);
+  font-size: 11px;
+  line-height: 1.45;
+}
+.up-admin-root .up-variant-generator__footer {
+  align-items: flex-start;
+}
+@media (max-width: 760px) {
+  .up-admin-root .up-admin-editor { padding: 14px !important; }
+  .up-admin-root .up-product-form-section { padding: 13px; }
+  .up-admin-root .up-editor-actions--sticky { bottom: 6px; align-items: stretch; }
+  .up-admin-root .up-editor-save-state { width: 100%; }
+  .up-admin-root .up-editor-save-buttons { width: 100%; }
+  .up-admin-root .up-editor-save-buttons button { flex: 1; }
+  .up-admin-root .up-product-danger-zone { align-items: stretch; flex-direction: column; }
+  .up-admin-root .up-product-danger-zone button { width: 100%; min-height: 42px; }
+}
