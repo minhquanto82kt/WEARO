@@ -110,7 +110,7 @@ export function SiteNav() {
 
       <div className="fashion-nav__inner">
         <Link to="/" className="fashion-brand" aria-label="WEARO home" onClick={closeMenus}>
-          <img className="fashion-brand__logo" src="/brand/wearo-logo-header.svg" alt="WEARO" />
+          <img className="fashion-brand__logo" src="/brand/OG-logo.webp" alt="WEARO" />
         </Link>
 
         <div className="fashion-nav__links" aria-label={t("Điều hướng trang chính", "Primary navigation")}>
