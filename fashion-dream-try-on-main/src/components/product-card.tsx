@@ -12,9 +12,18 @@ export function ProductCard({ product }: { product: Product }) {
   const [saved, setSaved] = useState(false);
   const [showSecondaryImage, setShowSecondaryImage] = useState(false);
   const [saving, setSaving] = useState(false);
-  const tags = product.tags?.slice(0, 2) ?? [];
-  const secondaryImage = product.gallery?.[1];
   const hasSale = typeof product.originalPrice === "number" && product.originalPrice > product.price;
+  const secondaryImage = product.gallery?.[1];
+  const normalizedLabel = (label: string) => label.trim().toLocaleLowerCase();
+  const visibleLabels = [product.badge, product.fashionStyle]
+    .filter((label): label is string => Boolean(label?.trim()));
+  const seenLabels = new Set(visibleLabels.map(normalizedLabel));
+  const tags = (product.tags ?? []).filter((tag) => {
+    const normalized = normalizedLabel(tag);
+    if (!normalized || seenLabels.has(normalized)) return false;
+    seenLabels.add(normalized);
+    return true;
+  }).slice(0, 2);
   const specs = [product.sizes.filter(Boolean).join(" / "), product.colors.filter(Boolean).slice(0, 2).join(" / ")].filter(Boolean).join(" · ");
   const genderLabel = product.gender === "Male" ? (language === "vi" ? "Nam · Male" : "Male") : product.gender === "Female" ? (language === "vi" ? "Nữ · Female" : "Female") : product.gender === "Unisex" ? "Unisex" : "";
 
@@ -75,7 +84,7 @@ export function ProductCard({ product }: { product: Product }) {
           {product.badge && <span className={`fashion-product-badge${product.badge.toLowerCase().includes("new arrival") ? " fashion-product-badge--new-arrival" : ""}`}>{product.badge}</span>}
           {product.fashionStyle && <span className={`fashion-product-style fashion-product-style--${product.fashionStyle.toLowerCase().replace(/\s+/g, "-")}`}>{product.fashionStyle}</span>}
           {hasSale && <span className="fashion-product-badge fashion-product-badge--sale">SALE</span>}
-          {tags.map((tag) => <span key={tag} className="fashion-product-tag">{tag}</span>)}
+          {tags.map((tag) => <span key={normalizedLabel(tag)} className="fashion-product-tag">{tag}</span>)}
         </div>
         <span className="fashion-product-arrow" aria-hidden="true"><ArrowUpRight size={16} /></span>
       </Link>
