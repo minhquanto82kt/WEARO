@@ -39,27 +39,60 @@ function AdminLayout() {
     void verifySession();
   }, []);
 
+  function getLoginErrorMessage(error: unknown) {
+    const message = error instanceof Error ? error.message : "";
+    const normalized = message.toLowerCase();
+
+    if (normalized.includes("chưa được cấp quyền admin")) {
+      return "Tài khoản hợp lệ nhưng chưa được cấp quyền Admin. Hãy liên hệ người quản trị để được cấp quyền truy cập.";
+    }
+    if (!supabaseConfig.url || !supabaseConfig.key) {
+      return "Hệ thống đăng nhập chưa được cấu hình. Vui lòng báo quản trị viên kiểm tra cấu hình Supabase.";
+    }
+    if (
+      normalized.includes("invalid login credentials") ||
+      normalized.includes("invalid email or password") ||
+      normalized.includes("email not confirmed") ||
+      normalized.includes("user not found") ||
+      normalized.includes("invalid email")
+    ) {
+      return "Email hoặc mật khẩu chưa chính xác. Vui lòng kiểm tra và thử lại.";
+    }
+    if (
+      normalized.includes("network") ||
+      normalized.includes("fetch") ||
+      normalized.includes("timeout")
+    ) {
+      return "Không thể kết nối tới dịch vụ đăng nhập. Kiểm tra kết nối mạng rồi thử lại.";
+    }
+    return "Đăng nhập chưa thành công. Vui lòng thử lại; nếu vẫn gặp lỗi, hãy liên hệ quản trị viên.";
+  }
+
   async function handleLogin(event: React.FormEvent) {
     event.preventDefault();
+    if (loggingIn) return;
     setLoginError("");
     setLoggingIn(true);
 
     try {
+      if (!supabaseConfig.url || !supabaseConfig.key) {
+        throw new Error("Supabase chưa được cấu hình.");
+      }
+
       await signIn(loginEmail.trim(), loginPassword);
       const isAdmin = await checkAdmin();
 
       if (!isAdmin) {
         await signOut();
-        throw new Error(
-          "Tài khoản đăng nhập thành công nhưng chưa được cấp quyền Admin. Hãy kiểm tra user_id trong bảng admin_users."
-        );
+        throw new Error("Tài khoản đã đăng nhập nhưng chưa được cấp quyền Admin.");
       }
 
       setAuthorized(true);
       setLoginPassword("");
     } catch (error) {
       setAuthorized(false);
-      setLoginError(error instanceof Error ? error.message : "Đăng nhập thất bại.");
+      setLoginPassword("");
+      setLoginError(getLoginErrorMessage(error));
     } finally {
       setLoggingIn(false);
       setReady(true);
@@ -564,9 +597,100 @@ function AdminLayout() {
               margin-top: 50px;
             }
 
+            .fd-admin-login-visual {
+              min-height: 280px;
+              padding: 26px 28px;
+            }
+
+            .fd-admin-editorial {
+              padding-top: 34px;
+            }
+
+            .fd-admin-editorial h1 {
+              margin: 14px 0;
+              font-size: clamp(58px, 12vw, 82px);
+            }
+
             .fd-admin-login-panel {
               min-height: auto;
-              padding: 70px 28px 60px;
+              padding: 48px 28px 44px;
+            }
+
+            .fd-admin-login-card__topline {
+              margin-bottom: 26px;
+            }
+
+            .fd-admin-login-card__intro {
+              margin: 14px 0 24px;
+            }
+
+            .fd-admin-login-form {
+              gap: 16px;
+            }
+          }
+
+          /* Keep the complete sign-in flow comfortably visible on shorter laptop screens. */
+          @media (min-width: 901px) and (max-height: 820px) {
+            .fd-admin-login-visual {
+              min-height: 100dvh;
+              padding: 28px 5vw 24px;
+            }
+
+            .fd-admin-editorial {
+              padding-top: 0;
+            }
+
+            .fd-admin-editorial h1 {
+              margin: 16px 0;
+              font-size: clamp(64px, 7vw, 100px);
+              line-height: .84;
+            }
+
+            .fd-admin-editorial p {
+              font-size: 12px;
+              line-height: 1.5;
+            }
+
+            .fd-admin-stats {
+              margin-top: 20px;
+            }
+
+            .fd-admin-login-panel {
+              min-height: 100dvh;
+              padding: 54px clamp(28px, 4vw, 64px);
+            }
+
+            .fd-admin-login-card__topline {
+              margin-bottom: 24px;
+            }
+
+            .fd-admin-login-card h2 {
+              font-size: clamp(44px, 4vw, 58px);
+            }
+
+            .fd-admin-login-card__intro {
+              margin: 12px 0 22px;
+              line-height: 1.55;
+            }
+
+            .fd-admin-login-form {
+              gap: 16px;
+            }
+
+            .fd-admin-field {
+              gap: 7px;
+            }
+
+            .fd-admin-field input {
+              min-height: 48px;
+            }
+
+            .fd-admin-submit {
+              min-height: 50px;
+            }
+
+            .fd-admin-secure-note {
+              margin-top: 16px;
             }
           }
 
@@ -657,8 +781,8 @@ function AdminLayout() {
               <h2>Đăng nhập<br />quản trị</h2>
 
               <p className="fd-admin-login-card__intro">
-                Sử dụng tài khoản Supabase Auth đã được cấp quyền trong bảng
-                <code>admin_users</code> để truy cập khu vực quản trị.
+                Đăng nhập bằng email và mật khẩu của tài khoản đã được cấp quyền quản trị.
+                Nếu chưa có quyền truy cập, hãy liên hệ quản trị viên WEARO để được cấp quyền.
               </p>
 
               <form onSubmit={handleLogin} className="fd-admin-login-form">
@@ -666,10 +790,14 @@ function AdminLayout() {
                   <span>Email</span>
                   <input
                     type="email"
+                    name="email"
                     value={loginEmail}
                     onChange={(event) => setLoginEmail(event.target.value)}
                     placeholder="admin@example.com"
-                    autoComplete="username"
+                    autoComplete="email"
+                    autoCapitalize="none"
+                    spellCheck={false}
+                    aria-label="Email quản trị"
                     required
                   />
                 </label>
@@ -679,10 +807,12 @@ function AdminLayout() {
                   <div className="fd-admin-password-wrap">
                     <input
                       type={showPassword ? "text" : "password"}
+                      name="password"
                       value={loginPassword}
                       onChange={(event) => setLoginPassword(event.target.value)}
-                      placeholder="••••••••"
+                      placeholder="Nhập mật khẩu"
                       autoComplete="current-password"
+                      aria-label="Mật khẩu quản trị"
                       required
                     />
                     <button
@@ -709,10 +839,14 @@ function AdminLayout() {
                   </div>
                 </label>
 
-                {loginError && <div className="fd-admin-error">{loginError}</div>}
+                {loginError && (
+                  <div className="fd-admin-error" role="alert" aria-live="assertive">
+                    {loginError}
+                  </div>
+                )}
 
                 <button className="fd-admin-submit" type="submit" disabled={loggingIn}>
-                  {loggingIn ? "ĐANG XÁC THỰC…" : "ĐĂNG NHẬP →"}
+                  {loggingIn ? "ĐANG ĐĂNG NHẬP…" : "ĐĂNG NHẬP →"}
                 </button>
               </form>
 
@@ -721,7 +855,10 @@ function AdminLayout() {
                   <rect x="5" y="10" width="14" height="10" rx="1" />
                   <path d="M8 10V7a4 4 0 0 1 8 0v3" />
                 </svg>
-                <span>Phiên đăng nhập được xác thực qua Supabase Auth và kiểm tra quyền Admin trước khi mở dashboard.</span>
+                <span>
+                  Đăng nhập an toàn qua Supabase Auth. Tài khoản cần được cấp quyền Admin riêng;
+                  trang này không hỗ trợ tự đăng ký hoặc tự nâng quyền.
+                </span>
               </div>
             </div>
           </section>
