@@ -6,6 +6,8 @@
 
 > This is a reconciliation/audit artifact generated from the live database. It is **not** a migration and must not be executed as SQL.
 
+> **Historical snapshot:** audited 2026-09-13. This document's row counts, product visibility wording, order RLS summary, and product price constraint are stale relative to the 2026-10-21 live audit. Use [`2026-10-live-audit.md`](2026-10-live-audit.md) for current findings; do not treat this file as current schema authority.
+
 ## 1. Live schema summary
 
 | Table | PK | Important FKs | RLS | Rows |
