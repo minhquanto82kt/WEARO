@@ -1,4 +1,4 @@
--- Fashion Dream Try-On Shop | Product Vision schema snapshot
+-- Fashion Dream Try-On Shop | Product Vision schema snapshot (verified against live schema 2026-10-21)
 -- Supabase project: oazipcrbutizdncctkcg | Branch: feature/product-admin
 -- Reference only. Review privileged policy design before production changes.
 
@@ -15,5 +15,4 @@ create or replace function public.set_product_vision_attributes_updated_at() ret
 create trigger product_vision_attributes_updated_at before update on public.product_vision_attributes for each row execute function public.set_product_vision_attributes_updated_at();
 alter table public.product_vision_attributes enable row level security;
 create policy "product vision attributes are publicly readable" on public.product_vision_attributes for select to public using (true);
-create policy "service role manages product vision attributes" on public.product_vision_attributes for all to public using (auth.role()='service_role') with check (auth.role()='service_role');
--- Existing production policy is documented for parity; it should be reviewed for least privilege.
+-- Live catalog inspection found one public SELECT policy. Service-role writes bypass RLS and are not represented as a separate policy.
