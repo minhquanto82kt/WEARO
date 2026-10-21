@@ -55,7 +55,10 @@ function AiConsent({ onAccept }: { onAccept: () => void }) {
       <div className="wearo-ai-consent-shell">
         <section className="ai-consent-panel" aria-labelledby="ai-consent-title">
           <div className="border-b border-[rgba(84,114,140,.16)] pb-5">
-            <p className="eyebrow">WEARO / AI STUDIO · NOTICE</p>
+            <div className="flex flex-wrap items-center justify-between gap-3">
+              <p className="eyebrow">WEARO / AI STUDIO · NOTICE</p>
+              <span className="inline-flex items-center border border-[#D8B56D] bg-[#FFF4D8] px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.16em] text-[#6D4C12]" aria-label="Bản thử nghiệm">BETA</span>
+            </div>
             <p className="mt-2 text-[10px] font-semibold uppercase tracking-[0.18em] text-[#54728C]">01 · Before you begin</p>
           </div>
 
@@ -480,7 +483,10 @@ function AiPage() {
         <main className="wearo-ai-page">
           <div className="wearo-ai-shell">
             <header>
-              <p className="wearo-ai-kicker">WEARO / AI STUDIO · BETA</p>
+              <div className="mb-2 flex flex-wrap items-center gap-3">
+              <p className="wearo-ai-kicker">WEARO / AI STUDIO</p>
+              <span className="inline-flex items-center border border-[#D8B56D] bg-[#FFF4D8] px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.16em] text-[#6D4C12]" aria-label="Bản thử nghiệm">BETA</span>
+            </div>
               <h1 className="wearo-ai-title wearo-ai-display">
                 <img
                   src="/brand/wearo-logo-header.svg"
