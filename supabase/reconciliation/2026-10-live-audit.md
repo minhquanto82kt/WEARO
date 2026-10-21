@@ -17,6 +17,12 @@ Read-only inspection of live Supabase migration history, public tables, selected
 
 **Important limitation:** the available Supabase connector exposes migration versions and names, but not the exact SQL body for every historical migration. Do not fabricate migration files from schema snapshots. Export the exact bodies from their original source, Supabase CLI, or a trusted backup before creating a replayable baseline.
 
+## 1A. Actual application migration directory
+
+The deployable app is nested at `fashion-dream-try-on-main/`. Its real migration folder is `fashion-dream-try-on-main/supabase/migrations/`, which contains 39 SQL files. Of these, 6 match a live migration by exact version and name, 22 use a name present in the live ledger but a different version, and 11 have no exact version/name match. Therefore 72 of the 78 live versions lack an exact-version SQL file in that directory. This is detailed in `fashion-dream-try-on-main/supabase/reconciliation/2026-10-live-audit.md`.
+
+Same-name files with different timestamps are **not** assumed equivalent. The exact historical SQL bodies are not exposed by the current Supabase connector, so they must be recovered from the original source/CLI/backup and verified before renaming, replaying, or applying them.
+
 ## 2. Live table coverage
 
 The live database contains **28 public base tables**. The original nine schema snapshots represented 11 tables. A new reference-only file, `supabase/schema/010_extended_live_tables.sql`, now documents these 17 previously missing tables:
