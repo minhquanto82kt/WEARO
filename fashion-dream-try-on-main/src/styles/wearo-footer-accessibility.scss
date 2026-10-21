@@ -1,0 +1,107 @@
+/* Footer accessibility and consistency layer.
+ * Scoped to the shared SiteFooter so storefront pages retain one source of truth.
+ */
+.wearo-footer__support-note {
+  max-width: 24rem;
+  margin: 10px 0 0;
+  color: color-mix(in srgb, var(--footer-blue) 84%, transparent);
+  font: 400 12px/1.65 "Space Grotesk", Arial, sans-serif;
+}
+
+.wearo-footer__newsletter--brand .wearo-footer__newsletter-status {
+  margin: 0;
+  color: rgba(255, 255, 255, .82);
+  font: 400 11px/1.6 "Space Grotesk", Arial, sans-serif;
+  overflow-wrap: anywhere;
+}
+
+.wearo-footer__payment-logos {
+  min-width: 0;
+}
+
+.wearo-footer__payment-method {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 38px;
+  padding: 8px 12px;
+  border: 1px solid color-mix(in srgb, var(--footer-blue) 24%, transparent);
+  background: #fff;
+  color: var(--footer-blue);
+  font: 700 11px/1.2 "Space Grotesk", Arial, sans-serif;
+  letter-spacing: .02em;
+}
+
+.wearo-footer__socials a {
+  width: 44px;
+  height: 44px;
+}
+
+.wearo-footer__link {
+  min-height: 36px;
+}
+
+.wearo-footer__contact-item[href] {
+  min-height: 36px;
+}
+
+.wearo-footer a:focus-visible {
+  outline: 2px solid var(--footer-blue);
+  outline-offset: 3px;
+}
+
+.wearo-footer__newsletter--brand h2,
+.wearo-footer__newsletter--brand .wearo-footer__newsletter-description,
+.wearo-footer__newsletter--brand .wearo-footer__newsletter-status {
+  overflow-wrap: anywhere;
+}
+
+@media (max-width: 760px) {
+  .wearo-footer__payment-bar {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .wearo-footer__payment-label {
+    white-space: normal;
+  }
+
+  .wearo-footer__payment-logos {
+    justify-content: flex-start;
+    gap: 8px;
+  }
+
+  .wearo-footer__payment-method {
+    min-height: 40px;
+  }
+
+  .wearo-footer__support-note {
+    max-width: none;
+  }
+}
+
+@media (max-width: 430px) {
+  .wearo-footer__payment-logos {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    width: 100%;
+  }
+
+  .wearo-footer__payment-method {
+    min-width: 0;
+  }
+
+  .wearo-footer__bottom {
+    overflow-wrap: anywhere;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wearo-footer__logo,
+  .wearo-footer__link,
+  .wearo-footer__contact-item[href],
+  .wearo-footer__socials a {
+    transition: none !important;
+  }
+}
