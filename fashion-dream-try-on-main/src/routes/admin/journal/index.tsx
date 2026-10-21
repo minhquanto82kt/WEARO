@@ -31,6 +31,8 @@ function JournalAdminPage() {
   const [articles, setArticles] = useState<JournalArticle[]>([]);
   const [status, setStatus] = useState<"all" | JournalStatus>("all");
   const [query, setQuery] = useState("");
+  const [sortBy, setSortBy] = useState<"updated" | "published" | "title">("updated");
+  const [sortDirection, setSortDirection] = useState<"desc" | "asc">("desc");
   const [loading, setLoading] = useState(true);
   const [deletingId, setDeletingId] = useState<string | null>(null);
   const [message, setMessage] = useState("");
@@ -53,15 +55,27 @@ function JournalAdminPage() {
 
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();
-    return articles.filter((article) => {
+    const matches = articles.filter((article) => {
       const matchesStatus = status === "all" || article.status === status;
       const matchesQuery = !q || `${article.title} ${article.slug} ${article.category}`.toLowerCase().includes(q);
       return matchesStatus && matchesQuery;
     });
-  }, [articles, query, status]);
+
+    return [...matches].sort((a, b) => {
+      let comparison = 0;
+      if (sortBy === "title") {
+        comparison = a.title.localeCompare(b.title, "vi", { sensitivity: "base" });
+      } else {
+        const aDate = sortBy === "published" ? a.published_at ?? a.scheduled_at : a.updated_at;
+        const bDate = sortBy === "published" ? b.published_at ?? b.scheduled_at : b.updated_at;
+        comparison = (aDate ? new Date(aDate).getTime() : 0) - (bDate ? new Date(bDate).getTime() : 0);
+      }
+      return sortDirection === "asc" ? comparison : -comparison;
+    });
+  }, [articles, query, sortBy, sortDirection, status]);
 
   async function handleDelete(article: JournalArticle) {
-    if (!window.confirm(`Xóa vĩnh viễn bài “${article.title}”? Thao tác này không thể hoàn tác.`)) return;
+    if (!window.confirm(`Bạn sắp xóa vĩnh viễn bài viết “${article.title}” (/${article.slug}). Bài viết sẽ bị xóa khỏi hệ thống và không thể khôi phục. Bạn có chắc chắn muốn tiếp tục?`)) return;
     setDeletingId(article.id);
     try {
       const accessToken = getSession()?.access_token;
@@ -109,12 +123,32 @@ function JournalAdminPage() {
             </button>
           ))}
         </div>
-        <input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="⌕  Tìm tiêu đề, slug, danh mục…" />
+        <div className="wearo-journal-admin-controls">
+          <label className="wearo-journal-search">
+            <span>Tìm kiếm bài viết</span>
+            <input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Tìm tiêu đề, slug, danh mục…" aria-label="Tìm theo tiêu đề, slug hoặc danh mục" />
+          </label>
+          <label className="wearo-journal-sort">
+            <span>Sắp xếp theo</span>
+            <select value={sortBy} onChange={(event) => setSortBy(event.target.value as typeof sortBy)}>
+              <option value="updated">Ngày cập nhật</option>
+              <option value="published">Ngày đăng / lịch đăng</option>
+              <option value="title">Tiêu đề</option>
+            </select>
+          </label>
+          <button type="button" className="wearo-journal-sort-direction" onClick={() => setSortDirection((current) => current === "desc" ? "asc" : "desc")} aria-label={sortDirection === "desc" ? "Đang giảm dần; bấm để chuyển sang tăng dần" : "Đang tăng dần; bấm để chuyển sang giảm dần"}>
+            {sortDirection === "desc" ? "↓ Mới trước" : "↑ Cũ trước"}
+          </button>
+          {(query || status !== "all") && <button type="button" className="wearo-journal-clear-filters" onClick={() => { setQuery(""); setStatus("all"); }}>Xóa bộ lọc</button>}
+        </div>
       </section>
+      <div className="wearo-journal-results-meta" aria-live="polite">
+        {loading ? "Đang tải danh sách…" : `Hiển thị ${filtered.length} / ${articles.length} bài viết`}
+      </div>
 
       <section className="up-admin-table-wrap">
         <table className="up-admin-table wearo-journal-admin-table">
-          <thead><tr><th>BÀI VIẾT</th><th>DANH MỤC</th><th>TRẠNG THÁI</th><th>LỊCH / NGÀY ĐĂNG</th><th>CẬP NHẬT</th><th>THAO TÁC</th></tr></thead>
+          <thead><tr><th>BÀI VIẾT</th><th>DANH MỤC</th><th>TRẠNG THÁI</th><th>LỊCH / NGÀY ĐĂNG</th><th>CẬP NHẬT</th><th aria-label="Thao tác bài viết">THAO TÁC</th></tr></thead>
           <tbody>
             {loading ? (
               <tr><td colSpan={6} className="up-admin-empty">Đang tải Journal…</td></tr>
@@ -132,14 +166,14 @@ function JournalAdminPage() {
                 <td>{formatDate(article.updated_at)}</td>
                 <td>
                   <div className="wearo-journal-row-actions">
-                    <Link to="/admin/journal/$id" params={{ id: article.id }}>SỬA</Link>
-                    <Link to="/journal/$slug" params={{ slug: article.slug }} target="_blank">XEM</Link>
-                    <button type="button" disabled={deletingId === article.id} onClick={() => void handleDelete(article)}>{deletingId === article.id ? "…" : "XÓA"}</button>
+                    <Link aria-label={`Sửa bài viết: ${article.title}`} to="/admin/journal/$id" params={{ id: article.id }}>Sửa</Link>
+                    <Link aria-label={`Xem bài viết: ${article.title} (mở tab mới)`} to="/journal/$slug" params={{ slug: article.slug }} target="_blank" rel="noreferrer">Xem</Link>
+                    <button aria-label={`Xóa vĩnh viễn bài viết: ${article.title}`} type="button" disabled={deletingId === article.id} onClick={() => void handleDelete(article)}>{deletingId === article.id ? "Đang xóa…" : "Xóa"}</button>
                   </div>
                 </td>
               </tr>
             )) : (
-              <tr><td colSpan={6} className="up-admin-empty">Không có bài viết phù hợp.</td></tr>
+              <tr><td colSpan={6} className="up-admin-empty"><div className="wearo-journal-empty-state"><strong>{articles.length ? "Không tìm thấy bài viết phù hợp" : "Chưa có bài viết Journal"}</strong><span>{articles.length ? "Thử đổi từ khóa hoặc bộ lọc trạng thái." : "Tạo bài viết đầu tiên để bắt đầu quản lý nội dung."}</span>{articles.length > 0 && (query || status !== "all") && <button type="button" onClick={() => { setQuery(""); setStatus("all"); }}>Xóa bộ lọc</button>}{!articles.length && <Link to="/admin/journal/$id" params={{ id: "new" }}>＋ Tạo bài viết</Link>}</div></td></tr>
             )}
           </tbody>
         </table>
