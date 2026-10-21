@@ -16,6 +16,7 @@ export function ProductCard({ product }: { product: Product }) {
   const secondaryImage = product.gallery?.[1];
   const hasSale = typeof product.originalPrice === "number" && product.originalPrice > product.price;
   const specs = [product.sizes.filter(Boolean).join(" / "), product.colors.filter(Boolean).slice(0, 2).join(" / ")].filter(Boolean).join(" · ");
+  const genderLabel = product.gender === "Male" ? (language === "vi" ? "Nam · Male" : "Male") : product.gender === "Female" ? (language === "vi" ? "Nữ · Female" : "Female") : product.gender === "Unisex" ? "Unisex" : "";
 
   useEffect(() => {
     let mounted = true;
@@ -81,7 +82,7 @@ export function ProductCard({ product }: { product: Product }) {
       {secondaryImage && <button type="button" className="fashion-product-mobile-gallery" onClick={() => setShowSecondaryImage((show) => !show)} aria-label={showSecondaryImage ? "Xem ảnh sản phẩm đầu tiên" : "Xem ảnh sản phẩm tiếp theo"} aria-pressed={showSecondaryImage}><ChevronRight size={15} aria-hidden="true" /><span>{showSecondaryImage ? "2 / 2" : "1 / 2"}</span></button>}
       <div className="fashion-product-meta">
         <div className="min-w-0">
-          <p className="fashion-product-category">{product.category}</p>
+          <p className="fashion-product-category">{product.category}{genderLabel ? ` · ${genderLabel}` : ""}</p>
           <Link to="/product/$id" params={{ id: product.id }} className="fashion-product-title">{product.name}</Link>
           {product.shortDescription && <p className="mt-2 line-clamp-2 text-xs leading-5 text-silver">{product.shortDescription}</p>}
           {specs && <p className="fashion-product-spec mt-2">{specs}</p>}
