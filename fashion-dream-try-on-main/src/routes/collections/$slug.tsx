@@ -106,7 +106,7 @@ export const Route = createFileRoute("/collections/$slug")({
         { title },
         { name: "description", content: collection?.description ?? "Khám phá bộ sưu tập thời trang unisex WEARO." },
       ],
-      links: [canonicalLink(`/collections/${params.slug}`)],
+      links: [canonicalLink(`/collections/${params.slug === "outing-style" ? "outerwear" : params.slug}`)],
     };
   },
   component: CollectionPage,
