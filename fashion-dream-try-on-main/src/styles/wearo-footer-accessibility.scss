@@ -105,3 +105,29 @@
     transition: none !important;
   }
 }
+
+/* Depth treatment: subtle layered shadows preserve the existing palette and layout. */
+.wearo-footer {
+  position: relative;
+  isolation: isolate;
+}
+
+.wearo-footer__panel {
+  box-shadow:
+    0 2px 5px rgba(23, 35, 45, 0.025),
+    0 12px 28px rgba(23, 35, 45, 0.055);
+}
+
+.wearo-footer__newsletter--brand {
+  box-shadow:
+    0 4px 10px rgba(23, 35, 45, 0.08),
+    0 14px 26px rgba(23, 35, 45, 0.12);
+}
+
+.wearo-footer__payment-bar {
+  box-shadow: 0 5px 16px rgba(23, 35, 45, 0.035);
+}
+
+.wearo-footer__payment-method {
+  box-shadow: 0 2px 5px rgba(23, 35, 45, 0.035);
+}
