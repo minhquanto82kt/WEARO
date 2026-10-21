@@ -80,8 +80,6 @@ export const Route = createFileRoute("/")({
       { property: "og:description", content: DEFAULT_CONTENT.social_description },
       { property: "og:image", content: DEFAULT_CONTENT.social_image_url ?? "https://raw.githubusercontent.com/minhquanto82kt/WEARO/feature/product-admin/fashion-dream-try-on-main/public/images/wearo-og-2026.jpg" },
       { property: "og:image:secure_url", content: DEFAULT_CONTENT.social_image_url ?? "https://raw.githubusercontent.com/minhquanto82kt/WEARO/feature/product-admin/fashion-dream-try-on-main/public/images/wearo-og-2026.jpg" },
-      { property: "og:image:width", content: "1200" },
-      { property: "og:image:height", content: "630" },
       { name: "twitter:card", content: "summary_large_image" },
       { name: "twitter:image", content: DEFAULT_CONTENT.social_image_url ?? "https://raw.githubusercontent.com/minhquanto82kt/WEARO/feature/product-admin/fashion-dream-try-on-main/public/images/wearo-og-2026.jpg" },
     ],
