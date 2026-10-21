@@ -2,6 +2,8 @@
 
 The SQL files in this directory are version-controlled snapshots of the current database architecture. They are reference material, not a replayable migration chain.
 
+`010_extended_live_tables.sql` was generated from the live catalog on 2026-10-21 and adds table definitions, constraints, indexes, RLS enablement, and current public-table policies for 17 tables previously missing from the original snapshots. It intentionally does not replace historical migration bodies or fully capture functions, triggers, grants, custom types, or Storage policies.
+
 Each snapshot should keep the following concerns visible where applicable:
 
 - table definitions
