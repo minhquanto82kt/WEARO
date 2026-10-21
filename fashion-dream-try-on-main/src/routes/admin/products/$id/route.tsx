@@ -519,8 +519,13 @@ function ProductDetailPage() {
                 {images.map((image, index) => <article className="up-product-image-item" key={image.id ?? image.image_url}>
                   <div className="up-product-image-item__preview"><img src={image.image_url} alt={image.alt_text || product.name + " - ảnh " + (index + 1)} loading="lazy" />{image.is_primary && <span className="up-product-image-primary-badge">ẢNH CHÍNH</span>}</div>
                   <div className="up-product-image-item__actions">
-                    {!image.is_primary && <button type="button" className="up-row-action" onClick={() => void handleSetPrimaryImage(image)} disabled={Boolean(imageActionId) || saving || deleting}>ĐẶT ẢNH CHÍNH</button>}
-                    <button type="button" className="up-row-action up-row-action-danger" onClick={() => void handleImageDelete(image)} disabled={Boolean(imageActionId) || saving || deleting}>{imageActionId === image.id ? "ĐANG XỬ LÝ…" : "XÓA ẢNH SẢN PHẨM"}</button>
+                    <details className="up-product-image-actions-menu">
+                      <summary aria-label={`Thao tác ảnh ${index + 1}`}>Thao tác ảnh <span aria-hidden="true">⌄</span></summary>
+                      <div className="up-product-image-actions-menu__items">
+                        {!image.is_primary && <button type="button" className="up-row-action" onClick={() => void handleSetPrimaryImage(image)} disabled={Boolean(imageActionId) || saving || deleting}>Đặt làm ảnh chính</button>}
+                        <button type="button" className="up-row-action up-row-action-danger" onClick={() => void handleImageDelete(image)} disabled={Boolean(imageActionId) || saving || deleting}>{imageActionId === image.id ? "Đang xử lý…" : "Xóa ảnh"}</button>
+                      </div>
+                    </details>
                   </div>
                 </article>)}
               </div> : <p className="up-product-image-manager__empty">Chưa có ảnh trong bảng thư viện ảnh của sản phẩm. Ảnh đại diện hiện tại vẫn được hiển thị ở khung phía trên nếu có.</p>}
