@@ -9,15 +9,16 @@ import { CATEGORIES, type Product } from "@/data/products";
 import { canonicalLink } from "@/lib/seo";
 import "@/styles/wearo-shop-page.scss";
 
-type DbCatalogProduct = { id: string; name: string; description: string; price: number; category: Product["category"]; image: string | null; featured: boolean; sizes: string[]; colors: string[]; gallery: string[]; total_stock: number; fashion_style?: "Casual" | "Basic" | "Streetwear" | "Outing Style" | null; };
+type DbCatalogProduct = { id: string; name: string; description: string; price: number; category: Product["category"]; image: string | null; featured: boolean; sizes: string[]; colors: string[]; gallery: string[]; total_stock: number; fashion_style?: "Casual" | "Basic" | "Streetwear" | "Outing Style" | null; gender?: "Male" | "Female" | "Unisex" | null; };
 
 const getShopProducts = createServerFn({ method: "GET" }).handler(async () => {
   const { supabaseRequest } = await import("@/lib/supabase.server");
   const rows = await supabaseRequest<DbCatalogProduct[]>("rpc/get_published_catalog", { method: "POST", body: "{}" });
   const styleRows = rows.length
-    ? await supabaseRequest<{ id: string; fashion_style: Product["fashionStyle"] }[]>(`products?select=id,fashion_style&id=in.(${rows.map((product) => product.id).join(",")})`, { method: "GET" })
+    ? await supabaseRequest<{ id: string; fashion_style: Product["fashionStyle"]; gender: Product["gender"] | null }[]>(`products?select=id,fashion_style,gender&id=in.(${rows.map((product) => product.id).join(",")})`, { method: "GET" })
     : [];
   const styleById = new Map(styleRows.map((row) => [row.id, row.fashion_style]));
+  const genderById = new Map(styleRows.map((row) => [row.id, row.gender]));
   return rows
     .filter((product) => typeof product.name === "string" && product.name.trim().length > 0)
     .filter((product) => Number.isFinite(Number(product.price)) && Number(product.price) > 0)
@@ -32,6 +33,7 @@ const getShopProducts = createServerFn({ method: "GET" }).handler(async () => {
         image: primaryImage, gallery: gallery.length > 0 ? gallery : primaryImage ? [primaryImage] : [], sizes, colors,
         badge: product.featured ? "Featured" : undefined,
         fashionStyle: styleById.get(product.id) ?? product.fashion_style ?? null,
+        gender: genderById.get(product.id) ?? product.gender ?? "Unisex",
         description: typeof product.description === "string" ? product.description.trim() : "",
       };
     });
