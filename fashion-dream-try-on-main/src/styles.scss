@@ -28,6 +28,9 @@
 @import "./styles/wearo-brand-system.scss";
 @import "./styles/wearo-reference-white.scss";
 
+/* Final scoped footer pass; keeps the shared footer consistent on storefront routes. */
+@import "./styles/wearo-footer-accessibility.scss";
+
 .type-display,.font-display { font-family:var(--wearo-font-display,"Space Grotesk",sans-serif); font-weight:700; letter-spacing:-.01em; }
 .type-editorial { font-family:var(--wearo-font-heading,"Be Vietnam Pro",sans-serif); font-weight:600; letter-spacing:-.02em; }
 .type-body,.font-sans { font-family:var(--wearo-font-body,"Lexend",sans-serif); }
