@@ -38,6 +38,7 @@ const emptyForm = {
   featured: false,
   new_arrival: true,
   fashion_style: "Casual",
+  gender: "Unisex" as Product["gender"],
 };
 
 function slugify(value: string) {
@@ -133,6 +134,7 @@ function NewProductPage() {
         featured: form.featured,
         new_arrival: form.new_arrival,
         fashion_style: form.fashion_style,
+        gender: form.gender,
       };
 
       const product = await createProduct(payload);
@@ -252,6 +254,15 @@ function NewProductPage() {
                   <option value="Outing Style">Outing Style</option>
                 </select>
                 <small className="up-style-helper">Phong cách này được lưu cùng sản phẩm và dùng để hiển thị thông tin trên trang sản phẩm.</small>
+              </label>
+              <label>
+                Giới tính
+                <select value={form.gender} onChange={(e) => setForm({ ...form, gender: e.target.value as Product["gender"] })}>
+                  <option value="Male">Nam (Male)</option>
+                  <option value="Female">Nữ (Female)</option>
+                  <option value="Unisex">Unisex</option>
+                </select>
+                <small className="up-style-helper">Thông tin giới tính sẽ hiển thị trên trang sản phẩm.</small>
               </label>
               <label>
                 Danh mục
