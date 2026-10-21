@@ -9,7 +9,7 @@ import { CATEGORIES, type Product } from "@/data/products";
 import { canonicalLink } from "@/lib/seo";
 import "@/styles/wearo-shop-page.scss";
 
-type DbCatalogProduct = { id: string; name: string; description: string; price: number; category: Product["category"]; image: string | null; featured: boolean; sizes: string[]; colors: string[]; gallery: string[]; total_stock: number; fashion_style?: "Casual" | "Basic" | "Streetwear" | "Outing Style" | null; gender?: "Male" | "Female" | "Unisex" | null; };
+type DbCatalogProduct = { id: string; name: string; description: string; price: number; category: Product["category"]; image: string | null; featured: boolean; sizes: string[]; colors: string[]; gallery: string[]; total_stock: number; fashion_style?: "Casual" | "Basic" | "Streetwear" | "Outerwear" | null; gender?: "Male" | "Female" | "Unisex" | null; };
 
 const getShopProducts = createServerFn({ method: "GET" }).handler(async () => {
   const { supabaseRequest } = await import("@/lib/supabase.server");
@@ -248,8 +248,8 @@ function ShopPage() {
             <Link to="/collections/$slug" params={{ slug: "streetwear" }} className="wearo-shop-style-card style-streetwear">
               <span className="wearo-shop-style-index">03 / STREET CULTURE</span><span className="wearo-shop-style-name">STREETWEAR</span><span className="wearo-shop-style-description">Cá tính đường phố, nổi bật chất riêng.</span><span className="wearo-shop-style-link">Khám phá <ArrowUpRight size={15} /></span>
             </Link>
-            <Link to="/collections/$slug" params={{ slug: "outing-style" }} className="wearo-shop-style-card style-outing">
-              <span className="wearo-shop-style-index">04 / OUTSIDE LIFE</span><span className="wearo-shop-style-name">OUTING STYLE</span><span className="wearo-shop-style-description">Sẵn sàng đi chơi, dạo phố và hoạt động ngoài trời.</span><span className="wearo-shop-style-link">Khám phá <ArrowUpRight size={15} /></span>
+            <Link to="/collections/$slug" params={{ slug: "outerwear" }} className="wearo-shop-style-card style-outerwear">
+              <span className="wearo-shop-style-index">04 / LAYERING</span><span className="wearo-shop-style-name">OUTERWEAR</span><span className="wearo-shop-style-description">Lớp khoác linh hoạt để layer, di chuyển và thích ứng nhiều thời tiết.</span><span className="wearo-shop-style-link">Khám phá <ArrowUpRight size={15} /></span>
             </Link>
           </div>
         </section>
