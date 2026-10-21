@@ -1,4 +1,4 @@
--- Fashion Dream Try-On Shop | AI try-on jobs schema snapshot
+-- Fashion Dream Try-On Shop | AI try-on jobs schema snapshot (verified against live schema 2026-10-21)
 -- Supabase project: oazipcrbutizdncctkcg | Branch: feature/product-admin
 -- Reference only. Storage policies and production migrations remain authoritative.
 
@@ -14,7 +14,6 @@ create index if not exists try_on_jobs_user_id_created_at_idx on public.try_on_j
 create or replace function public.set_try_on_jobs_updated_at() returns trigger language plpgsql as $$ begin new.updated_at=now(); return new; end; $$;
 create trigger try_on_jobs_set_updated_at before update on public.try_on_jobs for each row execute function public.set_try_on_jobs_updated_at();
 alter table public.try_on_jobs enable row level security;
-create policy "Users can create their own try-on jobs" on public.try_on_jobs for insert to authenticated with check ((select auth.uid())=user_id);
 create policy "Users can read their own try-on jobs" on public.try_on_jobs for select to authenticated using ((select auth.uid())=user_id);
-create policy "Users can update their own try-on jobs" on public.try_on_jobs for update to authenticated using ((select auth.uid())=user_id) with check ((select auth.uid())=user_id);
+-- Client-side INSERT/UPDATE are intentionally not allowed; server-side job processing owns writes.
 -- Provider credentials remain server-side; table stores job state and storage paths only.
