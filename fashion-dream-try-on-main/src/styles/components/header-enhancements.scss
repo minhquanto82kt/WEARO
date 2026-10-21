@@ -16,6 +16,7 @@
 
 .fashion-nav__inner { width: min(1320px, calc(100% - 56px)); height: var(--wearo-header-height); gap: 34px; }
 .fashion-brand { flex: 0 0 auto; gap: 12px; min-width: 190px; transition: transform .2s ease; }
+.fashion-brand__logo { display: block; width: 84px; height: 84px; max-width: none; object-fit: contain; background: transparent; mix-blend-mode: multiply; filter: brightness(1.035) contrast(1.08); }
 .fashion-brand:hover { transform: translateY(-1px); }
 .fashion-brand__mark { width: 32px; height: 32px; background: var(--wearo-orange); color: var(--wearo-ink); font-size: 17px; box-shadow: 3px 3px 0 var(--wearo-orange-hot); transition: transform .2s ease, box-shadow .2s ease; }
 .fashion-brand:hover .fashion-brand__mark { transform: translate(-1px, -1px); box-shadow: 5px 5px 0 var(--wearo-orange-hot); }
