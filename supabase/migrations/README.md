@@ -6,7 +6,7 @@ This directory tracks the path from the live Supabase migration history to a rep
 
 The live Supabase project reports **78 applied production migrations**. Their exact versions and names are captured in `production-manifest.json`.
 
-The repository does **not** yet contain the SQL bodies of those 78 historical migrations. Therefore this directory is **not yet a replayable migration baseline**.
+The repository contains a partial set of 39 SQL files under `fashion-dream-try-on-main/supabase/migrations/`, but only 6 match the live ledger by exact version and name. Another 22 share a migration name under a different version, and 11 have no exact name/version match. The full set of 78 historical migration bodies is therefore **not yet represented as a verified replayable baseline**. See `fashion-dream-try-on-main/supabase/reconciliation/2026-10-live-audit.md`.
 
 The repository's `supabase/schema/` files are reconstructed snapshots and must **not** be renamed, concatenated, or copied here as a fake baseline.
 
