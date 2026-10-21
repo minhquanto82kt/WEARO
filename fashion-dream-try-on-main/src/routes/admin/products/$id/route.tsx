@@ -140,6 +140,13 @@ function ProductDetailPage() {
     return { total: variants.reduce((sum, variant) => sum + variant.stock, 0), low, out };
   }, [variants]);
 
+  const generatorPreview = useMemo(() => {
+    const existing = new Set(variants.map((variant) => `${variant.size.toLowerCase()}::${variant.color.toLowerCase()}`));
+    return generatorSizes.flatMap((size) => generatorColors
+      .filter((color) => !existing.has(`${size.toLowerCase()}::${color.toLowerCase()}`))
+      .map((color) => ({ size, color })));
+  }, [generatorSizes, generatorColors, variants]);
+
   const statusLabel = product?.status === "published" ? (product.active ? "Đang hoạt động" : "Đã ẩn") : product?.status === "draft" ? "Bản nháp" : "Trong thùng rác";
   const hasUnsavedChanges = useMemo(() => {
     if (!product || !form) return false;
@@ -562,10 +569,10 @@ function ProductDetailPage() {
         </section>
       </section>
 
-      <section className="up-admin-stats">
-        <div><span>VARIANTS</span><strong>{variants.length}</strong></div>
+      <section className="up-admin-stats" aria-label="Tổng quan biến thể và tồn kho">
+        <div><span>BIẾN THỂ</span><strong>{variants.length}</strong></div>
         <div><span>TỔNG TỒN KHO</span><strong>{inventory.total}</strong></div>
-        <div><span>SẮP HẾT</span><strong>{inventory.low}</strong></div>
+        <div><span>SẮP HẾT (1–5)</span><strong>{inventory.low}</strong></div>
         <div><span>HẾT HÀNG</span><strong>{inventory.out}</strong></div>
       </section>
 
@@ -578,7 +585,7 @@ function ProductDetailPage() {
           <fieldset><legend>SIZE</legend><div className="up-variant-options">{sizes.map((size) => <label key={size}><input type="checkbox" checked={generatorSizes.includes(size)} onChange={(event) => setGeneratorSizes((current) => event.target.checked ? [...current, size] : current.filter((value) => value !== size))} disabled={generatingVariants || saving || deleting} />{size}</label>)}</div></fieldset>
           <fieldset><legend>MÀU SẮC</legend><div className="up-variant-options">{colors.map((color) => <label key={color}><input type="checkbox" checked={generatorColors.includes(color)} onChange={(event) => setGeneratorColors((current) => event.target.checked ? [...current, color] : current.filter((value) => value !== color))} disabled={generatingVariants || saving || deleting} /><i style={{ background: colorValue(color) }} />{color}</label>)}</div></fieldset>
           <label className="up-variant-generator__stock">Tồn kho ban đầu cho mỗi SKU<input type="number" min="0" step="1" value={generatorStock} onChange={(event) => setGeneratorStock(event.target.value)} disabled={generatingVariants || saving || deleting} /></label>
-          <div className="up-variant-generator__footer"><span>{generatorSizes.length * generatorColors.length} tổ hợp được chọn · hệ thống tự bỏ qua tổ hợp đã tồn tại</span><button className="up-admin-primary" type="submit" disabled={generatingVariants || saving || deleting || !generatorSizes.length || !generatorColors.length}>{generatingVariants ? "ĐANG TẠO…" : "TẠO VARIANT"}</button></div>
+          <div className="up-variant-generator__footer"><div className="up-variant-preview"><strong>{generatorPreview.length} tổ hợp mới sẽ được tạo</strong><div className="up-variant-preview__chips">{generatorPreview.slice(0, 8).map((combo) => <span key={`${combo.size}-${combo.color}`}>{combo.size} / {combo.color}</span>)}{generatorPreview.length > 8 && <span>+{generatorPreview.length - 8} tổ hợp khác</span>}</div><small>Không tạo lại tổ hợp size/màu đã tồn tại. Hãy kiểm tra số lượng trước khi áp dụng.</small></div><button className="up-admin-primary" type="submit" disabled={generatingVariants || saving || deleting || !generatorPreview.length}>{generatingVariants ? "ĐANG TẠO…" : "TẠO BIẾN THỂ"}</button></div>
         </form>}
       </section>
 
