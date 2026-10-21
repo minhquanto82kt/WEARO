@@ -1,5 +1,5 @@
 -- Fashion Dream Try-On Shop
--- Database schema snapshot: core product catalog
+-- Database schema snapshot: core product catalog (verified against live schema 2026-10-21)
 -- Source: Supabase project oazipcrbutizdncctkcg
 -- Branch: feature/product-admin
 --
@@ -13,7 +13,7 @@ create table if not exists public.products (
   id text primary key,
   name text not null,
   description text,
-  price integer not null check (price >= 0),
+  price integer not null constraint products_price_check check (price >= 0) constraint products_price_minimum_1000 check (price >= 1000),
   category text not null,
   image text,
   active boolean not null default true,
@@ -23,12 +23,14 @@ create table if not exists public.products (
   long_description text,
   status text not null default 'draft',
   featured boolean not null default false,
-  updated_at timestamptz not null default now()
+  updated_at timestamptz not null default now(),
+  new_arrival boolean not null default false,
+  fashion_style text constraint products_fashion_style_check check (fashion_style is null or fashion_style = any (array['Casual','Basic','Streetwear','Outing Style']))
 );
 
 create table if not exists public.product_variants (
   id uuid primary key default gen_random_uuid(),
-  product_id text not null references public.products(id),
+  product_id text not null references public.products(id) on delete cascade,
   size text not null,
   color text not null,
   sku text unique,
