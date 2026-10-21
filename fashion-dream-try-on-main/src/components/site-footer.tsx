@@ -132,7 +132,7 @@ export function SiteFooter() {
         </div>
 
         <div className="wearo-footer__bottom">
-          <p>© {new Date().getFullYear()} WEARO — Đại học Công nghiệp TP.HCM / IUH. {t("Bảo lưu mọi quyền.", "All rights reserved.")}</p>
+          <p>© 2026 WEARO — Đại học Công nghiệp TP.HCM / IUH. {t("Bảo lưu mọi quyền.", "All rights reserved.")}</p>
           <span>{t("Thời trang có cá tính. Trải nghiệm có công nghệ.", "Fashion with identity. Experience with technology.")}</span>
         </div>
       </div>
