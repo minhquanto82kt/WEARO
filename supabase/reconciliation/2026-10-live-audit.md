@@ -61,6 +61,14 @@ RLS is enabled on the inspected public tables. Important live authorization rule
 
 Security-definer functions cover order creation/cancellation, payment verification, SePay/MoMo processing, guest order tracking, RBAC, inventory audit, appearance publishing, and AI quota accounting. A full parity review still needs exact function bodies, execute grants, `search_path`, every RLS policy, and Storage policies.
 
+### Security advisor finding requiring follow-up
+
+The live Supabase security advisor reports two warning categories for exposed SECURITY DEFINER functions. Direct catalog inspection confirmed that `apply_best_member_voucher(p_order_id uuid, p_user_id uuid)` is executable by both `anon` and `authenticated`. Its current body updates orders, payments, user-voucher status, and voucher usage; it checks that the supplied order belongs to the supplied user ID, but does not compare that ID to `auth.uid()`. This is a potential authorization gap if a caller can obtain another user's order ID and user ID.
+
+The advisor also reports `get_public_product_style_tags()` executable by `anon` and `authenticated`; its body returns only active tags linked to active, published products, so public exposure may be intentional, but SECURITY DEFINER and its grants should be justified.
+
+**No function grants or definitions were changed.** Before creating a hardening migration, verify frontend/server call sites and intended guest/member voucher behavior; then test an owner call, a cross-user call, and anonymous access in non-production.
+
 ## 5. Storage buckets observed
 
 | Bucket | Public | Limit | Allowed MIME types |
