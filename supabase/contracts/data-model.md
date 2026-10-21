@@ -188,7 +188,7 @@ Storage bucket configuration and `storage.objects` policies are part of the secu
 
 ## 9. Known reconciliation items
 
-1. The repository's original 9 schema snapshots do not cover all 28 live public tables.
+1. `010_extended_live_tables.sql` now documents the 17 tables missing from the original nine snapshots. The reference set covers table definitions more broadly, but exact migration bodies, function/trigger definitions, grants, custom types, and Storage policies still need full parity review.
 2. `inventory_movements` exists in production and should be documented as the audit layer around `product_variants.stock`.
 3. Live RBAC includes `user_roles`, `app_role`, `has_backoffice_role(...)`, and role-scoped policies beyond the older `is_admin()` model.
 4. Live commerce includes carts, reviews, tags, vouchers, wishlist, and site appearance/content workflows that were absent from the original snapshot set.
