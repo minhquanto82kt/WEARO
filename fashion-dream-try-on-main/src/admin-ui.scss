@@ -1505,3 +1505,35 @@
   .up-admin-root .up-product-danger-zone { align-items: stretch; flex-direction: column; }
   .up-admin-root .up-product-danger-zone button { width: 100%; min-height: 42px; }
 }
+
+
+.up-admin-root .up-product-image-actions-menu {
+  position: relative;
+}
+.up-admin-root .up-product-image-actions-menu > summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  min-height: 34px;
+  padding: 7px 9px;
+  border: 1px solid color-mix(in oklab, var(--theme-secondary, #7794a6) 35%, #ffffff);
+  border-radius: 7px;
+  background: var(--theme-background, #ffffff);
+  color: var(--theme-foreground, #20201e);
+  cursor: pointer;
+  list-style: none;
+  font-size: 11px;
+  font-weight: 650;
+}
+.up-admin-root .up-product-image-actions-menu > summary::-webkit-details-marker { display: none; }
+.up-admin-root .up-product-image-actions-menu__items {
+  display: grid;
+  gap: 6px;
+  padding-top: 7px;
+}
+.up-admin-root .up-product-image-actions-menu__items button {
+  width: 100%;
+  min-height: 34px;
+  font-size: 11px;
+}
