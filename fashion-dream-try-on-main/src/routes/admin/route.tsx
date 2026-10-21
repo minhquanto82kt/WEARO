@@ -569,15 +569,22 @@ function AdminLayout() {
 
           @media (max-width: 900px) {
             .fd-admin-login-page {
-              display: block;
+              display: flex;
+              flex-direction: column;
               overflow-y: auto;
             }
 
+            .fd-admin-login-panel {
+              order: 1;
+            }
+
             .fd-admin-login-visual {
-              min-height: 340px;
-              padding: 30px 28px;
+              order: 2;
+              min-height: auto;
+              padding: 28px 28px 24px;
               border-right: 0;
-              border-bottom: 1px solid rgba(255,255,255,.12);
+              border-bottom: 0;
+              border-top: 1px solid rgba(255,255,255,.12);
             }
 
             .fd-admin-editorial {
@@ -701,29 +708,37 @@ function AdminLayout() {
             }
 
             .fd-admin-login-visual {
-              min-height: 300px;
-              padding: 25px 20px;
+              min-height: auto;
+              padding: 24px 20px;
             }
 
             .fd-admin-editorial {
-              padding-top: 50px;
+              padding-top: 28px;
             }
 
             .fd-admin-editorial h1 {
-              margin-top: 18px;
-              font-size: clamp(56px, 18vw, 78px);
+              margin: 14px 0;
+              font-size: clamp(50px, 16vw, 70px);
+            }
+
+            .fd-admin-footer {
+              margin-top: 26px;
             }
 
             .fd-admin-login-panel {
-              padding: 56px 20px 45px;
+              padding: 54px 20px 40px;
             }
 
             .fd-admin-login-card__topline {
-              margin-bottom: 36px;
+              margin-bottom: 26px;
+            }
+
+            .fd-admin-login-card__intro {
+              margin: 14px 0 24px;
             }
 
             .fd-admin-login-card h2 {
-              font-size: 50px;
+              font-size: 48px;
             }
           }
         `}</style>
