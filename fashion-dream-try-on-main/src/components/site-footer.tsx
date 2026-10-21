@@ -36,7 +36,7 @@ export function SiteFooter() {
           <div className="wearo-footer__grid">
           <section className="wearo-footer__brand">
             <Link to="/" className="wearo-footer__logo" aria-label="WEARO home">
-              <img src="/brand/wearo-logo-header.svg" alt="WEARO" />
+              <img src="/brand/OG-logo.webp" alt="WEARO" />
             </Link>
             <p className="wearo-footer__description">
               {t(
