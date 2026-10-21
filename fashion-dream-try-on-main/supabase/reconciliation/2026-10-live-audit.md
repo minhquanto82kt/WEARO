@@ -79,6 +79,10 @@ Supabase's security advisor reports exposed SECURITY DEFINER functions. Direct i
 
 No function grants or definitions were changed. Review app/server call sites and test owner, cross-user, and anonymous calls in non-production before preparing a hardening migration.
 
+## Performance advisor findings
+
+The live Supabase performance advisor reports two foreign keys without a covering index: `journal_articles.created_by` and `user_vouchers.voucher_id`. It also reports 32 unused indexes at the observation time. The missing FK indexes are candidates for measured, backward-compatible index additions. Do not drop the unused indexes solely from this report; validate query workload and query plans first.
+
 ## Next steps
 
 1. Retrieve the exact applied SQL bodies from the original migration source, Supabase CLI history, or a trusted backup.
