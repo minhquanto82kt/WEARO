@@ -34,6 +34,7 @@ type ProductForm = {
   featured: boolean;
   new_arrival: boolean;
   fashion_style: string;
+  gender: "Male" | "Female" | "Unisex";
 };
 
 type VariantForm = {
@@ -122,6 +123,7 @@ function ProductDetailPage() {
         featured: productData.featured,
         new_arrival: productData.new_arrival ?? false,
         fashion_style: productData.fashion_style ?? "Casual",
+        gender: productData.gender ?? "Unisex",
       });
     } catch (cause) {
       setError(cause instanceof Error ? cause.message : "Không thể tải dữ liệu sản phẩm.");
@@ -256,6 +258,7 @@ function ProductDetailPage() {
         featured: form.featured,
         new_arrival: form.new_arrival,
         fashion_style: form.fashion_style,
+        gender: form.gender,
       });
       setProduct(updated ?? { ...product, name, slug, category: form.category, price, status: form.status, featured: form.featured, new_arrival: form.new_arrival });
       setMessage("Đã cập nhật sản phẩm.");
@@ -442,6 +445,7 @@ function ProductDetailPage() {
             <label>Slug<input value={form.slug} onChange={(e) => setForm((c) => c && ({ ...c, slug: e.target.value }))} disabled={saving || deleting} /></label>
             <div className="up-two-col">
               <label>Danh mục<select value={form.category} onChange={(e) => setForm((c) => c && ({ ...c, category: e.target.value }))} disabled={saving || deleting}>{categories.map((category) => <option key={category}>{category}</option>)}</select></label>
+              <label>Giới tính<select value={form.gender} onChange={(e) => setForm((c) => c && ({ ...c, gender: e.target.value as ProductForm["gender"] }))} disabled={saving || deleting}><option value="Male">Nam (Male)</option><option value="Female">Nữ (Female)</option><option value="Unisex">Unisex</option></select><small className="up-style-helper">Hiển thị giới tính trên trang sản phẩm.</small></label>
               <label>Giá (VND)<input type="number" min="1000" step="1" required aria-describedby="product-price-minimum" value={form.price} onChange={(e) => setForm((c) => c && ({ ...c, price: e.target.value }))} disabled={saving || deleting} /><small id="product-price-minimum">Giá tối thiểu: 1.000 ₫.</small></label>
             </div>
             <label>Mô tả ngắn<textarea rows={3} value={form.short_description} onChange={(e) => setForm((c) => c && ({ ...c, short_description: e.target.value }))} disabled={saving || deleting} /></label>
