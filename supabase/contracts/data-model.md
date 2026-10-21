@@ -1,6 +1,6 @@
 # WEARO / Fashion Dream Try-On Shop — Database Contract
 
-This document is the shared contract for frontend, API/server functions, AI workflows, admin UI, and Supabase SQL. It describes the current live architecture as audited from Supabase on 2026-09-28. It is not a replacement for the authoritative production migration history.
+This document is the shared contract for frontend, API/server functions, AI workflows, admin UI, and Supabase SQL. It describes the current live architecture as audited from Supabase on 2026-10-21. It is not a replacement for the authoritative production migration history.
 
 ## 1. Core relationship map
 
@@ -64,6 +64,7 @@ ai_usage_daily ──> AI quota accounting
 | `user_roles` | `user_id` + role | Supabase RBAC | Own role/admin | Admin workflow | Role-governed |
 | `try_on_jobs` | `id` uuid | Supabase job state | Own user | Authenticated/server path | Retain according to product policy |
 | `product_reviews` | `id` uuid | Supabase | Published reviews | Verified buyer/backoffice | User/backoffice policy |
+| `journal_articles` | `id` uuid | Supabase | Published articles | Admin draft/publish workflow | Archive/draft workflow |
 | `tags` | `id` uuid | Supabase | Admin in current policy | Admin workflow | Admin-controlled |
 | `product_tags` | composite product/tag | Supabase | Admin in current policy | Admin workflow | Admin-controlled |
 | `vouchers` | `id` uuid | Supabase | Active vouchers to members | Admin/server workflow | Avoid deleting historical references |
@@ -187,11 +188,11 @@ Storage bucket configuration and `storage.objects` policies are part of the secu
 
 ## 9. Known reconciliation items
 
-1. The repository's original 9 schema snapshots do not cover all 27 live public tables.
+1. The repository's original 9 schema snapshots do not cover all 28 live public tables.
 2. `inventory_movements` exists in production and should be documented as the audit layer around `product_variants.stock`.
 3. Live RBAC includes `user_roles`, `app_role`, `has_backoffice_role(...)`, and role-scoped policies beyond the older `is_admin()` model.
 4. Live commerce includes carts, reviews, tags, vouchers, wishlist, and site appearance/content workflows that were absent from the original snapshot set.
-5. Production currently has 71 migrations. `supabase/migrations/production-manifest.json` records their versions/names, but the SQL bodies must be exported before a replayable migration history is committed.
+5. Production currently has 78 migrations. `supabase/migrations/production-manifest.json` records their versions/names, but the SQL bodies must be exported before a replayable migration history is committed.
 6. Do not manufacture a `000_baseline.sql` by concatenating or renaming schema snapshots.
 
 ## 10. Change protocol
