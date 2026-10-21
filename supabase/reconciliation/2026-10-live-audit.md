@@ -19,7 +19,7 @@ Read-only inspection of live Supabase migration history, public tables, selected
 
 ## 2. Live table coverage
 
-The live database contains **28 public base tables**. The existing nine schema snapshots represent 11 tables; these 17 live tables are not yet represented by dedicated snapshots:
+The live database contains **28 public base tables**. The original nine schema snapshots represented 11 tables. A new reference-only file, `supabase/schema/010_extended_live_tables.sql`, now documents these 17 previously missing tables:
 
 - `ai_usage_daily`
 - `appearance_branding`
@@ -82,4 +82,4 @@ Security-definer functions cover order creation/cancellation, payment verificati
 
 ## Result
 
-The live migration manifest is current. The schema snapshots and migration baseline are not yet fully synchronized. No production data or schema was changed during this audit.
+The live migration manifest is current. The table-reference coverage has been expanded with a generated catalog snapshot, and the manifest is current. This is still not a replayable migration baseline: exact historical SQL bodies, complete function/trigger/grant parity, custom types, and Storage policies remain to be exported and verified. No production data or schema was changed during this audit.
