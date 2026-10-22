@@ -55,8 +55,7 @@ def main():
         ci_url = latest_ci.get("html_url") or ci_url
 
     scripts = package.get("scripts", {})
-    checks = [name for name in ("lint", "typecheck", "build", "test:smoke", "test:customer-experience", "audit:architecture", "audit:dependencies") if name in scripts]
-    checks_text = ", ".join("`" + name + "`" for name in checks) or "Chưa khai báo"
+    scripts_text = ", ".join("`" + name + "`" for name in sorted(scripts)) or "Chưa khai báo"
     language_text = ", ".join(sorted(languages)) if languages else "Chưa có dữ liệu"
     rows = [
         "| Nguồn | Chỉ số | Giá trị hiện tại |",
@@ -68,12 +67,12 @@ def main():
         f"| Repository | Nhánh mặc định | `{repo.get('default_branch', 'unknown')}` |",
         f"| Repository | Nhánh đang thống kê | `{BRANCH}` |",
         f"| Repository | Cập nhật gần nhất | {date_text(repo.get('pushed_at'))} |",
-        f"| GitHub Actions | CI gần nhất trên nhánh này | [{ci_label}]({ci_url}) |",
+        f"| GitHub Actions | CI gần nhất trên nhánh này | [{ci_label}]({ci_url}) · {date_text(latest_ci.get('updated_at') if latest_ci else None)} |",
         f"| Dữ liệu dự án | Package | `{package.get('name', 'Không khai báo')}` |",
         f"| Dữ liệu dự án | Runtime | Node.js `{package.get('engines', {}).get('node', 'Không khai báo')}` · `{package.get('packageManager', 'Không khai báo')}` |",
         f"| Dữ liệu dự án | Ngôn ngữ GitHub nhận diện | {language_text} |",
         f"| Dữ liệu dự án | Dependencies / devDependencies | {len(package.get('dependencies', {}))} / {len(package.get('devDependencies', {}))} |",
-        f"| Dữ liệu dự án | Script kiểm tra được khai báo | {checks_text} |",
+        f"| Dữ liệu dự án | Scripts trong package.json | {scripts_text} |",
     ]
     generated = "\n".join([START, "<!-- Tự động cập nhật bởi .github/workflows/readme-stats.yml. -->", *rows,
         f"\n_Cập nhật tự động: {datetime.now(timezone.utc).strftime('%Y-%m-%d %H:%M UTC')} · nhánh `{BRANCH}`._", END])
