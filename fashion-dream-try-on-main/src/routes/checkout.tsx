@@ -170,11 +170,83 @@ function CheckoutPage() {
             <p className="wearo-checkout-success__eyebrow">{mockMode ? "MOCK USER · SANDBOX" : "ĐƠN HÀNG ĐÃ ĐƯỢC XÁC NHẬN"}</p>
             <div className="wearo-checkout-success__mark" aria-hidden="true">✓</div>
             <h1>{mockMode ? "XEM TRƯỚC THÀNH CÔNG" : "CẢM ƠN BẠN"}<span>!</span></h1>
-            <p className="wearo-checkout-success__order">
-              Mã {mockMode ? "đơn xem trước" : "đơn hàng"}: <strong>{done}</strong>
-            </p>
+            <div className="wearo-checkout-success__order-line">
+              <p className="wearo-checkout-success__order">
+                Mã {mockMode ? "đơn xem trước" : "đơn hàng"}: <strong>{done}</strong>
+              </p>
+              {!mockMode && (
+                <button
+                  type="button"
+                  className="wearo-checkout-success__copy"
+                  onClick={() => {
+                    if (!navigator.clipboard?.writeText) {
+                      setErrorMessage("Trình duyệt không hỗ trợ sao chép tự động. Vui lòng chọn và sao chép mã đơn hàng.");
+                      return;
+                    }
+                    void navigator.clipboard.writeText(done).then(
+                      () => setErrorMessage(null),
+                      () => setErrorMessage("Không thể sao chép mã đơn. Vui lòng sao chép thủ công."),
+                    );
+                  }}
+                  aria-label="Sao chép mã đơn hàng"
+                >
+                  SAO CHÉP
+                </button>
+              )}
+            </div>
             {mockMode && <p className="wearo-checkout-success__note">Mock order — không ghi vào hệ thống đơn hàng production.</p>}
           </section>
+
+          {invoice && (
+            <section className="wearo-checkout-success__summary" aria-labelledby="wearo-order-summary-title">
+              <div className="wearo-checkout-success__summary-heading">
+                <div>
+                  <p className="wearo-checkout-success__invoice-label">THÔNG TIN GIAO DỊCH</p>
+                  <h2 id="wearo-order-summary-title">Tóm tắt đơn hàng</h2>
+                </div>
+                <span className="wearo-checkout-success__status">
+                  {invoice.order_status === "cancelled" ? "Đơn đã hủy" :
+                    invoice.order_status === "delivered" ? "Đã giao hàng" :
+                    invoice.order_status === "shipped" ? "Đang giao hàng" :
+                    invoice.order_status === "processing" ? "Đang xử lý" :
+                    invoice.order_status === "pending" ? "Chờ xử lý" : invoice.order_status}
+                </span>
+              </div>
+
+              <div className="wearo-checkout-success__items">
+                {invoice.items.map((item, index) => (
+                  <div className="wearo-checkout-success__item" key={`${item.product_id}-${item.size}-${item.color}-${index}`}>
+                    <div>
+                      <strong>{item.product_name}</strong>
+                      <p>{item.size} · {item.color} · SL: {item.quantity}</p>
+                    </div>
+                    <span>{formatVnd(item.unit_price * item.quantity)}</span>
+                  </div>
+                ))}
+              </div>
+
+              <dl className="wearo-checkout-success__totals">
+                <div><dt>Tạm tính</dt><dd>{formatVnd(invoice.subtotal)}</dd></div>
+                <div><dt>Phí vận chuyển</dt><dd>{invoice.shipping_fee === 0 ? "Miễn phí" : formatVnd(invoice.shipping_fee)}</dd></div>
+                <div className="wearo-checkout-success__grand-total"><dt>Tổng đơn hàng</dt><dd>{formatVnd(invoice.total)}</dd></div>
+                <div><dt>Thanh toán</dt><dd>{invoice.payment_method === "cod" ? "Thanh toán khi nhận hàng (COD)" :
+                  invoice.payment_method === "vietqr" ? "VietQR" :
+                  invoice.payment_method === "momo" ? "MoMo" :
+                  invoice.payment_method === "mastercard" ? "Visa / Mastercard" : invoice.payment_method}</dd></div>
+                <div><dt>Trạng thái thanh toán</dt><dd>{invoice.payment_status === "paid" ? "Đã thanh toán" :
+                  invoice.payment_status === "pending" ? "Chờ thanh toán" :
+                  invoice.payment_status === "failed" ? "Thanh toán thất bại" :
+                  invoice.payment_status === "refunded" ? "Đã hoàn tiền" : invoice.payment_status}</dd></div>
+              </dl>
+
+              <div className="wearo-checkout-success__delivery">
+                <h3>Địa chỉ nhận hàng</h3>
+                <p>{invoice.customer_name} · {invoice.phone}</p>
+                {invoice.email && <p>{invoice.email}</p>}
+                <p>{[invoice.address, invoice.district, invoice.city].filter(Boolean).join(", ")}</p>
+              </div>
+            </section>
+          )}
 
           {invoice && (
             <section className="wearo-checkout-success__invoice" aria-live="polite">
