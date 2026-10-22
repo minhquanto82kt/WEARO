@@ -280,8 +280,8 @@ function CheckoutPage() {
           )}
 
           <div className="wearo-checkout-success__actions">
+            <Link to={memberMode ? "/account/orders" : "/account"} className="wearo-checkout-success__track">{memberMode ? "THEO DÕI ĐƠN HÀNG" : "TÀI KHOẢN / ĐƠN HÀNG"}</Link>
             <Link to="/shop" className="wearo-checkout-success__shop">TIẾP TỤC MUA SẮM</Link>
-            <Link to={memberMode ? "/account/orders" : "/account"} className="wearo-checkout-success__account">{memberMode ? "LỊCH SỬ ĐƠN HÀNG" : "TÀI KHOẢN"}</Link>
           </div>
         </main>
         <SiteFooter />
