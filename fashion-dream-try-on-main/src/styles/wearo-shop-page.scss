@@ -692,3 +692,84 @@
     transition: none !important;
   }
 }
+
+
+/* Shop banner controls: rounded editorial navigation, clear pause pill. */
+.wearo-shop-page .wearo-shop-banner-controls {
+  align-items: center;
+  gap: 14px;
+}
+.wearo-shop-page .wearo-shop-banner-dots {
+  gap: 6px;
+}
+.wearo-shop-page .wearo-shop-banner-dot {
+  width: 10px;
+  min-width: 10px;
+  height: 10px;
+  min-height: 10px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: rgba(84,114,140,.34);
+  box-shadow: 0 0 0 1px rgba(255,255,255,.5);
+  transition: width .2s ease, border-radius .2s ease, background-color .2s ease;
+}
+.wearo-shop-page .wearo-shop-banner-dot.is-active {
+  width: 28px;
+  min-width: 28px;
+  border-radius: 999px;
+  background: var(--shop-blue);
+}
+.wearo-shop-page .wearo-shop-banner-arrows {
+  align-items: center;
+  gap: 8px;
+}
+.wearo-shop-page .wearo-shop-banner-arrows button {
+  display: inline-flex;
+  width: 42px;
+  min-width: 42px;
+  height: 42px;
+  min-height: 42px;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(84,114,140,.42);
+  border-radius: 50%;
+  background: rgba(248,246,242,.9);
+  color: var(--shop-blue);
+  box-shadow: 0 3px 12px rgba(23,23,23,.08);
+  white-space: nowrap;
+  transition: background-color .18s ease, color .18s ease, border-color .18s ease, box-shadow .18s ease;
+}
+.wearo-shop-page .wearo-shop-banner-arrows button:hover {
+  border-color: var(--shop-blue);
+  background: var(--shop-blue);
+  color: #fff;
+  box-shadow: 0 5px 16px rgba(23,23,23,.14);
+}
+.wearo-shop-page .wearo-shop-banner-arrows button:last-child {
+  width: auto;
+  min-width: 0;
+  height: 38px;
+  min-height: 38px;
+  padding: 0 14px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: .02em;
+}
+@media (max-width: 480px) {
+  .wearo-shop-page .wearo-shop-banner-controls { gap: 8px; }
+  .wearo-shop-page .wearo-shop-banner-arrows { gap: 5px; }
+  .wearo-shop-page .wearo-shop-banner-arrows button {
+    width: 36px;
+    min-width: 36px;
+    height: 36px;
+    min-height: 36px;
+  }
+  .wearo-shop-page .wearo-shop-banner-arrows button:last-child {
+    height: 34px;
+    min-height: 34px;
+    padding: 0 10px;
+    font-size: 10px;
+  }
+}
