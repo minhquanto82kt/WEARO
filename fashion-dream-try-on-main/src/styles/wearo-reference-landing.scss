@@ -395,3 +395,48 @@
 @media (prefers-reduced-motion: reduce) {
   .wearo-reference-page * { scroll-behavior: auto !important; transition-duration: .01ms !important; }
 }
+
+
+/* P0: stable hero carousel controls — prevent hover flicker and overlay hit-testing */
+.wearo-home-hero-slider {
+  position: relative;
+  isolation: isolate;
+}
+.wearo-home-hero-slider .wearo-home-hero-banner {
+  pointer-events: none;
+}
+.wearo-home-hero-slider .wearo-home-hero-desktop-cta {
+  z-index: 2;
+}
+.wearo-home-hero-slider .wearo-home-hero-arrow,
+.wearo-home-hero-slider .wearo-home-hero-dots {
+  position: absolute;
+  z-index: 5;
+}
+.wearo-home-hero-slider .wearo-home-hero-arrow {
+  pointer-events: auto;
+  cursor: pointer;
+  transform: none !important;
+  transition: background-color .18s ease, color .18s ease, border-color .18s ease, box-shadow .18s ease !important;
+  -webkit-tap-highlight-color: transparent;
+}
+.wearo-home-hero-slider .wearo-home-hero-arrow:hover {
+  transform: none !important;
+}
+.wearo-home-hero-slider .wearo-home-hero-arrow:focus-visible,
+.wearo-home-hero-slider .wearo-home-hero-dots button:focus-visible {
+  outline: 2px solid #F2CEAE !important;
+  outline-offset: 3px;
+}
+.wearo-home-hero-slider .wearo-home-hero-dots {
+  pointer-events: auto;
+}
+.wearo-home-hero-slider .wearo-home-hero-dots button {
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+@media (prefers-reduced-motion: reduce) {
+  .wearo-home-hero-slider .wearo-home-hero-arrow {
+    transition: none !important;
+  }
+}
