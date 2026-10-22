@@ -636,7 +636,7 @@ function ProductDetailPage() {
             <div className="up-variant-custom-color" style={{ display: "grid", gridTemplateColumns: "36px minmax(0,1fr) auto", gap: 8, alignItems: "center", marginTop: 12 }}>
               <input aria-label="Chọn màu tùy chỉnh cho ma trận" type="color" value={generatorCustomHex} onChange={(e) => setGeneratorCustomHex(e.target.value.toUpperCase())} disabled={generatingVariants || saving || deleting} style={{ width: 36, height: 36, padding: 2 }} />
               <div><strong>{colorNameFromHex(generatorCustomHex)}</strong><small style={{ display: "block" }}>{generatorCustomHex}</small></div>
-              <button className="up-row-action" type="button" onClick={() => setGeneratorColors((current) => current.includes(colorLabelFromHex(generatorCustomHex)) ? current : [...current, colorLabelFromHex(generatorCustomHex)])} disabled={generatingVariants || saving || deleting || generatorColors.includes(colorLabelFromHex(generatorCustomHex)}>THÊM MÀU</button>
+              <button className="up-row-action" type="button" onClick={() => setGeneratorColors((current) => current.includes(colorLabelFromHex(generatorCustomHex)) ? current : [...current, colorLabelFromHex(generatorCustomHex)])} disabled={generatingVariants || saving || deleting || generatorColors.includes(colorLabelFromHex(generatorCustomHex))}>THÊM MÀU</button>
             </div>
           </fieldset>
           <label className="up-variant-generator__stock">Tồn kho ban đầu cho mỗi SKU<input type="number" min="0" step="1" value={generatorStock} onChange={(event) => setGeneratorStock(event.target.value)} disabled={generatingVariants || saving || deleting} /></label>
