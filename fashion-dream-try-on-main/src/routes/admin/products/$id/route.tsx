@@ -46,17 +46,52 @@ type VariantForm = {
 
 const categories = ["hoodies", "tees", "outerwear", "pants", "cap", "sunglass", "accessories"];
 const sizes = ["S", "M", "L", "XL", "Freesize"];
-const colors = ["Black", "White", "Beige", "Ivory", "Charcoal", "Cement", "Moss", "Electric"];
+const colors = ["Black", "White", "Cream", "Beige", "Ivory", "Charcoal", "Cement", "Moss", "Electric"];
 const emptyVariant: VariantForm = { size: "", color: "", sku: "", stock: "0" };
+
+const namedColors: Record<string, { name: string; hex: string }> = {
+  "#111111": { name: "Black", hex: "#111111" },
+  "#FFFFFF": { name: "White", hex: "#FFFFFF" },
+  "#FFFDD0": { name: "Cream", hex: "#FFFDD0" },
+  "#F5F5DC": { name: "Beige", hex: "#F5F5DC" },
+  "#FFFFF0": { name: "Ivory", hex: "#FFFFF0" },
+  "#36454F": { name: "Charcoal", hex: "#36454F" },
+  "#8B8B83": { name: "Cement", hex: "#8B8B83" },
+  "#68745B": { name: "Moss", hex: "#68745B" },
+  "#3155FF": { name: "Electric", hex: "#3155FF" },
+  "#AA6200": { name: "Mai Tai", hex: "#AA6200" },
+};
+
+function normalizeHex(value: string) {
+  const raw = value.trim().replace(/^#/, "");
+  if (!/^[0-9a-fA-F]{6}$/.test(raw)) return null;
+  return `#${raw.toUpperCase()}`;
+}
+
+function colorNameFromHex(hex: string) {
+  const normalized = normalizeHex(hex);
+  if (!normalized) return "Mã màu không hợp lệ";
+  return namedColors[normalized]?.name ?? `Màu tùy chỉnh ${normalized}`;
+}
+
+function colorLabelFromHex(hex: string) {
+  const normalized = normalizeHex(hex);
+  if (!normalized) return "";
+  const named = namedColors[normalized];
+  return named ? (named.name === "Cream" ? "Cream" : named.name) : `${colorNameFromHex(normalized)} (${normalized})`;
+}
 
 function money(value: number) {
   return new Intl.NumberFormat("vi-VN").format(value) + " ₫";
 }
 
 function colorValue(color: string) {
+  const hexInLabel = color.match(/#([0-9a-fA-F]{6})/);
+  if (hexInLabel) return `#${hexInLabel[1].toUpperCase()}`;
   const values: Record<string, string> = {
     Black: "#111111",
     White: "#ffffff",
+    Cream: "#FFFDD0",
     Beige: "#d8c2a4",
     Ivory: "#f4f0df",
     Charcoal: "#4b4b4b",
@@ -86,6 +121,9 @@ function ProductDetailPage() {
   const [form, setForm] = useState<ProductForm | null>(null);
   const [editingVariant, setEditingVariant] = useState<ProductVariant | null>(null);
   const [variantForm, setVariantForm] = useState<VariantForm>(emptyVariant);
+  const [variantColorHex, setVariantColorHex] = useState("#FFFDD0");
+  const [variantColorHexInput, setVariantColorHexInput] = useState("#FFFDD0");
+  const [generatorCustomHex, setGeneratorCustomHex] = useState("#FFFDD0");
   const [generatorOpen, setGeneratorOpen] = useState(false);
   const [generatorSizes, setGeneratorSizes] = useState<string[]>([]);
   const [generatorColors, setGeneratorColors] = useState<string[]>([]);
@@ -201,11 +239,17 @@ function ProductDetailPage() {
   function resetVariantForm() {
     setEditingVariant(null);
     setVariantForm(emptyVariant);
+    setVariantColorHex("#FFFDD0");
+    setVariantColorHexInput("#FFFDD0");
   }
 
   function startEditVariant(variant: ProductVariant) {
     setEditingVariant(variant);
     setVariantForm({ size: variant.size, color: variant.color, sku: variant.sku ?? "", stock: String(variant.stock) });
+    const existingHex = variant.color.match(/#([0-9a-fA-F]{6})/)?.[0] ?? colorValue(variant.color);
+    const normalizedHex = normalizeHex(existingHex) ?? "#FFFDD0";
+    setVariantColorHex(normalizedHex);
+    setVariantColorHexInput(normalizedHex);
     setMessage("");
     setError("");
   }
@@ -588,7 +632,13 @@ function ProductDetailPage() {
         </div>
         {generatorOpen && <form className="up-variant-generator__form" onSubmit={(event) => { event.preventDefault(); void handleGenerateVariants(); }}>
           <fieldset><legend>SIZE</legend><div className="up-variant-options">{sizes.map((size) => <label key={size}><input type="checkbox" checked={generatorSizes.includes(size)} onChange={(event) => setGeneratorSizes((current) => event.target.checked ? [...current, size] : current.filter((value) => value !== size))} disabled={generatingVariants || saving || deleting} />{size}</label>)}</div></fieldset>
-          <fieldset><legend>MÀU SẮC</legend><div className="up-variant-options">{colors.map((color) => <label key={color}><input type="checkbox" checked={generatorColors.includes(color)} onChange={(event) => setGeneratorColors((current) => event.target.checked ? [...current, color] : current.filter((value) => value !== color))} disabled={generatingVariants || saving || deleting} /><i style={{ background: colorValue(color) }} />{color}</label>)}</div></fieldset>
+          <fieldset><legend>MÀU SẮC</legend><div className="up-variant-options">{colors.map((color) => <label key={color}><input type="checkbox" checked={generatorColors.includes(color)} onChange={(event) => setGeneratorColors((current) => event.target.checked ? [...current, color] : current.filter((value) => value !== color))} disabled={generatingVariants || saving || deleting} /><i style={{ background: colorValue(color) }} />{color}</label>)}</div>
+            <div className="up-variant-custom-color" style={{ display: "grid", gridTemplateColumns: "36px minmax(0,1fr) auto", gap: 8, alignItems: "center", marginTop: 12 }}>
+              <input aria-label="Chọn màu tùy chỉnh cho ma trận" type="color" value={generatorCustomHex} onChange={(e) => setGeneratorCustomHex(e.target.value.toUpperCase())} disabled={generatingVariants || saving || deleting} style={{ width: 36, height: 36, padding: 2 }} />
+              <div><strong>{colorNameFromHex(generatorCustomHex)}</strong><small style={{ display: "block" }}>{generatorCustomHex}</small></div>
+              <button className="up-row-action" type="button" onClick={() => setGeneratorColors((current) => current.includes(colorLabelFromHex(generatorCustomHex)) ? current : [...current, colorLabelFromHex(generatorCustomHex)])} disabled={generatingVariants || saving || deleting || generatorColors.includes(colorLabelFromHex(generatorCustomHex)}>THÊM MÀU</button>
+            </div>
+          </fieldset>
           <label className="up-variant-generator__stock">Tồn kho ban đầu cho mỗi SKU<input type="number" min="0" step="1" value={generatorStock} onChange={(event) => setGeneratorStock(event.target.value)} disabled={generatingVariants || saving || deleting} /></label>
           <div className="up-variant-generator__footer"><div className="up-variant-preview"><strong>{generatorPreview.length} tổ hợp mới sẽ được tạo</strong><div className="up-variant-preview__chips">{generatorPreview.slice(0, 8).map((combo) => <span key={`${combo.size}-${combo.color}`}>{combo.size} / {combo.color}</span>)}{generatorPreview.length > 8 && <span>+{generatorPreview.length - 8} tổ hợp khác</span>}</div><small>Không tạo lại tổ hợp size/màu đã tồn tại. Hãy kiểm tra số lượng trước khi áp dụng.</small></div><button className="up-admin-primary" type="submit" disabled={generatingVariants || saving || deleting || !generatorPreview.length}>{generatingVariants ? "ĐANG TẠO…" : "TẠO BIẾN THỂ"}</button></div>
         </form>}
@@ -604,11 +654,46 @@ function ProductDetailPage() {
         <form onSubmit={handleVariantSubmit} className="up-variant-form">
           <label>KÍCH CỠ<select value={variantForm.size} onChange={(e) => setVariantForm((c) => ({ ...c, size: e.target.value }))} disabled={saving || deleting}><option value="">Chọn size</option>{sizes.map((size) => <option key={size}>{size}</option>)}</select></label>
           <label>MÀU SẮC
-            <select value={variantForm.color} onChange={(e) => setVariantForm((c) => ({ ...c, color: e.target.value }))} disabled={saving || deleting}>
-              <option value="">Chọn màu</option>
-              {colors.map((color) => <option key={color}>{color}</option>)}
+            <select value={colors.includes(variantForm.color) ? variantForm.color : (variantForm.color ? "__custom__" : "")} onChange={(e) => {
+              const value = e.target.value;
+              if (value === "__custom__") return;
+              if (value) {
+                const hex = colorValue(value).toUpperCase();
+                setVariantForm((c) => ({ ...c, color: value }));
+                setVariantColorHex(hex);
+                setVariantColorHexInput(hex);
+              } else setVariantForm((c) => ({ ...c, color: "" }));
+            }} disabled={saving || deleting}>
+              <option value="">Chọn màu có sẵn</option>
+              {colors.map((color) => <option key={color} value={color}>{color}</option>)}
+              {variantForm.color && !colors.includes(variantForm.color) && <option value="__custom__">Màu tùy chỉnh</option>}
             </select>
-            {variantForm.color && <span style={{ display: "inline-flex", alignItems: "center", gap: 6, marginTop: 6, fontSize: 12 }}><i style={{ width: 14, height: 14, borderRadius: "50%", display: "inline-block", background: colorValue(variantForm.color), border: "1px solid #999" }} />{variantForm.color}</span>}
+            <span className="up-variant-color-picker" style={{ display: "grid", gridTemplateColumns: "42px minmax(0,1fr)", gap: 10, alignItems: "center", marginTop: 10 }}>
+              <input aria-label="Chọn màu bằng bảng màu" type="color" value={variantColorHex} onChange={(e) => {
+                const hex = e.target.value.toUpperCase();
+                setVariantColorHex(hex);
+                setVariantColorHexInput(hex);
+                setVariantForm((current) => ({ ...current, color: colorLabelFromHex(hex) }));
+              }} disabled={saving || deleting} style={{ width: 42, height: 42, padding: 3, border: "1px solid #D1D5DB", borderRadius: 6, background: "#fff", cursor: "pointer" }} />
+              <input aria-label="Mã màu HEX" value={variantColorHexInput} onChange={(e) => {
+                const input = e.target.value.toUpperCase();
+                setVariantColorHexInput(input);
+                const hex = normalizeHex(input);
+                if (hex) {
+                  setVariantColorHex(hex);
+                  setVariantForm((current) => ({ ...current, color: colorLabelFromHex(hex) }));
+                }
+              }} onBlur={() => {
+                const hex = normalizeHex(variantColorHexInput);
+                if (hex) setVariantColorHexInput(hex);
+              }} placeholder="#FFFDD0" disabled={saving || deleting} />
+            </span>
+            {variantForm.color && <span className="up-variant-color-preview" style={{ display: "block", marginTop: 8, background: colorValue(variantForm.color), color: ["#FFFFFF", "#FFFDD0", "#F5F5DC", "#FFFFF0"].includes(colorValue(variantForm.color).toUpperCase()) ? "#263238" : "#FFFFFF", padding: "12px 10px", borderRadius: 4, fontWeight: 700 }}>
+              <small style={{ display: "block", fontSize: 10, letterSpacing: ".08em", opacity: .8 }}>YOUR MIX</small>
+              <strong style={{ display: "block", fontSize: 16 }}>{variantColorHex}</strong>
+              <span style={{ display: "block", fontSize: 12 }}>{colorNameFromHex(variantColorHex)}</span>
+            </span>}
+            <small>Chọn màu có sẵn hoặc nhập mã HEX. Tên màu được tự nhận diện với các mã phổ biến; mã chưa có tên sẽ hiển thị là màu tùy chỉnh.</small>
           </label>
           <label>MÃ SKU<input value={variantForm.sku} onChange={(e) => setVariantForm((c) => ({ ...c, sku: e.target.value }))} placeholder="FD-TEE-BLK-M" disabled={saving || deleting} /></label>
           <label>TỒN KHO<input type="number" min="0" step="1" value={variantForm.stock} onChange={(e) => setVariantForm((c) => ({ ...c, stock: e.target.value }))} disabled={saving || deleting} /></label>
