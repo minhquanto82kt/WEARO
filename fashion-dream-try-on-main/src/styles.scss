@@ -60,3 +60,50 @@
 
 /* Final scoped footer pass; loaded last to keep the shared footer consistent across storefront routes. */
 @import "./styles/wearo-footer-accessibility.scss";
+
+
+/* Footer visibility pass: support note and social links remain visible without hover. */
+.wearo-footer .wearo-footer__support-note {
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  position: static;
+  margin-top: 12px;
+  max-width: 260px;
+  padding-left: 11px;
+  border-left: 1px solid #F2AD94;
+  color: #54728C !important;
+  font-size: 11px;
+  line-height: 1.65;
+  overflow-wrap: anywhere;
+}
+.wearo-footer .wearo-footer__socials {
+  display: flex !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  margin-top: 14px;
+}
+.wearo-footer .wearo-footer__socials a {
+  display: grid !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  width: 42px;
+  height: 42px;
+  place-items: center;
+  border: 1px solid rgba(84,114,140,.32);
+  border-radius: 50%;
+  background: #F8F6F2;
+  color: #54728C !important;
+  box-shadow: 0 3px 10px rgba(23,23,23,.07);
+  transition: background-color .18s ease, color .18s ease, border-color .18s ease, transform .18s ease;
+}
+.wearo-footer .wearo-footer__socials a:hover {
+  border-color: #54728C;
+  background: #54728C;
+  color: #fff !important;
+  transform: translateY(-2px);
+}
+.wearo-footer .wearo-footer__socials a:focus-visible {
+  outline: 2px solid #F2CEAE;
+  outline-offset: 3px;
+}
