@@ -1019,3 +1019,127 @@
     padding: 6px 0 !important;
   }
 }
+
+
+/* Checkout form refinement — all selectors stay inside this page stylesheet. */
+.wearo-checkout-page .wearo-checkout-form-main {
+  padding-top: clamp(2rem, 4vh, 3.25rem);
+}
+
+.wearo-checkout-page .wearo-checkout-form-title {
+  margin-top: .1rem;
+  font-size: clamp(2.25rem, 4vw, 3.25rem);
+  line-height: .98;
+}
+
+.wearo-checkout-page .wearo-checkout-account-note {
+  color: #36546A;
+  line-height: 1.55;
+}
+
+.wearo-checkout-page .wearo-checkout-field > span {
+  color: #526879;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: .01em;
+}
+
+.wearo-checkout-page .wearo-checkout-field input {
+  min-height: 46px;
+  border-radius: 5px;
+  border-color: #D2D9DD;
+  background-color: #FFFFFF;
+  color: #171717;
+  font-size: 14px;
+  transition: border-color .16s ease, box-shadow .16s ease, background-color .16s ease;
+}
+
+.wearo-checkout-page .wearo-checkout-field input::placeholder {
+  color: #687985;
+  opacity: 1;
+}
+
+.wearo-checkout-page .wearo-checkout-field input:focus {
+  border-color: #54728C;
+  outline: 2px solid #54728C;
+  outline-offset: 1px;
+  box-shadow: none;
+}
+
+.wearo-checkout-page .wearo-checkout-field input:-webkit-autofill,
+.wearo-checkout-page .wearo-checkout-field input:-webkit-autofill:hover,
+.wearo-checkout-page .wearo-checkout-field input:-webkit-autofill:focus {
+  -webkit-text-fill-color: #171717;
+  box-shadow: 0 0 0 1000px #FFFFFF inset;
+  border-color: #7794A6;
+  transition: background-color 9999s ease-out 0s;
+}
+
+.wearo-checkout-page .wearo-checkout-cart-line .text-silver {
+  color: #526879;
+}
+
+.wearo-checkout-page .wearo-checkout-cart-line img {
+  display: block;
+}
+
+.wearo-checkout-page .wearo-checkout-form aside {
+  border-radius: 10px;
+  box-shadow: 0 12px 30px rgba(23, 23, 23, .05);
+}
+
+.wearo-checkout-page .wearo-checkout-form aside .text-primary {
+  text-decoration: none;
+}
+
+.wearo-checkout-page .wearo-checkout-form aside button[type="submit"] {
+  min-height: 46px;
+  border-radius: 2px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .08em;
+}
+
+@media (min-width: 1024px) {
+  .wearo-checkout-page .wearo-checkout-form {
+    align-items: start;
+    gap: 2rem;
+  }
+
+  .wearo-checkout-page .wearo-checkout-form aside {
+    top: 6rem;
+  }
+}
+
+@media (max-width: 767px) {
+  .wearo-checkout-page .wearo-checkout-form-main {
+    padding-top: 1.75rem;
+    padding-bottom: 3rem;
+  }
+
+  .wearo-checkout-page .wearo-checkout-form-title {
+    font-size: clamp(2rem, 9vw, 2.65rem);
+  }
+
+  .wearo-checkout-page .wearo-checkout-account-note {
+    margin-top: 1rem;
+    font-size: 13px;
+  }
+
+  .wearo-checkout-page .wearo-checkout-cart-line {
+    grid-template-columns: 44px minmax(0, 1fr) auto;
+    gap: .6rem;
+  }
+
+  .wearo-checkout-page .wearo-checkout-cart-line img,
+  .wearo-checkout-page .wearo-checkout-cart-line > [aria-hidden="true"] {
+    width: 44px;
+    height: 44px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wearo-checkout-page .wearo-checkout-field input {
+    transition: none;
+  }
+}
