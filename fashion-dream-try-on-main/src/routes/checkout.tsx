@@ -292,17 +292,17 @@ function CheckoutPage() {
   return (
     <div className="wearo-checkout-page min-h-screen">
       <SiteNav />
-      <main className="mx-auto max-w-5xl px-6 pb-24 pt-28 sm:px-12">
+      <main className="wearo-checkout-form-main mx-auto max-w-5xl px-6 pb-16 pt-20 sm:px-12">
         <p className="eyebrow">{mockMode ? "SANDBOX CHECKOUT" : "WEARO CHECKOUT"}</p>
-        <h1 className="text-4xl leading-tight sm:text-5xl">Thanh toán</h1>
-        {!mockMode && <div className="mt-5 border border-primary/20 bg-primary/5 px-4 py-3 text-sm leading-6 text-beige">Bạn có thể thanh toán ngay không cần đăng ký tài khoản. Đăng ký tài khoản để lưu lịch sử mua hàng và nhận thêm quyền lợi cá nhân hóa.</div>}
+        <h1 className="wearo-checkout-form-title text-4xl leading-tight sm:text-5xl">Thanh toán</h1>
+        {!mockMode && <div className="wearo-checkout-account-note mt-4 border border-primary/20 bg-primary/5 px-4 py-3 text-sm leading-6 text-beige">Bạn có thể đặt hàng ngay không cần tài khoản. <Link to="/account" className="font-semibold text-primary underline underline-offset-4">Đăng nhập</Link> để lưu lịch sử mua hàng và theo dõi đơn dễ dàng.</div>}
         {mockMode && <div className="mt-5 border border-primary/30 bg-primary/5 px-4 py-3 text-sm leading-6 text-beige">Chế độ Mock User: mô phỏng trải nghiệm khách hàng trong Sandbox; không ghi đơn hàng hoặc giao dịch vào production.</div>}
 
         {items.length === 0 ? (
           <p className="mt-8 leading-7 text-beige">Giỏ hàng trống. <Link to="/shop" className="text-primary">Chọn sản phẩm</Link></p>
         ) : (
           <form
-            className="mt-10 grid min-w-0 gap-6 lg:grid-cols-[minmax(0,1.3fr)_minmax(280px,0.7fr)] lg:gap-10"
+            className="wearo-checkout-form mt-7 grid min-w-0 gap-6 lg:grid-cols-[minmax(0,1.3fr)_minmax(280px,0.7fr)] lg:gap-10"
             onSubmit={async (event) => {
               event.preventDefault();
               if (submitting || hasStockIssues) return;
@@ -338,6 +338,7 @@ function CheckoutPage() {
                   email: String(form.get("email") || "").trim() || undefined,
                   address: String(form.get("address") || "").trim(),
                   city: String(form.get("city") || "").trim(),
+                  // Preserve the existing API/database field while relabeling it for current address formats.
                   district: String(form.get("district") || "").trim(),
                   paymentMethod,
                   items: orderItems,
@@ -389,11 +390,14 @@ function CheckoutPage() {
             }}
           >
             <div className="min-w-0 space-y-4">
-              <Field label="Họ và tên" name="name" />
-              <Field label="Số điện thoại" name="phone" type="tel" />
-              <Field label="Email (không bắt buộc)" name="email" type="email" />
-              <Field label="Địa chỉ giao hàng" name="address" />
-              <div className="grid min-w-0 gap-4 sm:grid-cols-2"><Field label="Tỉnh / Thành phố" name="city" /><Field label="Quận / Huyện" name="district" /></div>
+              <Field label="Họ và tên" name="name" autoComplete="name" placeholder="Nhập họ và tên người nhận" />
+              <Field label="Số điện thoại" name="phone" type="tel" autoComplete="tel" inputMode="tel" placeholder="Ví dụ: 09xxxxxxxx" />
+              <Field label="Email (không bắt buộc)" name="email" type="email" autoComplete="email" inputMode="email" placeholder="you@example.com" />
+              <Field label="Số nhà, tên đường" name="address" autoComplete="street-address" placeholder="Nhập số nhà, tên đường" />
+              <div className="grid min-w-0 gap-4 sm:grid-cols-2">
+                <Field label="Tỉnh / Thành phố" name="city" autoComplete="address-level1" placeholder="Nhập tỉnh / thành phố" />
+                <Field label="Phường / Xã" name="district" autoComplete="address-level2" placeholder="Nhập phường / xã" />
+              </div>
               <p className="pt-4 text-xs uppercase leading-5 tracking-[0.2em] text-silver">Phương thức thanh toán</p>
               <div className="space-y-3">
                 <PaymentOption method="cod" current={paymentMethod} onChange={setPaymentMethod} title="Thanh toán khi nhận hàng (COD)" description="Xem hóa đơn sau khi đơn được tạo" />
@@ -407,11 +411,15 @@ function CheckoutPage() {
             <aside className="h-fit min-w-0 border border-border bg-card p-5 sm:p-6 lg:sticky lg:top-24">
               <p className="eyebrow">Đơn hàng</p>
               <div className="mt-4 space-y-3 text-sm">
-                {items.map((item) => <div key={item.variantId ?? `${item.variantId}`} className="grid min-w-0 grid-cols-[minmax(0,1fr)_auto] gap-3"><span className="min-w-0 break-words text-beige leading-6">{item.product.name} × {item.qty}<span className="block text-xs leading-5 text-silver">{item.variant.size} · {item.variant.color}</span></span><span className="whitespace-nowrap text-right">{formatVnd(item.product.price * item.qty)}</span></div>)}
+                {items.map((item) => <div key={item.variantId} className="wearo-checkout-cart-line grid min-w-0 grid-cols-[48px_minmax(0,1fr)_auto] items-start gap-3">
+                  {item.product.image ? <img src={item.product.image} alt="" loading="lazy" className="h-12 w-12 rounded-sm border border-border bg-white object-cover" /> : <span aria-hidden="true" className="h-12 w-12 rounded-sm border border-border bg-primary/5" />}
+                  <span className="min-w-0 break-words text-beige leading-5">{item.product.name}<span className="mt-1 block text-xs leading-5 text-silver">{item.variant.size} · {displayVariantColor(item.variant.color)} · SL: {item.qty}</span></span>
+                  <span className="whitespace-nowrap text-right">{formatVnd(item.product.price * item.qty)}</span>
+                </div>)}
               </div>
               <div className="mt-4 flex items-start justify-between gap-4 border-t border-border pt-4 text-sm"><span className="text-silver">Vận chuyển</span><span>{shipping === 0 ? "Miễn phí" : formatVnd(shipping)}</span></div>
-              <div className="mt-3 flex items-start justify-between gap-4 font-display text-lg leading-tight"><span>Tổng</span><span className="text-primary">{formatVnd(subtotal + shipping)}</span></div>
-              <button type="submit" disabled={submitting || hasStockIssues} className="mt-6 flex min-h-11 w-full items-center justify-center bg-primary px-6 py-3 text-center text-xs uppercase tracking-[0.15em] text-primary-foreground disabled:opacity-50">{submitting ? "Đang tạo đơn..." : hasStockIssues ? "Kiểm tra tồn kho" : mockMode ? "Xem trước đơn hàng" : paymentMethod === "vietqr" ? "Tiếp tục thanh toán" : paymentMethod === "momo" ? "Thanh toán với MoMo" : paymentMethod === "mastercard" ? "Thanh toán bằng Visa / Mastercard" : "Đặt hàng COD"}</button>
+              <div className="mt-3 flex items-start justify-between gap-4 font-display text-lg leading-tight"><span>Tổng</span><span className="text-primary no-underline">{formatVnd(subtotal + shipping)}</span></div>
+              <button type="submit" disabled={submitting || hasStockIssues} className="mt-6 flex min-h-11 w-full items-center justify-center bg-primary px-6 py-3 text-center text-xs uppercase tracking-[0.15em] text-primary-foreground disabled:opacity-50">{submitting ? "Đang tạo đơn..." : hasStockIssues ? "Kiểm tra tồn kho" : mockMode ? "Xem trước đơn hàng" : paymentMethod === "vietqr" ? "Tiếp tục thanh toán" : paymentMethod === "momo" ? "Thanh toán với MoMo" : paymentMethod === "mastercard" ? "Thanh toán bằng Visa / Mastercard": "Đặt hàng – Thanh toán khi nhận hàng"}</button>
             </aside>
           </form>
         )}
@@ -421,8 +429,19 @@ function CheckoutPage() {
   );
 }
 
-function Field({ label, name, type = "text" }: { label: string; name: string; type?: string }) {
-  return <label className="block text-sm"><span className="mb-2 block text-silver">{label}</span><input required={name !== "email"} name={name} type={type} className="min-h-11 w-full border border-border bg-transparent px-4 py-3 outline-none focus:border-primary" /></label>;
+function Field({ label, name, type = "text", placeholder, autoComplete, inputMode }: { label: string; name: string; type?: string; placeholder?: string; autoComplete?: string; inputMode?: "text" | "tel" | "email" }) {
+  return <label className="wearo-checkout-field block text-sm"><span className="mb-2 block text-silver">{label}</span><input required={name !== "email"} name={name} type={type} placeholder={placeholder} autoComplete={autoComplete} inputMode={inputMode} className="min-h-11 w-full border border-border bg-transparent px-4 py-3 outline-none focus:border-primary" /></label>;
+}
+
+function displayVariantColor(color: string) {
+  const normalized = color.trim().toLocaleLowerCase("en");
+  const labels: Record<string, string> = {
+    white: "Trắng", black: "Đen", cream: "Kem", beige: "Be",
+    grey: "Xám", gray: "Xám", "white/grey": "Trắng/Xám",
+    "white/gray": "Trắng/Xám", "trắng/xám": "Trắng/Xám",
+    "trắng / xám": "Trắng/Xám",
+  };
+  return labels[normalized] ?? color;
 }
 
 function SummaryRow({ label, value, highlight = false }: { label: string; value: string; highlight?: boolean }) {
