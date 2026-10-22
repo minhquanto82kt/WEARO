@@ -33,6 +33,13 @@ WEARO storefront ─── Supabase (database, auth, RLS)
 
 Supabase là nguồn dữ liệu chính của ứng dụng; GitHub quản lý mã nguồn. Cấu hình nhạy cảm phải được giữ ở server hoặc environment variables, không đưa vào client.
 
+## Backend & Database
+
+- **Supabase Dashboard:** [Mở Dashboard dự án WEARO](https://supabase.com/dashboard/project/oazipcrbutizdncctkcg)
+- **Database documentation:** [`supabase/README.md`](./supabase/README.md)
+
+> Không đưa service-role key, secret API key hoặc mật khẩu database vào README hay mã nguồn phía client.
+
 ## Công nghệ
 
 - React 19, TypeScript
