@@ -75,15 +75,18 @@ export function SiteFooter() {
 
             <section className="wearo-footer__section">
               <p className="wearo-footer__kicker">02 / {t("Hỗ trợ", "SUPPORT")}</p>
-              <div className="wearo-footer__links">
+              <nav className="wearo-footer__links" aria-label={t("Hỗ trợ khách hàng", "Customer support")}>
+                <Link to="/track-order" className={linkClass}>{t("Tra cứu đơn hàng", "Track your order")}</Link>
+                <Link to="/account" className={linkClass}>{t("Tài khoản của tôi", "My account")}</Link>
+                <Link to="/about" className={linkClass}>{t("Về WEARO", "About WEARO")}</Link>
                 <a href="mailto:support@wearo.vn" className={linkClass}>{t("Liên hệ bộ phận hỗ trợ", "Contact customer support")}</a>
-                <p className="wearo-footer__support-note">
-                  {t(
-                    "Các chính sách mua hàng và bảo mật sẽ được công bố tại đây khi hoàn tất.",
-                    "Shopping and privacy policies will be published here when finalized.",
-                  )}
-                </p>
-              </div>
+              </nav>
+              <p className="wearo-footer__support-note">
+                {t(
+                  "Chính sách mua hàng và bảo mật sẽ được cập nhật khi hoàn tất.",
+                  "Shopping and privacy policies will be added when finalized.",
+                )}
+              </p>
             </section>
 
             <section className="wearo-footer__section wearo-footer__contact">
