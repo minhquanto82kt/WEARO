@@ -2,9 +2,9 @@
 
 **WEARO** là dự án thương mại điện tử thời trang unisex, định hướng kết hợp khám phá sản phẩm, hỗ trợ phối đồ bằng AI và trải nghiệm Virtual Try-On. Đây là dự án đang phát triển; các tính năng cần được xác minh qua CI và môi trường triển khai trước khi xem là hoàn tất.
 
-[![CI](https://github.com/minhquanto82kt/fashion-dream-try-on-shop/actions/workflows/ci.yml/badge.svg?branch=feature%2Fproduct-admin)](https://github.com/minhquanto82kt/fashion-dream-try-on-shop/actions/workflows/ci.yml)
-[![Last commit](https://img.shields.io/github/last-commit/minhquanto82kt/fashion-dream-try-on-shop/feature%2Fproduct-admin)](https://github.com/minhquanto82kt/fashion-dream-try-on-shop/commits/feature/product-admin)
-[![License](https://img.shields.io/badge/license-check%20repository-lightgrey)](https://github.com/minhquanto82kt/fashion-dream-try-on-shop)
+[![CI](https://github.com/minhquanto82kt/WEARO/actions/workflows/ci.yml/badge.svg?branch=feature%2Fproduct-admin)](https://github.com/minhquanto82kt/fashion-dream-try-on-shop/actions/workflows/ci.yml)
+[![Last commit](https://img.shields.io/github/last-commit/minhquanto82kt/fashion-dream-try-on-shop/feature%2Fproduct-admin)](https://github.com/minhquanto82kt/WEARO/commits/feature/product-admin)
+[![License](https://img.shields.io/badge/license-check%20repository-lightgrey)](https://github.com/minhquanto82kt/WEARO)
 
 ## Truy cập bản triển khai
 
@@ -47,7 +47,7 @@ Supabase là nguồn dữ liệu chính của ứng dụng; GitHub quản lý m�
 - Supabase Auth, PostgreSQL và Row Level Security (RLS)
 - AI SDK và các tích hợp AI phía server
 - Vercel
-- Node.js 24, npm 11
+- Node.js/npm: đồng bộ theo `fashion-dream-try-on-main/package.json` (xem bảng thống kê tự động bên dưới)
 
 ## Thống kê tự động
 
@@ -84,17 +84,7 @@ npm ci --legacy-peer-deps
 npm run dev
 ```
 
-Các lệnh kiểm tra được khai báo trong `package.json`:
-
-```bash
-npm run lint
-npm run typecheck
-npm run build
-npm run test:smoke
-npm run test:customer-experience
-npm run audit:architecture
-npm run audit:dependencies
-```
+Danh sách scripts trong `package.json`, phiên bản Node.js/npm và trạng thái CI được đồng bộ tự động trong bảng **Thống kê tự động** ở trên. Chạy một script bằng `npm run <tên-script>` trong thư mục ứng dụng.
 
 ## Tài liệu dự án
 
