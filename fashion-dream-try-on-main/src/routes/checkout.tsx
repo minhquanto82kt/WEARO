@@ -63,6 +63,7 @@ function CheckoutPage() {
   const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>("cod");
   const [paymentInfo, setPaymentInfo] = useState<PaymentInfo | null>(null);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [copyMessage, setCopyMessage] = useState<string | null>(null);
   const checkoutKeyRef = useRef<string | null>(null);
 
   useEffect(() => {
@@ -180,12 +181,12 @@ function CheckoutPage() {
                   className="wearo-checkout-success__copy"
                   onClick={() => {
                     if (!navigator.clipboard?.writeText) {
-                      setErrorMessage("Trình duyệt không hỗ trợ sao chép tự động. Vui lòng chọn và sao chép mã đơn hàng.");
+                      setCopyMessage("Không hỗ trợ sao chép tự động — vui lòng sao chép mã thủ công.");
                       return;
                     }
                     void navigator.clipboard.writeText(done).then(
-                      () => setErrorMessage(null),
-                      () => setErrorMessage("Không thể sao chép mã đơn. Vui lòng sao chép thủ công."),
+                      () => setCopyMessage("Đã sao chép mã đơn hàng."),
+                      () => setCopyMessage("Không thể sao chép. Vui lòng sao chép mã thủ công."),
                     );
                   }}
                   aria-label="Sao chép mã đơn hàng"
@@ -194,6 +195,7 @@ function CheckoutPage() {
                 </button>
               )}
             </div>
+            {copyMessage && <p className="wearo-checkout-success__copy-feedback" role="status">{copyMessage}</p>}
             {mockMode && <p className="wearo-checkout-success__note">Mock order — không ghi vào hệ thống đơn hàng production.</p>}
           </section>
 
