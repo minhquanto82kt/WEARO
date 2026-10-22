@@ -2,8 +2,8 @@
 
 **WEARO** là dự án thương mại điện tử thời trang unisex, định hướng kết hợp khám phá sản phẩm, hỗ trợ phối đồ bằng AI và trải nghiệm Virtual Try-On. Đây là dự án đang phát triển; các tính năng cần được xác minh qua CI và môi trường triển khai trước khi xem là hoàn tất.
 
-[![CI](https://github.com/minhquanto82kt/WEARO/actions/workflows/ci.yml/badge.svg?branch=feature%2Fproduct-admin)](https://github.com/minhquanto82kt/fashion-dream-try-on-shop/actions/workflows/ci.yml)
-[![Last commit](https://img.shields.io/github/last-commit/minhquanto82kt/fashion-dream-try-on-shop/feature%2Fproduct-admin)](https://github.com/minhquanto82kt/WEARO/commits/feature/product-admin)
+[![CI](https://github.com/minhquanto82kt/WEARO/actions/workflows/ci.yml/badge.svg?branch=feature%2Fproduct-admin)](https://github.com/minhquanto82kt/WEARO/actions/workflows/ci.yml)
+[![Last commit](https://img.shields.io/github/last-commit/minhquanto82kt/WEARO/feature%2Fproduct-admin)](https://github.com/minhquanto82kt/WEARO/commits/feature/product-admin)
 [![License](https://img.shields.io/badge/license-check%20repository-lightgrey)](https://github.com/minhquanto82kt/WEARO)
 
 ## Truy cập bản triển khai
