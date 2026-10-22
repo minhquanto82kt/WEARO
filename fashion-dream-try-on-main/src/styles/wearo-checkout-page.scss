@@ -529,3 +529,224 @@
   }
 }
 
+
+
+/* P0 success-page refinement — intentionally scoped to WEARO checkout success only. */
+.wearo-checkout-page:has(.wearo-checkout-success) main.wearo-checkout-success {
+  padding-top: 88px !important;
+  padding-bottom: 64px !important;
+}
+
+.wearo-checkout-success__hero {
+  padding-bottom: 24px !important;
+}
+
+.wearo-checkout-success__eyebrow {
+  color: #B85D42 !important;
+  font-size: 12px !important;
+}
+
+.wearo-checkout-success__hero h1 {
+  font-size: clamp(2.8rem, 5.2vw, 4.6rem) !important;
+  line-height: .98 !important;
+}
+
+.wearo-checkout-success__order-line {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 8px 12px;
+  margin-top: 14px;
+}
+
+.wearo-checkout-success__order-line .wearo-checkout-success__order {
+  margin-top: 0 !important;
+  overflow-wrap: anywhere;
+}
+
+.wearo-checkout-success__copy {
+  min-height: 36px;
+  padding: 0 12px;
+  border: 1px solid #54728C;
+  background: #FFFFFF;
+  color: #54728C;
+  font: 600 10px/1.2 "Lexend", sans-serif;
+  letter-spacing: .08em;
+  cursor: pointer;
+}
+
+.wearo-checkout-success__copy:hover {
+  background: #54728C;
+  color: #FFFFFF;
+}
+
+.wearo-checkout-success__copy:focus-visible {
+  outline: 2px solid #B85D42;
+  outline-offset: 3px;
+}
+
+.wearo-checkout-success__summary {
+  margin-top: 8px;
+  padding: 26px 30px;
+  border: 1px solid rgba(84,114,140,.24);
+  background: #FFFFFF;
+  color: #171717;
+  box-shadow: 0 10px 30px rgba(84,114,140,.07);
+}
+
+.wearo-checkout-success__summary-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+  padding-bottom: 18px;
+  border-bottom: 1px solid rgba(84,114,140,.16);
+}
+
+.wearo-checkout-success__summary-heading h2 {
+  margin: 5px 0 0;
+  color: #171717;
+  font: 600 clamp(20px, 2.5vw, 26px)/1.2 "Be Vietnam Pro", sans-serif;
+}
+
+.wearo-checkout-success__status {
+  display: inline-flex;
+  align-items: center;
+  min-height: 32px;
+  padding: 6px 10px;
+  border: 1px solid rgba(84,114,140,.3);
+  background: #F2F6F8;
+  color: #36546A;
+  font: 600 11px/1.3 "Lexend", sans-serif;
+}
+
+.wearo-checkout-success__items {
+  display: grid;
+  gap: 0;
+}
+
+.wearo-checkout-success__item {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 18px;
+  padding: 16px 0;
+  border-bottom: 1px solid rgba(84,114,140,.12);
+  font: 400 13px/1.55 "Lexend", sans-serif;
+}
+
+.wearo-checkout-success__item strong {
+  color: #171717;
+  font-weight: 600;
+}
+
+.wearo-checkout-success__item p {
+  margin: 4px 0 0;
+  color: #596A74 !important;
+  font-size: 12px;
+}
+
+.wearo-checkout-success__item > span {
+  flex: 0 0 auto;
+  color: #36546A;
+  font-weight: 600;
+  text-align: right;
+}
+
+.wearo-checkout-success__totals {
+  display: grid;
+  gap: 10px;
+  margin: 18px 0 0;
+  font: 400 12px/1.5 "Lexend", sans-serif;
+}
+
+.wearo-checkout-success__totals > div {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 18px;
+}
+
+.wearo-checkout-success__totals dt {
+  color: #596A74;
+}
+
+.wearo-checkout-success__totals dd {
+  margin: 0;
+  color: #171717;
+  text-align: right;
+  overflow-wrap: anywhere;
+}
+
+.wearo-checkout-success__totals .wearo-checkout-success__grand-total {
+  margin-top: 4px;
+  padding-top: 14px;
+  border-top: 1px solid rgba(84,114,140,.2);
+}
+
+.wearo-checkout-success__grand-total dt {
+  color: #171717;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.wearo-checkout-success__grand-total dd {
+  color: #36546A;
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.wearo-checkout-success__delivery {
+  margin-top: 22px;
+  padding: 18px;
+  border-left: 3px solid #F2AD94;
+  background: #F8F6F2;
+}
+
+.wearo-checkout-success__delivery h3 {
+  margin: 0 0 10px;
+  color: #171717;
+  font: 600 14px/1.4 "Be Vietnam Pro", sans-serif;
+}
+
+.wearo-checkout-success__delivery p {
+  margin: 4px 0 0;
+  color: #465761 !important;
+  font: 400 12px/1.6 "Lexend", sans-serif;
+  overflow-wrap: anywhere;
+}
+
+.wearo-checkout-success__actions {
+  margin-top: 18px !important;
+}
+
+@media (max-width: 620px) {
+  .wearo-checkout-page:has(.wearo-checkout-success) main.wearo-checkout-success {
+    width: calc(100% - 28px) !important;
+    padding-top: 64px !important;
+    padding-bottom: 48px !important;
+  }
+
+  .wearo-checkout-success__hero h1 {
+    font-size: clamp(2.5rem, 12vw, 3.5rem) !important;
+  }
+
+  .wearo-checkout-success__summary {
+    padding: 20px 16px;
+  }
+
+  .wearo-checkout-success__summary-heading {
+    align-items: flex-start;
+  }
+
+  .wearo-checkout-success__item {
+    gap: 10px;
+    font-size: 12px;
+  }
+
+  .wearo-checkout-success__delivery {
+    padding: 14px;
+  }
+}
