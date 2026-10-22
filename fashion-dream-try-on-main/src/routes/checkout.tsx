@@ -416,6 +416,7 @@ function CheckoutPage() {
                   <span className="min-w-0 break-words text-beige leading-5">{item.product.name}<span className="mt-1 block text-xs leading-5 text-silver">{item.variant.size} · {displayVariantColor(item.variant.color)} · SL: {item.qty}</span></span>
                   <span className="whitespace-nowrap text-right">{formatVnd(item.product.price * item.qty)}</span>
                 </div>)}
+                <Link to="/cart" className="inline-flex min-h-9 items-center text-xs font-semibold text-primary underline underline-offset-4">Chỉnh sửa giỏ hàng</Link>
               </div>
               <div className="mt-4 flex items-start justify-between gap-4 border-t border-border pt-4 text-sm"><span className="text-silver">Vận chuyển</span><span>{shipping === 0 ? "Miễn phí" : formatVnd(shipping)}</span></div>
               <div className="mt-3 flex items-start justify-between gap-4 font-display text-lg leading-tight"><span>Tổng</span><span className="text-primary no-underline">{formatVnd(subtotal + shipping)}</span></div>
