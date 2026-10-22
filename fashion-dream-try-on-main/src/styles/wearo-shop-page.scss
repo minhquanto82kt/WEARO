@@ -649,3 +649,46 @@
   .wearo-shop-page .wearo-shop-banner-controls { right: 10px; bottom: 10px; left: 10px; gap: 8px; }
 }
 @media (prefers-reduced-motion: reduce) { .wearo-shop-page .wearo-shop-banner-slide, .wearo-shop-page .wearo-shop-banner-cta { transition: none; } }
+
+
+/* P0: stable shop banner controls — prevent hover flicker and overlay hit-testing */
+.wearo-shop-page .wearo-shop-banner-slider {
+  position: relative;
+  isolation: isolate;
+}
+.wearo-shop-page .wearo-shop-banner-image,
+.wearo-shop-page .wearo-shop-banner-shade {
+  pointer-events: none;
+}
+.wearo-shop-page .wearo-shop-banner-controls {
+  z-index: 5;
+  pointer-events: none;
+}
+.wearo-shop-page .wearo-shop-banner-controls button {
+  position: relative;
+  z-index: 1;
+  pointer-events: auto;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+.wearo-shop-page .wearo-shop-banner-arrows button {
+  transform: none !important;
+  transition: background-color .18s ease, color .18s ease, border-color .18s ease, box-shadow .18s ease !important;
+}
+.wearo-shop-page .wearo-shop-banner-arrows button:hover {
+  transform: none !important;
+}
+.wearo-shop-page .wearo-shop-banner-dot {
+  flex: 0 0 auto;
+}
+.wearo-shop-page .wearo-shop-banner-dot:focus-visible,
+.wearo-shop-page .wearo-shop-banner-arrows button:focus-visible {
+  outline: 2px solid var(--shop-peach);
+  outline-offset: 3px;
+}
+@media (prefers-reduced-motion: reduce) {
+  .wearo-shop-page .wearo-shop-banner-arrows button,
+  .wearo-shop-page .wearo-shop-banner-dot {
+    transition: none !important;
+  }
+}
