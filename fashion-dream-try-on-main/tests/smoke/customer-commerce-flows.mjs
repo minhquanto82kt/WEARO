@@ -10,7 +10,7 @@ const [product, cart, checkout, order, auth, history, detail, invoice, account] 
   read("src/routes/product.$id.tsx"),
   read("src/lib/cart.tsx"),
   read("src/routes/checkout.tsx"),
-  read("src/lib/order.functions.ts"),
+  read("src/lib/orders/order.functions.ts"),
   read("src/lib/auth.ts"),
   read("src/routes/account/orders.tsx"),
   read("src/routes/account/orders/$id.tsx"),
