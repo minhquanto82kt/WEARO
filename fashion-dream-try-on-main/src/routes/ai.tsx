@@ -63,7 +63,7 @@ function AiConsent({ onAccept }: { onAccept: () => void }) {
   return (
     <main className="wearo-ai-page">
       <style>{`
-        .wearo-consent-mosaic { pointer-events: none; position: absolute; inset: 0; overflow: hidden; z-index: -1; }
+        .wearo-consent-mosaic { pointer-events: none; position: absolute; inset: 0; overflow: hidden; z-index: 0; }
         .wearo-consent-shape { position: absolute; display: block; opacity: .48; transform: rotate(-12deg); animation: wearo-mosaic-float 11s ease-in-out infinite; }
         .wearo-consent-shape:nth-child(1) { width: 96px; height: 96px; top: 7%; left: 4%; background: #F2CEAE; clip-path: polygon(0 0,100% 0,72% 100%,18% 82%); }
         .wearo-consent-shape:nth-child(2) { width: 62px; height: 62px; top: 18%; right: 7%; background: #7794A6; clip-path: polygon(50% 0,100% 50%,50% 100%,0 50%); animation-delay: -3s; }
@@ -72,7 +72,7 @@ function AiConsent({ onAccept }: { onAccept: () => void }) {
         .wearo-consent-shape:nth-child(5) { width: 36px; height: 36px; bottom: 8%; left: 12%; background: #F2AD94; transform: rotate(45deg); animation-delay: -2s; }
         .wearo-consent-shape:nth-child(6) { width: 22px; height: 22px; bottom: 15%; right: 15%; border: 2px solid #54728C; border-radius: 50%; animation-delay: -8s; }
         @keyframes wearo-mosaic-float { 0%,100% { translate: 0 0; } 50% { translate: 0 -9px; } }
-        .wearo-consent-panel { position: relative; isolation: isolate; }
+        .wearo-consent-panel { position: relative; z-index: 1; isolation: isolate; }
         .wearo-consent-choice { min-height: 46px; transition: background-color .18s ease, border-color .18s ease, color .18s ease, transform .18s ease; }
         .wearo-consent-choice:disabled { cursor: not-allowed; opacity: .5; filter: saturate(.65); }
         .wearo-consent-choice:not(:disabled):hover { transform: translateY(-1px); }
