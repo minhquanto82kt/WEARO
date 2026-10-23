@@ -3,7 +3,7 @@
 ## Ownership boundaries
 
 - `components/_header.scss`: the sole canonical header stylesheet and import boundary. The former unified/final/production/menu override files have been consolidated here in their original cascade order. The React component's interactive behavior remains in `src/components/site-nav.tsx`; supplemental responsive rules remain in `src/styles/components/header-enhancements.scss`.
-- `components/_footer.scss`: import boundary for the footer visual system in `src/styles/components/footer-unified.scss`. Footer markup stays in `src/components/site-footer.tsx`.
+- `components/_footer.scss`: the single canonical footer stylesheet (newsletter, footer columns, payment logos and sub-footer). Footer markup stays in `src/components/site-footer.tsx`; `styles.scss` imports this through `@import "./styles/components/footer"`.
 - `palette.scss` (in `src/`): source of truth for WEARO palette tokens. Component styles should consume `--wearo-blue`, `--wearo-blue-light`, `--wearo-peach`, `--wearo-beige`, and `--wearo-coral` rather than introducing unrelated brand colors.
 - `ux-foundation.scss` (in `src/`): shared typography, touch-target, focus and reduced-motion guardrails.
 - `styles.scss` (in `src/`): global import manifest. Import order is behavior: later compatibility layers can override earlier declarations.
@@ -11,7 +11,8 @@
 ## Rules for future UI work
 
 1. Keep React behavior and styles separate; do not create a second header/footer implementation.
-2. Keep all new header rules in `components/_header.scss`; do not add another `final`, `production`, or hotfix stylesheet for the same selectors.
+2. Treat `styles/components/README.md` as the directory map. Keep `_header.scss` and `_footer.scss` as the component entry files.
+9. Keep all new header rules in `components/_header.scss`; do not add another `final`, `production`, or hotfix stylesheet for the same selectors.
 3. Scope selectors to a component/page root where possible. Avoid new broad `!important` overrides unless resolving a documented cascade conflict.
 4. Keep responsive rules next to the component styles they govern.
 5. Use design tokens for colors and shared spacing/type values. Do not hard-code a new palette inside a component.
@@ -21,7 +22,7 @@
 
 ## Current refactor boundary
 
-The stylesheet directory still contains accumulated feature, compatibility and polish layers. Header and footer styles live under `styles/components/` with explicit entry points. The header cascade is now one file; its rules were concatenated in their former order without changing the compiled CSS. Other page/style groups remain in place until their dependencies and cascade effects can be mapped safely.
+The stylesheet directory still contains accumulated feature, compatibility and polish layers. Header and footer styles live under `styles/components/` with explicit entry points. Footer rules were consolidated into `_footer.scss`; the redundant `footer-unified.scss` file was removed without changing the footer rules or global import order. The header cascade is now one file; its rules were concatenated in their former order without changing the compiled CSS. Other page/style groups remain in place until their dependencies and cascade effects can be mapped safely.
 
 ## Suggested next migration order
 
