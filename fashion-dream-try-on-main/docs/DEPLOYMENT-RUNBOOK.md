@@ -84,3 +84,12 @@ Workflow CI chạy thêm các bài test invariant, commerce flow, customer exper
 - Không sửa/xóa dữ liệu production trong quá trình kiểm tra deployment.
 - Không coi một commit GitHub hoặc trạng thái **Ready** là bằng chứng đủ cho tính năng end-to-end.
 - Khi rollback, chọn deployment đã xác minh trước đó trong Vercel; đồng thời tạo commit sửa nguyên nhân để source code và production không lệch nhau lâu dài.
+
+
+## 8. Lần xác minh dependency và CI — 2026-10-23
+
+- Đã nâng Vite lên `8.3.5` và cập nhật `launch-editor` lên `2.14.2` trong lockfile.
+- Dependency audit, production build, TypeScript, ESLint, architecture audit, invariant tests, commerce contracts, route smoke tests, customer-experience smoke tests, security smoke tests và provider invariants đã PASS trong GitHub Actions.
+- CI khởi động ứng dụng local trước các test cần gọi HTTP; test invariant chỉ kiểm tra source không phụ thuộc server.
+- Root Directory của Vercel được đặt là `fashion-dream-try-on-main`. Deployment Preview của commit dependency repair đã đạt `READY`; các route `/`, `/shop`, `/ai`, `/account`, `/cart`, `/checkout` và `/account/orders` đều trả HTTP 200 trong kiểm tra sau deploy.
+- Theo dõi CI mới nhất tại [GitHub Actions](https://github.com/minhquanto82kt/WEARO/actions/runs/39892110787). Đây là kiểm tra route/server response; không thay thế kiểm thử tương tác thực tế với Supabase production, thanh toán hoặc AI provider.
