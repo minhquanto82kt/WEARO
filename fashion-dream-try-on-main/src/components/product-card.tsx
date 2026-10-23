@@ -12,6 +12,7 @@ export function ProductCard({ product }: { product: Product }) {
   const [saved, setSaved] = useState(false);
   const [showSecondaryImage, setShowSecondaryImage] = useState(false);
   const [saving, setSaving] = useState(false);
+  const [wishlistMessage, setWishlistMessage] = useState("");
   const hasSale = typeof product.originalPrice === "number" && product.originalPrice > product.price;
   const secondaryImage = product.gallery?.[1];
   const normalizedLabel = (label: string) => label.trim().toLocaleLowerCase();
@@ -65,11 +66,17 @@ export function ProductCard({ product }: { product: Product }) {
     }
     if (saving) return;
     setSaving(true);
+    setWishlistMessage("");
     try {
       const next = await toggleWishlist(product.id, userId);
       setSaved(next);
-    } catch (error) {
-      console.error("Wishlist update failed:", error);
+      setWishlistMessage(next
+        ? (language === "vi" ? "Đã lưu vào danh sách yêu thích." : "Saved to your wishlist.")
+        : (language === "vi" ? "Đã bỏ khỏi danh sách yêu thích." : "Removed from your wishlist."));
+    } catch {
+      setWishlistMessage(language === "vi"
+        ? "Chưa thể cập nhật yêu thích. Vui lòng thử lại."
+        : "Could not update your wishlist. Please try again.");
     } finally {
       setSaving(false);
     }
@@ -104,6 +111,7 @@ export function ProductCard({ product }: { product: Product }) {
           </button>
         </div>
       </div>
+      {wishlistMessage ? <p className="mt-2 text-xs leading-5 text-[#54728C]" role="status" aria-live="polite">{wishlistMessage}</p> : null}
     </article>
   );
 }
