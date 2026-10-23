@@ -1,1 +1,1 @@
-Retry dependency repair after fixing source invariant references and separating route smoke tests.
+Retry dependency repair after separating source invariants from integration tests and starting the local server before network-based checks.
