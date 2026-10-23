@@ -148,7 +148,7 @@ function AiConsent({ onAccept }: { onAccept: () => void }) {
             <button type="button" className="wearo-consent-disclosure inline-flex min-h-11 items-center justify-between gap-3 border border-[rgba(84,114,140,.34)] bg-white/80 px-4 py-3 text-left text-sm font-semibold text-[#36566D] transition hover:bg-[#F2CEAE]/25 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#54728C]" aria-expanded={dataDetailsOpen} aria-controls="wearo-ai-data-details" onClick={() => setDataDetailsOpen((open) => !open)}>
               <span><span aria-hidden="true">↗ </span>Cách dữ liệu được xử lý</span><span aria-hidden="true">{dataDetailsOpen ? "−" : "+"}</span>
             </button>
-            <button type="button" className="inline-flex min-h-11 items-center justify-between gap-3 border border-[rgba(84,114,140,.34)] bg-white/80 px-4 py-3 text-left text-sm font-semibold text-[#36566D] transition hover:bg-[#F2CEAE]/25 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#54728C]" aria-expanded={termsOpen} aria-controls="wearo-ai-terms-details" onClick={() => setTermsOpen((open) => !open)}>
+            <button type="button" className="wearo-consent-disclosure inline-flex min-h-11 items-center justify-between gap-3 border border-[rgba(84,114,140,.34)] bg-white/80 px-4 py-3 text-left text-sm font-semibold text-[#36566D] transition hover:bg-[#F2CEAE]/25 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#54728C]" aria-expanded={termsOpen} aria-controls="wearo-ai-terms-details" onClick={() => setTermsOpen((open) => !open)}>
               <span><span aria-hidden="true">↗ </span>Điều khoản sử dụng AI</span><span aria-hidden="true">{termsOpen ? "−" : "+"}</span>
             </button>
           </div>
