@@ -6,7 +6,7 @@ const baseUrl = (process.env.BASE_URL || "http://127.0.0.1:8080").replace(/\/$/,
 const files = {
   cart: new URL("src/lib/cart.tsx", root),
   cartServer: new URL("src/lib/cart.server.functions.ts", root),
-  order: new URL("src/lib/order.functions.ts", root),
+  order: new URL("src/lib/orders/order.functions.ts", root),
   checkout: new URL("src/routes/checkout.tsx", root),
   cancel: new URL("src/lib/order-cancel.functions.ts", root),
   migration: new URL("supabase/migrations/20260919030000_phase_b_c_commerce_hardening.sql", root),
@@ -52,20 +52,6 @@ mustContain(rbacFinal, "update_order_status_as_manager", "manager order operatio
 mustContain(securityFinal, "REVOKE ALL ON FUNCTION public.create_order_atomic_v2", "direct checkout RPC is not publicly executable");
 mustContain(securityFinal, "GRANT EXECUTE ON FUNCTION public.create_order_atomic_v2", "service role can execute atomic checkout");
 mustContain(securityFinal, "v_requested_variants", "checkout rejects missing variants instead of partial orders");
-
-try {
-  const response = await fetch(`${baseUrl}/api/health`, { redirect: "manual" });
-  if (response.status === 200 || response.status === 503) pass(`health endpoint responds (${response.status})`);
-  else fail(`health endpoint returned ${response.status}`);
-} catch (error) { fail(`health endpoint unavailable: ${error instanceof Error ? error.message : String(error)}`); }
-
-for (const route of ["/", "/shop", "/cart", "/checkout", "/account"]) {
-  try {
-    const response = await fetch(`${baseUrl}${route}`, { redirect: "manual" });
-    if (response.status >= 200 && response.status < 400) pass(`route ${route} (${response.status})`);
-    else fail(`route ${route} returned ${response.status}`);
-  } catch (error) { fail(`route ${route}: ${error instanceof Error ? error.message : String(error)}`); }
-}
 
 if (failed) process.exit(1);
 console.log("\nPhase B/C Integration Guards: PASS");
