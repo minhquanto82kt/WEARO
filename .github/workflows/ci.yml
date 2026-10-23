@@ -60,12 +60,6 @@ jobs:
       - name: Phase B-C invariant tests
         run: npm run test:phase-b-c
 
-      - name: Phase D-E invariant tests
-        run: npm run test:phase-d-e
-
-      - name: Customer commerce flow contract tests
-        run: npm run test:customer-flows
-
       - name: Start local app for route and customer smoke tests
         shell: bash
         run: |
@@ -79,6 +73,12 @@ jobs:
           done
           cat /tmp/wearo-dev.log
           exit 1
+
+      - name: Phase D-E invariant tests
+        run: npm run test:phase-d-e
+
+      - name: Customer commerce flow contract tests
+        run: npm run test:customer-flows
 
       - name: Smoke tests
         env:
