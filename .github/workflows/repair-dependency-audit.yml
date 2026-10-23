@@ -60,15 +60,10 @@ jobs:
       - name: Architecture boundary audit
         run: npm run audit:architecture
 
-      - name: Invariant and commerce tests
-        run: |
-          npm run test:phase-b-c
-          npm run test:phase-d-e
-          npm run test:customer-flows
-          npm run test:phase-f-security
-          npm run test:replicate-provider
+      - name: Phase B-C invariant tests
+        run: npm run test:phase-b-c
 
-      - name: Start local app for smoke tests
+      - name: Start local app for integration tests
         shell: bash
         run: |
           nohup npm run dev -- --host 127.0.0.1 --port 8080 > /tmp/wearo-dev.log 2>&1 &
@@ -81,6 +76,13 @@ jobs:
           done
           cat /tmp/wearo-dev.log
           exit 1
+
+      - name: Phase D-E, commerce, security and provider tests
+        run: |
+          npm run test:phase-d-e
+          npm run test:customer-flows
+          npm run test:phase-f-security
+          npm run test:replicate-provider
 
       - name: Route and customer experience smoke tests
         env:
