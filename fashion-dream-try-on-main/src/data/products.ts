@@ -19,7 +19,7 @@ export type Product = {
   sizes: string[];
   colors: string[];
   badge?: string;
-  fashionStyle?: "Casual" | "Basic" | "Streetwear" | "Outerwear" | null;
+  fashionStyle?: "Casual" | "Basic" | "Streetwear" | "Outerwear" | "Outing Style" | null;
   gender?: "Male" | "Female" | "Unisex";
   tags?: string[];
   shortDescription?: string;
