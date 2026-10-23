@@ -124,7 +124,7 @@ export const createAdminProduct = createServerFn({ method: "POST" })
     const slug = data.product.slug.trim();
     const price = Number(data.product.price);
     if (!name || !slug) throw new Error("Tên sản phẩm và slug là bắt buộc.");
-    if (!Number.isFinite(price) || price < 0) throw new Error("Giá sản phẩm không hợp lệ.");
+    if (!Number.isSafeInteger(price) || price < 1000) throw new Error("Giá sản phẩm phải từ 1.000đ trở lên.");
 
     const archivedSlugMatches = await supabaseRequest<Array<{ id: string }>>(
       `products?slug=eq.${encodeURIComponent(slug)}&status=eq.archived&select=id&limit=1`,
@@ -159,8 +159,12 @@ export const updateAdminProduct = createServerFn({ method: "POST" })
     const patch = { ...data.product };
     if (patch.name !== undefined) patch.name = patch.name.trim();
     if (patch.slug !== undefined) patch.slug = patch.slug.trim();
-    if (patch.price !== undefined && (!Number.isFinite(Number(patch.price)) || Number(patch.price) < 0)) {
-      throw new Error("Giá sản phẩm không hợp lệ.");
+    if (patch.price !== undefined) {
+      const price = Number(patch.price);
+      if (!Number.isSafeInteger(price) || price < 1000) {
+        throw new Error("Giá sản phẩm phải từ 1.000đ trở lên.");
+      }
+      patch.price = price;
     }
 
     const currentRows = await supabaseRequest<Array<Pick<AdminProduct, "id" | "slug" | "status">>>(
