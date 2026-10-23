@@ -1,6 +1,7 @@
 import { Clock, Facebook, Mail, MapPin, Phone } from "lucide-react";
 import { Link, useLocation } from "@tanstack/react-router";
 import { useI18n } from "@/lib/i18n";
+import { ShapeMosaic } from "@/components/shape-mosaic";
 
 const linkClass = "wearo-footer__link";
 const FACEBOOK_URL = "https://www.facebook.com/profile.php?id=61595224420277&open_field=address&sk=directory_basic_info";
@@ -122,6 +123,11 @@ export function SiteFooter() {
               </nav>
             </section>
           </div>
+        </div>
+
+        <div className="wearo-footer__mosaic-band" aria-hidden="true">
+          <span className="wearo-footer__mosaic-caption">WEARO / EVERYDAY, YOUR WAY</span>
+          <ShapeMosaic className="wearo-footer__mosaic" />
         </div>
 
         <div className="wearo-footer__payment-bar" aria-label={t("Phương thức thanh toán", "Payment methods")}>

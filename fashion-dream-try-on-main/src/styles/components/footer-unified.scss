@@ -146,6 +146,36 @@
   padding: 54px 0 48px;
 }
 
+.wearo-footer__mosaic-band {
+  position: relative;
+  display: flex;
+  min-height: 104px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  overflow: hidden;
+  margin: 0 0 22px;
+  padding: 12px 18px;
+  border-block: 1px solid color-mix(in srgb, var(--footer-blue) 22%, transparent);
+  background: color-mix(in srgb, #fff 26%, var(--footer-peach));
+}
+
+.wearo-footer__mosaic-caption {
+  position: relative;
+  z-index: 1;
+  color: var(--footer-blue);
+  font: 750 10px/1.4 "Space Grotesk", Arial, sans-serif;
+  letter-spacing: .16em;
+}
+
+.wearo-footer__mosaic {
+  width: min(250px, 42vw);
+  flex: 0 0 auto;
+  align-self: stretch;
+  max-height: 100px;
+  opacity: .92;
+}
+
 .wearo-footer__brand,
 .wearo-footer__section { min-width: 0; }
 
@@ -757,6 +787,9 @@
 @media (max-width: 680px) {
   .wearo-footer { padding-bottom: 12px; }
   .wearo-footer__panel { padding: 22px 18px; }
+  .wearo-footer__mosaic-band { min-height: 78px; gap: 12px; margin-bottom: 16px; padding: 10px; }
+  .wearo-footer__mosaic-caption { max-width: 130px; font-size: 8px; letter-spacing: .11em; }
+  .wearo-footer__mosaic { width: min(150px, 42vw); max-height: 74px; }
   .wearo-footer__payment-bar { gap: 14px; padding: 18px 14px; }
   .wearo-footer__payment-logos { gap: 7px; }
   .wearo-footer__payment-logo { min-width: 68px; height: 36px; padding: 5px 9px; }
