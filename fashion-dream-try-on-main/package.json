@@ -25,7 +25,11 @@
     "test:customer-experience": "node tests/smoke/customer-experience.mjs",
     "audit:architecture": "node scripts/audit-architecture.mjs",
     "audit:dependencies": "npm audit --audit-level=high",
-    "test:customer-flows": "node tests/smoke/customer-commerce-flows.mjs"
+    "test:customer-flows": "node tests/smoke/customer-commerce-flows.mjs",
+    "check:env": "node scripts/backend/check-env.mjs",
+    "check:env:preview": "node scripts/backend/check-env.mjs --profile=preview",
+    "check:env:production": "node scripts/backend/check-env.mjs --profile=production",
+    "audit:api-security": "node scripts/backend/audit-api-security.mjs"
   },
   "overrides": {
     "rolldown": "1.2.1"
