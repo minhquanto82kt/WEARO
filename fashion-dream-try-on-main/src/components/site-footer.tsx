@@ -132,11 +132,22 @@ export function SiteFooter() {
 
         <div className="wearo-footer__payment-bar" aria-label={t("Phương thức thanh toán", "Payment methods")}>
           <span className="wearo-footer__payment-label">{t("PHƯƠNG THỨC THANH TOÁN", "PAYMENT METHODS")}</span>
-          <div className="wearo-footer__payment-logos">
-            <span className="wearo-footer__payment-method">COD</span>
-            <span className="wearo-footer__payment-method">VietQR</span>
-            <span className="wearo-footer__payment-method">MoMo</span>
-            <span className="wearo-footer__payment-method">Mastercard</span>
+          <div className="wearo-footer__payment-logos" aria-label={t("Logo các phương thức thanh toán", "Payment method logos")}>
+            <span className="wearo-footer__payment-logo wearo-footer__payment-logo--cod" aria-label={t("Thanh toán khi nhận hàng", "Cash on delivery")} title={t("Thanh toán khi nhận hàng", "Cash on delivery")}>
+              <span aria-hidden="true">COD</span>
+            </span>
+            <span className="wearo-footer__payment-logo wearo-footer__payment-logo--vietqr" title="VietQR">
+              <img src="/payment/VietQR_Logo.svg" alt="VietQR" loading="lazy" />
+            </span>
+            <span className="wearo-footer__payment-logo wearo-footer__payment-logo--momo" title="MoMo">
+              <img src="/payment/MoMo_Logo_App.svg" alt="MoMo" loading="lazy" />
+            </span>
+            <span className="wearo-footer__payment-logo wearo-footer__payment-logo--visa" title="Visa">
+              <img src="/payment/visa.svg" alt="Visa" loading="lazy" />
+            </span>
+            <span className="wearo-footer__payment-logo wearo-footer__payment-logo--mastercard" title="Mastercard">
+              <img src="/payment/mastercard.svg" alt="Mastercard" loading="lazy" />
+            </span>
           </div>
         </div>
 
