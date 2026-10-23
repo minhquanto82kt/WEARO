@@ -8,7 +8,7 @@ const files = {
   cartServer: new URL("src/lib/cart.server.functions.ts", root),
   order: new URL("src/lib/orders/order.functions.ts", root),
   checkout: new URL("src/routes/checkout.tsx", root),
-  cancel: new URL("src/lib/order-cancel.functions.ts", root),
+  cancel: new URL("src/lib/orders/order-cancel.functions.ts", root),
   migration: new URL("supabase/migrations/20260919030000_phase_b_c_commerce_hardening.sql", root),
   fulfillment: new URL("supabase/migrations/20260919031000_phase_c_fulfillment_hardening.sql", root),
   cancelMigration: new URL("supabase/migrations/20260919032000_phase_c_customer_cancel_order.sql", root),
