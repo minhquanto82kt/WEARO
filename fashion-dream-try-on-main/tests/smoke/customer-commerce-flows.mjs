@@ -6,7 +6,7 @@ const root = new URL("../../", import.meta.url).pathname;
 const baseUrl = (process.env.BASE_URL || "http://127.0.0.1:8080").replace(/\/$/, "");
 const read = (file) => readFile(join(root, file), "utf8");
 
-const [product, cart, checkout, order, auth, history, detail, invoice, account] = await Promise.all([
+const [product, cart, checkout, order, auth, history, detail, invoice, account, productAdmin, voucherMigration, productCard, shop] = await Promise.all([
   read("src/routes/product.$id.tsx"),
   read("src/lib/cart.tsx"),
   read("src/routes/checkout.tsx"),
@@ -16,6 +16,10 @@ const [product, cart, checkout, order, auth, history, detail, invoice, account] 
   read("src/routes/account/orders/$id.tsx"),
   read("src/lib/invoice.functions.ts"),
   read("src/routes/account.tsx"),
+  read("src/lib/product-admin.functions.ts"),
+  read("supabase/migrations/20261023030554_lock_down_member_voucher_rpc.sql"),
+  read("src/components/product-card.tsx"),
+  read("src/routes/shop.tsx"),
 ]);
 
 function mustMatch(text, pattern, label) {
@@ -61,6 +65,18 @@ mustMatch(checkout, /memberMode \? "\/account\/orders" : "\/account"/, "member s
 mustMatch(account, /to="\/account\/orders"/, "member account dashboard exposes order history");
 
 console.log("FLOW 2 CONTRACT: Member Register -> Login -> Cart -> Order -> History PASS");
+
+mustMatch(productAdmin, /Number\\.isSafeInteger\\(price\\) \\|\\| price < 1000/, "admin product create/update enforces the 1,000đ minimum");
+mustMatch(order, /supabaseUserRequest<[^>]+>\\("rpc\\/apply_best_member_voucher", data\\.accessToken!/s, "member voucher RPC uses the customer's JWT");
+mustNotMatch(order, /supabaseRequest<[^>]+>\\("rpc\\/apply_best_member_voucher"/s, "member voucher RPC does not use the privileged server request");
+mustMatch(voucherMigration, /auth\\.uid\\(\\).*p_user_id/s, "voucher RPC checks that caller owns the user identity");
+mustMatch(voucherMigration, /REVOKE ALL ON FUNCTION public\\.apply_best_member_voucher\\(uuid, uuid\\) FROM PUBLIC, anon/s, "voucher RPC is not executable by anonymous callers");
+mustMatch(voucherMigration, /GRANT EXECUTE ON FUNCTION public\\.apply_best_member_voucher\\(uuid, uuid\\) TO authenticated/s, "voucher RPC is only granted to authenticated customers");
+mustMatch(shop, /pendingComponent: ShopRoutePending/,"shop route provides a loading state");
+mustMatch(shop, /errorComponent: ShopRouteError/,"shop route provides a recoverable error state");
+mustMatch(shop, /search=\\{\\{ mode: banner\\.mode \\}\\}/,"AI banner links open the matching Try-On or Stylist mode");
+mustMatch(productCard, /wishlistMessage[\\s\\S]*role="status"/,"wishlist actions provide accessible feedback");
+
 
 // Public route reachability for both customer flows.
 for (const path of ["/", "/shop", "/cart", "/checkout", "/account", "/account/orders"]) {
