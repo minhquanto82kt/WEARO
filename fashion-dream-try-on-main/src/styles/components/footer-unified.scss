@@ -739,6 +739,30 @@
   overflow: visible;
 }
 
+/* Payment brand assets are external SVG images, not inline SVG nodes.
+   Constrain them explicitly so their intrinsic dimensions cannot overflow the footer. */
+.wearo-footer__payment-logo img {
+  display: block;
+  flex: 0 1 auto;
+  width: auto !important;
+  max-width: 62px !important;
+  min-width: 0;
+  height: auto !important;
+  max-height: 24px !important;
+  object-fit: contain;
+}
+
+.wearo-footer__payment-logo--momo img,
+.wearo-footer__payment-logo--vietqr img {
+  max-width: 58px !important;
+}
+
+.wearo-footer__payment-logo--cod {
+  color: var(--footer-blue);
+  font: 750 12px/1 "Space Grotesk", Arial, sans-serif;
+  letter-spacing: .04em;
+}
+
 .wearo-footer__payment-logo--visa svg text {
   fill: #1a1f71;
   font: italic 900 21px/1 Arial, sans-serif;
