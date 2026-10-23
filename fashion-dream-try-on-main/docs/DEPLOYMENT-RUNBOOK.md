@@ -62,7 +62,7 @@ CI xanh không tự chứng minh mọi tích hợp bên ngoài hoạt động; P
 
 ## 6. Kiểm tra trước khi phát hành
 
-Tại thư mục ứng dụng, chạy:
+Tại thư mục ứng dụng, chạy các bước kiểm tra không cần server đang chạy:
 
 ```bash
 npm ci --legacy-peer-deps --no-audit --no-fund
@@ -71,8 +71,9 @@ npm run build
 npm run typecheck
 npm run lint
 npm run audit:architecture
-npm run test:smoke
 ```
+
+Để chạy route smoke test, mở một terminal chạy `npm run dev -- --host 127.0.0.1 --port 8080`; ở terminal khác đặt `BASE_URL=http://127.0.0.1:8080` rồi chạy `npm run test:smoke`. Trên Windows PowerShell, dùng `$env:BASE_URL="http://127.0.0.1:8080"; npm run test:smoke`.
 
 Workflow CI chạy thêm các bài test invariant, commerce flow, customer experience, security và provider integration. Xem `.github/workflows/ci.yml` để biết danh sách hiện hành.
 
