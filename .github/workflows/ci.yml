@@ -57,6 +57,12 @@ jobs:
       - name: Architecture boundary audit
         run: npm run audit:architecture
 
+      - name: Backend environment preflight
+        run: npm run check:env
+
+      - name: Static API security audit
+        run: npm run audit:api-security
+
       - name: Phase B-C invariant tests
         run: npm run test:phase-b-c
 
