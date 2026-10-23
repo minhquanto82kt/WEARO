@@ -238,7 +238,10 @@ function ShopPage() {
           <div className="wearo-shop-results-head">
             <div>
               <p className="wearo-shop-section-label">WEARO / CURATED EVERYDAY</p>
-              <h2 className="wearo-shop-results-title mt-2">{normalizedSearch ? `Kết quả cho “${search.trim()}”` : cat === "all" ? "Khám phá bộ sưu tập" : categoryName ?? "Bộ sưu tập"}</h2>
+              <div className="wearo-shop-title-line">
+                <h2 className="wearo-shop-results-title mt-2">{normalizedSearch ? `Kết quả cho “${search.trim()}”` : cat === "all" ? "Khám phá bộ sưu tập" : categoryName ?? "Bộ sưu tập"}</h2>
+                <img src="/images/shapes-gallery/blue-gray-7794A6/shape-01.svg" alt="" aria-hidden="true" className="wearo-shop-title-shape" />
+              </div>
             </div>
             <div className="flex flex-wrap items-center gap-3">
               <div className="flex items-center gap-1" role="group" aria-label="Chế độ hiển thị sản phẩm">
@@ -255,6 +258,7 @@ function ShopPage() {
             </div>
           ) : (
             <div className="wearo-shop-empty" role="status">
+              <img src="/images/shapes-gallery/soft-coral-F2AD94/shape-12.svg" alt="" aria-hidden="true" className="wearo-shop-empty-shape" />
               <p className="wearo-shop-section-label">COLLECTION / 0 ITEMS</p>
               <h2>Chưa tìm thấy sản phẩm phù hợp.</h2>
               <p>Thử từ khóa khác hoặc bỏ bộ lọc để xem lại toàn bộ bộ sưu tập WEARO.</p>
