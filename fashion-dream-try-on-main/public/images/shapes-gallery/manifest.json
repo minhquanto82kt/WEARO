@@ -1,0 +1,11 @@
+{
+  "source_svg_count": 72,
+  "variant_colors": {
+    "blue-gray-7794A6": "#7794A6",
+    "warm-cream-F2CEAE": "#F2CEAE",
+    "soft-coral-F2AD94": "#F2AD94"
+  },
+  "variant_count": 216,
+  "total_svg_count_in_package": 288,
+  "method": "XML parsed and validated; explicit solid fill/stroke/color declarations recolored; none/url/currentColor/gradients preserved."
+}
