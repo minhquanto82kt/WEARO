@@ -9,8 +9,11 @@ This package contains 72 original SVGs and 216 recolored variants (288 SVG files
 - `soft-coral-F2AD94/`: variants using `#F2AD94`
 - `manifest.json`: source mapping, colors, and validation metadata
 
+## Reference
+- [Shapes Gallery](https://www.shapes.gallery/) — reference source for the SVG shape assets.
+
 ## Recoloring behavior
 SVG files were parsed as XML and validated before and after editing. Explicit solid-color declarations in `fill`, `stroke`, `color`, `stop-color`, `flood-color`, `lighting-color`, and corresponding inline `style` properties were changed to the target color. `none`, `transparent`, `currentColor`, `url(...)` references, and `var(...)` values were preserved. This avoids flattening transparency and keeps referenced gradients/filters intact.
 
 ## Integration note
-These are prepared assets only. They have not been copied into or committed to the WEARO GitHub repository. Before production use, visually inspect the contact sheets and test selected assets against the existing site palette/backgrounds.
+The SVG assets and palette variants are stored in this repository. They have not yet been integrated into the website UI. Before production use, visually inspect the assets and test selected shapes against the existing site palette and backgrounds.
