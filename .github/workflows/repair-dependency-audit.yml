@@ -9,6 +9,7 @@ on:
       - "fashion-dream-try-on-main/src/data/products.ts"
       - "fashion-dream-try-on-main/src/routes/new-arrivals.tsx"
       - "fashion-dream-try-on-main/tests/smoke/phase-b-c-invariants.mjs"
+      - "fashion-dream-try-on-main/tests/smoke/customer-commerce-flows.mjs"
   workflow_dispatch:
 
 permissions:
