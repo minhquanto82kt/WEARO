@@ -107,5 +107,7 @@ jobs:
             exit 1
           fi
           git commit -m "fix: update Vite and resolve high-severity dependency audit"
+          git fetch origin feature/product-admin
+          git rebase origin/feature/product-admin
           git push origin HEAD:feature/product-admin
           gh workflow run ci.yml --ref feature/product-admin
