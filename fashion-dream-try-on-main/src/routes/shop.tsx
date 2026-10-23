@@ -5,6 +5,7 @@ import { useEffect, useMemo, useState } from "react";
 import { SiteNav } from "@/components/site-nav";
 import { SiteFooter } from "@/components/site-footer";
 import { ProductCard } from "@/components/product-card";
+import { ShapeMosaic } from "@/components/shape-mosaic";
 import { CATEGORIES, type Product } from "@/data/products";
 import { canonicalLink } from "@/lib/seo";
 import "@/styles/wearo-shop-page.scss";
@@ -240,7 +241,7 @@ function ShopPage() {
               <p className="wearo-shop-section-label">WEARO / CURATED EVERYDAY</p>
               <div className="wearo-shop-title-line">
                 <h2 className="wearo-shop-results-title mt-2">{normalizedSearch ? `Kết quả cho “${search.trim()}”` : cat === "all" ? "Khám phá bộ sưu tập" : categoryName ?? "Bộ sưu tập"}</h2>
-                <img src="/images/shapes-gallery/blue-gray-7794A6/shape-01.svg" alt="" aria-hidden="true" className="wearo-shop-title-shape" />
+                <ShapeMosaic className="wearo-shop-title-mosaic" />
               </div>
             </div>
             <div className="flex flex-wrap items-center gap-3">
@@ -258,7 +259,7 @@ function ShopPage() {
             </div>
           ) : (
             <div className="wearo-shop-empty" role="status">
-              <img src="/images/shapes-gallery/soft-coral-F2AD94/shape-12.svg" alt="" aria-hidden="true" className="wearo-shop-empty-shape" />
+              <ShapeMosaic className="wearo-shop-empty-mosaic" />
               <p className="wearo-shop-section-label">COLLECTION / 0 ITEMS</p>
               <h2>Chưa tìm thấy sản phẩm phù hợp.</h2>
               <p>Thử từ khóa khác hoặc bỏ bộ lọc để xem lại toàn bộ bộ sưu tập WEARO.</p>

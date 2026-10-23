@@ -774,36 +774,17 @@
   }
 }
 
-/* Small real SVG accents from the bundled Shapes Gallery. */
+/* Keep the collection title and its geometric mosaic on one visual line. */
 .wearo-shop-page .wearo-shop-title-line {
   display: flex;
   align-items: center;
   gap: 12px;
 }
-.wearo-shop-page .wearo-shop-title-shape {
-  width: 34px;
-  height: 34px;
-  flex: 0 0 auto;
-  opacity: .82;
-}
 .wearo-shop-page .wearo-shop-empty {
   position: relative;
   overflow: hidden;
 }
-.wearo-shop-page .wearo-shop-empty-shape {
-  position: absolute;
-  top: 16px;
-  right: 18px;
-  width: 66px;
-  height: 66px;
-  opacity: .32;
-  pointer-events: none;
-}
-.wearo-shop-page .wearo-shop-empty > :not(.wearo-shop-empty-shape) {
+.wearo-shop-page .wearo-shop-empty > :not(.wearo-shop-empty-mosaic) {
   position: relative;
   z-index: 1;
-}
-@media (max-width: 640px) {
-  .wearo-shop-page .wearo-shop-title-shape { width: 28px; height: 28px; }
-  .wearo-shop-page .wearo-shop-empty-shape { top: 10px; right: 10px; width: 48px; height: 48px; opacity: .26; }
 }
