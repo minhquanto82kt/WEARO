@@ -49,73 +49,152 @@ export const Route = createFileRoute("/ai")({
 
 function AiConsent({ onAccept }: { onAccept: () => void }) {
   const [checked, setChecked] = useState(false);
+  const [dataDetailsOpen, setDataDetailsOpen] = useState(false);
+  const [termsOpen, setTermsOpen] = useState(false);
+
+  const rules = [
+    ["01", "Ảnh & quyền sử dụng", "Chỉ tải lên hình ảnh bạn có quyền sử dụng. Tránh ảnh riêng tư hoặc ảnh của người khác khi chưa được cho phép."],
+    ["02", "Dữ liệu & nhà cung cấp AI", "Ảnh hoặc nội dung bạn gửi được chuyển từ trình duyệt đến dịch vụ WEARO để xử lý; một số tác vụ tiếp tục gửi dữ liệu đến nhà cung cấp AI được cấu hình."],
+    ["03", "Kết quả chỉ mang tính tham khảo", "Hình ảnh do AI tạo có thể sai khác về màu sắc, kích thước, chất liệu hoặc phom dáng và không phải cam kết về sản phẩm."],
+    ["04", "Thông tin bạn nhập", "Không nhập thông tin nhạy cảm như giấy tờ định danh, thông tin tài chính hoặc dữ liệu riêng tư không cần thiết."],
+    ["05", "Sử dụng có trách nhiệm", "Không dùng AI để xâm phạm quyền riêng tư, danh dự, quyền hình ảnh hoặc quyền sở hữu trí tuệ của người khác."],
+  ];
 
   return (
     <main className="wearo-ai-page">
-      <div className="wearo-ai-consent-shell">
-        <section className="ai-consent-panel" aria-labelledby="ai-consent-title">
-          <div className="border-b border-[rgba(84,114,140,.16)] pb-5">
+      <style>{`
+        .wearo-ai-consent-shell { position: relative; isolation: isolate; width: 100%; box-sizing: border-box; padding: clamp(18px, 3vw, 36px) 16px 48px; }
+        .wearo-consent-mosaic { pointer-events: none; position: absolute; inset: 0; overflow: hidden; z-index: 0; }
+        .wearo-consent-shape { position: absolute; display: block; opacity: .32; transform: rotate(-12deg); animation: wearo-mosaic-float 13s ease-in-out infinite; }
+        .ai-consent-panel.wearo-consent-panel { position: relative; z-index: 1; isolation: isolate; width: min(100%, 900px) !important; max-width: 900px !important; box-sizing: border-box !important; margin: 0 auto; padding: clamp(24px, 3.4vw, 44px) !important; border: 1px solid rgba(84,114,140,.22) !important; border-radius: 4px 4px 20px 20px !important; background: rgba(255,255,255,.97) !important; box-shadow: 0 22px 60px rgba(38,55,70,.08) !important; }
+        .ai-consent-panel.wearo-consent-panel h1#ai-consent-title { display: block; max-width: 100% !important; margin-top: 26px !important; color: #263746 !important; font-family: "Bodoni Moda", Georgia, serif !important; font-size: clamp(34px, 4.3vw, 52px) !important; font-weight: 500 !important; line-height: 1.08 !important; letter-spacing: -.025em !important; word-break: normal !important; overflow-wrap: normal !important; writing-mode: horizontal-tb !important; text-orientation: mixed !important; }
+        .ai-consent-panel.wearo-consent-panel > p { max-width: 680px !important; margin-top: 16px !important; color: #536979 !important; font-size: 14px !important; line-height: 1.8 !important; }
+        .ai-consent-panel.wearo-consent-panel .wearo-consent-rule-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; margin-top: 26px; }
+        .ai-consent-panel.wearo-consent-panel .wearo-consent-rule { min-width: 0; min-height: 128px; box-sizing: border-box; border: 1px solid rgba(84,114,140,.22); border-radius: 2px; padding: 18px; background: #fff; }
+        .ai-consent-panel.wearo-consent-panel .wearo-consent-rule[data-wide="true"] { grid-column: 1 / -1; min-height: 0; }
+        .ai-consent-panel.wearo-consent-panel .wearo-consent-rule[data-accent="blue"] { background: #F0F4F6; border-color: rgba(84,114,140,.34); }
+        .ai-consent-panel.wearo-consent-panel .wearo-consent-rule[data-accent="cream"] { background: #FCF6F0; border-color: rgba(217,187,169,.68); }
+        .ai-consent-panel.wearo-consent-panel .wearo-consent-rule h2 { margin: 1px 0 0; color: #263746 !important; font-size: 12px !important; font-weight: 700 !important; line-height: 1.5 !important; letter-spacing: .055em !important; text-transform: uppercase; }
+        .ai-consent-panel.wearo-consent-panel .wearo-consent-rule p { margin-top: 7px !important; color: #536373 !important; font-size: 13px !important; line-height: 1.7 !important; }
+        .ai-consent-panel.wearo-consent-panel .wearo-consent-number { display: flex; width: 36px; height: 36px; align-items: center; justify-content: center; border: 1px solid rgba(84,114,140,.4); background: #F8F5F0; color: #36566D; font-size: 11px; font-weight: 700; }
+        .ai-consent-panel.wearo-consent-panel .wearo-consent-disclosure { min-height: 48px; border-radius: 2px !important; border-color: rgba(84,114,140,.34) !important; background: #fff !important; color: #36566D !important; padding: 12px 15px !important; font-size: 13px !important; line-height: 1.5 !important; }
+        .ai-consent-panel.wearo-consent-panel .wearo-consent-check { margin-top: 22px !important; border-radius: 2px !important; border-color: rgba(84,114,140,.3) !important; background: #F3F6F7 !important; padding: 16px 18px !important; color: #263746 !important; }
+        .ai-consent-panel.wearo-consent-panel .wearo-consent-check span { color: #263746 !important; font-size: 13px !important; line-height: 1.7 !important; }
+        .ai-consent-panel.wearo-consent-panel .wearo-consent-choice { min-height: 48px; border-radius: 2px !important; padding: 13px 18px !important; font-size: 12px !important; font-weight: 700 !important; letter-spacing: .04em !important; text-transform: none !important; }
+        .ai-consent-panel.wearo-consent-panel .wearo-consent-primary { background: #54728C !important; color: #fff !important; border: 1px solid #54728C !important; }
+        .ai-consent-panel.wearo-consent-panel .wearo-consent-primary:disabled { background: #AAB9C2 !important; color: #fff !important; border-color: #AAB9C2 !important; opacity: 1 !important; }
+        .ai-consent-panel.wearo-consent-panel .wearo-consent-back { background: #fff !important; color: #36566D !important; border: 1px solid #54728C !important; text-decoration: none !important; }
+        .ai-consent-panel.wearo-consent-panel .wearo-consent-back:hover { background: #F2CEAE !important; color: #263746 !important; }
+        .ai-consent-panel.wearo-consent-panel .wearo-consent-note { color: #687985 !important; font-size: 11px !important; line-height: 1.65 !important; }
+        .wearo-consent-shape:nth-child(1) { width: 96px; height: 96px; top: 7%; left: 4%; background: #F2CEAE; clip-path: polygon(0 0,100% 0,72% 100%,18% 82%); }
+        .wearo-consent-shape:nth-child(2) { width: 62px; height: 62px; top: 18%; right: 7%; background: #7794A6; clip-path: polygon(50% 0,100% 50%,50% 100%,0 50%); animation-delay: -3s; }
+        .wearo-consent-shape:nth-child(3) { width: 42px; height: 42px; top: 47%; left: 1.5%; background: #D9BBA9; border-radius: 50%; animation-delay: -6s; }
+        .wearo-consent-shape:nth-child(4) { width: 110px; height: 72px; top: 63%; right: 2%; background: #54728C; clip-path: polygon(0 12%,82% 0,100% 76%,24% 100%); animation-delay: -4s; }
+        .wearo-consent-shape:nth-child(5) { width: 36px; height: 36px; bottom: 8%; left: 12%; background: #F2AD94; transform: rotate(45deg); animation-delay: -2s; }
+        .wearo-consent-shape:nth-child(6) { width: 22px; height: 22px; bottom: 15%; right: 15%; border: 2px solid #54728C; border-radius: 50%; animation-delay: -8s; }
+        @keyframes wearo-mosaic-float { 0%,100% { translate: 0 0; } 50% { translate: 0 -9px; } }
+        /* Panel-specific rules above intentionally override legacy AI consent styling. */
+        .wearo-consent-choice { min-height: 46px; transition: background-color .18s ease, border-color .18s ease, color .18s ease, transform .18s ease; }
+        .wearo-consent-choice:disabled { cursor: not-allowed; opacity: .5; filter: saturate(.65); }
+        .wearo-consent-choice:not(:disabled):hover { transform: translateY(-1px); }
+        .wearo-consent-checkbox { accent-color: #54728C; width: 19px; height: 19px; }
+        @media (prefers-reduced-motion: reduce) { .wearo-consent-shape { animation: none !important; } .wearo-consent-choice { transition: none !important; } }
+        @media (max-width: 700px) {
+          .wearo-ai-consent-shell { padding: 14px 12px 32px; }
+          .ai-consent-panel.wearo-consent-panel { padding: 24px 20px !important; border-radius: 4px 4px 14px 14px !important; }
+          .ai-consent-panel.wearo-consent-panel .wearo-consent-rule-grid { grid-template-columns: minmax(0, 1fr); gap: 10px; margin-top: 20px; }
+          .ai-consent-panel.wearo-consent-panel .wearo-consent-rule { min-height: 0; padding: 15px; }
+          .ai-consent-panel.wearo-consent-panel h1#ai-consent-title { font-size: clamp(32px, 8vw, 42px) !important; margin-top: 22px !important; }
+          .wearo-consent-shape:nth-child(1) { width: 52px; height: 52px; left: -8px; }
+          .wearo-consent-shape:nth-child(4) { width: 56px; height: 40px; right: -8px; }
+        }
+      `}</style>
+      <div className="wearo-ai-consent-shell relative">
+        <div className="wearo-consent-mosaic" aria-hidden="true">
+          <span className="wearo-consent-shape" /><span className="wearo-consent-shape" />
+          <span className="wearo-consent-shape" /><span className="wearo-consent-shape" />
+          <span className="wearo-consent-shape" /><span className="wearo-consent-shape" />
+        </div>
+        <section className="ai-consent-panel wearo-consent-panel" aria-labelledby="ai-consent-title">
+          <div className="border-b border-[rgba(84,114,140,.22)] pb-5">
             <div className="flex flex-wrap items-center justify-between gap-3">
               <p className="eyebrow">WEARO / AI STUDIO · NOTICE</p>
               <span className="inline-flex items-center border border-[#D8B56D] bg-[#FFF4D8] px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.16em] text-[#6D4C12]" aria-label="Bản thử nghiệm">BETA</span>
             </div>
-            <p className="mt-2 text-[10px] font-semibold uppercase tracking-[0.18em] text-[#54728C]">01 · Before you begin</p>
+            <p className="mt-2 text-[10px] font-semibold uppercase tracking-[0.18em] text-[#54728C]">01 · Trước khi bắt đầu</p>
           </div>
 
-          <h1 id="ai-consent-title" className="wearo-ai-display mt-6">
-            Trước khi sử dụng AI Studio
+          <h1 id="ai-consent-title" className="wearo-ai-display mt-6 text-balance">
+            Trước khi bắt đầu
+            <span className="mt-1 block text-[#54728C]">WEARO AI Studio</span>
           </h1>
-          <p className="mt-4 max-w-2xl text-sm leading-7 text-silver">
-            WEARO AI hỗ trợ tư vấn phong cách, tạo concept và thử đồ ảo. Vui lòng đọc nhanh các nguyên tắc dưới đây trước khi tiếp tục; kết quả AI chỉ mang tính tham khảo.
+          <p className="mt-4 max-w-2xl text-sm leading-7 text-[#4B5563]">
+            Dùng AI để khám phá outfit hoặc thử đồ ảo. Hãy xem nhanh cách dữ liệu được xử lý và các giới hạn dưới đây trước khi lựa chọn.
           </p>
 
-          <div className="mt-8 grid gap-3">
-            {[
-              ["01", "Ảnh & quyền sử dụng", "Chỉ tải lên hình ảnh bạn có quyền sử dụng. Không sử dụng hình ảnh của người khác khi chưa được cho phép."],
-              ["02", "Nội dung & quyền riêng tư", "Ảnh tải lên sẽ được gửi đến nhà cung cấp AI bên thứ ba đang được cấu hình để xử lý. Không tải lên ảnh riêng tư hoặc thông tin nhạy cảm; không dùng AI để xâm phạm quyền riêng tư, danh dự hoặc sở hữu trí tuệ."],
-              ["03", "Kết quả AI", "Màu sắc, kích thước, form và hình ảnh tạo bởi AI có thể khác sản phẩm thực tế và không phải cam kết về sản phẩm."],
-              ["04", "Thông tin cung cấp", "Không nhập thông tin nhạy cảm. Chỉ cung cấp thông tin cần thiết để WEARO hỗ trợ bạn."],
-              ["05", "Trách nhiệm sử dụng", "Bạn chịu trách nhiệm về nội dung mình cung cấp và xác nhận đã đọc, hiểu các quy định khi tiếp tục."],
-            ].map(([number, title, description]) => (
-              <div key={number} className="group grid grid-cols-[42px_1fr] gap-4 border border-[rgba(84,114,140,.14)] bg-[rgba(242,206,174,.07)] p-4 transition-colors hover:bg-[rgba(242,206,174,.14)] sm:grid-cols-[48px_1fr] sm:gap-5">
-                <span className="flex h-9 w-9 items-center justify-center rounded-full border border-[rgba(84,114,140,.28)] text-[10px] font-semibold tracking-[.08em] text-[#54728C] sm:h-10 sm:w-10">
-                  {number}
-                </span>
-                <div>
-                  <p className="text-sm font-medium text-foreground">{title}</p>
-                  <p className="mt-1.5 text-xs leading-6 text-silver sm:text-sm">{description}</p>
+          <div className="wearo-consent-rule-grid">
+            {rules.map(([number, title, description]) => (
+              <article key={number} data-wide={number === "01" || number === "02" || number === "05" ? "true" : "false"} data-accent={number === "02" ? "blue" : number === "05" ? "cream" : "plain"} className="wearo-consent-rule group grid grid-cols-[36px_minmax(0,1fr)] items-start gap-3 sm:gap-4">
+                <span className="wearo-consent-number">{number}</span>
+                <div className="min-w-0">
+                  <h2>{title}</h2>
+                  <p>{description}</p>
                 </div>
-              </div>
+              </article>
             ))}
           </div>
 
-          <label className="ai-consent-check mt-7 flex cursor-pointer items-start gap-3 rounded-sm border border-[rgba(84,114,140,.16)] p-4 transition-colors hover:bg-[rgba(242,206,174,.10)]">
-            <input
-              type="checkbox"
-              checked={checked}
-              onChange={(event) => setChecked(event.target.checked)}
-              className="mt-1 h-4 w-4 shrink-0 accent-[#54728C]"
-            />
-            <span className="text-sm leading-6 text-foreground">
-              Tôi đã đọc, hiểu và chấp nhận các quy định sử dụng WEARO AI Studio.
+          <div className="mt-4 grid gap-2 sm:grid-cols-2">
+            <button type="button" className="wearo-consent-disclosure inline-flex min-h-11 items-center justify-between gap-3 border border-[rgba(84,114,140,.34)] bg-white/80 px-4 py-3 text-left text-sm font-semibold text-[#36566D] transition hover:bg-[#F2CEAE]/25 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#54728C]" aria-expanded={dataDetailsOpen} aria-controls="wearo-ai-data-details" onClick={() => setDataDetailsOpen((open) => !open)}>
+              <span><span aria-hidden="true">↗ </span>Cách dữ liệu được xử lý</span><span aria-hidden="true">{dataDetailsOpen ? "−" : "+"}</span>
+            </button>
+            <button type="button" className="wearo-consent-disclosure inline-flex min-h-11 items-center justify-between gap-3 border border-[rgba(84,114,140,.34)] bg-white/80 px-4 py-3 text-left text-sm font-semibold text-[#36566D] transition hover:bg-[#F2CEAE]/25 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#54728C]" aria-expanded={termsOpen} aria-controls="wearo-ai-terms-details" onClick={() => setTermsOpen((open) => !open)}>
+              <span><span aria-hidden="true">↗ </span>Điều khoản sử dụng AI</span><span aria-hidden="true">{termsOpen ? "−" : "+"}</span>
+            </button>
+          </div>
+
+          {dataDetailsOpen ? <section id="wearo-ai-data-details" className="mt-3 border border-[rgba(84,114,140,.28)] bg-[#F7F4EF] p-4 text-sm leading-6 text-[#374151]" aria-label="Thông tin xử lý dữ liệu">
+            <h2 className="font-semibold text-[#202B33]">Dữ liệu đi qua những đâu?</h2>
+            <ul className="mt-2 list-disc space-y-1 pl-5">
+              <li>AI Stylist gửi nội dung yêu cầu đến dịch vụ AI; AI Try-On gửi ảnh người dùng và ảnh sản phẩm qua endpoint xử lý phía máy chủ.</li>
+              <li>Dữ liệu có thể được chuyển tới nhà cung cấp AI đang cấu hình cho tác vụ tương ứng.</li>
+              <li>Code hiện tại chưa cung cấp đủ căn cứ để xác nhận thời hạn lưu trữ, quy trình xóa ở nhà cung cấp hoặc việc dữ liệu có được dùng để huấn luyện hay không.</li>
+              <li>Chỉ tải lên ảnh bạn có quyền sử dụng và tránh nội dung nhạy cảm. Đóng trang không đồng nghĩa với việc xóa dữ liệu đã gửi trước đó.</li>
+            </ul>
+          </section> : null}
+
+          {termsOpen ? <section id="wearo-ai-terms-details" className="mt-3 border border-[rgba(84,114,140,.28)] bg-[#F7F4EF] p-4 text-sm leading-6 text-[#374151]" aria-label="Điều khoản sử dụng AI">
+            <h2 className="font-semibold text-[#202B33]">Nguyên tắc sử dụng</h2>
+            <ul className="mt-2 list-disc space-y-1 pl-5">
+              <li>Bạn cần có quyền sử dụng hình ảnh và nội dung gửi lên.</li>
+              <li>Không sử dụng AI để quấy rối, giả mạo, xâm phạm quyền hình ảnh hoặc sở hữu trí tuệ.</li>
+              <li>Kết quả AI là gợi ý tham khảo, có thể không phản ánh chính xác sản phẩm thực tế.</li>
+              <li>Lựa chọn đồng ý chỉ lưu trạng thái chấp thuận trong bộ nhớ trình duyệt hiện tại; đây không phải hồ sơ chấp thuận được xác nhận ở máy chủ.</li>
+            </ul>
+          </section> : null}
+
+          <label className={`ai-consent-check mt-5 flex cursor-pointer items-start gap-3 rounded-sm border p-4 transition-colors ${checked ? "border-[#54728C] bg-[rgba(119,148,166,.16)]" : "border-[rgba(84,114,140,.34)] bg-white/85 hover:bg-[rgba(242,206,174,.18)]"}`}>
+            <input type="checkbox" checked={checked} onChange={(event) => setChecked(event.target.checked)} className="wearo-consent-checkbox mt-1 shrink-0" />
+            <span className="text-sm leading-6 text-[#202B33]">
+              Tôi đã đọc thông tin trên và đồng ý gửi nội dung/ảnh cần thiết đến dịch vụ WEARO và nhà cung cấp AI được cấu hình để thực hiện tính năng tôi chọn.
             </span>
           </label>
+          <p className="mt-2 text-xs leading-5 text-[#4B5563]">Bạn có thể không đồng ý và quay lại trang trước. Không cần chọn ô này để rời trang.</p>
 
-          <button
-            type="button"
-            className="mt-4 w-full transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#54728C] focus-visible:ring-offset-2"
-            disabled={!checked}
-            onClick={onAccept}
-          >
-            Tiếp tục vào AI Studio <span aria-hidden="true">→</span>
-          </button>
-          <p className="mt-4 text-center text-xs leading-5 text-silver">Bạn có thể rời trang bất cứ lúc nào.</p>
+          <div className="mt-4 grid gap-3 sm:grid-cols-[minmax(0,1fr)_auto]">
+            <button type="button" className="wearo-consent-choice wearo-consent-primary inline-flex w-full items-center justify-center gap-2 bg-[#54728C] px-5 py-3 text-sm font-semibold text-white shadow-sm hover:bg-[#3F5F76] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#54728C] focus-visible:ring-offset-2 disabled:hover:bg-[#54728C]" disabled={!checked} onClick={onAccept}>
+              Tiếp tục vào AI Studio <span aria-hidden="true">→</span>
+            </button>
+            <Link to="/" className="wearo-consent-choice wearo-consent-back inline-flex items-center justify-center border border-[#54728C] bg-white px-5 py-3 text-sm font-semibold text-[#36566D] hover:bg-[#F2CEAE]/25 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#54728C] focus-visible:ring-offset-2">
+              Không đồng ý · Quay lại
+            </Link>
+          </div>
+          <p className="wearo-consent-note mt-4 text-center text-xs leading-5 text-[#4B5563]">Chi tiết hình học lấy cảm hứng từ bảng màu WEARO, giữ vai trò điểm nhấn nhẹ.</p>
         </section>
       </div>
     </main>
   );
 }
-
 function TryOnStudio({
   products,
   initialProductId,
@@ -416,6 +495,12 @@ function AiPage() {
     setConsented(true);
   }
 
+  function reviewConsent() {
+    window.localStorage.removeItem(CONSENT_KEY);
+    setConsented(false);
+    setConsentReady(true);
+  }
+
   async function handleGenerate() {
     const accessToken = getCustomerAccessToken();
     const userBrief = brief.trim() || "Hãy đề xuất một outfit phù hợp với phong cách và dịp đã chọn.";
@@ -496,6 +581,9 @@ function AiPage() {
                 <span className="wearo-ai-title-accent">AI Studio</span>
               </h1>
               <p className="wearo-ai-lede">Bạn đã có món đồ muốn thử, hay cần gợi ý mặc gì? Chọn một cách bắt đầu — bạn có thể đổi chế độ bất cứ lúc nào.</p>
+              <button type="button" onClick={reviewConsent} className="mt-3 inline-flex min-h-10 items-center border border-[rgba(84,114,140,.38)] px-3 py-2 text-xs font-semibold text-[#54728C] transition hover:bg-[rgba(242,206,174,.18)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#54728C] focus-visible:ring-offset-2">
+                Quản lý chấp thuận & thông tin dữ liệu
+              </button>
             </header>
 
             <div className="wearo-ai-start-choices" role="group" aria-label="Chọn cách bắt đầu">
