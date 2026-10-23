@@ -8,6 +8,7 @@ on:
       - ".github/dependency-repair.request"
       - "fashion-dream-try-on-main/src/data/products.ts"
       - "fashion-dream-try-on-main/src/routes/new-arrivals.tsx"
+      - "fashion-dream-try-on-main/tests/smoke/phase-b-c-invariants.mjs"
   workflow_dispatch:
 
 permissions:
