@@ -21,7 +21,7 @@ const getShopProducts = createServerFn({ method: "GET" }).handler(async () => {
   const genderById = new Map(styleRows.map((row) => [row.id, row.gender]));
   return rows
     .filter((product) => typeof product.name === "string" && product.name.trim().length > 0)
-    .filter((product) => Number.isFinite(Number(product.price)) && Number(product.price) > 0)
+    .filter((product) => Number.isSafeInteger(Number(product.price)) && Number(product.price) >= 1000)
     .filter((product) => Number(product.total_stock) > 0)
     .map((product): Product => {
       const gallery = (product.gallery ?? []).filter((image): image is string => typeof image === "string" && image.trim().length > 0);
@@ -49,7 +49,43 @@ export const Route = createFileRoute("/shop")({
     { property: "og:description", content: "WEARO / Modern everyday fashion for everyone — khám phá sản phẩm, AI Virtual Try-On và AI Stylist." },
   ], links: [canonicalLink("/shop")] }),
   component: ShopPage,
+  pendingComponent: ShopRoutePending,
+  errorComponent: ShopRouteError,
 });
+
+function ShopRoutePending() {
+  return (
+    <div className="wearo-page min-h-screen">
+      <SiteNav />
+      <main className="mx-auto max-w-7xl px-5 pb-20 pt-32 sm:px-10 lg:px-16" role="status" aria-live="polite">
+        <p className="wearo-shop-section-label">WEARO / SHOP</p>
+        <h1 className="mt-3 text-2xl font-semibold text-[#171717]">Đang tải cửa hàng…</h1>
+        <p className="mt-2 text-sm leading-6 text-[#54728C]">Đang lấy danh sách sản phẩm mới nhất.</p>
+        <div className="mt-8 grid grid-cols-2 gap-4 lg:grid-cols-4" aria-hidden="true">
+          {[1, 2, 3, 4].map((item) => <div key={item} className="aspect-[3/4] animate-pulse bg-[#F2F5F6]" />)}
+        </div>
+      </main>
+      <SiteFooter />
+    </div>
+  );
+}
+
+function ShopRouteError({ reset }: { reset: () => void }) {
+  return (
+    <div className="wearo-page min-h-screen">
+      <SiteNav />
+      <main className="mx-auto max-w-3xl px-5 pb-20 pt-32 sm:px-10 lg:px-16">
+        <section className="border border-[rgba(84,114,140,.22)] bg-[#F7F5F1] p-6 sm:p-10" role="alert">
+          <p className="wearo-shop-section-label">WEARO / SHOP</p>
+          <h1 className="mt-3 text-2xl font-semibold text-[#171717]">Chưa thể tải cửa hàng.</h1>
+          <p className="mt-3 text-sm leading-6 text-[#54728C]">Có thể kết nối đang gián đoạn. Hãy thử tải lại danh sách sản phẩm; nếu lỗi tiếp tục, vui lòng quay lại sau.</p>
+          <button type="button" onClick={reset} className="mt-6 inline-flex min-h-11 items-center justify-center border border-[#54728C] bg-[#54728C] px-5 text-sm font-semibold text-white hover:bg-[#405B70]">Thử tải lại</button>
+        </section>
+      </main>
+      <SiteFooter />
+    </div>
+  );
+}
 
 const SORTS = [{ id: "featured", label: "Nổi bật" }, { id: "price-asc", label: "Giá thấp → cao" }, { id: "price-desc", label: "Giá cao → thấp" }] as const;
 
@@ -71,7 +107,7 @@ function ShopPage() {
       image: "/images/banners/wearo-ai-virtual-try-on-banner.webp",
       alt: "WEARO AI Virtual Try-On — trải nghiệm thử outfit bằng AI",
       cta: "Trải nghiệm AI Virtual Try-On",
-      href: "/ai",
+      mode: "tryon" as const,
     },
     {
       id: "ai-stylist",
@@ -81,7 +117,7 @@ function ShopPage() {
       image: "/images/banners/wearo-ai-stylist-banner.webp",
       alt: "WEARO AI Stylist — gợi ý phối đồ theo phong cách cá nhân",
       cta: "Khám phá AI Stylist",
-      href: "/ai",
+      mode: "concept" as const,
     },
   ];
   useEffect(() => {
@@ -135,7 +171,7 @@ function ShopPage() {
                   <p className="wearo-shop-banner-eyebrow">{banner.eyebrow}</p>
                   {index === 0 ? <h1>{banner.title}</h1> : <h2>{banner.title}</h2>}
                   <p className="wearo-shop-banner-description">{banner.description}</p>
-                  <Link to={banner.href} className="wearo-shop-banner-cta">
+                  <Link to="/ai" search={{ mode: banner.mode }} className="wearo-shop-banner-cta">
                     {banner.cta} <ArrowUpRight size={16} aria-hidden="true" />
                   </Link>
                 </div>
