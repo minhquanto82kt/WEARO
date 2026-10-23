@@ -1,1 +1,1 @@
-Retry dependency repair with a rebase-safe push to account for automatic repository-stat commits.
+Retry dependency repair with build-generated workspace changes cleaned before rebasing.
