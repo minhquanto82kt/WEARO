@@ -34,7 +34,7 @@ mustMatch(cart, /export type CartLine = \{ variantId: string; qty: number/, "car
 mustMatch(checkout, /paymentMethod.*"cod"/s, "checkout supports COD as a payment method");
 mustMatch(checkout, /createOrder\(\{ data:/, "checkout creates the order through the server order function");
 mustMatch(checkout, /paymentMethod,/, "checkout sends the selected payment method");
-mustMatch(checkout, /getInvoiceData\(\{ data: \{ orderCode: result\.orderCode, phone \}\}\)/, "COD checkout fetches the invoice after order creation");
+mustMatch(checkout, /getInvoiceData\(\{\s*data:\s*\{\s*orderCode:\s*result\.orderCode,\s*phone\s*\}\s*\}\)/, "COD checkout fetches the invoice after order creation");
 mustMatch(invoice, /const isCod = order\.payment_method === "cod"/, "invoice service explicitly recognizes COD");
 mustMatch(invoice, /if \(!isCod && !isPaidOnline\) throw new Error\("INVOICE_NOT_READY"\)/, "invoice is blocked until payment is ready");
 mustMatch(checkout, /setCountdown\(5\)/, "success page starts the five-second invoice countdown");
