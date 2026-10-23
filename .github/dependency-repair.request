@@ -1,1 +1,1 @@
-Run the one-time dependency audit repair workflow for feature/product-admin. The workflow commits dependency changes only after audit, build, typecheck, lint, and tests pass.
+Retry dependency repair after fixing source invariant references and separating route smoke tests.
