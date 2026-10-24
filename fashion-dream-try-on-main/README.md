@@ -20,6 +20,17 @@ Customer-facing fashion brand
 - GitHub → source of truth for application code
 - Vercel → deployment/runtime
 
+## Project status
+
+| Area | Live status / source |
+|---|---|
+| CI on `feature/product-admin` | [![CI](https://github.com/minhquanto82kt/WEARO/actions/workflows/ci.yml/badge.svg?branch=feature/product-admin)](https://github.com/minhquanto82kt/WEARO/actions/workflows/ci.yml?query=branch%3Afeature%2Fproduct-admin) |
+| GitHub Actions runs | [View branch workflow runs](https://github.com/minhquanto82kt/WEARO/actions?query=branch%3Afeature%2Fproduct-admin) |
+| Vercel deployments | [Open deployment dashboard](https://vercel.com/up-think/fashion-dream-try-on-main) |
+| Source branch | [`feature/product-admin`](https://github.com/minhquanto82kt/WEARO/tree/feature/product-admin) |
+
+> **Status accuracy:** The CI badge reflects the GitHub Actions workflow run status for this branch; it does not certify production runtime health, Supabase connectivity, payment completion, or AI provider availability. Confirm those separately in the linked dashboards.
+
 ## Stack
 
 - React 19 + TypeScript
