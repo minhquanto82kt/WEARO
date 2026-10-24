@@ -62,16 +62,16 @@ Bảng dưới được sinh từ GitHub Repository API, trạng thái GitHub Ac
 | Repository | Issues/PR đang mở | 3 |
 | Repository | Dung lượng GitHub ước tính | 56.2 MB |
 | Repository | Nhánh mặc định | `main` |
-| Repository | Nhánh đang thống kê | `feature/product-admin` |
-| Repository | Cập nhật gần nhất | 2026-10-24 01:31 UTC |
-| GitHub Actions | CI gần nhất trên nhánh này | [In Progress](https://github.com/minhquanto82kt/WEARO/actions/runs/40050189544) · 2026-10-24 01:31 UTC |
+| Repository | Nhánh đang thống kê | `feature/ai-stylist-evaluation-notebook` |
+| Repository | Cập nhật gần nhất | 2026-10-24 02:45 UTC |
+| GitHub Actions | CI gần nhất trên nhánh này | [In Progress](https://github.com/minhquanto82kt/WEARO/actions/runs/40055492614) · 2026-10-24 02:45 UTC |
 | Dữ liệu dự án | Package | `tanstack_start_ts` |
 | Dữ liệu dự án | Runtime | Node.js `>=24 <25` · `npm@11` |
 | Dữ liệu dự án | Ngôn ngữ GitHub nhận diện | CSS, JavaScript, Python, TypeScript |
 | Dữ liệu dự án | Dependencies / devDependencies | 54 / 18 |
 | Dữ liệu dự án | Scripts trong package.json | `audit:api-security`, `audit:architecture`, `audit:dependencies`, `build`, `build:dev`, `cf-typegen`, `check:env`, `check:env:preview`, `check:env:production`, `deploy:cloudflare`, `dev`, `format`, `lint`, `preview`, `test:customer-experience`, `test:customer-flows`, `test:phase-b-c`, `test:phase-d-e`, `test:phase-f-security`, `test:replicate-provider`, `test:smoke`, `typecheck` |
 
-_Cập nhật tự động: 2026-10-24 01:31 UTC · nhánh `feature/product-admin`._
+_Cập nhật tự động: 2026-10-24 02:45 UTC · nhánh `feature/ai-stylist-evaluation-notebook`._
 <!-- AUTO-REPO-STATS:END -->
 
 ## Phát triển local
