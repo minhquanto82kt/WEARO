@@ -24,4 +24,16 @@ export type GrowthEvent = {
 export function trackGrowthEvent(event: GrowthEvent) {
   if (typeof window === "undefined") return;
   window.dispatchEvent(new CustomEvent("wearo:growth", { detail: event }));
+
+  // Analytics must never interrupt checkout, cart, or AI interactions.
+  void import("@vercel/analytics").then(({ track }) => {
+    const properties = {
+      ...(event.productId ? { productId: event.productId } : {}),
+      ...(typeof event.value === "number" ? { value: event.value } : {}),
+      ...(event.currency ? { currency: event.currency } : {}),
+    };
+    track(event.name, properties);
+  }).catch(() => {
+    // Keep the customer flow available if analytics is blocked or disabled.
+  });
 }
