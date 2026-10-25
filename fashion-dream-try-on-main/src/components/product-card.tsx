@@ -14,6 +14,7 @@ export function ProductCard({ product }: { product: Product }) {
   const [saving, setSaving] = useState(false);
   const [wishlistMessage, setWishlistMessage] = useState("");
   const hasSale = typeof product.originalPrice === "number" && product.originalPrice > product.price;
+  const badgeLabel = product.badge?.toLowerCase() === "featured" ? (language === "vi" ? "Nổi bật" : "Featured") : product.badge?.toLowerCase().includes("new arrival") ? (language === "vi" ? "Mới" : product.badge) : product.badge;
   const secondaryImage = product.gallery?.[1];
   const normalizedLabel = (label: string) => label.trim().toLocaleLowerCase();
   const visibleLabels = [product.badge, product.fashionStyle]
@@ -115,7 +116,7 @@ export function ProductCard({ product }: { product: Product }) {
         <img src={product.image} alt={product.name} loading="lazy" decoding="async" sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw" className="fashion-product-image__primary" />
         {secondaryImage && <img src={secondaryImage} alt="" aria-hidden="true" loading="lazy" decoding="async" sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw" className="fashion-product-image__secondary" />}
         <div className="fashion-product-labels" aria-label="Product labels">
-          {product.badge && <span className={`fashion-product-badge${product.badge.toLowerCase().includes("new arrival") ? " fashion-product-badge--new-arrival" : ""}`}>{product.badge}</span>}
+          {badgeLabel && <span className={`fashion-product-badge${product.badge?.toLowerCase().includes("new arrival") ? " fashion-product-badge--new-arrival" : ""}`}>{badgeLabel}</span>}
           {product.fashionStyle && <span className={`fashion-product-style fashion-product-style--${product.fashionStyle.toLowerCase().replace(/\s+/g, "-")}`}>{product.fashionStyle}</span>}
           {hasSale && <span className="fashion-product-badge fashion-product-badge--sale">SALE</span>}
           {tags.map((tag) => <span key={normalizedLabel(tag)} className="fashion-product-tag">{tag}</span>)}
