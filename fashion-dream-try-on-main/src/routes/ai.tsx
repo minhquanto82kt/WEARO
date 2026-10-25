@@ -589,30 +589,41 @@ function AiPage() {
               </button>
             </header>
 
-            <div className="mb-4 grid grid-cols-1 gap-4 sm:grid-cols-2" aria-label="Giới thiệu tính năng AI Studio">
-              <figure className="min-w-0 overflow-hidden border border-[rgba(84,114,140,.18)] bg-white">
+            <div className="wearo-ai-start-choices" role="group" aria-label="Chọn cách bắt đầu">
+              <button className="wearo-ai-choice-card" type="button" aria-pressed={mode === "tryon"} data-active={mode === "tryon"} onClick={() => setMode("tryon")}>
                 <img
                   src="/images/banners/wearo-ai-virtual-try-on-banner.webp"
-                  alt="WEARO AI Virtual Try-On — trải nghiệm thử trang phục bằng AI"
+                  alt=""
+                  aria-hidden="true"
                   loading="lazy"
                   decoding="async"
-                  className="block aspect-[16/7] w-full object-cover object-center"
                 />
-              </figure>
-              <figure className="min-w-0 overflow-hidden border border-[rgba(84,114,140,.18)] bg-white">
+                <span className="wearo-ai-choice-content">
+                  <span className="wearo-ai-choice-number" aria-hidden="true">01</span>
+                  <span className="wearo-ai-choice-copy">
+                    <strong>Thử một sản phẩm</strong>
+                    <small>Chọn ảnh toàn thân và món đồ bạn muốn xem thử bằng AI.</small>
+                  </span>
+                  <span className="wearo-ai-choice-action" aria-hidden="true">Bắt đầu <span>→</span></span>
+                </span>
+              </button>
+              <button className="wearo-ai-choice-card" type="button" aria-pressed={mode === "concept"} data-active={mode === "concept"} onClick={() => setMode("concept")}>
                 <img
                   src="/images/banners/wearo-ai-stylist-banner.webp"
-                  alt="WEARO AI Stylist — khám phá ý tưởng phối đồ theo phong cách riêng"
+                  alt=""
+                  aria-hidden="true"
                   loading="lazy"
                   decoding="async"
-                  className="block aspect-[16/7] w-full object-cover object-center"
                 />
-              </figure>
-            </div>
-
-            <div className="wearo-ai-start-choices" role="group" aria-label="Chọn cách bắt đầu">
-              <button type="button" aria-pressed={mode === "tryon"} data-active={mode === "tryon"} onClick={() => setMode("tryon")}><span aria-hidden="true">01</span><strong>Thử một sản phẩm</strong><small>Chọn ảnh toàn thân và món đồ bạn muốn xem thử bằng AI.</small></button>
-              <button type="button" aria-pressed={mode === "concept"} data-active={mode === "concept"} onClick={() => setMode("concept")}><span aria-hidden="true">02</span><strong>Tìm ý tưởng outfit</strong><small>Chọn phong cách và dịp sử dụng để nhận gợi ý từ AI Stylist.</small></button>
+                <span className="wearo-ai-choice-content">
+                  <span className="wearo-ai-choice-number" aria-hidden="true">02</span>
+                  <span className="wearo-ai-choice-copy">
+                    <strong>Tìm ý tưởng outfit</strong>
+                    <small>Chọn phong cách và dịp sử dụng để nhận gợi ý từ AI Stylist.</small>
+                  </span>
+                  <span className="wearo-ai-choice-action" aria-hidden="true">Khám phá <span>→</span></span>
+                </span>
+              </button>
             </div>
 
             {mode === "concept" ? <>
