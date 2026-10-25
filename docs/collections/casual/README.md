@@ -1,6 +1,8 @@
-# Casual — Color Palette
+# Casual — Color & Shape Identity
 
 **Phạm vi:** trang collection Casual.
+
+## Palette màu
 
 | Vai trò | Preview | HEX |
 |---|---|---|
@@ -10,9 +12,20 @@
 | Paper — nền trang | ![#F8F6F2](https://img.shields.io/badge/-%23F8F6F2-F8F6F2?style=flat-square) | `#F8F6F2` |
 | Ink — chữ mặc định | ![#171717](https://img.shields.io/badge/-%23171717-171717?style=flat-square) | `#171717` |
 
+## Shape identity
+
+| Vai trò | Asset hiện được cấu hình | Màu |
+|---|---|---|
+| Shape chính | [shape-01.svg](../../fashion-dream-try-on-main/public/images/shapes-gallery/originals/shape-01.svg) | `--collection-accent` |
+| Shape phụ | [shape-03.svg](../../fashion-dream-try-on-main/public/images/shapes-gallery/originals/shape-03.svg) | `--collection-secondary` |
+
+**Định hướng:** Casual nên tạo cảm giác thoải mái, thân thiện và dễ tiếp cận. Đây là mục tiêu thiết kế, không phải kết luận hình học của hai asset. Cần xem trực tiếp gallery để xác nhận shape có hỗ trợ định hướng này hay không.
+
+**Trạng thái:** mapping theo CSS mặc định hiện tại; chờ duyệt trực quan. Nếu thay đổi mapping, cập nhật [Shape Identity Matrix](../README.md#shape-identity-matrix) cùng lúc.
+
 ## CSS variables
 
-Palette mặc định được khai báo trong `src/styles/wearo-collection-pages.scss`:
+Nguồn: `src/styles/wearo-collection-pages.scss`.
 
 ```scss
 --collection-ink: #171717;
@@ -22,4 +35,4 @@ Palette mặc định được khai báo trong `src/styles/wearo-collection-page
 --collection-paper: #F8F6F2;
 ```
 
-**Lưu ý:** Các màu này thuộc trang collection Casual; chưa xác nhận là màu nền của thẻ Casual trên trang chủ.
+**Lưu ý:** Palette và shape trên đây thuộc trang collection Casual; chưa xác nhận là màu sắc hoặc asset của thẻ Casual trên trang chủ.
