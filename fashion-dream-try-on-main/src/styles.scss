@@ -8,14 +8,14 @@
 @import "./styles/wearo-admin-copy.scss";
 @import "./styles/components/header";
 @import "./styles/about-polish.scss";
-@import "./styles/ai-workspace-v2.scss";
+@import "./styles/ai/workspace/ai-workspace.scss";
 @import "./styles/wearo-ai-consent.scss";
 @import "./styles/pages/home-ai-refinements.scss";
 @import "./styles/wearo-contrast-guard.scss";
 @import "./styles/foundations/account-and-accessibility.scss";
 @import "./styles/wearo-product-page-fix.scss";
-@import "./styles/wearo-ai-production-fix.scss";
-@import "./styles/wearo-ai-phase2.scss";
+@import "./styles/ai/workspace/ai-production-overrides.scss";
+@import "./styles/ai/workspace/ai-phase2.scss";
 @import "./styles/wearo-ai-loader.scss";
 @import "./styles/wearo-cart-feedback.scss";
 @import "./styles/wearo-commerce-hierarchy.scss";
