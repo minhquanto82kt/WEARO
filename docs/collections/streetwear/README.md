@@ -16,12 +16,12 @@
 
 | Vai trò | Asset hiện được cấu hình | Màu |
 |---|---|---|
-| Shape chính | [shape-04.svg](../../fashion-dream-try-on-main/public/images/shapes-gallery/originals/shape-04.svg) | `--collection-accent` |
-| Shape phụ | [shape-02.svg](../../fashion-dream-try-on-main/public/images/shapes-gallery/originals/shape-02.svg) | `--collection-secondary` |
+| Shape chính | [shape-15.svg](../../fashion-dream-try-on-main/public/images/shapes-gallery/originals/shape-15.svg) | `--collection-accent` |
+| Shape phụ | [shape-52.svg](../../fashion-dream-try-on-main/public/images/shapes-gallery/originals/shape-52.svg) | `--collection-secondary` |
 
-**Định hướng:** Streetwear nên có cá tính và năng lượng thị giác rõ, với độ tương phản được kiểm soát. Màu accent hiện tại là xanh lime `#D7F27C`; shape vẫn cần được duyệt trực quan để xác nhận phù hợp với định hướng.
+**Định hướng:** shape-15 có đường chéo mạnh và hình khối góc cạnh; shape-52 tạo điểm nhấn hướng tâm sắc nét. Kết hợp xanh đậm với lime để tạo năng lượng thị giác rõ cho Streetwear.
 
-**Trạng thái:** mapping theo CSS hiện tại; chờ duyệt trực quan. Nếu thay đổi mapping, cập nhật [Shape Identity Matrix](../README.md#shape-identity-matrix) cùng lúc.
+**Trạng thái:** đã chọn theo cấu trúc SVG; cần kiểm tra trực quan trên trang desktop/mobile trước khi chốt.
 
 ## CSS variables
 
