@@ -16,12 +16,12 @@
 
 | Vai trò | Asset hiện được cấu hình | Màu |
 |---|---|---|
-| Shape chính | [shape-02.svg](../../fashion-dream-try-on-main/public/images/shapes-gallery/originals/shape-02.svg) | `--collection-accent` |
-| Shape phụ | [shape-04.svg](../../fashion-dream-try-on-main/public/images/shapes-gallery/originals/shape-04.svg) | `--collection-secondary` |
+| Shape chính | [shape-68.svg](../../fashion-dream-try-on-main/public/images/shapes-gallery/originals/shape-68.svg) | `--collection-accent` |
+| Shape phụ | [shape-22.svg](../../fashion-dream-try-on-main/public/images/shapes-gallery/originals/shape-22.svg) | `--collection-secondary` |
 
-**Định hướng:** Basic nên ưu tiên sự tối giản, tiết chế và cân bằng để không cạnh tranh với sản phẩm. Đây là mục tiêu thiết kế; cần xem trực tiếp gallery để xác nhận hai asset phù hợp.
+**Định hướng:** shape-68 là khung vuông bo góc có khoảng rỗng bên trong; shape-22 là vòng tròn đơn giản. Cặp hình có hình học dễ đọc, ít chi tiết và hợp tinh thần tối giản của Basic.
 
-**Trạng thái:** mapping theo CSS hiện tại; chờ duyệt trực quan. Nếu thay đổi mapping, cập nhật [Shape Identity Matrix](../README.md#shape-identity-matrix) cùng lúc.
+**Trạng thái:** đã chọn theo cấu trúc SVG; cần kiểm tra trực quan trên trang desktop/mobile trước khi chốt.
 
 ## CSS variables
 
