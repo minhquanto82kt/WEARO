@@ -1,6 +1,7 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useRef, useState } from "react";
 import "@/styles/admin-new-product.scss";
+import { MarkdownDescriptionEditor } from "@/components/markdown-description";
 import { ChevronLeft, ChevronRight, Trash2 } from "lucide-react";
 import {
   addProductImage,
@@ -322,16 +323,10 @@ function NewProductPage() {
 
             <label>
               Mô tả chi tiết
-
-              <textarea
-                rows={7}
+              <MarkdownDescriptionEditor
                 value={form.long_description}
-                onChange={(e) =>
-                  setForm({
-                    ...form,
-                    long_description: e.target.value,
-                  })
-                }
+                onChange={(value) => setForm((current) => ({ ...current, long_description: value }))}
+                rows={7}
               />
             </label>
           </div>
