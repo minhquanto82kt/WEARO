@@ -64,7 +64,7 @@ Bảng dưới được sinh từ GitHub Repository API, trạng thái GitHub Ac
 | Repository | Nhánh mặc định | `main` |
 | Repository | Nhánh đang thống kê | `ops/p0-p2-hardening-20261025` |
 | Repository | Cập nhật gần nhất | 2026-10-25 01:44 UTC |
-| GitHub Actions | CI gần nhất trên nhánh này | [In Progress](https://github.com/minhquanto82kt/WEARO/actions/runs/40151815161) · 2026-10-25 01:44 UTC |
+| GitHub Actions | CI gần nhất trên nhánh này | [In Progress](https://github.com/minhquanto82kt/WEARO/actions/runs/40151828545) · 2026-10-25 01:44 UTC |
 | Dữ liệu dự án | Package | `tanstack_start_ts` |
 | Dữ liệu dự án | Runtime | Node.js `>=24 <25` · `npm@11` |
 | Dữ liệu dự án | Ngôn ngữ GitHub nhận diện | CSS, JavaScript, Python, TypeScript |
