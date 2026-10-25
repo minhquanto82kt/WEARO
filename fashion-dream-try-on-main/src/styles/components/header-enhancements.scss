@@ -446,3 +446,113 @@ body .fashion-nav .fashion-shop-mega .fashion-shop-category-grid > .fashion-menu
 body .fashion-nav .fashion-shop-mega .fashion-shop-discovery-grid > .fashion-menu-label {
   display: none !important;
 }
+
+
+/* WEARO Mega Menu — visual discovery cards (P0 UX polish). */
+body .fashion-nav .fashion-shop-mega .fashion-shop-discovery-grid .fashion-shop-all {
+  min-height: 88px !important;
+  padding: 12px 18px !important;
+  justify-content: flex-start !important;
+  gap: 14px !important;
+  border-color: rgba(84, 114, 140, .18) !important;
+  background: linear-gradient(110deg, #fff 0%, #fbfaf7 100%) !important;
+}
+
+body .fashion-nav .fashion-shop-mega .fashion-shop-discovery-grid .fashion-shop-all::before {
+  content: "" !important;
+  display: block !important;
+  width: 52px !important;
+  height: 52px !important;
+  flex: 0 0 52px !important;
+  order: 0 !important;
+  background: linear-gradient(145deg, #54728C 0%, #7794A6 58%, #F2CEAE 100%) !important;
+  -webkit-mask-image: url("/images/shapes-gallery/originals/shape-36.svg") !important;
+  mask-image: url("/images/shapes-gallery/originals/shape-36.svg") !important;
+  -webkit-mask-repeat: no-repeat !important;
+  mask-repeat: no-repeat !important;
+  -webkit-mask-position: center !important;
+  mask-position: center !important;
+  -webkit-mask-size: contain !important;
+  mask-size: contain !important;
+  transition: transform .2s ease, filter .2s ease !important;
+}
+
+body .fashion-nav .fashion-shop-mega .fashion-shop-discovery-grid .fashion-shop-all:nth-child(2)::before {
+  background: linear-gradient(145deg, #252525 0%, #777771 58%, #D8D5CE 100%) !important;
+  -webkit-mask-image: url("/images/shapes-gallery/originals/shape-68.svg") !important;
+  mask-image: url("/images/shapes-gallery/originals/shape-68.svg") !important;
+}
+
+body .fashion-nav .fashion-shop-mega .fashion-shop-discovery-grid .fashion-shop-all:nth-child(3)::before {
+  background: linear-gradient(145deg, #171A18 0%, #26352D 58%, #D7F27C 100%) !important;
+  -webkit-mask-image: url("/images/shapes-gallery/originals/shape-15.svg") !important;
+  mask-image: url("/images/shapes-gallery/originals/shape-15.svg") !important;
+}
+
+body .fashion-nav .fashion-shop-mega .fashion-shop-discovery-grid .fashion-shop-all:nth-child(4)::before {
+  background: linear-gradient(145deg, #355C4A 0%, #8EAD91 58%, #E7B879 100%) !important;
+  -webkit-mask-image: url("/images/shapes-gallery/originals/shape-32.svg") !important;
+  mask-image: url("/images/shapes-gallery/originals/shape-32.svg") !important;
+}
+
+body .fashion-nav .fashion-shop-mega .fashion-shop-discovery-grid .fashion-shop-all:nth-child(5)::before {
+  background: radial-gradient(circle at 30% 25%, #F2CEAE 0 12%, transparent 13%),
+              radial-gradient(circle at 70% 70%, #7794A6 0 15%, transparent 16%),
+              linear-gradient(145deg, #54728C, #171717) !important;
+  -webkit-mask-image: none !important;
+  mask-image: none !important;
+  clip-path: polygon(50% 0%, 61% 34%, 98% 35%, 69% 57%, 80% 94%, 50% 72%, 20% 94%, 31% 57%, 2% 35%, 39% 34%) !important;
+}
+
+body .fashion-nav .fashion-shop-mega .fashion-shop-discovery-grid .fashion-shop-all span {
+  min-width: 0 !important;
+  flex: 1 1 auto !important;
+  color: #171717 !important;
+  font: 700 12px/1.35 "Be Vietnam Pro", Arial, sans-serif !important;
+  letter-spacing: .055em !important;
+  text-transform: uppercase !important;
+}
+
+body .fashion-nav .fashion-shop-mega .fashion-shop-discovery-grid .fashion-shop-all svg {
+  margin-left: auto !important;
+}
+
+body .fashion-nav .fashion-shop-mega .fashion-shop-discovery-grid .fashion-shop-all:hover::before,
+body .fashion-nav .fashion-shop-mega .fashion-shop-discovery-grid .fashion-shop-all:focus-visible::before {
+  transform: rotate(7deg) scale(1.06) !important;
+  filter: saturate(1.08) !important;
+}
+
+body .fashion-nav .fashion-shop-mega .fashion-shop-category-grid {
+  row-gap: 14px !important;
+}
+
+body .fashion-nav .fashion-shop-mega .fashion-shop-category__image {
+  background: linear-gradient(135deg, #F8F6F2 0%, #E8EEF0 100%) !important;
+}
+
+body .fashion-nav .fashion-shop-mega .fashion-shop-category__meta strong {
+  font-size: 11px !important;
+}
+
+body .fashion-nav .fashion-shop-mega .fashion-shop-category__meta span {
+  font-size: 9px !important;
+}
+
+@media (max-width: 980px) {
+  body .fashion-nav .fashion-shop-mega .fashion-shop-discovery-grid .fashion-shop-all {
+    min-height: 76px !important;
+    padding-inline: 14px !important;
+  }
+  body .fashion-nav .fashion-shop-mega .fashion-shop-discovery-grid .fashion-shop-all::before {
+    width: 44px !important;
+    height: 44px !important;
+    flex-basis: 44px !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body .fashion-nav .fashion-shop-mega .fashion-shop-discovery-grid .fashion-shop-all::before {
+    transition: none !important;
+  }
+}
