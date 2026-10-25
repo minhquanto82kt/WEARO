@@ -10,9 +10,9 @@
 @import "./styles/about-polish.scss";
 @import "./styles/ai-workspace-v2.scss";
 @import "./styles/wearo-ai-consent.scss";
-@import "./styles/wearo-p0-ux-refinement.scss";
+@import "./styles/pages/home-ai-refinements.scss";
 @import "./styles/wearo-contrast-guard.scss";
-@import "./styles/wearo-p3-final.scss";
+@import "./styles/foundations/account-and-accessibility.scss";
 @import "./styles/wearo-product-page-fix.scss";
 @import "./styles/wearo-ai-production-fix.scss";
 @import "./styles/wearo-ai-phase2.scss";
@@ -49,8 +49,8 @@
 /* Canonical convergence / compatibility */
 @import "./styles/home-composition-guard.scss";
 @import "./styles/wearo-canonical-lock.scss";
-@import "./styles/wearo-ui-v2.scss";
-@import "./styles/wearo-ui-v2-final.scss";
+@import "./styles/foundations/global-ui.scss";
+@import "./styles/foundations/ui-convergence.scss";
 
 /* Final public-storefront color-ratio layer; admin styles/layout remain unchanged. */
 @import "./styles/wearo-color-ratio.scss";
