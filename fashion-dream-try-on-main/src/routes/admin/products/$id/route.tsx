@@ -1,4 +1,5 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
+import { MarkdownDescriptionEditor } from "@/components/markdown-description";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import {
   addProductImage,
@@ -592,7 +593,7 @@ function ProductDetailPage() {
             <section className="up-product-form-section" aria-labelledby="product-content-heading">
               <div className="up-product-form-section__heading"><h3 id="product-content-heading">3. Nội dung</h3><p>Mô tả ngắn hiển thị nhanh; mô tả chi tiết cung cấp thêm thông tin.</p></div>
             <label>Mô tả ngắn<textarea rows={3} value={form.short_description} onChange={(e) => setForm((c) => c && ({ ...c, short_description: e.target.value }))} disabled={saving || deleting} /></label>
-            <label>Mô tả chi tiết<textarea rows={7} value={form.long_description} onChange={(e) => setForm((c) => c && ({ ...c, long_description: e.target.value }))} disabled={saving || deleting} /></label>
+            <label>Mô tả chi tiết<MarkdownDescriptionEditor value={form.long_description} onChange={(value) => setForm((c) => c && ({ ...c, long_description: value }))} disabled={saving || deleting} rows={7} /></label>
             </section>
             <section className="up-product-form-section" aria-labelledby="product-display-heading">
               <div className="up-product-form-section__heading"><h3 id="product-display-heading">4. Hiển thị trên cửa hàng</h3><p>Kiểm soát trạng thái xuất bản và các nhãn sản phẩm.</p></div>
