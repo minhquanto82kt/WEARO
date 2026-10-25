@@ -25,8 +25,35 @@ export function ProductCard({ product }: { product: Product }) {
     seenLabels.add(normalized);
     return true;
   }).slice(0, 2);
-  const specs = [product.sizes.filter(Boolean).join(" / "), product.colors.filter(Boolean).slice(0, 2).join(" / ")].filter(Boolean).join(" · ");
-  const genderLabel = product.gender === "Male" ? (language === "vi" ? "Nam · Male" : "Male") : product.gender === "Female" ? (language === "vi" ? "Nữ · Female" : "Female") : product.gender === "Unisex" ? "Unisex" : "";
+  const sizeOrder = ["XS", "S", "M", "L", "XL", "XXL", "XXXL", "FREESIZE"];
+  const sortedSizes = [...new Set(product.sizes.filter(Boolean))].sort((a, b) => {
+    const aIndex = sizeOrder.indexOf(a.trim().toUpperCase());
+    const bIndex = sizeOrder.indexOf(b.trim().toUpperCase());
+    return (aIndex < 0 ? sizeOrder.length : aIndex) - (bIndex < 0 ? sizeOrder.length : bIndex) || a.localeCompare(b);
+  });
+  const categoryLabels: Record<string, string> = {
+    tees: "Áo thun", pants: "Quần", outerwear: "Áo khoác", hoodies: "Áo hoodie",
+    sunglass: "Kính râm", sunglasses: "Kính râm", cap: "Mũ", accessories: "Phụ kiện",
+    shirts: "Áo sơ mi", tops: "Áo", dresses: "Đầm / Váy",
+  };
+  const colorLabels: Record<string, string> = {
+    black: "Đen", white: "Trắng", ivory: "Trắng ngà", beige: "Be", cream: "Kem",
+    charcoal: "Xám than", grey: "Xám", gray: "Xám", cement: "Xám xi măng",
+    electric: "Xanh dương", blue: "Xanh dương", brown: "Nâu", red: "Đỏ",
+    green: "Xanh lá", pink: "Hồng", navy: "Xanh navy",
+    "#141414": "Đen", "#000000": "Đen", "#ffffff": "Trắng", "#fff": "Trắng",
+    "#f5f5dc": "Be", "#f2ceae": "Kem",
+  };
+  const displayColor = (color: string) => {
+    const value = color.trim();
+    return colorLabels[value.toLowerCase()] ?? (/^#[0-9a-f]{3,8}$/i.test(value) ? "Màu tùy chỉnh" : value);
+  };
+  const specs = [
+    sortedSizes.join(" / "),
+    [...new Set(product.colors.filter(Boolean))].slice(0, 2).map(displayColor).join(" / "),
+  ].filter(Boolean).join(" · ");
+  const categoryLabel = categoryLabels[product.category.toLowerCase()] ?? product.category;
+  const genderLabel = product.gender === "Male" ? "Nam" : product.gender === "Female" ? "Nữ" : product.gender === "Unisex" ? "Unisex" : "";
 
   useEffect(() => {
     let mounted = true;
@@ -98,7 +125,7 @@ export function ProductCard({ product }: { product: Product }) {
       {secondaryImage && <button type="button" className="fashion-product-mobile-gallery" onClick={() => setShowSecondaryImage((show) => !show)} aria-label={showSecondaryImage ? "Xem ảnh sản phẩm đầu tiên" : "Xem ảnh sản phẩm tiếp theo"} aria-pressed={showSecondaryImage}><ChevronRight size={15} aria-hidden="true" /><span>{showSecondaryImage ? "2 / 2" : "1 / 2"}</span></button>}
       <div className="fashion-product-meta">
         <div className="min-w-0">
-          <p className="fashion-product-category">{product.category}{genderLabel ? ` · ${genderLabel}` : ""}</p>
+          <p className="fashion-product-category">{categoryLabel}{genderLabel ? ` · ${genderLabel}` : ""}</p>
           <Link to="/product/$id" params={{ id: product.id }} className="fashion-product-title">{product.name}</Link>
           {product.shortDescription && <p className="mt-2 line-clamp-2 text-xs leading-5 text-silver">{product.shortDescription}</p>}
           {specs && <p className="fashion-product-spec mt-2">{specs}</p>}
