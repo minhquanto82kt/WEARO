@@ -207,30 +207,33 @@
 
 .fashion-product-meta {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
-  gap: 14px;
+  grid-template-columns: minmax(0, 1fr) minmax(76px, auto);
+  align-items: start;
+  gap: 10px;
   min-height: 142px;
   padding: 15px 16px 17px;
-  color: var(--wearo-card-primary);
+  color: #252525;
 }
 
 .fashion-product-category,
 .fashion-product-spec {
-  color: var(--wearo-card-secondary);
-  font-size: 9px;
-  font-weight: 600;
-  letter-spacing: .13em;
+  color: #3f5e77;
+  font-size: 11px;
+  font-weight: 650;
+  letter-spacing: .07em;
   line-height: 1.45;
   text-transform: uppercase;
 }
 
 .fashion-product-title {
   display: inline-block;
+  max-width: 100%;
   margin-top: 5px;
-  color: var(--wearo-card-primary);
+  color: #252525;
   font-size: 14px;
   font-weight: 700;
-  line-height: 1.35;
+  line-height: 1.4;
+  text-wrap: pretty;
   transition: color 200ms ease;
 }
 
@@ -264,9 +267,10 @@
 }
 
 .fashion-product-price {
-  color: var(--wearo-card-primary);
-  font-size: 12px;
+  color: #252525;
+  font-size: 14px;
   font-weight: 800;
+  line-height: 1.35;
   white-space: nowrap;
 }
 
@@ -279,8 +283,8 @@
 
 .fashion-heart {
   display: inline-flex;
-  width: 28px;
-  height: 28px;
+  width: 44px;
+  height: 44px;
   align-items: center;
   justify-content: center;
   margin-top: 7px;
@@ -292,13 +296,19 @@
   transition: transform 220ms cubic-bezier(.22,1,.36,1), background-color 220ms ease, color 220ms ease, border-color 220ms ease;
 }
 
-.fashion-heart:hover,
-.fashion-heart:focus-visible {
-  transform: scale(1.08);
-  border-color: rgba(242, 173, 148, 0.85);
+.fashion-heart:hover {
+  transform: scale(1.04);
+  border-color: rgba(84, 114, 140, 0.65);
   background: var(--wearo-card-accent);
-  color: var(--wearo-card-primary);
-  outline: none;
+  color: #252525;
+}
+
+.fashion-heart:focus-visible {
+  outline: 2px solid #252525;
+  outline-offset: 3px;
+  border-color: #252525;
+  background: var(--wearo-card-accent);
+  color: #252525;
 }
 
 .fashion-heart.is-saved {
@@ -309,7 +319,16 @@
 @media (max-width: 640px) {
   .fashion-product-meta {
     min-height: 136px;
-    padding: 13px 14px 15px;
+    gap: 8px;
+    padding: 13px 12px 15px;
+  }
+
+  .fashion-product-price-wrap {
+    min-width: 76px;
+  }
+
+  .fashion-product-price {
+    font-size: 13px;
   }
 
   .fashion-product-card:hover {
