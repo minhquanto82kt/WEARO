@@ -174,6 +174,8 @@ function CollectionPage() {
             <span className="wearo-collection-art__index">WEARO / STYLE EDIT</span>
             <span className="wearo-collection-art__word">{collection.title}</span>
             <span className="wearo-collection-art__circle" />
+            <span className="wearo-collection-art__shape wearo-collection-art__shape--one" />
+            <span className="wearo-collection-art__shape wearo-collection-art__shape--two" />
             <span className="wearo-collection-art__footer">UNISEX · EVERYDAY FORM</span>
           </div>
         </section>
