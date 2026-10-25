@@ -63,15 +63,15 @@ Bảng dưới được sinh từ GitHub Repository API, trạng thái GitHub Ac
 | Repository | Dung lượng GitHub ước tính | 56.2 MB |
 | Repository | Nhánh mặc định | `main` |
 | Repository | Nhánh đang thống kê | `ops/p0-p2-hardening-20261025` |
-| Repository | Cập nhật gần nhất | 2026-10-25 01:44 UTC |
-| GitHub Actions | CI gần nhất trên nhánh này | [In Progress](https://github.com/minhquanto82kt/WEARO/actions/runs/40151828545) · 2026-10-25 01:44 UTC |
+| Repository | Cập nhật gần nhất | 2026-10-25 01:45 UTC |
+| GitHub Actions | CI gần nhất trên nhánh này | [In Progress](https://github.com/minhquanto82kt/WEARO/actions/runs/40151890418) · 2026-10-25 01:45 UTC |
 | Dữ liệu dự án | Package | `tanstack_start_ts` |
 | Dữ liệu dự án | Runtime | Node.js `>=24 <25` · `npm@11` |
 | Dữ liệu dự án | Ngôn ngữ GitHub nhận diện | CSS, JavaScript, Python, TypeScript |
-| Dữ liệu dự án | Dependencies / devDependencies | 56 / 18 |
+| Dữ liệu dự án | Dependencies / devDependencies | 54 / 18 |
 | Dữ liệu dự án | Scripts trong package.json | `audit:api-security`, `audit:architecture`, `audit:dependencies`, `build`, `build:dev`, `cf-typegen`, `check:env`, `check:env:preview`, `check:env:production`, `deploy:cloudflare`, `dev`, `format`, `lint`, `preview`, `test:customer-experience`, `test:customer-flows`, `test:phase-b-c`, `test:phase-d-e`, `test:phase-f-security`, `test:replicate-provider`, `test:smoke`, `typecheck` |
 
-_Cập nhật tự động: 2026-10-25 01:44 UTC · nhánh `ops/p0-p2-hardening-20261025`._
+_Cập nhật tự động: 2026-10-25 01:45 UTC · nhánh `ops/p0-p2-hardening-20261025`._
 <!-- AUTO-REPO-STATS:END -->
 
 ## Phát triển local
