@@ -435,13 +435,6 @@ body .fashion-nav .fashion-shop-mega .fashion-shop-discovery-grid::before {
   letter-spacing: .1em;
   margin-bottom: 2px;
 }
-body .fashion-nav .fashion-shop-mega .fashion-shop-ai-shortcut {
-  border-color: rgba(242,173,148,.8) !important;
-  background: rgba(242,206,174,.18) !important;
-}
-body .fashion-nav .fashion-shop-mega .fashion-shop-ai-shortcut::before {
-  background: #54728C !important;
-}
 body .fashion-nav .fashion-shop-mega .fashion-shop-category-grid > .fashion-menu-label,
 body .fashion-nav .fashion-shop-mega .fashion-shop-discovery-grid > .fashion-menu-label {
   display: none !important;
@@ -495,14 +488,6 @@ body .fashion-nav .fashion-shop-mega .fashion-shop-discovery-grid .fashion-shop-
   mask-image: url("/images/shapes-gallery/originals/shape-32.svg") !important;
 }
 
-body .fashion-nav .fashion-shop-mega .fashion-shop-discovery-grid .fashion-shop-all:nth-child(5)::before {
-  background: radial-gradient(circle at 30% 25%, #F2CEAE 0 12%, transparent 13%),
-              radial-gradient(circle at 70% 70%, #7794A6 0 15%, transparent 16%),
-              linear-gradient(145deg, #54728C, #171717) !important;
-  -webkit-mask-image: none !important;
-  mask-image: none !important;
-  clip-path: polygon(50% 0%, 61% 34%, 98% 35%, 69% 57%, 80% 94%, 50% 72%, 20% 94%, 31% 57%, 2% 35%, 39% 34%) !important;
-}
 
 body .fashion-nav .fashion-shop-mega .fashion-shop-discovery-grid .fashion-shop-all span {
   min-width: 0 !important;
