@@ -10,6 +10,7 @@ import {
 import { generateWearoAiReply } from "@/lib/wearo-ai-chat.functions";
 import { getStylistRecommendations } from "@/lib/stylist.functions";
 import { getCustomerAccessToken } from "@/lib/auth";
+import { GROWTH_EVENTS, trackGrowthEvent } from "@/lib/analytics/analytics";
 
 const STYLES = ["Casual", "Basic", "Streetwear", "Outing Style"];
 const OCCASIONS = ["Đi học", "Đi làm", "Hẹn hò", "Đi chơi"];
@@ -252,6 +253,7 @@ function TryOnStudio({
         const job = await getTryOnJob({ data: { jobId } });
         if (job.status === "completed" && job.image) {
           setResultImage(job.image);
+          trackGrowthEvent({ name: GROWTH_EVENTS.AI_RESULT_COMPLETE, productId });
           setStatus("completed");
           setActiveJobId("");
           return;
@@ -289,6 +291,7 @@ function TryOnStudio({
     }
     const accessToken = getCustomerAccessToken();
 
+    trackGrowthEvent({ name: GROWTH_EVENTS.AI_TRY_ON_START, productId });
     setStatus("uploading");
     setError("");
     setResultImage("");

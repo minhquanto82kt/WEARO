@@ -3,6 +3,7 @@ import { createServerFn } from "@tanstack/react-start";
 import { type Product } from "@/data/products";
 import { getCustomerSession } from "@/lib/auth";
 import { isMockUserMode } from "@/lib/mock-user";
+import { GROWTH_EVENTS, trackGrowthEvent } from "@/lib/analytics/analytics";
 import { addServerCartItem, clearServerCart, getServerCart, removeServerCartItem, updateServerCartItem } from "@/lib/cart.server.functions";
 
 export type CartLine = { variantId: string; qty: number; cartItemId?: string };
@@ -319,6 +320,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
 
   async function add(line: CartLine) {
     if (!line.variantId) throw new Error("Không xác định được biến thể sản phẩm.");
+    trackGrowthEvent({ name: GROWTH_EVENTS.ADD_TO_CART });
     const normalized: CartLine = { variantId: line.variantId, qty: clampQty(line.qty), cartItemId: line.cartItemId };
 
     setLines((current) => {

@@ -1,7 +1,7 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { createServerFn } from "@tanstack/react-start";
 import { Minus, Plus } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { SiteNav } from "@/components/site-nav";
 import { SiteFooter } from "@/components/site-footer";
@@ -12,6 +12,7 @@ import { ShapeMosaic } from "@/components/shape-mosaic";
 import { type Product, formatVnd, getProduct } from "@/data/products";
 import { useCart } from "@/lib/cart";
 import { absoluteUrl, canonicalLink, jsonLdScript } from "@/lib/seo";
+import { GROWTH_EVENTS, trackGrowthEvent } from "@/lib/analytics/analytics";
 
 type DbProduct = { id: string; name: string; description: string; price: number; category: Product["category"]; image: string | null; active: boolean; status: string; featured: boolean; fashion_style: string | null; gender: "Male" | "Female" | "Unisex" | null; };
 type DbVariant = { id: string; product_id: string; size: string; color: string; stock: number; };
@@ -57,6 +58,7 @@ function ProductPage() {
   if (!data) throw notFound();
   const { product, variants, related } = data;
   const { add, loading } = useCart();
+  useEffect(() => { trackGrowthEvent({ name: GROWTH_EVENTS.PRODUCT_VIEW, productId: product.id }); }, [product.id]);
   const initialVariant = variants.find((variant) => variant.stock > 0) ?? variants[0];
   const [size, setSize] = useState(initialVariant?.size ?? "");
   const [color, setColor] = useState(initialVariant?.color ?? "");

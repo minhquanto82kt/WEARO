@@ -11,6 +11,7 @@ import { getCustomerSession } from "@/lib/auth";
 import { isMockUserMode } from "@/lib/mock-user";
 import { getInvoiceData, type InvoiceData } from "@/lib/invoice.functions";
 import { createVietQrUrl } from "@/lib/vietqr";
+import { GROWTH_EVENTS, trackGrowthEvent } from "@/lib/analytics/analytics";
 import "@/styles/wearo-checkout-page.scss";
 
 export const Route = createFileRoute("/checkout")({
@@ -76,6 +77,7 @@ function CheckoutPage() {
   const shipping = subtotal === 0 || subtotal >= 1000000 ? 0 : 30000;
 
   const finish = async (data: InvoiceData) => {
+    if (!mockMode) trackGrowthEvent({ name: GROWTH_EVENTS.PURCHASE_COMPLETE, value: data.total, currency: "VND" });
     setInvoice(data);
     setDone(data.order_code);
     setCountdown(5);
@@ -307,6 +309,7 @@ function CheckoutPage() {
               event.preventDefault();
               if (submitting || hasStockIssues) return;
               setSubmitting(true);
+              if (!mockMode) trackGrowthEvent({ name: GROWTH_EVENTS.CHECKOUT_START, value: subtotal, currency: "VND" });
               setErrorMessage(null);
               const form = new FormData(event.currentTarget);
               const phone = String(form.get("phone") || "").trim();
