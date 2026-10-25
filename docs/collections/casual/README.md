@@ -16,12 +16,12 @@
 
 | Vai trò | Asset hiện được cấu hình | Màu |
 |---|---|---|
-| Shape chính | [shape-01.svg](../../fashion-dream-try-on-main/public/images/shapes-gallery/originals/shape-01.svg) | `--collection-accent` |
-| Shape phụ | [shape-03.svg](../../fashion-dream-try-on-main/public/images/shapes-gallery/originals/shape-03.svg) | `--collection-secondary` |
+| Shape chính | [shape-36.svg](../../fashion-dream-try-on-main/public/images/shapes-gallery/originals/shape-36.svg) | `--collection-accent` |
+| Shape phụ | [shape-18.svg](../../fashion-dream-try-on-main/public/images/shapes-gallery/originals/shape-18.svg) | `--collection-secondary` |
 
-**Định hướng:** Casual nên tạo cảm giác thoải mái, thân thiện và dễ tiếp cận. Đây là mục tiêu thiết kế, không phải kết luận hình học của hai asset. Cần xem trực tiếp gallery để xác nhận shape có hỗ trợ định hướng này hay không.
+**Định hướng:** shape-36 dùng nhịp cong nhiều cánh và shape-18 dùng cung tròn lặp lại; phối hợp với palette xanh và be để tạo cảm giác thân thiện, mềm hơn các collection còn lại.
 
-**Trạng thái:** mapping theo CSS mặc định hiện tại; chờ duyệt trực quan. Nếu thay đổi mapping, cập nhật [Shape Identity Matrix](../README.md#shape-identity-matrix) cùng lúc.
+**Trạng thái:** đã chọn theo cấu trúc SVG; cần kiểm tra trực quan trên trang desktop/mobile trước khi chốt.
 
 ## CSS variables
 
