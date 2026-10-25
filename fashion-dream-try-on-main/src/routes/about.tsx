@@ -72,12 +72,12 @@ function AboutPage() {
         <section className="wearo-about__editorial-grid" aria-label="WEARO overview">
           <article className="wearo-about__image-card">
             <img
-              src="/images/outdoor_lifestyle_portrait.jpg"
-              alt="WEARO outdoor lifestyle editorial"
+              src="/images/stylish_urban_girl.jpg"
+              alt="Người phụ nữ mặc blazer màu be thư giãn tại quán cà phê, thể hiện phong cách đời thường hiện đại"
             />
             <div className="wearo-about__image-caption">
-              <span>WEARO EDITORIAL</span>
-              <strong>STYLE IS PERSONAL.</strong>
+              <span>WEARO / BRAND STORY</span>
+              <strong>STYLE LIVES EVERYWHERE.</strong>
             </div>
           </article>
 
