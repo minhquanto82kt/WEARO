@@ -134,11 +134,11 @@ function CollectionPage() {
     <div className="wearo-collection-page" data-collection={collectionSlug}>
       <SiteNav />
       <main className="wearo-collection-main">
-        <div className="wearo-collection-breadcrumb">
-          <Link to="/shop"><ArrowLeft size={15} /> Cửa hàng</Link>
-          <span>/</span>
-          <span>{collection.title}</span>
-        </div>
+        <nav className="wearo-collection-breadcrumb" aria-label="Breadcrumb">
+          <Link to="/shop"><ArrowLeft size={15} aria-hidden="true" /> Cửa hàng</Link>
+          <span aria-hidden="true">/</span>
+          <span aria-current="page">{collection.title}</span>
+        </nav>
 
         <nav className="wearo-collection-neighbor-nav" aria-label="Chuyển đổi phong cách thời trang">
           <Link className="wearo-collection-neighbor-nav__link wearo-collection-neighbor-nav__link--previous" to="/collections/$slug" params={{ slug: previousSlug }} aria-label={`Chuyển đến phong cách trước: ${previousCollection.title}`}>
