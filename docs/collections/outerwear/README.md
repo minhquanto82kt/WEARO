@@ -16,12 +16,12 @@
 
 | Vai trò | Asset hiện được cấu hình | Màu |
 |---|---|---|
-| Shape chính | [shape-03.svg](../../fashion-dream-try-on-main/public/images/shapes-gallery/originals/shape-03.svg) | `--collection-accent` |
-| Shape phụ | [shape-01.svg](../../fashion-dream-try-on-main/public/images/shapes-gallery/originals/shape-01.svg) | `--collection-secondary` |
+| Shape chính | [shape-32.svg](../../fashion-dream-try-on-main/public/images/shapes-gallery/originals/shape-32.svg) | `--collection-accent` |
+| Shape phụ | [shape-67.svg](../../fashion-dream-try-on-main/public/images/shapes-gallery/originals/shape-67.svg) | `--collection-secondary` |
 
-**Định hướng:** Outerwear nên gợi cảm giác cấu trúc, lớp lang và vững chãi; màu xanh rừng, xanh sage và vàng ấm hiện có hỗ trợ định hướng này. Cần xem trực tiếp gallery để xác nhận hai asset phù hợp.
+**Định hướng:** shape-32 dùng các dải bậc thang song song; shape-67 tạo khung hình học có điểm neo ở giữa. Cặp hình nhấn vào cảm giác lớp lang, cấu trúc và vững chãi của Outerwear.
 
-**Trạng thái:** mapping theo CSS hiện tại; chờ duyệt trực quan. Nếu thay đổi mapping, cập nhật [Shape Identity Matrix](../README.md#shape-identity-matrix) cùng lúc.
+**Trạng thái:** đã chọn theo cấu trúc SVG; cần kiểm tra trực quan trên trang desktop/mobile trước khi chốt.
 
 ## CSS variables
 
