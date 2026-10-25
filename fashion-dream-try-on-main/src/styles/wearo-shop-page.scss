@@ -788,3 +788,160 @@
   position: relative;
   z-index: 1;
 }
+
+
+/* P0 shop refresh: catalog-first hierarchy; scoped to /shop only. */
+.wearo-shop-page .wearo-shop-main { padding-top: 28px; }
+.wearo-shop-page .wearo-shop-intro {
+  display: grid;
+  grid-template-columns: minmax(180px, .7fr) minmax(0, 1.3fr);
+  align-items: center;
+  gap: clamp(18px, 3vw, 40px);
+  margin: 0 auto 22px;
+  width: min(calc(100% - 40px), 1280px);
+}
+.wearo-shop-page .wearo-shop-intro-heading h1 {
+  margin-top: 8px;
+  color: var(--shop-ink, #171717);
+  font-family: var(--wearo-font-display, "Space Grotesk", sans-serif);
+  font-size: clamp(32px, 4vw, 48px);
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: -.055em;
+}
+.wearo-shop-page .wearo-shop-intro-count {
+  margin-top: 9px;
+  color: rgba(23,23,23,.65);
+  font-size: 12px;
+}
+.wearo-shop-page .wearo-shop-ai-strip {
+  display: flex;
+  min-height: 104px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 18px 22px;
+  border: 1px solid rgba(84,114,140,.22);
+  background: linear-gradient(105deg, #F7F5F1 0%, #fff 70%, rgba(242,206,174,.45) 100%);
+}
+.wearo-shop-page .wearo-shop-ai-copy { min-width: 0; }
+.wearo-shop-page .wearo-shop-ai-eyebrow {
+  color: #54728C;
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: .13em;
+}
+.wearo-shop-page .wearo-shop-ai-copy p {
+  margin-top: 6px;
+  color: #171717;
+  font-size: 12px;
+  line-height: 1.5;
+}
+.wearo-shop-page .wearo-shop-ai-actions {
+  display: flex;
+  flex: 0 0 auto;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.wearo-shop-page .wearo-shop-ai-link {
+  display: inline-flex;
+  min-height: 42px;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  padding: 0 12px;
+  border: 1px solid #54728C;
+  background: #54728C;
+  color: #fff;
+  font-size: 10px;
+  font-weight: 700;
+  transition: background .18s ease, color .18s ease;
+}
+.wearo-shop-page .wearo-shop-ai-link:hover { background: #405B70; }
+.wearo-shop-page .wearo-shop-ai-link.is-secondary {
+  background: transparent;
+  color: #54728C;
+}
+.wearo-shop-page .wearo-shop-ai-link.is-secondary:hover {
+  background: #54728C;
+  color: #fff;
+}
+.wearo-shop-page .wearo-shop-style-chips {
+  display: flex;
+  width: min(calc(100% - 40px), 1280px);
+  gap: 8px;
+  margin: 0 auto 18px;
+  overflow-x: auto;
+  padding: 2px 0 5px;
+  scrollbar-width: thin;
+}
+.wearo-shop-page .wearo-shop-style-chip {
+  display: inline-flex;
+  min-height: 44px;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
+  padding: 0 17px;
+  border: 1px solid rgba(84,114,140,.28);
+  background: #fff;
+  color: #54728C;
+  font-size: 11px;
+  font-weight: 700;
+  transition: background .18s ease, color .18s ease, border-color .18s ease;
+}
+.wearo-shop-page .wearo-shop-style-chip:hover,
+.wearo-shop-page .wearo-shop-style-chip.is-active {
+  border-color: #54728C;
+  background: #54728C;
+  color: #fff;
+}
+.wearo-shop-page .wearo-shop-toolbar { margin-top: 0; }
+.wearo-shop-page .wearo-shop-main > section[aria-label="Danh sách sản phẩm"] { margin-top: 24px; }
+.wearo-shop-page .wearo-shop-results-title { font-size: clamp(22px, 2.7vw, 30px); }
+@media (max-width: 760px) {
+  .wearo-shop-page .wearo-shop-main { padding-top: 18px; }
+  .wearo-shop-page .wearo-shop-intro {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 14px;
+    width: calc(100% - 32px);
+    margin-bottom: 14px;
+  }
+  .wearo-shop-page .wearo-shop-intro-heading {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: end;
+    column-gap: 12px;
+  }
+  .wearo-shop-page .wearo-shop-intro-heading .wearo-shop-section-label { grid-column: 1 / -1; }
+  .wearo-shop-page .wearo-shop-intro-heading h1 { font-size: 34px; }
+  .wearo-shop-page .wearo-shop-intro-count { margin-top: 0; text-align: right; }
+  .wearo-shop-page .wearo-shop-ai-strip {
+    min-height: 58px;
+    gap: 10px;
+    padding: 10px 12px;
+  }
+  .wearo-shop-page .wearo-shop-ai-eyebrow { font-size: 8px; }
+  .wearo-shop-page .wearo-shop-ai-copy p { margin-top: 3px; font-size: 10px; }
+  .wearo-shop-page .wearo-shop-ai-actions { gap: 0; }
+  .wearo-shop-page .wearo-shop-ai-link {
+    min-height: 42px;
+    padding: 0 9px;
+    font-size: 9px;
+    white-space: nowrap;
+  }
+  .wearo-shop-page .wearo-shop-ai-link.is-secondary { display: none; }
+  .wearo-shop-page .wearo-shop-style-chips {
+    width: calc(100% - 32px);
+    margin-bottom: 14px;
+    gap: 7px;
+  }
+  .wearo-shop-page .wearo-shop-style-chip { min-height: 44px; padding: 0 14px; }
+  .wearo-shop-page .wearo-shop-toolbar,
+  .wearo-shop-page .wearo-shop-main > section[aria-label="Danh sách sản phẩm"] {
+    width: calc(100% - 32px);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .wearo-shop-page .wearo-shop-style-chip,
+  .wearo-shop-page .wearo-shop-ai-link { transition-duration: .01ms !important; }
+}
