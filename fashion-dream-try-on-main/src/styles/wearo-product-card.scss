@@ -1,0 +1,364 @@
+/* WEARO Product Card — canonical storefront card contract
+ * Single source of visual truth for Home / Shop / related-product grids.
+ * Product data stays in ProductCard; this file only owns presentation.
+ * Palette: #54728C #7794A6 #F2CEAE #D9BBA9 #F2AD94
+ */
+
+.fashion-product-card {
+  --wearo-card-bg: #F2CEAE;
+  --wearo-card-border: #D9BBA9;
+  --wearo-card-primary: #54728C;
+  --wearo-card-secondary: #7794A6;
+  --wearo-card-accent: #F2AD94;
+  --wearo-card-shadow: rgba(84, 114, 140, 0.14);
+  position: relative;
+  min-width: 0;
+  overflow: hidden;
+  background: var(--wearo-card-bg);
+  border: 1px solid var(--wearo-card-border);
+  border-radius: 10px;
+  box-shadow: 0 8px 24px var(--wearo-card-shadow);
+  transform: translateY(0);
+  transition: transform 280ms cubic-bezier(.22,1,.36,1), box-shadow 280ms cubic-bezier(.22,1,.36,1), border-color 220ms ease;
+  will-change: transform, box-shadow;
+}
+
+.fashion-product-card:hover {
+  transform: translateY(-5px);
+  border-color: rgba(84, 114, 140, 0.42);
+  box-shadow: 0 14px 32px rgba(84, 114, 140, 0.18);
+}
+
+.fashion-product-image {
+  position: relative;
+  display: block;
+  aspect-ratio: 4 / 5;
+  overflow: hidden;
+  isolation: isolate;
+  background: var(--wearo-card-secondary);
+}
+
+.fashion-product-image::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  background: linear-gradient(180deg, transparent 58%, rgba(84, 114, 140, 0.09) 100%);
+  opacity: 0;
+  transition: opacity 300ms ease;
+}
+
+.fashion-product-card:hover .fashion-product-image::after {
+  opacity: 1;
+}
+
+.fashion-product-image img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transform: scale(1);
+  transition: transform 480ms cubic-bezier(.22,1,.36,1), opacity 360ms ease;
+  will-change: transform, opacity;
+}
+
+.fashion-product-card:hover .fashion-product-image img {
+  transform: scale(1.035);
+}
+
+.fashion-product-image__secondary {
+  opacity: 0;
+}
+
+.fashion-product-card:hover .fashion-product-image.has-hover-gallery .fashion-product-image__primary {
+  opacity: 0;
+}
+
+.fashion-product-card:hover .fashion-product-image.has-hover-gallery .fashion-product-image__secondary {
+  opacity: 1;
+}
+
+/* Labels: status + product attributes share one controlled overlay. */
+.fashion-product-labels {
+  position: absolute;
+  inset: 12px auto auto 12px;
+  z-index: 10;
+  display: flex;
+  max-width: calc(100% - 24px);
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: 6px;
+  pointer-events: none;
+}
+
+.fashion-product-badge,
+.fashion-product-tag {
+  display: inline-flex;
+  min-height: 22px;
+  align-items: center;
+  padding: 4px 8px;
+  border: 1px solid rgba(84, 114, 140, 0.28);
+  border-radius: 3px;
+  color: var(--wearo-card-primary);
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: .12em;
+  line-height: 1;
+  text-transform: uppercase;
+  backdrop-filter: blur(8px);
+  transition: transform 240ms ease, background-color 240ms ease, border-color 240ms ease;
+}
+
+.fashion-product-badge {
+  background: rgba(242, 173, 148, 0.92);
+}
+
+.fashion-product-badge--sale {
+  background: rgba(242, 206, 174, 0.94);
+}
+
+.fashion-product-tag {
+  background: rgba(255, 255, 255, 0.82);
+}
+
+/* Collection badges mirror the canonical palettes in docs/collections.
+ * Each label uses its collection's Primary for the fill, Paper for readable text,
+ * and Accent for the border. */
+.fashion-product-style {
+  display: inline-flex;
+  min-height: 22px;
+  align-items: center;
+  padding: 4px 8px;
+  border: 1px solid transparent;
+  border-radius: 3px;
+  font-size: 8px;
+  font-weight: 800;
+  letter-spacing: .12em;
+  line-height: 1;
+  text-transform: uppercase;
+  backdrop-filter: blur(8px);
+}
+
+.fashion-product-style--streetwear {
+  color: #F3F4EE;
+  background: #26352D;
+  border-color: #D7F27C;
+}
+
+.fashion-product-style--basic {
+  color: #F5F3EF;
+  background: #252525;
+  border-color: #D8D5CE;
+}
+
+.fashion-product-style--casual {
+  color: #F8F6F2;
+  background: #54728C;
+  border-color: #F2CEAE;
+}
+
+.fashion-product-style--outing-style {
+  color: #F2F4ED;
+  background: #355C4A;
+  border-color: #E7B879;
+}
+
+.fashion-product-card:hover .fashion-product-badge,
+.fashion-product-card:hover .fashion-product-tag {
+  transform: translateY(-1px);
+}
+
+.fashion-product-card:hover .fashion-product-badge {
+  border-color: rgba(84, 114, 140, 0.42);
+}
+
+.fashion-product-card:hover .fashion-product-tag {
+  border-color: rgba(242, 173, 148, 0.78);
+  background: rgba(242, 206, 174, 0.92);
+}
+
+.fashion-product-arrow {
+  position: absolute;
+  right: 12px;
+  bottom: 12px;
+  z-index: 5;
+  display: inline-flex;
+  width: 30px;
+  height: 30px;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(84, 114, 140, 0.28);
+  border-radius: 999px;
+  background: rgba(242, 206, 174, 0.88);
+  color: var(--wearo-card-primary);
+  opacity: 0;
+  transform: translate(6px, 6px);
+  transition: opacity 240ms ease, transform 280ms cubic-bezier(.22,1,.36,1), background-color 240ms ease;
+  backdrop-filter: blur(8px);
+}
+
+.fashion-product-card:hover .fashion-product-arrow {
+  opacity: 1;
+  transform: translate(0, 0);
+  background: rgba(242, 173, 148, 0.94);
+}
+
+.fashion-product-meta {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(76px, auto);
+  align-items: start;
+  gap: 10px;
+  min-height: 142px;
+  padding: 15px 16px 17px;
+  color: #252525;
+}
+
+.fashion-product-category,
+.fashion-product-spec {
+  color: #3f5e77;
+  font-size: 11px;
+  font-weight: 650;
+  letter-spacing: .07em;
+  line-height: 1.45;
+  text-transform: uppercase;
+}
+
+.fashion-product-title {
+  display: inline-block;
+  max-width: 100%;
+  margin-top: 5px;
+  color: #252525;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1.4;
+  text-wrap: pretty;
+  transition: color 200ms ease;
+}
+
+.fashion-product-title::after {
+  content: " →";
+  display: inline-block;
+  opacity: 0;
+  transform: translateX(-5px);
+  transition: opacity 220ms ease, transform 240ms ease;
+}
+
+.fashion-product-card:hover .fashion-product-title {
+  color: #3f5e77;
+}
+
+.fashion-product-card:hover .fashion-product-title::after {
+  opacity: .9;
+  transform: translateX(0);
+}
+
+.fashion-product-meta .text-silver {
+  color: rgba(84, 114, 140, 0.78) !important;
+}
+
+.fashion-product-price-wrap {
+  display: flex;
+  min-width: 92px;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 3px;
+}
+
+.fashion-product-price {
+  color: #252525;
+  font-size: 14px;
+  font-weight: 800;
+  line-height: 1.35;
+  white-space: nowrap;
+}
+
+.fashion-product-price-old {
+  color: rgba(119, 148, 166, 0.72);
+  font-size: 9px;
+  text-decoration: line-through;
+  white-space: nowrap;
+}
+
+.fashion-heart {
+  display: inline-flex;
+  width: 44px;
+  height: 44px;
+  align-items: center;
+  justify-content: center;
+  margin-top: 7px;
+  border: 1px solid rgba(84, 114, 140, 0.26);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.28);
+  color: var(--wearo-card-primary);
+  cursor: pointer;
+  transition: transform 220ms cubic-bezier(.22,1,.36,1), background-color 220ms ease, color 220ms ease, border-color 220ms ease;
+}
+
+.fashion-heart:hover {
+  transform: scale(1.04);
+  border-color: rgba(84, 114, 140, 0.65);
+  background: var(--wearo-card-accent);
+  color: #252525;
+}
+
+.fashion-heart:focus-visible {
+  outline: 2px solid #252525;
+  outline-offset: 3px;
+  border-color: #252525;
+  background: var(--wearo-card-accent);
+  color: #252525;
+}
+
+.fashion-heart.is-saved {
+  background: var(--wearo-card-accent);
+  border-color: rgba(242, 173, 148, 0.9);
+}
+
+@media (max-width: 640px) {
+  .fashion-product-meta {
+    min-height: 136px;
+    gap: 8px;
+    padding: 13px 12px 15px;
+  }
+
+  .fashion-product-price-wrap {
+    min-width: 76px;
+  }
+
+  .fashion-product-price {
+    font-size: 13px;
+  }
+
+  .fashion-product-card:hover {
+    transform: translateY(-3px);
+  }
+
+  .fashion-product-labels {
+    inset: 10px auto auto 10px;
+    max-width: calc(100% - 20px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fashion-product-card,
+  .fashion-product-card *,
+  .fashion-product-card::before,
+  .fashion-product-card::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+
+/* Touch-friendly secondary image control for small screens. */
+.fashion-product-mobile-gallery { display: none; }
+.fashion-product-card.is-gallery-secondary .fashion-product-image.has-hover-gallery .fashion-product-image__primary { opacity: 0; }
+.fashion-product-card.is-gallery-secondary .fashion-product-image.has-hover-gallery .fashion-product-image__secondary { opacity: 1; }
+@media (max-width: 760px) {
+  .fashion-product-mobile-gallery { position: absolute; top: 12px; right: 12px; z-index: 12; display: inline-flex; min-width: 56px; min-height: 44px; align-items: center; justify-content: center; gap: 3px; padding: 0 9px; border: 1px solid rgba(84,114,140,.3); border-radius: 999px; background: rgba(248,246,242,.94); color: #54728C; font-size: 10px; font-weight: 700; }
+  .fashion-product-card.is-gallery-secondary .fashion-product-mobile-gallery svg { transform: rotate(180deg); }
+}
