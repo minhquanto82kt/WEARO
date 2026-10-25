@@ -38,3 +38,21 @@ Other page/style groups remain in place until dependencies and cascade effects c
 6. Audit shared foundations and final compatibility layers.
 
 For each migration, move one group, update all imports, compare before/after styles, run the production build, and verify the preview deployment before continuing.
+
+## Current stylesheet organization (2026-10)
+
+The following files were moved without changing their CSS declarations or their relative position in the global import cascade:
+
+- `foundations/global-ui.scss` — shared WEARO UI aliases, surfaces, form controls and interaction styling (formerly `wearo-ui-v2.scss`).
+- `foundations/ui-convergence.scss` — late-loaded global visual convergence rules for storefront, shop, cart and checkout (formerly `wearo-ui-v2-final.scss`).
+- `pages/home-ai-refinements.scss` — homepage hero and AI workspace refinements (formerly `wearo-p0-ux-refinement.scss`).
+- `foundations/account-and-accessibility.scss` — account visual overrides plus shared focus/reduced-motion rules (formerly `wearo-p3-final.scss`). This file is intentionally in foundations because its focus and reduced-motion selectors are global, not account-only.
+
+The four imports were updated in `src/styles.scss` in the same commit and kept in their original order. No selectors were merged or deleted.
+
+## Remaining inventory and migration policy
+
+The styles directory currently contains dedicated groups for home, AI, admin, journal, commerce, collections, brand/theme, and shared components. Keep the current names for files whose scope is already descriptive (for example `wearo-collection-pages.scss`, `wearo-product-card.scss`, `wearo-shop-page.scss`, `wearo-cart-page.scss`, `wearo-checkout-page.scss`, `ai-studio.scss`, and `components/_header.scss` / `components/_footer.scss`). Do not batch-rename or move these until every direct import and the global `styles.scss` cascade has been checked.
+
+A stylesheet is not safe to merge or delete merely because another file has a similar name. The next migration groups should be handled separately: (1) home/storefront, (2) shop/product/collections, (3) cart/checkout/account, (4) AI studio/workspace, (5) admin/journal, and (6) shared theme/accessibility. For each group, preserve import order, run the production build, then visually compare desktop and mobile before moving on.
+
