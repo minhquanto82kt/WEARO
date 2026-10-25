@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { createServerFn } from "@tanstack/react-start";
-import { ArrowUpRight, ChevronLeft, ChevronRight, Search, SlidersHorizontal, X } from "lucide-react";
+import { ArrowUpRight, Search, SlidersHorizontal, X } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 import { SiteNav } from "@/components/site-nav";
 import { SiteFooter } from "@/components/site-footer";
@@ -97,46 +97,19 @@ function ShopPage() {
   const [viewColumns, setViewColumns] = useState<3 | 4>(3);
   const [search, setSearch] = useState(() => { if (typeof window === "undefined") return ""; return new URLSearchParams(window.location.search).get("search") ?? ""; });
   const [filtersOpen, setFiltersOpen] = useState(false);
-  const [activeBanner, setActiveBanner] = useState(0);
-  const [bannerPaused, setBannerPaused] = useState(false);
-  const banners = [
-    {
-      id: "virtual-try-on",
-      eyebrow: "01 / WEARO AI STUDIO",
-      title: "Thử outfit trên chính ảnh của bạn.",
-      description: "Hình dung diện mạo mới với AI Virtual Try-On trước khi quyết định chọn mua.",
-      image: "/images/banners/wearo-ai-virtual-try-on-banner.webp",
-      alt: "WEARO AI Virtual Try-On — trải nghiệm thử outfit bằng AI",
-      cta: "Trải nghiệm AI Virtual Try-On",
-      mode: "tryon" as const,
-    },
-    {
-      id: "ai-stylist",
-      eyebrow: "02 / WEARO AI STYLIST",
-      title: "Phối đồ theo gu riêng.",
-      description: "Khám phá gợi ý outfit, phối màu và lựa chọn trang phục phù hợp với phong cách cá nhân.",
-      image: "/images/banners/wearo-ai-stylist-banner.webp",
-      alt: "WEARO AI Stylist — gợi ý phối đồ theo phong cách cá nhân",
-      cta: "Khám phá AI Stylist",
-      mode: "concept" as const,
-    },
-  ];
-  useEffect(() => {
-    if (bannerPaused) return;
-    const timer = window.setInterval(() => setActiveBanner((current) => (current + 1) % banners.length), 6500);
-    return () => window.clearInterval(timer);
-  }, [bannerPaused, banners.length]);
+  const [styleFilter, setStyleFilter] = useState<string>(() => { if (typeof window === "undefined") return "all"; return new URLSearchParams(window.location.search).get("style") ?? "all"; });
   const normalizedSearch = search.trim().toLowerCase();
   const list = useMemo(() => [...products]
     .filter((product) => cat === "all" || product.category === cat)
+    .filter((product) => styleFilter === "all" || product.fashionStyle?.toLowerCase() === styleFilter)
     .filter((product) => {
       if (!normalizedSearch) return true;
       return [product.name, product.description, product.category].some((value) => value.toLowerCase().includes(normalizedSearch));
     })
     .sort((a, b) => sort === "price-asc" ? a.price - b.price : sort === "price-desc" ? b.price - a.price : 0),
-  [products, cat, normalizedSearch, sort]);
+  [products, cat, styleFilter, normalizedSearch, sort]);
 
-  const updateUrl = (next: { category?: string; search?: string }) => {
+  const updateUrl = (next: { category?: string; search?: string; style?: string }) => {
     const params = new URLSearchParams(window.location.search);
     if (next.category !== undefined) {
       if (next.category === "all") params.delete("category");
@@ -146,60 +119,46 @@ function ShopPage() {
       if (!next.search.trim()) params.delete("search");
       else params.set("search", next.search.trim());
     }
+    if (next.style !== undefined) {
+      if (next.style === "all") params.delete("style");
+      else params.set("style", next.style);
+    }
     window.history.replaceState({}, "", `/shop${params.toString() ? `?${params.toString()}` : ""}`);
   };
   const selectCategory = (category: string) => { setCat(category); updateUrl({ category }); };
+  const selectStyle = (style: string) => { setStyleFilter(style); updateUrl({ style }); };
   const clearSearch = () => { setSearch(""); updateUrl({ search: "" }); };
-  const clearFilters = () => { setCat("all"); setSearch(""); setSort("featured"); window.history.replaceState({}, "", "/shop"); };
-  const activeFilterCount = (cat !== "all" ? 1 : 0) + (normalizedSearch ? 1 : 0);
+  const clearFilters = () => { setCat("all"); setStyleFilter("all"); setSearch(""); setSort("featured"); window.history.replaceState({}, "", "/shop"); };
+  const activeFilterCount = (cat !== "all" ? 1 : 0) + (styleFilter !== "all" ? 1 : 0) + (normalizedSearch ? 1 : 0);
   const categoryName = CATEGORIES.find((item) => item.slug === cat)?.name;
 
   return (
     <div className="wearo-page wearo-shop-page min-h-screen">
       <SiteNav />
-      <main className="wearo-shop-main mx-auto max-w-7xl px-5 pb-20 pt-28 sm:px-10 lg:px-16">
-        <section className="wearo-shop-banner-slider" aria-label="Khám phá công nghệ AI của WEARO">
-          <div className="wearo-shop-banner-track" aria-live="polite">
-            {banners.map((banner, index) => (
-              <article
-                key={banner.id}
-                className={`wearo-shop-banner-slide ${activeBanner === index ? "is-active" : ""}`}
-                aria-hidden={activeBanner !== index}
-              >
-                <img className="wearo-shop-banner-image" src={banner.image} alt={banner.alt} />
-                <div className="wearo-shop-banner-shade" />
-                <div className="wearo-shop-banner-content">
-                  <p className="wearo-shop-banner-eyebrow">{banner.eyebrow}</p>
-                  {index === 0 ? <h1>{banner.title}</h1> : <h2>{banner.title}</h2>}
-                  <p className="wearo-shop-banner-description">{banner.description}</p>
-                  <Link to="/ai" search={{ mode: banner.mode }} className="wearo-shop-banner-cta">
-                    {banner.cta} <ArrowUpRight size={16} aria-hidden="true" />
-                  </Link>
-                </div>
-              </article>
-            ))}
+      <main className="wearo-shop-main mx-auto max-w-7xl px-5 pb-20 pt-8 sm:px-10 lg:px-16">
+        <section className="wearo-shop-intro" aria-labelledby="wearo-shop-title">
+          <div className="wearo-shop-intro-heading">
+            <p className="wearo-shop-section-label">WEARO / SHOP</p>
+            <h1 id="wearo-shop-title">Cửa hàng</h1>
+            <p className="wearo-shop-intro-count">{products.length} sản phẩm đang có sẵn</p>
           </div>
-          <div className="wearo-shop-banner-controls">
-            <div className="wearo-shop-banner-dots" role="group" aria-label="Chọn banner">
-              {banners.map((banner, index) => (
-                <button
-                  key={banner.id}
-                  type="button"
-                  className={`wearo-shop-banner-dot ${activeBanner === index ? "is-active" : ""}`}
-                  onClick={() => setActiveBanner(index)}
-                  aria-label={`Hiển thị banner ${index + 1}: ${banner.id === "virtual-try-on" ? "AI Virtual Try-On" : "AI Stylist"}`}
-                  aria-pressed={activeBanner === index}
-                />
-              ))}
+          <div className="wearo-shop-ai-strip">
+            <div className="wearo-shop-ai-copy">
+              <span className="wearo-shop-ai-eyebrow">WEARO AI STUDIO / BETA</span>
+              <p>Thử đồ trên ảnh của bạn hoặc tìm outfit theo gu riêng.</p>
             </div>
-            <span className="wearo-shop-banner-count">0{activeBanner + 1} <span>/ 0{banners.length}</span></span>
-            <div className="wearo-shop-banner-arrows">
-              <button type="button" onClick={() => setActiveBanner((activeBanner + banners.length - 1) % banners.length)} aria-label="Banner trước"><ChevronLeft size={18} /></button>
-              <button type="button" onClick={() => setActiveBanner((activeBanner + 1) % banners.length)} aria-label="Banner tiếp theo"><ChevronRight size={18} /></button>
-              <button type="button" onClick={() => setBannerPaused((paused) => !paused)} aria-label={bannerPaused ? "Tiếp tục tự động chuyển banner" : "Tạm dừng tự động chuyển banner"} aria-pressed={bannerPaused}>{bannerPaused ? "Tiếp tục" : "Tạm dừng"}</button>
+            <div className="wearo-shop-ai-actions">
+              <Link to="/ai" search={{ mode: "tryon" }} className="wearo-shop-ai-link">Thử đồ bằng AI <ArrowUpRight size={15} aria-hidden="true" /></Link>
+              <Link to="/ai" search={{ mode: "concept" }} className="wearo-shop-ai-link is-secondary">AI Stylist <ArrowUpRight size={15} aria-hidden="true" /></Link>
             </div>
           </div>
         </section>
+
+        <nav className="wearo-shop-style-chips" aria-label="Lọc theo phong cách">
+          {[{ id: "all", label: "Tất cả" }, { id: "casual", label: "Casual" }, { id: "basic", label: "Basic" }, { id: "streetwear", label: "Streetwear" }, { id: "outerwear", label: "Outerwear" }].map((style) => (
+            <button key={style.id} type="button" onClick={() => selectStyle(style.id)} className={`wearo-shop-style-chip ${styleFilter === style.id ? "is-active" : ""}`} aria-pressed={styleFilter === style.id}>{style.label}</button>
+          ))}
+        </nav>
 
         <section className="wearo-shop-toolbar" aria-label="Tìm kiếm và lọc sản phẩm">
           <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
@@ -240,7 +199,7 @@ function ShopPage() {
             <div>
               <p className="wearo-shop-section-label">WEARO / CURATED EVERYDAY</p>
               <div className="wearo-shop-title-line">
-                <h2 className="wearo-shop-results-title mt-2">{normalizedSearch ? `Kết quả cho “${search.trim()}”` : cat === "all" ? "Khám phá bộ sưu tập" : categoryName ?? "Bộ sưu tập"}</h2>
+                <h2 className="wearo-shop-results-title mt-2">{normalizedSearch ? `Kết quả cho “${search.trim()}”` : cat === "all" ? "Tất cả sản phẩm" : categoryName ?? "Bộ sưu tập"}</h2>
                 <ShapeMosaic className="wearo-shop-title-mosaic" />
               </div>
             </div>
