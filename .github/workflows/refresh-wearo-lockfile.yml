@@ -1,0 +1,31 @@
+name: Refresh WEARO lockfile
+on:
+  push:
+    branches:
+      - ops/p0-p2-hardening-20261025
+    paths-ignore:
+      - fashion-dream-try-on-main/package-lock.json
+permissions:
+  contents: write
+jobs:
+  refresh:
+    if: github.event.head_commit.message != 'chore: refresh WEARO lockfile'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+          cache-dependency-path: fashion-dream-try-on-main/package-lock.json
+      - name: Regenerate lockfile from package.json
+        run: npm install --package-lock-only --legacy-peer-deps --no-fund
+        working-directory: fashion-dream-try-on-main
+      - name: Commit lockfile update
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add fashion-dream-try-on-main/package-lock.json
+          if git diff --cached --quiet; then exit 0; fi
+          git commit -m "chore: refresh WEARO lockfile"
+          git push
