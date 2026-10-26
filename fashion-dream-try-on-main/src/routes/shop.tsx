@@ -149,7 +149,7 @@ function ShopPage() {
             </div>
             <div className="wearo-shop-ai-actions">
               <Link to="/ai" search={{ mode: "tryon" }} className="wearo-shop-ai-link">Thử đồ bằng AI <ArrowUpRight size={15} aria-hidden="true" /></Link>
-              <Link to="/ai" search={{ mode: "concept" }} className="wearo-shop-ai-link is-secondary">AI Stylist <ArrowUpRight size={15} aria-hidden="true" /></Link>
+              <Link to="/ai" search={{ mode: "stylist" }} className="wearo-shop-ai-link is-secondary">AI Stylist <ArrowUpRight size={15} aria-hidden="true" /></Link>
             </div>
           </div>
         </section>
