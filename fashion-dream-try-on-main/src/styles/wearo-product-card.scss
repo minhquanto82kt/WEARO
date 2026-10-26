@@ -102,7 +102,7 @@
   border: 1px solid rgba(84, 114, 140, 0.28);
   border-radius: 3px;
   color: var(--wearo-card-primary);
-  font-size: 8px;
+  font-size: 10px;
   font-weight: 700;
   letter-spacing: .12em;
   line-height: 1;
@@ -133,7 +133,7 @@
   padding: 4px 8px;
   border: 1px solid transparent;
   border-radius: 3px;
-  font-size: 8px;
+  font-size: 10px;
   font-weight: 800;
   letter-spacing: .12em;
   line-height: 1;
@@ -207,7 +207,7 @@
 
 .fashion-product-meta {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(76px, auto);
+  grid-template-columns: minmax(0, 1fr);
   align-items: start;
   gap: 10px;
   min-height: 142px;
@@ -217,7 +217,7 @@
 
 .fashion-product-category,
 .fashion-product-spec {
-  color: #3f5e77;
+  color: #2A3F52;
   font-size: 11px;
   font-weight: 650;
   letter-spacing: .07em;
@@ -255,22 +255,28 @@
 }
 
 .fashion-product-meta .text-silver {
-  color: rgba(84, 114, 140, 0.78) !important;
+  color: #354D60 !important;
 }
 
 .fashion-product-price-wrap {
   display: flex;
-  min-width: 92px;
-  flex-direction: column;
-  align-items: flex-end;
-  gap: 3px;
+  width: 100%;
+  min-width: 0;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding-top: 10px;
+  border-top: 1px solid rgba(84, 114, 140, 0.16);
 }
 
 .fashion-product-price {
-  color: #252525;
-  font-size: 14px;
-  font-weight: 800;
-  line-height: 1.35;
+  color: #1F2F3D;
+  font-size: 18px;
+  font-weight: 850;
+  line-height: 1.25;
+  letter-spacing: -0.025em;
   white-space: nowrap;
 }
 
@@ -281,13 +287,15 @@
   white-space: nowrap;
 }
 
-.fashion-heart {
+.fashion-heart,
+.fashion-cart-icon {
   display: inline-flex;
-  width: 44px;
-  height: 44px;
+  width: 40px;
+  height: 40px;
+  flex: 0 0 40px;
   align-items: center;
   justify-content: center;
-  margin-top: 7px;
+  margin-top: 0;
   border: 1px solid rgba(84, 114, 140, 0.26);
   border-radius: 999px;
   background: rgba(255, 255, 255, 0.28);
@@ -296,14 +304,39 @@
   transition: transform 220ms cubic-bezier(.22,1,.36,1), background-color 220ms ease, color 220ms ease, border-color 220ms ease;
 }
 
-.fashion-heart:hover {
+.fashion-heart:hover,
+.fashion-cart-icon:hover {
   transform: scale(1.04);
   border-color: rgba(84, 114, 140, 0.65);
   background: var(--wearo-card-accent);
   color: #252525;
 }
 
-.fashion-heart:focus-visible {
+.fashion-cart-icon {
+  border: 1px solid rgba(84, 114, 140, 0.36);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.42);
+  color: var(--wearo-card-primary);
+  cursor: pointer;
+  transition: transform 220ms cubic-bezier(.22,1,.36,1), background-color 220ms ease, color 220ms ease, border-color 220ms ease;
+}
+
+.fashion-cart-icon:hover,
+.fashion-cart-icon.is-active {
+  border-color: var(--wearo-card-primary);
+  background: var(--wearo-card-primary);
+  color: #FFFFFF;
+}
+
+.fashion-product-actions {
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-items: center;
+  gap: 6px;
+}
+
+.fashion-heart:focus-visible,
+.fashion-cart-icon:focus-visible {
   outline: 2px solid #252525;
   outline-offset: 3px;
   border-color: #252525;
@@ -324,11 +357,23 @@
   }
 
   .fashion-product-price-wrap {
-    min-width: 76px;
+    min-width: 0;
+    gap: 7px;
   }
 
   .fashion-product-price {
-    font-size: 13px;
+    font-size: 16px;
+  }
+
+  .fashion-product-actions {
+    gap: 5px;
+  }
+
+  .fashion-heart,
+  .fashion-cart-icon {
+    width: 38px;
+    height: 38px;
+    flex-basis: 38px;
   }
 
   .fashion-product-card:hover {
@@ -361,4 +406,213 @@
 @media (max-width: 760px) {
   .fashion-product-mobile-gallery { position: absolute; top: 12px; right: 12px; z-index: 12; display: inline-flex; min-width: 56px; min-height: 44px; align-items: center; justify-content: center; gap: 3px; padding: 0 9px; border: 1px solid rgba(84,114,140,.3); border-radius: 999px; background: rgba(248,246,242,.94); color: #54728C; font-size: 10px; font-weight: 700; }
   .fashion-product-card.is-gallery-secondary .fashion-product-mobile-gallery svg { transform: rotate(180deg); }
+}
+
+
+/* Intelligent product card: visible color swatches + contextual quick add. */
+.fashion-product-colors {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 10px;
+  min-width: 0;
+}
+
+.fashion-product-colors__label,
+.fashion-quick-add__label {
+  color: #2A3F52;
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: .1em;
+}
+
+.fashion-product-swatches,
+.fashion-quick-add__colors {
+  display: inline-flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.fashion-product-swatch {
+  display: inline-block;
+  width: 17px;
+  height: 17px;
+  flex: 0 0 17px;
+  border: 1px solid rgba(38, 59, 75, 0.3);
+  border-radius: 50%;
+  background: var(--swatch-color, #D9BBA9);
+  box-shadow: inset 0 0 0 2px rgba(255,255,255,.18);
+}
+
+.fashion-product-colors__more {
+  color: #2A3F52;
+  font-size: 10px;
+  font-weight: 700;
+}
+
+.fashion-quick-add {
+  display: grid;
+  gap: 12px;
+  padding: 13px 16px 15px;
+  border-top: 1px solid rgba(84, 114, 140, 0.2);
+  background: rgba(255, 255, 255, 0.3);
+  animation: wearo-quick-add-in 180ms ease-out;
+}
+
+.fashion-quick-add__group {
+  display: grid;
+  gap: 7px;
+}
+
+.fashion-quick-add__sizes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.fashion-quick-add__size {
+  min-width: 34px;
+  min-height: 34px;
+  padding: 0 8px;
+  border: 1px solid rgba(84, 114, 140, 0.3);
+  border-radius: 5px;
+  background: rgba(255, 255, 255, 0.56);
+  color: #263B4B;
+  font-size: 11px;
+  font-weight: 650;
+  transition: background-color 160ms ease, color 160ms ease, border-color 160ms ease;
+}
+
+.fashion-quick-add__size.is-selected {
+  border-color: #344F65;
+  background: #344F65;
+  color: #FFFFFF;
+}
+
+.fashion-quick-add__size:disabled,
+.fashion-quick-add__color:disabled {
+  cursor: not-allowed;
+  opacity: .35;
+}
+
+.fashion-quick-add__color {
+  width: 29px;
+  height: 29px;
+  flex: 0 0 29px;
+  padding: 3px;
+  border: 1px solid transparent;
+  border-radius: 50%;
+  background: transparent;
+}
+
+.fashion-quick-add__color::before {
+  content: "";
+  display: block;
+  width: 100%;
+  height: 100%;
+  border: 1px solid rgba(38, 59, 75, 0.28);
+  border-radius: 50%;
+  background: var(--swatch-color, #D9BBA9);
+}
+
+.fashion-quick-add__color.is-selected {
+  border-color: #344F65;
+  box-shadow: 0 0 0 1px rgba(255,255,255,.75) inset;
+}
+
+.fashion-quick-add__footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding-top: 9px;
+  border-top: 1px solid rgba(84, 114, 140, 0.16);
+}
+
+.fashion-quick-add__stock {
+  color: #2A3F52;
+  font-size: 10px;
+  font-weight: 650;
+}
+
+.fashion-quick-add__stock.is-unavailable {
+  color: #8D3E36;
+}
+
+.fashion-quick-add__submit {
+  display: inline-flex;
+  min-height: 38px;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  padding: 0 12px;
+  border: 1px solid #344F65;
+  border-radius: 6px;
+  background: #344F65;
+  color: #FFFFFF;
+  font-size: 11px;
+  font-weight: 700;
+  transition: opacity 160ms ease, transform 160ms ease;
+}
+
+.fashion-quick-add__submit:hover:not(:disabled) {
+  transform: translateY(-1px);
+  opacity: .9;
+}
+
+.fashion-quick-add__submit:disabled {
+  cursor: not-allowed;
+  opacity: .45;
+}
+
+.fashion-quick-add__status {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  color: #344F65;
+  font-size: 11px;
+  line-height: 1.5;
+}
+
+.fashion-icon-spin {
+  animation: wearo-icon-spin 850ms linear infinite;
+}
+
+@keyframes wearo-icon-spin {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes wearo-quick-add-in {
+  from { opacity: 0; transform: translateY(-4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@media (max-width: 640px) {
+  .fashion-product-meta {
+    padding: 12px 12px 13px;
+  }
+
+  .fashion-quick-add {
+    padding: 12px;
+  }
+
+  .fashion-product-price {
+    font-size: 16px;
+  }
+
+  .fashion-quick-add__submit {
+    padding: 0 9px;
+    font-size: 10px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fashion-icon-spin {
+    animation: none;
+  }
+
+  .fashion-quick-add {
+    animation: none;
+  }
 }
