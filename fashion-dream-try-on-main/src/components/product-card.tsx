@@ -1,7 +1,7 @@
 import { Link } from "@tanstack/react-router";
 import { createServerFn } from "@tanstack/react-start";
 import { ArrowUpRight, Check, ChevronRight, Heart, LoaderCircle, ShoppingCart } from "lucide-react";
-import { useEffect, useState, type MouseEvent } from "react";
+import { useEffect, useState, type CSSProperties, type MouseEvent } from "react";
 import type { Product } from "@/data/products";
 import { formatPrice, useI18n } from "@/lib/i18n";
 import { getCustomerSession } from "@/lib/auth";
@@ -205,6 +205,13 @@ export function ProductCard({ product }: { product: Product }) {
           <Link to="/product/$id" params={{ id: product.id }} className="fashion-product-title">{product.name}</Link>
           {product.shortDescription && <p className="mt-2 line-clamp-2 text-xs leading-5 text-silver">{product.shortDescription}</p>}
           {specs && <p className="fashion-product-spec mt-2">{specs}</p>}
+      {productColors.length > 0 && <div className="fashion-product-colors" aria-label={language === "vi" ? "Màu sắc sản phẩm" : "Product colors"}>
+        <span className="fashion-product-colors__label">{language === "vi" ? "MÀU" : "COLORS"}</span>
+        <div className="fashion-product-swatches">
+          {productColors.map((color) => <span key={color} className="fashion-product-swatch" style={{ "--swatch-color": colorHex(color) } as CSSProperties} title={displayColor(color)} aria-label={displayColor(color)} />)}
+          {product.colors.length > productColors.length && <span className="fashion-product-colors__more">+{product.colors.length - productColors.length}</span>}
+        </div>
+      </div>}
         </div>
         <div className="fashion-product-price-wrap shrink-0">
           <span className="fashion-product-price">{formatPrice(product.price, language)}</span>
@@ -219,13 +226,6 @@ export function ProductCard({ product }: { product: Product }) {
           </div>
         </div>
       </div>
-      {productColors.length > 0 && <div className="fashion-product-colors" aria-label={language === "vi" ? "Màu sắc sản phẩm" : "Product colors"}>
-        <span className="fashion-product-colors__label">{language === "vi" ? "MÀU" : "COLORS"}</span>
-        <div className="fashion-product-swatches">
-          {productColors.map((color) => <span key={color} className="fashion-product-swatch" style={{ "--swatch-color": colorHex(color) } as React.CSSProperties} title={displayColor(color)} aria-label={displayColor(color)} />)}
-          {product.colors.length > productColors.length && <span className="fashion-product-colors__more">+{product.colors.length - productColors.length}</span>}
-        </div>
-      </div>}
       {quickAddOpen && <section id={`quick-add-${product.id}`} className="fashion-quick-add" aria-label={language === "vi" ? `Chọn biến thể ${product.name}` : `Choose ${product.name} options`}>
         {variantsLoading ? <p className="fashion-quick-add__status"><LoaderCircle size={15} className="fashion-icon-spin" /> {language === "vi" ? "Đang tải size và màu..." : "Loading sizes and colors..."}</p> : variants.length > 0 ? <>
           <div className="fashion-quick-add__group">
