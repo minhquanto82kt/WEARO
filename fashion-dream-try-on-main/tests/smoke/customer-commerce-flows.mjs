@@ -75,7 +75,7 @@ mustMatch(voucherMigration, /GRANT EXECUTE ON FUNCTION public\.apply_best_member
 mustMatch(shop, /pendingComponent: ShopRoutePending/, "shop route provides a loading state");
 mustMatch(shop, /errorComponent: ShopRouteError/, "shop route provides a recoverable error state");
 mustMatch(shop, /to="\/ai" search=\{\{ mode: "tryon" \}\}/, "AI Try-On banner opens Try-On mode");
-mustMatch(shop, /to="\/ai" search=\{\{ mode: "concept" \}\}/, "AI Stylist banner opens Stylist mode");
+mustMatch(shop, /to="\/ai" search=\{\{ mode: "stylist" \}\}/, "AI Stylist banner opens Stylist mode");
 mustMatch(productCard, /wishlistMessage[\s\S]*role="status"/, "wishlist actions provide accessible feedback");
 
 // Public route reachability for both customer flows.
