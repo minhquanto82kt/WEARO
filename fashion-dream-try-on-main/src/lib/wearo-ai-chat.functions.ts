@@ -60,6 +60,11 @@ function catalogPreferences(message: string) {
     .filter(([term]) => normalized.includes(term))
     .map(([, color]) => color))];
   const occasion = ["đi học", "đi làm", "hẹn hò", "đi chơi"].find((value) => normalized.includes(value));
+  const budgetMatch = normalized.match(/ngân sách tối đa:\\s*([\\d.,\\s]+)\\s*vnd/);
+  const budgetValue = budgetMatch?.[1]?.replace(/[.,\\s]/g, "");
+  const max_price = budgetValue && Number.isFinite(Number(budgetValue)) && Number(budgetValue) > 0
+    ? Number(budgetValue)
+    : undefined;
   let garment_type: string | undefined;
   if (/(quần|pants|jeans|shorts)/i.test(normalized)) garment_type = "bottom";
   else if (/(váy|đầm|dress)/i.test(normalized)) garment_type = "dress";
@@ -73,6 +78,7 @@ function catalogPreferences(message: string) {
       ...(styles.length ? { style_tags: styles } : {}),
       ...(colors.length ? { colors } : {}),
       ...(garment_type ? { garment_type } : {}),
+      ...(max_price ? { max_price } : {}),
     },
     limit: 4,
   };
