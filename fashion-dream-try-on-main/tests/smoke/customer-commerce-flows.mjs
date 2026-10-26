@@ -74,7 +74,8 @@ mustMatch(voucherMigration, /REVOKE ALL ON FUNCTION public\.apply_best_member_vo
 mustMatch(voucherMigration, /GRANT EXECUTE ON FUNCTION public\.apply_best_member_voucher\(uuid, uuid\) TO authenticated/s, "voucher RPC is only granted to authenticated customers");
 mustMatch(shop, /pendingComponent: ShopRoutePending/, "shop route provides a loading state");
 mustMatch(shop, /errorComponent: ShopRouteError/, "shop route provides a recoverable error state");
-mustMatch(shop, /search=\{\{ mode: banner\.mode \}\}/, "AI banner links open the matching Try-On or Stylist mode");
+mustMatch(shop, /to="\/ai" search=\{\{ mode: "tryon" \}\}/, "AI Try-On banner opens Try-On mode");
+mustMatch(shop, /to="\/ai" search=\{\{ mode: "concept" \}\}/, "AI Stylist banner opens Stylist mode");
 mustMatch(productCard, /wishlistMessage[\s\S]*role="status"/, "wishlist actions provide accessible feedback");
 
 // Public route reachability for both customer flows.
