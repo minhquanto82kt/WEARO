@@ -30,10 +30,10 @@ type StylistRecommendation = Awaited<ReturnType<typeof getStylistRecommendations
 type TryOnStatus = "idle" | "uploading" | "processing" | "completed" | "failed";
 
 export const Route = createFileRoute("/ai")({
-  validateSearch: (search: Record<string, unknown>): { product?: string; mode?: "concept" | "tryon" } => {
-    const parsed: { product?: string; mode?: "concept" | "tryon" } = {};
+  validateSearch: (search: Record<string, unknown>): { product?: string; mode?: "stylist" | "tryon" } => {
+    const parsed: { product?: string; mode?: "stylist" | "tryon" } = {};
     if (typeof search["product"] === "string") parsed.product = search["product"];
-    if (search["mode"] === "concept" || search["mode"] === "tryon") parsed.mode = search["mode"];
+    if (search["mode"] === "stylist" || search["mode"] === "tryon") parsed.mode = search["mode"];
     return parsed;
   },
   head: () => ({
@@ -466,7 +466,7 @@ function AiPage() {
   const [recommendations, setRecommendations] = useState<StylistRecommendation[]>([]);
   const [recommendationsLoading, setRecommendationsLoading] = useState(false);
   const [recommendationsError, setRecommendationsError] = useState("");
-  const [mode, setMode] = useState<"concept" | "tryon">(search.mode ?? (search.product ? "tryon" : "concept"));
+  const [mode, setMode] = useState<"stylist" | "tryon">(search.mode ?? (search.product ? "tryon" : "stylist"));
 
   useEffect(() => {
     setConsented(window.localStorage.getItem(CONSENT_KEY) === "accepted");
@@ -607,7 +607,7 @@ function AiPage() {
                   <span className="wearo-ai-choice-action" aria-hidden="true">Bắt đầu <span>→</span></span>
                 </span>
               </button>
-              <button className="wearo-ai-choice-card" type="button" aria-pressed={mode === "concept"} data-active={mode === "concept"} onClick={() => setMode("concept")}>
+              <button className="wearo-ai-choice-card" type="button" aria-pressed={mode === "stylist"} data-active={mode === "stylist"} onClick={() => setMode("stylist")}>
                 <img
                   src="/images/banners/wearo-ai-stylist-banner.webp"
                   alt=""
@@ -626,7 +626,7 @@ function AiPage() {
               </button>
             </div>
 
-            {mode === "concept" ? <>
+            {mode === "stylist" ? <>
             <div className="wearo-ai-grid">
               <section className="wearo-ai-card">
                 <div className="wearo-ai-card-header">
