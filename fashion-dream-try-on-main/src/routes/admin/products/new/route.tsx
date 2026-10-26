@@ -252,7 +252,7 @@ function NewProductPage() {
                   <option value="Casual">Casual</option>
                   <option value="Basic">Basic</option>
                   <option value="Streetwear">Streetwear</option>
-                  <option value="Outing Style">Outing Style</option>
+                  <option value="Outerwear">Outerwear</option>
                 </select>
                 <small className="up-style-helper">Phong cách này được lưu cùng sản phẩm và dùng để hiển thị thông tin trên trang sản phẩm.</small>
               </label>
