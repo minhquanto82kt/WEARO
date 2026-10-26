@@ -271,15 +271,14 @@ function ShopPage() {
 
         <section className="wearo-shop-outfit-story" aria-labelledby="wearo-outfit-story-title">
           <div className="wearo-shop-story-copy">
-            <p className="wearo-shop-section-label">WEARO / STYLE NOTES 01</p>
-            <h2 id="wearo-outfit-story-title">Một outfit tốt bắt đầu từ cảm giác của chính bạn.</h2>
-            <p>Chọn những món đồ bạn thấy thoải mái, phối theo nhịp sống và để phong cách thể hiện cá tính riêng — không cần chạy theo khuôn mẫu.</p>
-            <Link to="/collections/$slug" params={{ slug: "casual" }} className="wearo-shop-story-cta">Khám phá phong cách <ArrowUpRight size={16} /></Link>
+            <p className="wearo-shop-section-label">WEARO / SAIGON · UNISEX FASHION</p>
+            <h2 id="wearo-outfit-story-title">Mặc có gu.<br /><span>Sống có chất.</span></h2>
+            <p>Khám phá thời trang unisex hiện đại, chọn outfit theo cá tính riêng và thử trang phục bằng AI trước khi quyết định.</p>
+            <Link to="/ai" search={{ mode: "tryon" }} className="wearo-shop-story-cta">Thử outfit bằng AI <ArrowUpRight size={16} /></Link>
           </div>
-          <div className="wearo-shop-story-visual" role="img" aria-label="Khối hình minh họa biên tập thời trang WEARO">
-            <span className="story-orbit story-orbit-one" /><span className="story-orbit story-orbit-two" />
-            <span className="wearo-shop-story-mark">W.</span>
-            <span className="wearo-shop-story-caption">EVERYDAY, YOUR WAY<br />WEARO STYLE JOURNAL</span>
+          <div className="wearo-shop-story-visual">
+            <img src="/images/4people-in-white-studio.webp" alt="Bốn người mẫu thể hiện phong cách thời trang unisex WEARO trong studio tông kem." loading="lazy" decoding="async" />
+            <span className="wearo-shop-story-caption">WEARO / SAIGON 2026<br />FIND YOUR OWN WAY</span>
           </div>
         </section>
 
