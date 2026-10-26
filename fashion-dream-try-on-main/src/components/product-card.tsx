@@ -82,7 +82,7 @@ export function ProductCard({ product }: { product: Product }) {
       navy: "#263A58", moss: "#69745A", "#141414": "#141414", "#000000": "#000000",
       "#ffffff": "#FFFFFF", "#fff": "#FFFFFF", "#f5f5dc": "#F5F5DC", "#f2ceae": "#F2CEAE",
     };
-    if (/^#[0-9a-f]{3}(?:[0-9a-f]{3})?(?:[0-9a-f]{2})?$/i.test(value)) return value;
+    if (/^#(?:[0-9a-f]{3}|[0-9a-f]{4}|[0-9a-f]{6}|[0-9a-f]{8})$/i.test(value)) return value;
     return known[value] ?? "#D9BBA9";
   };
   const selectedVariant = variants.find((variant) => variant.size === selectedSize && variant.color === selectedColor);
@@ -246,7 +246,7 @@ export function ProductCard({ product }: { product: Product }) {
             <div className="fashion-quick-add__colors">
               {colorOptions.map((color) => {
                 const available = variants.some((variant) => variant.color === color && variant.stock > 0);
-                return <button key={color} type="button" disabled={!available} aria-label={displayColor(color)} aria-pressed={selectedColor === color} title={displayColor(color)} className={`fashion-quick-add__color${selectedColor === color ? " is-selected" : ""}`} style={{ "--swatch-color": colorHex(color) } as React.CSSProperties} onClick={() => {
+                return <button key={color} type="button" disabled={!available} aria-label={displayColor(color)} aria-pressed={selectedColor === color} title={displayColor(color)} className={`fashion-quick-add__color${selectedColor === color ? " is-selected" : ""}`} style={{ "--swatch-color": colorHex(color) } as CSSProperties} onClick={() => {
                   setSelectedColor(color);
                   const matching = variants.find((variant) => variant.color === color && variant.size === selectedSize && variant.stock > 0) ?? variants.find((variant) => variant.color === color && variant.stock > 0);
                   if (matching) setSelectedSize(matching.size);
