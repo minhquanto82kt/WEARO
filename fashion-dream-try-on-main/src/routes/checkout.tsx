@@ -12,6 +12,8 @@ import { isMockUserMode } from "@/lib/mock-user";
 import { getInvoiceData, type InvoiceData } from "@/lib/invoice.functions";
 import { createVietQrUrl } from "@/lib/vietqr";
 import { GROWTH_EVENTS, trackGrowthEvent } from "@/lib/analytics/analytics";
+import { getCustomerAccessToken } from "@/lib/auth";
+import { trackStylistEvent } from "@/lib/stylist-feedback.functions";
 import "@/styles/wearo-checkout-page.scss";
 
 export const Route = createFileRoute("/checkout")({
@@ -78,6 +80,17 @@ function CheckoutPage() {
 
   const finish = async (data: InvoiceData) => {
     if (!mockMode) trackGrowthEvent({ name: GROWTH_EVENTS.PURCHASE_COMPLETE, value: data.total, currency: "VND" });
+    try {
+      const rawAttribution = sessionStorage.getItem("wearo_stylist_attribution");
+      if (rawAttribution) {
+        const attribution = JSON.parse(rawAttribution) as { sessionId?: string; recommendationIds?: string[] };
+        if (attribution.sessionId && Array.isArray(attribution.recommendationIds) && attribution.recommendationIds.length) {
+          const accessToken = getCustomerAccessToken();
+          void trackStylistEvent({ data: { accessToken: accessToken || undefined, sessionId: attribution.sessionId, eventType: "purchase", orderId: data.order_code, recommendationIds: attribution.recommendationIds, metadata: { total: data.total, currency: "VND" } } }).catch(() => undefined);
+        }
+        sessionStorage.removeItem("wearo_stylist_attribution");
+      }
+    } catch { /* Attribution must never block order completion. */ }
     setInvoice(data);
     setDone(data.order_code);
     setCountdown(5);
