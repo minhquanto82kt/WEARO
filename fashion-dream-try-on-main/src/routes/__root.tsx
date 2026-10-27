@@ -3,6 +3,7 @@ import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/react";
 import { Outlet, Link, createRootRouteWithContext, useRouter, HeadContent, Scripts } from "@tanstack/react-router";
 import { useEffect, useState, type ReactNode } from "react";
+import { ArrowUp } from "lucide-react";
 import tailwindCss from "../tailwind.css?url";
 import appCss from "../styles.scss?url";
 import { Toaster } from "@/components/ui/sonner";
@@ -34,4 +35,29 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
   ], scripts: siteStructuredData.map(jsonLdScript) }), shellComponent: RootShell, component: RootComponent, notFoundComponent: NotFoundComponent, errorComponent: ErrorComponent,
 });
 function RootShell({ children }: { children: ReactNode }) { return <html lang="vi"><head><HeadContent /></head><body className="wearo-ui-v2">{children}<Scripts /></body></html>; }
-function RootComponent() { const { queryClient } = Route.useRouteContext(); return <QueryClientProvider client={queryClient}><I18nProvider><CartProvider><ThemeRuntime /><CustomerAuthGuard /><Outlet /><Toaster /><Analytics /><SpeedInsights /></CartProvider></I18nProvider></QueryClientProvider>; }
+function ScrollToTopButton() {
+  const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    const updateVisibility = () => setVisible(window.scrollY > 360);
+    updateVisibility();
+    window.addEventListener("scroll", updateVisibility, { passive: true });
+    return () => window.removeEventListener("scroll", updateVisibility);
+  }, []);
+
+  if (!visible) return null;
+
+  return (
+    <button
+      type="button"
+      className="wearo-scroll-top"
+      aria-label="Cuộn lên đầu trang"
+      title="Lên đầu trang"
+      onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+    >
+      <ArrowUp size={19} aria-hidden="true" />
+    </button>
+  );
+}
+
+function RootComponent() { const { queryClient } = Route.useRouteContext(); return <QueryClientProvider client={queryClient}><I18nProvider><CartProvider><ThemeRuntime /><CustomerAuthGuard /><Outlet /><ScrollToTopButton /><Toaster /><Analytics /><SpeedInsights /></CartProvider></I18nProvider></QueryClientProvider>; }
