@@ -12,7 +12,7 @@ const DISCOVERY_LINKS = [
   { label: "Casual", vi: "CASUAL", slug: "casual" },
   { label: "Basic", vi: "BASIC", slug: "basic" },
   { label: "Streetwear", vi: "STREETWEAR", slug: "streetwear" },
-  { label: "Outing Style", vi: "OUTING STYLE", slug: "outing-style" },
+  { label: "Outerwear", vi: "OUTERWEAR", slug: "outing-style" },
 ] as const;
 
 export function SiteNav() {
