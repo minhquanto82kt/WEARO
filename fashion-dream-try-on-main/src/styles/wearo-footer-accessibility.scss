@@ -471,3 +471,31 @@
     font-size: 10px;
   }
 }
+
+
+/* Keep the copyright line readable and prevent ancestor styles from clipping it. */
+.wearo-footer .wearo-footer__bottom {
+  min-width: 0;
+  overflow: visible !important;
+  color: #334B5C !important;
+}
+
+.wearo-footer .wearo-footer__bottom p {
+  display: block !important;
+  min-width: 0;
+  margin: 0;
+  color: #334B5C !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+  line-height: 1.7 !important;
+  overflow: visible !important;
+  overflow-wrap: anywhere;
+  position: relative;
+  z-index: 1;
+}
+
+.wearo-footer .wearo-footer__bottom span {
+  color: #54728C !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+}
