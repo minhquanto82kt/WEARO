@@ -103,7 +103,7 @@ function StylistRecommendationPanel() {
   const [sessionId] = useState(() => typeof crypto !== "undefined" && "randomUUID" in crypto ? crypto.randomUUID() : `stylist-${Date.now()}`);
   useEffect(() => { activeStylistSessionId = sessionId; }, [sessionId]);
   useEffect(() => {
-    const onRecommendations = (event: Event) => { const detail = (event as CustomEvent<StylistRecommendation[]>).detail; setItems(Array.isArray(detail) ? detail : []); setFeedback(null); setFeedbackError(""); };
+    const onRecommendations = (event: Event) => { const detail = (event as CustomEvent<StylistRecommendation[]>).detail; const next = Array.isArray(detail) ? detail : []; setItems(next); sessionStorage.setItem("wearo_stylist_attribution", JSON.stringify({ sessionId, recommendationIds: next.map((item) => item.id) })); setFeedback(null); setFeedbackError(""); };
     window.addEventListener("wearo:stylist-recommendations", onRecommendations);
     return () => window.removeEventListener("wearo:stylist-recommendations", onRecommendations);
   }, []);
