@@ -541,3 +541,23 @@ body .fashion-nav .fashion-shop-mega .fashion-shop-category__meta span {
     transition: none !important;
   }
 }
+
+
+/* Shared sticky storefront navigation: keep the announcement and main header together. */
+body .fashion-nav {
+  position: sticky !important;
+  top: 0 !important;
+  z-index: 1000 !important;
+  isolation: isolate;
+}
+
+/* Preserve dropdown stacking while the navigation is sticky. */
+body .fashion-nav .fashion-shop-mega,
+body .fashion-nav .fashion-search-panel,
+body .fashion-nav .fashion-mobile-menu {
+  z-index: 1001;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body .fashion-nav { scroll-margin-top: 0; }
+}
