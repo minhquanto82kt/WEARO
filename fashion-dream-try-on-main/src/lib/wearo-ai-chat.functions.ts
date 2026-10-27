@@ -60,8 +60,8 @@ function catalogPreferences(message: string) {
     .filter(([term]) => normalized.includes(term))
     .map(([, color]) => color))];
   const occasion = ["đi học", "đi làm", "hẹn hò", "đi chơi"].find((value) => normalized.includes(value));
-  const budgetMatch = normalized.match(/ngân sách tối đa:\\s*([\\d.,\\s]+)\\s*vnd/);
-  const budgetValue = budgetMatch?.[1]?.replace(/[.,\\s]/g, "");
+  const budgetMatch = normalized.match(/ngân sách tối đa:\s*([\d.,\s]+)\s*vnd/);
+  const budgetValue = budgetMatch?.[1]?.replace(/[.,\s]/g, "");
   const max_price = budgetValue && Number.isFinite(Number(budgetValue)) && Number(budgetValue) > 0
     ? Number(budgetValue)
     : undefined;
@@ -84,10 +84,10 @@ function catalogPreferences(message: string) {
   };
 }
 
-async function getVerifiedCatalogContext(message: string): Promise<string> {
+async function getVerifiedCatalogContext(message: string): Promise<{ context: string; products: Array<{ id: string; name: string; category?: string; price?: number; image?: string; score: number; reason: string }> }> {
   const secret = process.env.SUPABASE_SECRET_KEY?.trim();
   if (!secret) {
-    return "LIVE CATALOG STATUS: unavailable (server bridge secret is not configured). Do not invent product details.";
+    return { context: "LIVE CATALOG STATUS: unavailable (server bridge secret is not configured). Do not invent product details.", products: [] };
   }
 
   try {
@@ -104,12 +104,12 @@ async function getVerifiedCatalogContext(message: string): Promise<string> {
       body: JSON.stringify({ ...catalogPreferences(message), client_key: clientKey }),
     });
     if (!response.ok) {
-      return `LIVE CATALOG STATUS: unavailable (catalog service returned ${response.status}). Do not invent product details.`;
+      return { context: `LIVE CATALOG STATUS: unavailable (catalog service returned ${response.status}). Do not invent product details.`, products: [] };
     }
 
     const parsed = StylistResponse.safeParse(await response.json());
     if (!parsed.success) {
-      return "LIVE CATALOG STATUS: unavailable (catalog response was invalid). Do not invent product details.";
+      return { context: "LIVE CATALOG STATUS: unavailable (catalog response was invalid). Do not invent product details.", products: [] };
     }
 
     const products = parsed.data.recommendations.map(({ product, score, reason }) => ({
@@ -123,12 +123,12 @@ async function getVerifiedCatalogContext(message: string): Promise<string> {
     })).filter((product) => typeof product.id === "string" && typeof product.name === "string");
 
     if (!products.length) {
-      return "LIVE CATALOG STATUS: no matching active published products were returned. Give general styling advice without inventing catalogue items.";
+      return { context: "LIVE CATALOG STATUS: no matching active published products were returned. Give general styling advice without inventing catalogue items.", products: [] };
     }
 
-    return `VERIFIED ACTIVE PUBLISHED WEARO CATALOG (source: database; recommend only these items and preserve exact names/prices):\n${JSON.stringify(products)}`;
+    return { context: `VERIFIED ACTIVE PUBLISHED WEARO CATALOG (source: database; recommend only these items and preserve exact names/prices):\n${JSON.stringify(products)}`, products };
   } catch {
-    return "LIVE CATALOG STATUS: unavailable (catalog service could not be reached). Do not invent product details.";
+    return { context: "LIVE CATALOG STATUS: unavailable (catalog service could not be reached). Do not invent product details.", products: [] };
   }
 }
 
@@ -143,12 +143,12 @@ export const generateWearoAiReply = createServerFn({ method: "POST" })
     await verifyStylistEntitlement(data.accessToken);
 
     const latestUserMessage = [...data.messages].reverse().find((message) => message.role === "user")?.content ?? "";
-    const catalogContext = await getVerifiedCatalogContext(latestUserMessage);
+    const catalog = await getVerifiedCatalogContext(latestUserMessage);
     const result = await generateText({
       model: "openai/gpt-5.6-luna",
-      system: `${SYSTEM_PROMPT}\n\n${catalogContext}`,
+      system: `${SYSTEM_PROMPT}\n\n${catalog.context}`,
       messages: data.messages,
     });
 
-    return { text: result.text };
+    return { text: result.text, recommendations: catalog.products };
   });
