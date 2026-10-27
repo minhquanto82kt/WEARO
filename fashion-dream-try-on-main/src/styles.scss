@@ -111,3 +111,11 @@
 
 /* Scoped editorial image + slogan section on the shop page. */
 @import "./styles/wearo-shop-outfit-story.scss";
+
+/* Keep the in-column brand newsletter in normal document flow on every route.
+   The editorial overlap above is intended for standalone newsletter blocks only;
+   applying its negative offset to the brand-column variant makes it cover the intro copy. */
+.wearo-footer .wearo-footer__newsletter--brand {
+  transform: none !important;
+  margin-bottom: 0 !important;
+}
