@@ -101,7 +101,7 @@ function StylistRecommendationPanel() {
   const [savingFeedback, setSavingFeedback] = useState(false);
   const [feedbackError, setFeedbackError] = useState("");
   const [sessionId] = useState(() => typeof crypto !== "undefined" && "randomUUID" in crypto ? crypto.randomUUID() : `stylist-${Date.now()}`);
-  useState(() => { activeStylistSessionId = sessionId; return sessionId; });
+  useEffect(() => { activeStylistSessionId = sessionId; }, [sessionId]);
   useEffect(() => {
     const onRecommendations = (event: Event) => { const detail = (event as CustomEvent<StylistRecommendation[]>).detail; setItems(Array.isArray(detail) ? detail : []); setFeedback(null); setFeedbackError(""); };
     window.addEventListener("wearo:stylist-recommendations", onRecommendations);
