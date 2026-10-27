@@ -12,7 +12,7 @@ import { getStylistRecommendations } from "@/lib/stylist.functions";
 import { getCustomerAccessToken } from "@/lib/auth";
 import { GROWTH_EVENTS, trackGrowthEvent } from "@/lib/analytics/analytics";
 
-const STYLES = ["Casual", "Basic", "Streetwear", "Outing Style"];
+const STYLES = ["Casual", "Basic", "Streetwear", "Outerwear"];
 const OCCASIONS = ["Đi học", "Đi làm", "Hẹn hò", "Đi chơi"];
 const CONSENT_KEY = "wearo-ai-studio-consent-v2";
 
