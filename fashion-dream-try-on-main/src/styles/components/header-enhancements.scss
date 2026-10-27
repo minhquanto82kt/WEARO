@@ -561,3 +561,42 @@ body .fashion-nav .fashion-mobile-menu {
 @media (prefers-reduced-motion: reduce) {
   body .fashion-nav { scroll-margin-top: 0; }
 }
+
+
+/* Accessible back-to-top control, shared across storefront routes. */
+.wearo-scroll-top {
+  position: fixed;
+  right: max(20px, env(safe-area-inset-right));
+  bottom: max(22px, env(safe-area-inset-bottom));
+  z-index: 1200;
+  display: grid;
+  width: 46px;
+  height: 46px;
+  place-items: center;
+  border: 1px solid rgba(255,255,255,.72);
+  border-radius: 999px;
+  background: #54728C;
+  color: #fff;
+  box-shadow: 0 8px 24px rgba(23, 38, 49, .22);
+  cursor: pointer;
+  transition: background-color .18s ease, transform .18s ease, box-shadow .18s ease;
+}
+
+.wearo-scroll-top:hover {
+  background: #3F5D76;
+  transform: translateY(-2px);
+  box-shadow: 0 10px 26px rgba(23, 38, 49, .26);
+}
+
+.wearo-scroll-top:focus-visible {
+  outline: 3px solid #F2AD94;
+  outline-offset: 3px;
+}
+
+@media (max-width: 520px) {
+  .wearo-scroll-top { right: 14px; bottom: 16px; width: 44px; height: 44px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wearo-scroll-top { transition: none; }
+}
