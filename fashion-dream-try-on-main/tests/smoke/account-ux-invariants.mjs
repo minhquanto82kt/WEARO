@@ -32,5 +32,7 @@ check(account.includes("const onAuth = () => { setCheckingUser(true); void loadU
 check(!account.includes("await loadUser()"), "login and registration do not trigger duplicate session fetches");
 check(account.includes('className="account-hub-grid"') && account.includes('className="account-auth-grid"'), "signed-out auth and signed-in hub have separate layout roots");
 check(account.includes("upthink:auth:login") && account.includes("upthink:auth:logout") && account.includes("upthink:auth:recovery"), "auth events keep the account view in sync");
+check(!account.includes("signInWithGoogle") && !account.includes('alt="Google"'), "Google sign-in option is removed from account forms");
+check(account.includes("onClick={signInWithFacebook}") && account.includes('alt="Facebook"'), "Facebook sign-in remains available");
 
 console.log("ACCOUNT UX CONTRACT PASS");
