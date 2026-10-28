@@ -543,23 +543,23 @@ body .fashion-nav .fashion-shop-mega .fashion-shop-category__meta span {
 }
 
 
-/* Shared sticky storefront navigation: keep the announcement and main header together. */
-body .fashion-nav {
-  position: sticky !important;
+/* Global pinned storefront header — fixed positioning is reliable across all route wrappers. */
+html body .fashion-nav {
+  position: fixed !important;
   top: 0 !important;
-  z-index: 1000 !important;
+  left: 0 !important;
+  right: 0 !important;
+  bottom: auto !important;
+  z-index: 1100 !important;
   isolation: isolate;
 }
 
-/* Preserve dropdown stacking while the navigation is sticky. */
-body .fashion-nav .fashion-shop-mega,
-body .fashion-nav .fashion-search-panel,
-body .fashion-nav .fashion-mobile-menu {
-  z-index: 1001;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  body .fashion-nav { scroll-margin-top: 0; }
+/* Keep interactive layers above the pinned header surface. */
+html body .fashion-nav .fashion-shop-mega,
+html body .fashion-nav .fashion-search-panel,
+html body .fashion-nav .fashion-mobile-menu,
+html body .fashion-nav .wearo-language-modal {
+  z-index: 1101;
 }
 
 
