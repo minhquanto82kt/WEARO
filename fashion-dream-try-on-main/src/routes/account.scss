@@ -14,8 +14,10 @@
   --account-text: #f8f1e8;
   --account-muted: rgba(248, 241, 232, .74);
   min-height: 100vh;
-  color: var(--account-text);
-  background: var(--account-ink);
+  color: var(--account-ink);
+  background:
+    radial-gradient(ellipse at 90% 10%, rgba(242, 173, 148, .28), transparent 30%),
+    linear-gradient(135deg, #fff8ef 0%, #f8ecdf 62%, #f2ceae 100%);
 }
 .account-page,
 .account-page * { box-sizing: border-box; }
@@ -29,10 +31,14 @@
 }
 .account-content--auth {
   color: #0f172a;
-  background: #f8fafc;
+  background:
+    radial-gradient(ellipse at 90% 10%, rgba(242, 173, 148, .24), transparent 32%),
+    radial-gradient(ellipse at 8% 82%, rgba(119, 148, 166, .18), transparent 34%),
+    linear-gradient(135deg, #fff8ef 0%, #f8ecdf 62%, #f2ceae 100%);
 }
 .account-content--auth::before { display: none; }
-.account-content--hub {
+.account-content--hub,
+.account-page .account-content--hub {
   color: var(--account-ink);
   background:
     radial-gradient(ellipse at 88% 8%, rgba(242, 173, 148, .34), transparent 32%),
