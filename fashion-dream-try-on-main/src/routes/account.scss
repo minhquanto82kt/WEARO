@@ -31,10 +31,24 @@
 }
 .account-content--auth {
   color: #0f172a;
-  background:
-    radial-gradient(ellipse at 90% 10%, rgba(242, 173, 148, .24), transparent 32%),
-    radial-gradient(ellipse at 8% 82%, rgba(119, 148, 166, .18), transparent 34%),
-    linear-gradient(135deg, #fff8ef 0%, #f8ecdf 62%, #f2ceae 100%);
+  background-color: #fff8ef;
+  background-image:
+    radial-gradient(
+      ellipse at top right,
+      rgba(242, 173, 148, 0.38),
+      transparent 55%
+    ),
+    radial-gradient(
+      ellipse at bottom left,
+      rgba(119, 148, 166, 0.25),
+      transparent 55%
+    ),
+    linear-gradient(
+      135deg,
+      #fffdf9 0%,
+      #fff8ef 55%,
+      #f8ecdf 100%
+    );
 }
 .account-content--auth::before { display: none; }
 .account-content--hub,
