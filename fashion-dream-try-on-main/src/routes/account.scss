@@ -26,12 +26,20 @@
   min-height: calc(100svh - 96px);
   overflow: hidden;
   isolation: isolate;
+}
+.account-content--auth {
+  color: #0f172a;
+  background: #f8fafc;
+}
+.account-content--auth::before { display: none; }
+.account-content--hub {
+  color: var(--account-text);
   background:
     radial-gradient(ellipse at 15% 16%, rgba(84, 114, 140, .42), transparent 38%),
     radial-gradient(ellipse at 86% 74%, rgba(242, 173, 148, .12), transparent 32%),
     linear-gradient(135deg, #20272c 0%, #182127 58%, #29343b 100%);
 }
-.account-content::before {
+.account-content--hub::before {
   content: "";
   position: absolute;
   inset: 0;
@@ -53,56 +61,53 @@
 }
 .account-main { flex: 1; display: flex; align-items: center; padding: 22px 0 34px; }
 .account-loading { min-height: calc(100svh - 96px); display: grid; place-items: center; color: var(--account-peach); font: 800 11px/1.4 "Lexend", Arial, sans-serif; letter-spacing: .18em; }
-.account-kicker, .account-kicker-small, .account-hub-eyebrow {
-  color: var(--account-peach);
-  font: 800 10px/1.45 "Lexend", Arial, sans-serif;
-  letter-spacing: .15em;
-  text-transform: uppercase;
+.account-auth-simple {
+  width: 100%;
+  max-width: 440px;
+  margin: 0 auto;
+  padding: clamp(24px, 4vw, 36px);
+  border: 1px solid #e2e8f0;
+  border-radius: 16px;
+  background: #fff;
+  box-shadow: 0 12px 36px rgba(15, 23, 42, .06);
 }
-.account-auth-grid { width: 100%; display: grid; grid-template-columns: minmax(0, 1fr) minmax(360px, 460px); gap: clamp(34px, 7vw, 96px); align-items: center; }
-.account-auth-intro { max-width: 520px; }
-.account-title { margin: 15px 0 0; color: var(--account-text); font: 700 clamp(58px, 7.8vw, 104px)/.9 "Space Grotesk", "Be Vietnam Pro", Arial, sans-serif; letter-spacing: -.065em; text-transform: uppercase; }
-.account-title span { display: block; }
-.account-title .accent { color: var(--account-peach); }
-.account-copy { max-width: 390px; margin: 24px 0 0; color: var(--account-muted); font: 400 14px/1.8 "Lexend", Arial, sans-serif; }
-.account-card { min-width: 0; padding: clamp(22px, 3vw, 34px); color: var(--account-ink); background: var(--account-cream); border: 1px solid rgba(242, 206, 174, .9); border-top: 4px solid var(--account-peach); border-radius: 18px; box-shadow: 0 24px 70px rgba(0, 0, 0, .28); }
-.account-card-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; margin-bottom: 22px; }
-.account-card-head .account-kicker-small { color: var(--account-blue); }
-.account-card h2 { margin: 7px 0 0; color: var(--account-ink); font: 700 clamp(25px, 3vw, 32px)/1.12 "Be Vietnam Pro", "Lexend", Arial, sans-serif; letter-spacing: -.04em; }
-.account-number { display: grid; place-items: center; flex: 0 0 38px; width: 38px; height: 38px; border: 1px solid rgba(84, 114, 140, .5); border-radius: 11px; color: var(--account-blue); font: 800 10px/1 "Lexend", Arial, sans-serif; }
-.account-switch { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; padding: 5px; margin-bottom: 22px; border: 1px solid rgba(84, 114, 140, .18); border-radius: 12px; background: rgba(255, 248, 239, .55); }
-.account-switch button { min-height: 42px; border: 0; border-radius: 8px; background: transparent; color: var(--account-blue); cursor: pointer; font: 700 11px/1.2 "Lexend", Arial, sans-serif; transition: background .18s ease, color .18s ease; }
-.account-switch button[aria-selected="true"] { color: var(--account-paper); background: var(--account-blue); }
-.account-form { display: flex; flex-direction: column; gap: 15px; }
+.account-content--auth .account-shell { width: min(100% - 32px, 480px); }
+.account-content--auth .account-main { justify-content: center; padding: 28px 0; }
+.account-auth-brand { display: flex; align-items: center; gap: 10px; color: #102a43; font: 800 15px/1 "Plus Jakarta Sans", "Be Vietnam Pro", Arial, sans-serif; letter-spacing: .08em; }
+.account-brand-mark { display: grid; place-items: center; width: 34px; height: 34px; border-radius: 9px; color: #fff; background: #102a43; font: 800 16px/1 "Plus Jakarta Sans", Arial, sans-serif; letter-spacing: 0; }
+.account-auth-heading { margin: 28px 0 22px; }
+.account-auth-heading h1 { margin: 0; color: #0f172a; font: 800 clamp(25px, 5vw, 30px)/1.2 "Plus Jakarta Sans", "Be Vietnam Pro", Arial, sans-serif; letter-spacing: -.04em; }
+.account-auth-heading p { margin: 9px 0 0; color: #64748b; font: 400 13px/1.7 "Plus Jakarta Sans", "Be Vietnam Pro", Arial, sans-serif; }
+.account-switch { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; padding: 4px; margin-bottom: 22px; border: 1px solid #e2e8f0; border-radius: 10px; background: #f1f5f9; }
+.account-switch button { min-height: 40px; border: 0; border-radius: 7px; color: #64748b; background: transparent; cursor: pointer; font: 700 12px/1.2 "Plus Jakarta Sans", "Be Vietnam Pro", Arial, sans-serif; transition: background .16s ease, color .16s ease, box-shadow .16s ease; }
+.account-switch button[aria-selected="true"] { color: #102a43; background: #fff; box-shadow: 0 1px 3px rgba(15, 23, 42, .1); }
+.account-form { display: flex; flex-direction: column; gap: 16px; }
 .account-field { display: flex; flex-direction: column; gap: 7px; }
-.account-field label { color: #34434c; font: 700 10px/1.4 "Lexend", Arial, sans-serif; letter-spacing: .07em; }
-.account-field input { width: 100%; min-width: 0; height: 48px; padding: 0 13px; border: 1px solid rgba(84, 114, 140, .36); border-radius: 10px; outline: none; color: var(--account-ink); background: rgba(255, 248, 239, .7); font: 400 14px/1 "Lexend", Arial, sans-serif; transition: border-color .18s ease, box-shadow .18s ease; }
-.account-field input::placeholder { color: rgba(32, 39, 44, .42); }
-.account-field input:focus-visible { border-color: var(--account-blue); box-shadow: 0 0 0 3px rgba(84, 114, 140, .16); }
+.account-field label { color: #334155; font: 700 12px/1.4 "Plus Jakarta Sans", "Be Vietnam Pro", Arial, sans-serif; }
+.account-field input { width: 100%; min-width: 0; height: 46px; padding: 0 13px; border: 1px solid #cbd5e1; border-radius: 9px; outline: none; color: #0f172a; background: #fff; font: 400 13px/1 "Plus Jakarta Sans", "Be Vietnam Pro", Arial, sans-serif; transition: border-color .16s ease, box-shadow .16s ease; }
+.account-field input::placeholder { color: #94a3b8; }
+.account-field input:focus-visible { border-color: #2563eb; box-shadow: 0 0 0 3px rgba(37, 99, 235, .12); }
 .account-field input:disabled { opacity: .65; cursor: wait; }
 .account-password { position: relative; }
-.account-password input { padding-right: 48px; }
-.account-eye { position: absolute; top: 4px; right: 4px; display: grid; place-items: center; width: 40px; height: 40px; border: 0; border-radius: 8px; color: var(--account-blue); background: transparent; cursor: pointer; }
-.account-eye:hover:not(:disabled) { background: rgba(84, 114, 140, .1); }
-.account-feedback { margin: 0; font: 500 12px/1.6 "Lexend", Arial, sans-serif; overflow-wrap: anywhere; }
-.account-feedback--error { color: #8c352b; }
-.account-feedback--success { color: #34434c; }
-.account-submit { width: 100%; min-height: 50px; padding: 12px 16px; border: 1px solid var(--account-blue); border-radius: 10px; color: var(--account-paper); background: var(--account-blue); cursor: pointer; font: 700 12px/1.3 "Lexend", Arial, sans-serif; transition: transform .18s ease, background .18s ease, box-shadow .18s ease; }
-.account-submit:hover:not(:disabled) { transform: translateY(-1px); background: #405f78; box-shadow: 0 8px 18px rgba(84, 114, 140, .2); }
+.account-password input { padding-right: 46px; }
+.account-eye { position: absolute; top: 3px; right: 3px; display: grid; place-items: center; width: 40px; height: 40px; border: 0; border-radius: 7px; color: #64748b; background: transparent; cursor: pointer; }
+.account-eye:hover:not(:disabled) { color: #102a43; background: #f1f5f9; }
+.account-feedback { margin: 0; font: 500 12px/1.6 "Plus Jakarta Sans", "Be Vietnam Pro", Arial, sans-serif; overflow-wrap: anywhere; }
+.account-feedback--error { color: #b91c1c; }
+.account-feedback--success { color: #166534; }
+.account-submit { width: 100%; min-height: 46px; padding: 12px 16px; border: 1px solid #102a43; border-radius: 9px; color: #fff; background: #102a43; cursor: pointer; font: 700 13px/1.3 "Plus Jakarta Sans", "Be Vietnam Pro", Arial, sans-serif; transition: background .16s ease, transform .16s ease; }
+.account-submit:hover:not(:disabled) { transform: translateY(-1px); background: #173f5f; }
 .account-submit:disabled { opacity: .6; cursor: wait; }
-.account-link, .account-resend { align-self: flex-start; padding: 2px 0; border: 0; color: var(--account-blue); background: transparent; cursor: pointer; text-align: left; font: 700 11px/1.5 "Lexend", Arial, sans-serif; }
+.account-link, .account-resend { align-self: flex-start; padding: 0; border: 0; color: #1d4ed8; background: transparent; cursor: pointer; text-align: left; font: 600 12px/1.5 "Plus Jakarta Sans", "Be Vietnam Pro", Arial, sans-serif; }
 .account-link:hover, .account-resend:hover { text-decoration: underline; text-underline-offset: 3px; }
-.account-back { margin-top: 2px; }
-.account-google-wrap { display: flex; align-items: center; gap: 12px; margin: 22px 0 12px; color: var(--account-blue); font: 700 9px/1.4 "Lexend", Arial, sans-serif; letter-spacing: .09em; text-align: center; }
-.account-google-wrap::before, .account-google-wrap::after { content: ""; flex: 1; height: 1px; background: rgba(84, 114, 140, .24); }
-.account-socials { display: grid; grid-template-columns: minmax(0, 1fr); gap: 10px; }
-.account-social { display: flex; align-items: center; justify-content: center; gap: 9px; min-width: 0; min-height: 46px; padding: 8px 12px; border: 1px solid rgba(84, 114, 140, .34); border-radius: 10px; color: var(--account-ink); background: rgba(255, 248, 239, .52); cursor: pointer; font: 700 11px/1.3 "Lexend", Arial, sans-serif; transition: border-color .18s ease, background .18s ease; }
-.account-social:hover:not(:disabled) { border-color: var(--account-blue); background: rgba(84, 114, 140, .08); }
-.account-social:disabled { opacity: .6; cursor: wait; }
-.account-social img { flex: 0 0 18px; width: 18px; height: 18px; object-fit: contain; }
-.account-page button:focus-visible, .account-page a:focus-visible { outline: 3px solid var(--account-peach); outline-offset: 3px; }
+.account-back { margin-top: 0; }
+.account-auth-footnote { margin: 22px 0 0; padding-top: 18px; border-top: 1px solid #e2e8f0; color: #64748b; text-align: center; font: 400 12px/1.6 "Plus Jakarta Sans", "Be Vietnam Pro", Arial, sans-serif; }
+.account-auth-footnote button { padding: 0; border: 0; color: #1d4ed8; background: transparent; cursor: pointer; font: 700 12px/1.6 "Plus Jakarta Sans", "Be Vietnam Pro", Arial, sans-serif; }
+.account-page button:focus-visible, .account-page a:focus-visible { outline: 3px solid #93c5fd; outline-offset: 3px; }
 .account-bottom { padding-top: 20px; color: rgba(248, 241, 232, .48); font: 700 9px/1.5 "Lexend", Arial, sans-serif; letter-spacing: .12em; text-transform: uppercase; }
 .account-bottom b { color: var(--account-peach); }
+.account-content--auth .account-bottom { color: #94a3b8; text-align: center; }
+.account-content--auth .account-bottom b { color: #102a43; }
 .account-dashboard { width: 100%; max-width: 1120px; margin: 0 auto; }
 .account-main:has(.account-dashboard) { align-items: flex-start; }
 .account-welcome { display: flex; align-items: center; justify-content: space-between; gap: 28px; padding: 24px 0; border-bottom: 1px solid rgba(248, 241, 232, .18); }
