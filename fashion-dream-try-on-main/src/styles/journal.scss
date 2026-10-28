@@ -8,12 +8,12 @@
 .wearo-journal-header p{max-width:620px;margin:22px 0 0;color:#54728c;font-size:15px;line-height:1.65}
 .wearo-journal-count{padding-bottom:7px;color:#54728c;font-size:10px;font-weight:800;letter-spacing:.14em;white-space:nowrap}
 .wearo-journal-filters{display:flex;flex-wrap:wrap;gap:8px;margin-top:34px}
-.wearo-journal-filters button{padding:8px 11px;border:1px solid rgba(84,114,140,.22);color:#54728c;background:#fff;font-size:9px;font-weight:800;letter-spacing:.1em;cursor:pointer}.wearo-journal-filters button:hover{border-color:#54728c}
-.wearo-journal-filters button.is-active{border-color:#54728c;background:#54728c;color:#fff}
+.wearo-journal-filters button{padding:8px 11px;border:1.5px solid rgba(84,114,140,.28);color:#54728c;background:#fff;font-size:9px;font-weight:800;letter-spacing:.1em;cursor:pointer;border-radius:999px;transition:color .18s ease,border-color .18s ease,background .18s ease,box-shadow .18s ease}.wearo-journal-filters button:hover{border-color:#7794A6;color:#171717;box-shadow:0 2px 8px rgba(84,114,140,.1)}
+.wearo-journal-filters button.is-active{border-color:#E89B7E;background:#F2AD94;color:#171717;box-shadow:0 2px 10px rgba(242,173,148,.28)}
 .wearo-journal-grid-section{padding:46px 0 100px}
 .wearo-journal-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:34px 22px}
-.wearo-journal-card{min-width:0;border:1px solid rgba(84,114,140,.16);background:#fff;box-shadow:0 12px 30px rgba(84,114,140,.07);transition:transform .2s ease,box-shadow .2s ease}
-.wearo-journal-card:hover{transform:translateY(-4px);box-shadow:0 18px 38px rgba(84,114,140,.13)}
+.wearo-journal-card{min-width:0;border:1.5px solid rgba(84,114,140,.2);background:#fff;box-shadow:0 12px 30px rgba(84,114,140,.07);transition:transform .2s ease,box-shadow .2s ease,border-color .2s ease}
+.wearo-journal-card:hover{transform:translateY(-4px);border-color:#C9A992;box-shadow:0 18px 38px rgba(84,114,140,.13)}
 .wearo-journal-card-image{display:block;aspect-ratio:16/10;overflow:hidden;background:#f2ceae}
 .wearo-journal-card-image img{width:100%;height:100%;display:block;object-fit:cover;transition:transform .35s ease}
 .wearo-journal-card:hover .wearo-journal-card-image img{transform:scale(1.035)}
