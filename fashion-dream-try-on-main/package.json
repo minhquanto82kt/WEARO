@@ -29,7 +29,8 @@
     "check:env": "node scripts/backend/check-env.mjs",
     "check:env:preview": "node scripts/backend/check-env.mjs --profile=preview",
     "check:env:production": "node scripts/backend/check-env.mjs --profile=production",
-    "audit:api-security": "node scripts/backend/audit-api-security.mjs"
+    "audit:api-security": "node scripts/backend/audit-api-security.mjs",
+    "test:account-ux": "node tests/smoke/account-ux-invariants.mjs"
   },
   "overrides": {
     "rolldown": "1.2.1",
