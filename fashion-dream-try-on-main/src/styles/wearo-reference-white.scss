@@ -52,10 +52,23 @@
   background: #f7f8f8 !important;
   color: var(--wr-text) !important;
 }
+
+/* Light theme AI panel — border skeleton + soft gradient (matches landing) */
 .wearo-reference-ai-panel {
-  background: linear-gradient(135deg, rgba(84,114,140,.10), rgba(242,173,148,.10));
-  border-color: rgba(84,114,140,.22);
+  background: linear-gradient(112deg, #E7EEF2 0%, #F7F5F1 48%, #F2CEAE 100%) !important;
+  border: 1.5px solid #D9BBA9 !important;
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.55) inset,
+    0 12px 32px rgba(23, 23, 23, 0.06);
+  transition: border-color .2s ease, box-shadow .2s ease;
 }
+.wearo-reference-ai-panel:hover {
+  border-color: #C9A992 !important;
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.65) inset,
+    0 16px 40px rgba(23, 23, 23, 0.09);
+}
+
 .wearo-reference-ai-features article {
   background: #fff;
   border-color: rgba(84,114,140,.18);
@@ -298,6 +311,8 @@
     font-size: .7rem;
     line-height: 1.2;
   }
+
+  /* Mobile hero CTA — border skeleton + soft gradient hover */
   .wearo-home-hero .wearo-home-hero-mobile-cta {
     display: inline-flex;
     align-items: center;
@@ -306,6 +321,7 @@
     min-height: 48px;
     margin-top: 28px;
     padding: 0 22px;
+    border: 1.5px solid #54728C;
     border-radius: 999px;
     background: #54728C;
     color: #fff;
@@ -314,6 +330,22 @@
     text-decoration: none;
     text-transform: uppercase;
     letter-spacing: .035em;
+    box-shadow: 0 2px 10px rgba(84, 114, 140, 0.25);
+    transition:
+      transform .2s ease,
+      background .2s ease,
+      border-color .2s ease,
+      box-shadow .2s ease;
+  }
+  .wearo-home-hero .wearo-home-hero-mobile-cta:hover {
+    background: linear-gradient(135deg, #54728C 0%, #6A8AA3 100%);
+    border-color: #3F5A70;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(84, 114, 140, 0.3);
+  }
+  .wearo-home-hero .wearo-home-hero-mobile-cta:active {
+    transform: translateY(0);
+    box-shadow: 0 3px 10px rgba(84, 114, 140, 0.2);
   }
   .wearo-home-hero .wearo-home-hero-mobile-cta:focus-visible {
     outline: 3px solid #F2AD94;
