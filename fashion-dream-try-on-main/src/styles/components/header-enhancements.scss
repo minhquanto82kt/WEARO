@@ -600,3 +600,14 @@ html body .fashion-nav .wearo-language-modal {
 @media (prefers-reduced-motion: reduce) {
   .wearo-scroll-top { transition: none; }
 }
+
+
+/* Reserve the fixed header's space in normal document flow on every route. */
+html body.wearo-ui-v2 {
+  --wearo-header-total: 68px;
+  padding-top: var(--wearo-header-total) !important;
+}
+
+@media (max-width: 900px) {
+  html body.wearo-ui-v2 { --wearo-header-total: 68px; }
+}
