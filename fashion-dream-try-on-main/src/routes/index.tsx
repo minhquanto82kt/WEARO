@@ -276,7 +276,7 @@ function Index() {
 
       <section id="ai-studio" className="wearo-reference-ai-banner">
         <div className="wearo-reference-container">
-          <div className="wearo-reference-ai-panel" style={{ background: "linear-gradient(112deg, #E7EEF2 0%, #F7F5F1 48%, #F2CEAE 100%)", borderColor: "#D9BBA9" }}>
+          <div className="wearo-reference-ai-panel">
             <div className="wearo-reference-ai-grid">
               <div>
                 <span className="wearo-reference-section-label">ĐỘT PHÁ TRẢI NGHIỆM</span>
