@@ -121,11 +121,68 @@
 .wearo-reference-journal { border-top-color: var(--wr-line); }
 .wearo-reference-journal-head > a { color: #54728C; }
 
-/* Journal cards: light surface + dark text (prevent title sinking into dark card) */
+/* Journal cards (homepage) — border skeleton + soft hover */
 .wearo-reference-journal-grid article {
   background: #fff !important;
-  border-color: rgba(84,114,140,.18) !important;
-  box-shadow: 0 8px 28px rgba(23,23,23,.06);
+  border: 1.5px solid rgba(84, 114, 140, 0.22) !important;
+  border-radius: 12px;
+  box-shadow: 0 8px 28px rgba(23, 23, 23, 0.06);
+  overflow: hidden;
+  transition: transform .2s ease, border-color .2s ease, box-shadow .2s ease;
+}
+.wearo-reference-journal-grid article:hover {
+  border-color: #C9A992 !important;
+  transform: translateY(-3px);
+  box-shadow: 0 14px 36px rgba(23, 23, 23, 0.1);
+}
+.wearo-reference-journal-image {
+  display: block;
+  position: relative;
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+  background: #F2CEAE;
+}
+.wearo-reference-journal-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform .4s ease;
+}
+.wearo-reference-journal-grid article:hover .wearo-reference-journal-image img {
+  transform: scale(1.035);
+}
+.wearo-reference-journal-overlay {
+  position: absolute;
+  inset: auto 0 0 0;
+  padding: 16px 16px 18px;
+  background: linear-gradient(180deg, transparent 0%, rgba(23, 23, 23, 0.72) 100%);
+  color: #fff;
+}
+.wearo-reference-journal-overlay > span:first-child {
+  color: #F2AD94;
+  font: 800 9px/1 var(--ft-meta);
+  letter-spacing: .12em;
+  text-transform: uppercase;
+}
+.wearo-reference-journal-overlay h3 {
+  margin: 8px 0 6px;
+  color: #fff !important;
+  font: 700 15px/1.3 var(--ft-body);
+}
+.wearo-reference-journal-overlay p {
+  margin: 0 0 10px;
+  color: rgba(255, 255, 255, 0.78) !important;
+  font: 12px/1.5 var(--ft-body);
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.wearo-reference-journal-read {
+  color: #F2CEAE;
+  font: 800 9px/1 var(--ft-meta);
+  letter-spacing: .12em;
+  text-transform: uppercase;
 }
 .wearo-reference-journal-copy {
   background: #fff;
@@ -418,4 +475,21 @@
 .wearo-home-hero .wearo-home-hero-banner {
   align-self: start;
   min-width: 0;
+}
+
+/* Nav AI STUDIO — border skeleton accent (default / hover / active) */
+body .fashion-nav .fashion-nav__links .fashion-ai-nav {
+  border: 1.5px solid rgba(84, 114, 140, 0.28) !important;
+  background: #fff !important;
+  box-shadow: 0 2px 8px rgba(84, 114, 140, 0.06) !important;
+}
+body .fashion-nav .fashion-nav__links .fashion-ai-nav:hover,
+body .fashion-nav .fashion-nav__links .fashion-ai-nav:focus-visible,
+body .fashion-nav .fashion-nav__links .fashion-ai-nav.is-active {
+  border-color: #E89B7E !important;
+  background: rgba(242, 173, 148, 0.18) !important;
+  box-shadow: 0 4px 14px rgba(242, 173, 148, 0.2) !important;
+}
+body .fashion-nav .fashion-ai-nav__beta {
+  border: 1px solid rgba(255, 255, 255, 0.85) !important;
 }
