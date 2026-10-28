@@ -44,14 +44,6 @@ function getFriendlyAuthCallbackError() {
   return "Xác thực tài khoản chưa hoàn tất. Vui lòng thử lại bằng liên kết mới nhất.";
 }
 
-function signInWithFacebook() {
-  if (typeof window === "undefined") return;
-  const url = new URL(`${supabaseConfig.url}/auth/v1/authorize`);
-  url.searchParams.set("provider", "facebook");
-  url.searchParams.set("redirect_to", `${window.location.origin}/account`);
-  window.location.assign(url.toString());
-}
-
 function clearAccountQuery() {
   if (typeof window !== "undefined") window.history.replaceState({}, document.title, window.location.pathname);
 }
@@ -200,7 +192,7 @@ function AccountPage() {
   return <div className="account-page">
     
     <SiteNav />
-    <main className="account-content"><div className="account-shell"><section className="account-main">
+    <main className={`account-content ${user && mode !== "reset" ? "account-content--hub" : "account-content--auth"}`}><div className="account-shell"><section className="account-main">
       {user && mode !== "reset" ? <div className="account-dashboard">
         <div className="account-welcome"><div><div className="account-kicker">WEARO / PERSONAL FASHION SYSTEM</div><h1>CHÀO MỪNG <span>{user.user_metadata?.full_name || user.user_metadata?.name || user.email?.split("@")[0] || "BẠN"}</span></h1></div><div><p>Không gian cá nhân của bạn đã sẵn sàng. Quản lý tài khoản, khám phá sản phẩm và tiếp tục hành trình AI TRY-ON theo phong cách riêng.</p><button className="account-logout" type="button" onClick={handleLogout} disabled={loading}><LogOut size={13}/> Đăng xuất</button></div></div>
         <div className="account-hub-grid">
@@ -237,22 +229,29 @@ function AccountPage() {
             <button className="account-hub-arrow account-hub-action" type="button" onClick={() => { setEmail(user.email || ""); switchMode("recover"); }}>Đặt lại mật khẩu qua email <ArrowRight size={17}/></button>
           </div>
         </div>
-      </div> : <div className="account-auth-grid"><div className="account-auth-intro"><div className="account-kicker">WEARO / MEMBER ACCESS</div><h1 className="account-title"><span>YOUR</span><span>STYLE.</span><span className="accent">YOUR ID.</span></h1><p className="account-copy">Đăng nhập để lưu phong cách, quản lý trải nghiệm mua sắm và tiếp tục hành trình thử đồ AI của bạn.</p></div>
-        <div className="account-card"><div className="account-card-head"><div><div className="account-kicker-small">Account / Access</div><h2>{mode === "login" ? "Welcome back" : mode === "register" ? "Create account" : mode === "recover" ? "Recover account" : "Set new password"}</h2></div><span className="account-number">{mode === "login" ? "01" : mode === "register" ? "02" : mode === "recover" ? "03" : "04"}</span></div>
-          {mode === "login" || mode === "register" ? <div className="account-switch" role="tablist" aria-label="Account mode"><button type="button" role="tab" aria-selected={mode === "login"} onClick={()=>switchMode("login")}>Đăng nhập</button><button type="button" role="tab" aria-selected={mode === "register"} onClick={()=>switchMode("register")}>Đăng ký</button></div> : null}
-          <form className="account-form" onSubmit={handleSubmit}>
-            {mode === "register" && <div className="account-field"><label htmlFor="account-name">Tên tài khoản</label><input id="account-name" value={fullName} onChange={e=>setFullName(e.target.value)} placeholder="Tên hiển thị của bạn" autoComplete="name" disabled={loading} required/></div>}
-            {mode !== "reset" && <div className="account-field"><label htmlFor="account-email">Email</label><input id="account-email" type="email" value={email} onChange={e=>setEmail(e.target.value)} placeholder="you@example.com" autoComplete="email" disabled={loading} required/></div>}
-            {mode !== "recover" && <div className="account-field"><label htmlFor="account-password">{mode === "reset" ? "Mật khẩu mới" : "Mật khẩu"}</label><div className="account-password"><input id="account-password" type={showPassword?"text":"password"} value={password} onChange={e=>setPassword(e.target.value)} placeholder="••••••••" autoComplete={mode === "login" ? "current-password" : "new-password"} disabled={loading} required minLength={6}/><button className="account-eye" type="button" onClick={()=>setShowPassword(v=>!v)} aria-label={showPassword?"Ẩn mật khẩu":"Hiện mật khẩu"} disabled={loading}>{showPassword?<EyeOff size={17}/>:<Eye size={17}/>}</button></div></div>}
-            {(mode === "register" || mode === "reset") && <div className="account-field"><label htmlFor="account-confirm-password">Xác nhận mật khẩu</label><div className="account-password"><input id="account-confirm-password" type={showConfirmPassword?"text":"password"} value={confirmPassword} onChange={e=>setConfirmPassword(e.target.value)} placeholder="••••••••" autoComplete="new-password" disabled={loading} required minLength={6}/><button className="account-eye" type="button" onClick={()=>setShowConfirmPassword(v=>!v)} aria-label={showConfirmPassword?"Ẩn mật khẩu xác nhận":"Hiện mật khẩu xác nhận"} disabled={loading}>{showConfirmPassword?<EyeOff size={17}/>:<Eye size={17}/>}</button></div></div>}
-            {error && <p className="account-feedback account-feedback--error" role="alert">{error}</p>}{message && <p className="account-feedback account-feedback--success" role="status">{message}</p>}
-            {mode === "login" && <button className="account-link" type="button" onClick={()=>switchMode("recover")}>Quên mật khẩu?</button>}
-            {mode === "register" && requiresEmailConfirmation && message && !user && <button className="account-resend" type="button" onClick={handleResend} disabled={resending}>{resending?"Đang gửi…":"Gửi lại email xác nhận"}</button>}
-            <button className="account-submit" type="submit" disabled={loading}>{loading?"Đang xử lý…":mode === "login"?"Đăng nhập":mode === "register"?"Tạo tài khoản":mode === "recover"?"Gửi email khôi phục":"Cập nhật mật khẩu"}</button>
-            {mode === "recover" && <button className="account-link account-back" type="button" onClick={()=>switchMode("login")}>← Quay lại đăng nhập</button>}{mode === "reset" && <button className="account-link account-back" type="button" onClick={()=>{switchMode("login");clearAccountQuery();}}>← Quay lại đăng nhập</button>}
-          </form>
-          {(mode === "login" || mode === "register") && <><div className="account-google-wrap"><span>HOẶC TIẾP TỤC VỚI</span></div><div className="account-socials"><button className="account-social" type="button" onClick={signInWithFacebook} disabled={loading}><img src="/brand/facebook.svg" alt="Facebook"/><span>Facebook</span></button></div></>}
+      </div> : <div className="account-auth-simple">
+        <div className="account-auth-brand" aria-label="WEARO">
+          <span className="account-brand-mark">W</span>
+          <span>WEARO</span>
         </div>
+        <div className="account-auth-heading">
+          <h1>{mode === "login" ? "Chào mừng trở lại" : mode === "register" ? "Tạo tài khoản" : mode === "recover" ? "Khôi phục mật khẩu" : "Đặt mật khẩu mới"}</h1>
+          <p>{mode === "login" ? "Đăng nhập để tiếp tục trải nghiệm WEARO." : mode === "register" ? "Tạo tài khoản để lưu sản phẩm và quản lý đơn hàng." : mode === "recover" ? "Nhập email để nhận liên kết đặt lại mật khẩu." : "Chọn mật khẩu mới cho tài khoản của bạn."}</p>
+        </div>
+        {mode === "login" || mode === "register" ? <div className="account-switch" role="tablist" aria-label="Chọn đăng nhập hoặc đăng ký"><button type="button" role="tab" aria-selected={mode === "login"} onClick={() => switchMode("login")}>Đăng nhập</button><button type="button" role="tab" aria-selected={mode === "register"} onClick={() => switchMode("register")}>Đăng ký</button></div> : null}
+        <form className="account-form" onSubmit={handleSubmit}>
+          {mode === "register" && <div className="account-field"><label htmlFor="account-name">Họ và tên</label><input id="account-name" value={fullName} onChange={e => setFullName(e.target.value)} placeholder="Nhập họ và tên" autoComplete="name" disabled={loading} required /></div>}
+          {mode !== "reset" && <div className="account-field"><label htmlFor="account-email">Email</label><input id="account-email" type="email" value={email} onChange={e => setEmail(e.target.value)} placeholder="name@example.com" autoComplete="email" disabled={loading} required /></div>}
+          {mode !== "recover" && <div className="account-field"><label htmlFor="account-password">{mode === "reset" ? "Mật khẩu mới" : "Mật khẩu"}</label><div className="account-password"><input id="account-password" type={showPassword ? "text" : "password"} value={password} onChange={e => setPassword(e.target.value)} placeholder="Tối thiểu 6 ký tự" autoComplete={mode === "login" ? "current-password" : "new-password"} disabled={loading} required minLength={6} /><button className="account-eye" type="button" onClick={() => setShowPassword(v => !v)} aria-label={showPassword ? "Ẩn mật khẩu" : "Hiện mật khẩu"} disabled={loading}>{showPassword ? <EyeOff size={17} /> : <Eye size={17} />}</button></div></div>}
+          {(mode === "register" || mode === "reset") && <div className="account-field"><label htmlFor="account-confirm-password">Xác nhận mật khẩu</label><div className="account-password"><input id="account-confirm-password" type={showConfirmPassword ? "text" : "password"} value={confirmPassword} onChange={e => setConfirmPassword(e.target.value)} placeholder="Nhập lại mật khẩu" autoComplete="new-password" disabled={loading} required minLength={6} /><button className="account-eye" type="button" onClick={() => setShowConfirmPassword(v => !v)} aria-label={showConfirmPassword ? "Ẩn mật khẩu xác nhận" : "Hiện mật khẩu xác nhận"} disabled={loading}>{showConfirmPassword ? <EyeOff size={17} /> : <Eye size={17} />}</button></div></div>}
+          {error && <p className="account-feedback account-feedback--error" role="alert">{error}</p>}
+          {message && <p className="account-feedback account-feedback--success" role="status">{message}</p>}
+          {mode === "login" && <button className="account-link" type="button" onClick={() => switchMode("recover")}>Quên mật khẩu?</button>}
+          {mode === "register" && requiresEmailConfirmation && message && !user && <button className="account-resend" type="button" onClick={handleResend} disabled={resending}>{resending ? "Đang gửi…" : "Gửi lại email xác nhận"}</button>}
+          <button className="account-submit" type="submit" disabled={loading}>{loading ? "Đang xử lý…" : mode === "login" ? "Đăng nhập" : mode === "register" ? "Tạo tài khoản" : mode === "recover" ? "Gửi liên kết khôi phục" : "Cập nhật mật khẩu"}</button>
+          {(mode === "recover" || mode === "reset") && <button className="account-link account-back" type="button" onClick={() => { switchMode("login"); if (mode === "reset") clearAccountQuery(); }}>← Quay lại đăng nhập</button>}
+        </form>
+        {(mode === "login" || mode === "register") && <p className="account-auth-footnote">{mode === "login" ? "Chưa có tài khoản?" : "Đã có tài khoản?"} <button type="button" onClick={() => switchMode(mode === "login" ? "register" : "login")}>{mode === "login" ? "Đăng ký ngay" : "Đăng nhập"}</button></p>}
       </div>}
     </section><div className="account-bottom"><b>●</b> SYSTEM ONLINE / CUSTOMER ACCOUNT / WEARO 2026</div></div></main><SiteFooter />
   </div>;
