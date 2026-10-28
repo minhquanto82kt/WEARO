@@ -2,6 +2,20 @@
 
 Python services for UPTHINK Fashion Dream.
 
+## Supported runtime
+
+This backend targets **CPython** only.
+
+| Version | Status |
+|---------|--------|
+| **Python 3.12** | Recommended (used in CI) |
+| **Python 3.11** | Supported |
+| Other implementations (PyPy, MicroPython, Stackless, Pyston…) | **Not supported** |
+
+Use a standard CPython installation. The project is not tested against alternative Python implementations.
+
+A `.python-version` file is provided for tools such as `pyenv` or `asdf`.
+
 ## Purpose
 
 This layer owns backend capabilities that should not run in the React/TanStack frontend:
@@ -105,15 +119,25 @@ python/
 │   └── main.py
 ├── tests/
 ├── .env.example
+├── .python-version
 ├── requirements.txt
 └── README.md
 ```
 
 ## Local development
 
-Create a virtual environment and install dependencies from `requirements.txt`.
+1. Use **CPython 3.11 or 3.12** (3.12 recommended).
+2. Create a virtual environment and install dependencies:
 
-Run the API with:
+```bash
+cd fashion-dream-try-on-main/python
+python -m venv .venv
+source .venv/bin/activate   # Windows: .venv\Scripts\activate
+pip install -r requirements.txt
+pip install -r requirements-dev.txt   # for tests
+```
+
+3. Run the API:
 
 ```bash
 uvicorn app.main:app --reload
