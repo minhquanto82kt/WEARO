@@ -33,8 +33,11 @@
 }
 .account-content--auth::before { display: none; }
 .account-content--hub {
-  color: var(--account-text);
-  background: #54728c;
+  color: var(--account-ink);
+  background:
+    radial-gradient(ellipse at 88% 8%, rgba(242, 173, 148, .34), transparent 32%),
+    radial-gradient(ellipse at 8% 82%, rgba(119, 148, 166, .2), transparent 34%),
+    linear-gradient(135deg, #fff8ef 0%, #f8ecdf 58%, #f2ceae 100%);
 }
 .account-content--hub::before { display: none; }
 .account-shell {
@@ -91,18 +94,18 @@
 .account-auth-footnote { margin: 22px 0 0; padding-top: 18px; border-top: 1px solid #e2e8f0; color: #64748b; text-align: center; font: 400 12px/1.6 "Plus Jakarta Sans", "Be Vietnam Pro", Arial, sans-serif; }
 .account-auth-footnote button { padding: 0; border: 0; color: #1d4ed8; background: transparent; cursor: pointer; font: 700 12px/1.6 "Plus Jakarta Sans", "Be Vietnam Pro", Arial, sans-serif; }
 .account-page button:focus-visible, .account-page a:focus-visible { outline: 3px solid #93c5fd; outline-offset: 3px; }
-.account-bottom { padding-top: 20px; color: rgba(248, 241, 232, .48); font: 700 9px/1.5 "Lexend", Arial, sans-serif; letter-spacing: .12em; text-transform: uppercase; }
-.account-bottom b { color: var(--account-peach); }
+.account-bottom { padding-top: 20px; color: rgba(32, 39, 44, .58); font: 700 9px/1.5 "Lexend", Arial, sans-serif; letter-spacing: .12em; text-transform: uppercase; }
+.account-bottom b { color: var(--account-blue); }
 .account-content--auth .account-bottom { color: #94a3b8; text-align: center; }
 .account-content--auth .account-bottom b { color: #102a43; }
 .account-dashboard { width: 100%; max-width: 1120px; margin: 0 auto; }
 .account-main:has(.account-dashboard) { align-items: flex-start; }
-.account-welcome { display: flex; align-items: center; justify-content: space-between; gap: 28px; padding: 24px 0; border-bottom: 1px solid rgba(248, 241, 232, .18); }
-.account-welcome h1 { max-width: 720px; margin: 8px 0 0; color: var(--account-text); font: 700 clamp(36px, 5.2vw, 64px)/1.02 "Space Grotesk", "Be Vietnam Pro", Arial, sans-serif; letter-spacing: -.05em; text-transform: uppercase; overflow-wrap: anywhere; }
-.account-welcome h1 span { display: block; margin-top: 5px; color: var(--account-peach); }
-.account-welcome p { max-width: 360px; margin: 0; color: var(--account-muted); font: 400 14px/1.75 "Lexend", Arial, sans-serif; }
-.account-logout { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 44px; margin-top: 12px; padding: 0 14px; border: 1px solid rgba(248, 241, 232, .24); border-radius: 10px; color: var(--account-text); background: rgba(255, 255, 255, .03); cursor: pointer; font: 700 10px/1.2 "Lexend", Arial, sans-serif; }
-.account-logout:hover:not(:disabled) { border-color: var(--account-peach); background: rgba(242, 173, 148, .08); }
+.account-welcome { display: flex; align-items: center; justify-content: space-between; gap: 28px; padding: 24px 0; border-bottom: 1px solid rgba(32, 39, 44, .16); }
+.account-welcome h1 { max-width: 720px; margin: 8px 0 0; color: var(--account-ink); font: 700 clamp(36px, 5.2vw, 64px)/1.02 "Space Grotesk", "Be Vietnam Pro", Arial, sans-serif; letter-spacing: -.05em; text-transform: uppercase; overflow-wrap: anywhere; }
+.account-welcome h1 span { display: block; margin-top: 5px; color: var(--account-blue); }
+.account-welcome p { max-width: 360px; margin: 0; color: rgba(32, 39, 44, .78); font: 400 14px/1.75 "Lexend", Arial, sans-serif; }
+.account-logout { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 44px; margin-top: 12px; padding: 0 14px; border: 1px solid rgba(32, 39, 44, .24); border-radius: 10px; color: var(--account-ink); background: rgba(255, 255, 255, .58); cursor: pointer; font: 700 10px/1.2 "Lexend", Arial, sans-serif; }
+.account-logout:hover:not(:disabled) { border-color: var(--account-blue); background: rgba(84, 114, 140, .1); }
 .account-hub-grid { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: 16px; margin-top: 22px; }
 .account-hub-card { position: relative; display: flex; flex-direction: column; gap: 16px; min-width: 0; padding: 22px; border: 1px solid rgba(248, 241, 232, .16); border-radius: 14px; color: var(--account-text); background: rgba(25, 34, 40, .82); text-decoration: none; box-shadow: 0 12px 32px rgba(0, 0, 0, .12); transition: transform .18s ease, border-color .18s ease, background .18s ease; }
 .account-hub-card:hover { transform: translateY(-2px); border-color: rgba(242, 173, 148, .68); background: rgba(39, 51, 59, .96); }
