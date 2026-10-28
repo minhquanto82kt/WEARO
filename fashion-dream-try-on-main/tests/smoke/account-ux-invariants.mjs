@@ -30,7 +30,7 @@ check(account.includes("await signInCustomer(normalizedEmail, password)"), "sign
 check(account.includes("setRequiresEmailConfirmation(true)"), "signup without a session offers email confirmation");
 check(account.includes("const onAuth = () => { setCheckingUser(true); void loadUser(); };"), "one auth event refreshes session state and gates the transition");
 check(!account.includes("await loadUser()"), "login and registration do not trigger duplicate session fetches");
-check(account.includes('className="account-hub-grid"') && account.includes('className="account-auth-grid"'), "signed-out auth and signed-in hub have separate layout roots");
+check(account.includes('className="account-hub-grid"') && account.includes('className="account-auth-simple"'), "signed-out auth and signed-in hub have separate layout roots");
 check(account.includes("upthink:auth:login") && account.includes("upthink:auth:logout") && account.includes("upthink:auth:recovery"), "auth events keep the account view in sync");
 check(!account.includes("signInWithGoogle") && !account.includes('alt="Google"'), "Google sign-in option is absent");
 check(!account.includes("signInWithFacebook") && !account.includes('alt="Facebook"'), "social sign-in options are absent from the simplified auth form");
