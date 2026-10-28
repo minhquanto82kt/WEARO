@@ -95,7 +95,7 @@
 .account-back { margin-top: 2px; }
 .account-google-wrap { display: flex; align-items: center; gap: 12px; margin: 22px 0 12px; color: var(--account-blue); font: 700 9px/1.4 "Lexend", Arial, sans-serif; letter-spacing: .09em; text-align: center; }
 .account-google-wrap::before, .account-google-wrap::after { content: ""; flex: 1; height: 1px; background: rgba(84, 114, 140, .24); }
-.account-socials { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.account-socials { display: grid; grid-template-columns: minmax(0, 1fr); gap: 10px; }
 .account-social { display: flex; align-items: center; justify-content: center; gap: 9px; min-width: 0; min-height: 46px; padding: 8px 12px; border: 1px solid rgba(84, 114, 140, .34); border-radius: 10px; color: var(--account-ink); background: rgba(255, 248, 239, .52); cursor: pointer; font: 700 11px/1.3 "Lexend", Arial, sans-serif; transition: border-color .18s ease, background .18s ease; }
 .account-social:hover:not(:disabled) { border-color: var(--account-blue); background: rgba(84, 114, 140, .08); }
 .account-social:disabled { opacity: .6; cursor: wait; }
