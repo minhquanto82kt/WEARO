@@ -32,7 +32,10 @@ check(account.includes("const onAuth = () => { setCheckingUser(true); void loadU
 check(!account.includes("await loadUser()"), "login and registration do not trigger duplicate session fetches");
 check(account.includes('className="account-hub-grid"') && account.includes('className="account-auth-grid"'), "signed-out auth and signed-in hub have separate layout roots");
 check(account.includes("upthink:auth:login") && account.includes("upthink:auth:logout") && account.includes("upthink:auth:recovery"), "auth events keep the account view in sync");
-check(!account.includes("signInWithGoogle") && !account.includes('alt="Google"'), "Google sign-in option is removed from account forms");
-check(account.includes("onClick={signInWithFacebook}") && account.includes('alt="Facebook"'), "Facebook sign-in remains available");
+check(!account.includes("signInWithGoogle") && !account.includes('alt="Google"'), "Google sign-in option is absent");
+check(!account.includes("signInWithFacebook") && !account.includes('alt="Facebook"'), "social sign-in options are absent from the simplified auth form");
+check(account.includes('className="account-auth-simple"') && styles.includes(".account-auth-simple"), "auth uses the compact single-card layout");
+check(account.includes("Chào mừng trở lại") && account.includes("Tạo tài khoản"), "auth headings use concise Vietnamese copy");
+check(!styles.includes(".account-auth-grid") && !styles.includes(".account-socials"), "obsolete auth layout and social button styles are removed");
 
 console.log("ACCOUNT UX CONTRACT PASS");
