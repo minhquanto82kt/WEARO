@@ -54,6 +54,7 @@ function AccountPage() {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [resending, setResending] = useState(false);
+  const [requiresEmailConfirmation, setRequiresEmailConfirmation] = useState(false);
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
   const [user, setUser] = useState<AccountUser | null>(null);
@@ -89,7 +90,7 @@ function AccountPage() {
   const switchMode = (next: Mode) => { setMode(next); setMessage(""); setError(""); setPassword(""); setConfirmPassword(""); };
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault(); setLoading(true); setMessage(""); setError("");
+    event.preventDefault(); setLoading(true); setMessage(""); setError(""); setRequiresEmailConfirmation(false);
     try {
       if (mode === "recover") {
         const redirectTo = `${window.location.origin}/account?reset=1`;
@@ -111,8 +112,16 @@ function AccountPage() {
         const data = await response.json();
         if (!response.ok) throw new Error(data.msg || data.message || data.error_description || "Không thể tạo tài khoản.");
         setEmail(normalizedEmail); setPassword(""); setConfirmPassword("");
-        setMessage(data.access_token ? "Đăng ký thành công." : "Đăng ký thành công. Kiểm tra email để xác nhận tài khoản trước khi đăng nhập.");
-        if (data.access_token) await loadUser();
+        if (data.access_token) {
+          // Reuse the existing customer sign-in path so the session is persisted consistently.
+          await signInCustomer(normalizedEmail, password);
+          setRequiresEmailConfirmation(false);
+          setMessage("Đăng ký thành công. Bạn đã đăng nhập vào WEARO.");
+          await loadUser();
+        } else {
+          setRequiresEmailConfirmation(true);
+          setMessage("Đăng ký thành công. Kiểm tra email để xác nhận tài khoản trước khi đăng nhập.");
+        }
       } else {
         await signInCustomer(email, password); setPassword(""); setMessage("Đăng nhập thành công."); await loadUser();
       }
@@ -161,7 +170,7 @@ function AccountPage() {
             {(mode === "register" || mode === "reset") && <div className="account-field"><label htmlFor="account-confirm-password">Xác nhận mật khẩu</label><div className="account-password"><input id="account-confirm-password" type={showConfirmPassword?"text":"password"} value={confirmPassword} onChange={e=>setConfirmPassword(e.target.value)} placeholder="••••••••" autoComplete="new-password" disabled={loading} required minLength={6}/><button className="account-eye" type="button" onClick={()=>setShowConfirmPassword(v=>!v)} aria-label={showConfirmPassword?"Ẩn mật khẩu xác nhận":"Hiện mật khẩu xác nhận"} disabled={loading}>{showConfirmPassword?<EyeOff size={17}/>:<Eye size={17}/>}</button></div></div>}
             {error && <p className="account-feedback account-feedback--error" role="alert">{error}</p>}{message && <p className="account-feedback account-feedback--success" role="status">{message}</p>}
             {mode === "login" && <button className="account-link" type="button" onClick={()=>switchMode("recover")}>Quên mật khẩu?</button>}
-            {mode === "register" && message && !user && <button className="account-resend" type="button" onClick={handleResend} disabled={resending}>{resending?"Đang gửi…":"Gửi lại email xác nhận"}</button>}
+            {mode === "register" && requiresEmailConfirmation && message && !user && <button className="account-resend" type="button" onClick={handleResend} disabled={resending}>{resending?"Đang gửi…":"Gửi lại email xác nhận"}</button>}
             <button className="account-submit" type="submit" disabled={loading}>{loading?"Đang xử lý…":mode === "login"?"Đăng nhập":mode === "register"?"Tạo tài khoản":mode === "recover"?"Gửi email khôi phục":"Cập nhật mật khẩu"}</button>
             {mode === "recover" && <button className="account-link account-back" type="button" onClick={()=>switchMode("login")}>← Quay lại đăng nhập</button>}{mode === "reset" && <button className="account-link account-back" type="button" onClick={()=>{switchMode("login");clearAccountQuery();}}>← Quay lại đăng nhập</button>}
           </form>
