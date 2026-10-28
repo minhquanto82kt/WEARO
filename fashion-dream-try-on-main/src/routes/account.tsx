@@ -97,7 +97,7 @@ function AccountPage() {
     if (callbackError) { setError(callbackError); window.history.replaceState({}, document.title, window.location.pathname + window.location.search); }
     const params = new URLSearchParams(window.location.search);
     if (params.get("verified") === "1") { setMessage("Email đã được xác nhận. Chào mừng bạn đến với WEARO."); clearAccountQuery(); }
-    const onAuth = () => void loadUser();
+    const onAuth = () => { setCheckingUser(true); void loadUser(); };
     const onRecovery = () => { setMode("reset"); setMessage("Liên kết khôi phục hợp lệ. Hãy đặt mật khẩu mới."); setError(""); setCheckingUser(false); };
     void loadUser();
     window.addEventListener("upthink:auth:login", onAuth);
@@ -136,13 +136,12 @@ function AccountPage() {
           await signInCustomer(normalizedEmail, password);
           setRequiresEmailConfirmation(false);
           setMessage("Đăng ký thành công. Bạn đã đăng nhập vào WEARO.");
-          await loadUser();
         } else {
           setRequiresEmailConfirmation(true);
           setMessage("Đăng ký thành công. Kiểm tra email để xác nhận tài khoản trước khi đăng nhập.");
         }
       } else {
-        await signInCustomer(email, password); setPassword(""); setMessage("Đăng nhập thành công."); await loadUser();
+        await signInCustomer(email, password); setPassword(""); setMessage("Đăng nhập thành công.");
       }
     } catch (submitError) { setError(submitError instanceof Error ? submitError.message : "Đã xảy ra lỗi. Vui lòng thử lại."); }
     finally { setLoading(false); }
