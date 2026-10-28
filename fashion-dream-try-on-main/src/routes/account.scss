@@ -34,22 +34,9 @@
 .account-content--auth::before { display: none; }
 .account-content--hub {
   color: var(--account-text);
-  background:
-    radial-gradient(ellipse at 15% 16%, rgba(84, 114, 140, .42), transparent 38%),
-    radial-gradient(ellipse at 86% 74%, rgba(242, 173, 148, .12), transparent 32%),
-    linear-gradient(135deg, #20272c 0%, #182127 58%, #29343b 100%);
+  background: #20272c;
 }
-.account-content--hub::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-  pointer-events: none;
-  opacity: .24;
-  background-image: linear-gradient(rgba(242, 206, 174, .045) 1px, transparent 1px), linear-gradient(90deg, rgba(242, 206, 174, .045) 1px, transparent 1px);
-  background-size: 42px 42px;
-  mask-image: linear-gradient(to bottom, black, transparent 88%);
-}
+.account-content--hub::before { display: none; }
 .account-shell {
   position: relative;
   width: min(1180px, calc(100% - 48px));
