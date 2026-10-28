@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { ArrowRight, Check, Copy, Eye, EyeOff, Heart, LogOut, Package, ShoppingBag, UserRound, WandSparkles } from "lucide-react";
 import { SiteNav } from "@/components/site-nav";
 import { SiteFooter } from "@/components/site-footer";
-import { getCustomerSession, requestPasswordReset, signInCustomer, signInWithGoogle, signOutCustomer, updateCustomerPassword } from "@/lib/auth";
+import { getCustomerSession, requestPasswordReset, signInCustomer, signOutCustomer, updateCustomerPassword } from "@/lib/auth";
 import { supabaseConfig } from "@/lib/upthink-supabase";
 import { useCart } from "@/lib/cart";
 import { listWishlistProductIds } from "@/lib/wishlist";
@@ -251,7 +251,7 @@ function AccountPage() {
             <button className="account-submit" type="submit" disabled={loading}>{loading?"Đang xử lý…":mode === "login"?"Đăng nhập":mode === "register"?"Tạo tài khoản":mode === "recover"?"Gửi email khôi phục":"Cập nhật mật khẩu"}</button>
             {mode === "recover" && <button className="account-link account-back" type="button" onClick={()=>switchMode("login")}>← Quay lại đăng nhập</button>}{mode === "reset" && <button className="account-link account-back" type="button" onClick={()=>{switchMode("login");clearAccountQuery();}}>← Quay lại đăng nhập</button>}
           </form>
-          {(mode === "login" || mode === "register") && <><div className="account-google-wrap"><span>OR CONTINUE WITH</span></div><div className="account-socials"><button className="account-social" type="button" onClick={signInWithGoogle} disabled={loading}><img src="/brand/google-g.svg" alt="Google"/><span>Google</span></button><button className="account-social" type="button" onClick={signInWithFacebook} disabled={loading}><img src="/brand/facebook.svg" alt="Facebook"/><span>Facebook</span></button></div></>}
+          {(mode === "login" || mode === "register") && <><div className="account-google-wrap"><span>HOẶC TIẾP TỤC VỚI</span></div><div className="account-socials"><button className="account-social" type="button" onClick={signInWithFacebook} disabled={loading}><img src="/brand/facebook.svg" alt="Facebook"/><span>Facebook</span></button></div></>}
         </div>
       </div>}
     </section><div className="account-bottom"><b>●</b> SYSTEM ONLINE / CUSTOMER ACCOUNT / WEARO 2026</div></div></main><SiteFooter />
