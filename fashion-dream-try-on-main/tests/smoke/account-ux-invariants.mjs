@@ -28,7 +28,8 @@ check((account.match(/role="tablist"/g) || []).length === 1, "login/register swi
 check(account.includes('mode === "login" || mode === "register"') && account.includes('mode === "recover"') && account.includes('mode === "reset"'), "all auth states remain explicit");
 check(account.includes("await signInCustomer(normalizedEmail, password)"), "signup with an immediate session uses the shared sign-in path");
 check(account.includes("setRequiresEmailConfirmation(true)"), "signup without a session offers email confirmation");
-check(account.includes("await loadUser()"), "successful authentication refreshes the user before showing the hub");
+check(account.includes("const onAuth = () => { setCheckingUser(true); void loadUser(); };"), "one auth event refreshes session state and gates the transition");
+check(!account.includes("await loadUser()"), "login and registration do not trigger duplicate session fetches");
 check(account.includes('className="account-hub-grid"') && account.includes('className="account-auth-grid"'), "signed-out auth and signed-in hub have separate layout roots");
 check(account.includes("upthink:auth:login") && account.includes("upthink:auth:logout") && account.includes("upthink:auth:recovery"), "auth events keep the account view in sync");
 
