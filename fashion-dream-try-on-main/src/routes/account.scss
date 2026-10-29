@@ -138,7 +138,7 @@
 .account-main:has(.account-dashboard) { align-items: flex-start; }
 .account-welcome { display: flex; align-items: center; justify-content: space-between; gap: 28px; padding: 24px 0; border-bottom: 1px solid rgba(32, 39, 44, .16); }
 .account-welcome h1 { max-width: 720px; margin: 8px 0 0; color: var(--account-ink); font: 700 clamp(36px, 5.2vw, 64px)/1.02 "Space Grotesk", "Be Vietnam Pro", Arial, sans-serif; letter-spacing: -.05em; text-transform: uppercase; overflow-wrap: anywhere; }
-.account-welcome h1 span { display: block; margin-top: 5px; color: var(--account-blue); }
+.account-welcome h1 span { display: block; margin-top: 5px; color: #36566d; }
 .account-welcome p { max-width: 360px; margin: 0; color: rgba(32, 39, 44, .78); font: 400 14px/1.75 "Lexend", Arial, sans-serif; }
 .account-logout { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 44px; margin-top: 12px; padding: 0 14px; border: 1px solid rgba(32, 39, 44, .24); border-radius: 10px; color: var(--account-ink); background: rgba(255, 255, 255, .58); cursor: pointer; font: 700 10px/1.2 "Lexend", Arial, sans-serif; }
 .account-logout:hover:not(:disabled) { border-color: var(--account-blue); background: rgba(84, 114, 140, .1); }
@@ -148,11 +148,11 @@
 .account-hub-card--tryon { grid-column: span 7; min-height: 250px; justify-content: space-between; overflow: hidden; background: linear-gradient(125deg, rgba(41, 58, 69, .98), rgba(25, 34, 40, .96) 70%, rgba(84, 114, 140, .55)); }
 .account-hub-card--tryon::after { content: "AI"; position: absolute; top: 8px; right: 22px; color: rgba(242, 173, 148, .1); font: 700 clamp(100px, 17vw, 210px)/1 "Space Grotesk", Arial, sans-serif; pointer-events: none; }
 .account-hub-card--order { grid-column: span 5; min-height: 250px; }
-.account-hub-card--small { grid-column: span 4; min-height: 174px; }
+.account-hub-card--small { grid-column: span 6; min-height: 174px; }
 .account-hub-card--style { grid-column: span 5; min-height: 174px; }
 .account-hub-card--profile { grid-column: span 7; min-height: 174px; cursor: default; }
 .account-hub-card--profile:hover { transform: none; border-color: rgba(248, 241, 232, .16); background: rgba(25, 34, 40, .82); }
-.account-hub-eyebrow { position: relative; z-index: 1; }
+.account-hub-eyebrow { position: relative; z-index: 1; color: #f8f1e8; font: 600 13px/1.5 "Lexend", Arial, sans-serif; }
 .account-hub-title { position: relative; z-index: 1; margin: 0; color: var(--account-text); font: 700 clamp(21px, 2.4vw, 30px)/1.18 "Be Vietnam Pro", "Lexend", Arial, sans-serif; letter-spacing: -.025em; }
 .account-hub-title--hero { max-width: 460px; font-size: clamp(28px, 4vw, 44px); }
 .account-hub-copy { position: relative; z-index: 1; max-width: 480px; margin: 12px 0 0; color: var(--account-muted); font: 400 14px/1.7 "Lexend", Arial, sans-serif; }
@@ -165,8 +165,8 @@
 .account-hub-arrow svg { flex: none; transition: transform .18s ease; }
 .account-hub-card:hover .account-hub-arrow svg { transform: translateX(3px); }
 .account-hub-value { color: var(--account-text); font: 700 26px/1.15 "Space Grotesk", "Lexend", Arial, sans-serif; letter-spacing: -.03em; overflow-wrap: anywhere; }
-.account-hub-subvalue { margin: 0; color: var(--account-muted); font: 400 13px/1.55 "Lexend", Arial, sans-serif; }
-.account-hub-status { display: inline-flex; align-items: center; gap: 7px; align-self: flex-start; padding: 7px 10px; border: 1px solid rgba(242, 173, 148, .3); border-radius: 999px; color: var(--account-cream); font: 700 11px/1.3 "Lexend", Arial, sans-serif; }
+.account-hub-subvalue { margin: 0; color: rgba(248, 241, 232, .88); font: 400 14px/1.55 "Lexend", Arial, sans-serif; }
+.account-hub-status { display: inline-flex; align-items: center; gap: 7px; align-self: flex-start; padding: 7px 10px; border: 1px solid rgba(242, 173, 148, .3); border-radius: 999px; color: #f2ceae; font: 700 12px/1.4 "Lexend", Arial, sans-serif; }
 .account-profile-row { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 11px 0; border-bottom: 1px solid rgba(248, 241, 232, .1); font: 400 14px/1.5 "Lexend", Arial, sans-serif; }
 .account-profile-row span { color: var(--account-muted); }
 .account-profile-row strong { max-width: 70%; color: var(--account-text); font-weight: 600; text-align: right; overflow-wrap: anywhere; }
@@ -175,7 +175,14 @@
 .account-copy-id:hover { border-color: var(--account-peach); background: rgba(242, 173, 148, .08); }
 .account-style-tags { display: flex; flex-wrap: wrap; gap: 8px; }
 .account-style-tags span { padding: 7px 10px; border: 1px solid rgba(248, 241, 232, .2); border-radius: 999px; color: rgba(248, 241, 232, .9); font: 400 12px/1.3 "Lexend", Arial, sans-serif; }
-.account-empty-state { margin: 0; color: var(--account-muted); font: 400 13px/1.65 "Lexend", Arial, sans-serif; }
+.account-empty-state { margin: 0; color: rgba(248, 241, 232, .88); font: 400 14px/1.65 "Lexend", Arial, sans-serif; }
+.account-hub-copy--style { margin: 0; }
+.account-page:has(.account-dashboard) .account-kicker { color: #36566d; font-size: 13px; font-weight: 700; line-height: 1.5; }
+.account-page:has(.account-dashboard) .account-profile-row strong { color: #fff8ef; }
+.account-page:has(.account-dashboard) .account-profile-row { font-size: 14px; }
+.account-page:has(.account-dashboard) .account-hub-card--profile .account-hub-action { min-height: 44px; padding: 8px 0; }
+.account-page:has(.account-dashboard) .account-copy-id { min-height: 44px; }
+.account-page:has(.account-dashboard) .account-bottom { width: 100%; max-width: 1120px; margin: 0 auto; font-size: 11px; color: #46545e; }
 .account-hub-action { cursor: pointer; }
 .account-hub-action:hover { color: var(--account-cream); }
 @media (max-width: 900px) {
@@ -189,6 +196,8 @@
 }
 @media (max-width: 560px) {
   .account-shell { width: calc(100% - 28px); padding-top: 20px; }
+  .account-page:has(.account-dashboard) .account-kicker { font-size: 12px; letter-spacing: .02em; }
+  .account-page:has(.account-dashboard) .account-bottom { overflow-wrap: anywhere; letter-spacing: .08em; }
   .account-main { padding: 18px 0 28px; }
   .account-welcome h1 { font-size: clamp(34px, 10vw, 48px); }
   .account-hub-grid { grid-template-columns: minmax(0, 1fr); gap: 12px; }
