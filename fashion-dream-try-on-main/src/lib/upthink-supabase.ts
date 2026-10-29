@@ -16,6 +16,7 @@ import {
   listAdminProductImages,
   listAdminProductVariants,
   setPrimaryAdminProductImage,
+  suggestAdminColorName,
   updateAdminProduct,
   updateAdminProductImage,
   updateAdminProductVariant,
@@ -81,6 +82,9 @@ export type ProductImage = { id?: string; product_id: string; image_url: string;
 export type ProductVariant = { id: string; product_id: string; size: string; color: string; sku: string | null; stock: number; created_at: string };
 export type InventoryRow = ProductVariant & { product: Product };
 
+export async function suggestProductColorName(hex: string) {
+  return suggestAdminColorName({ data: { accessToken: requireAccessToken(), hex } });
+}
 export async function listProductVariants(productId: string) {
   return listAdminProductVariants({ data: { accessToken: requireAccessToken(), productId } });
 }
