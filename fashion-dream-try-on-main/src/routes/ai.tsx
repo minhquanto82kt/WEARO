@@ -69,24 +69,24 @@ function AiConsent({ onAccept }: { onAccept: () => void }) {
         .wearo-consent-shape { position: absolute; display: block; opacity: .32; transform: rotate(-12deg); animation: wearo-mosaic-float 13s ease-in-out infinite; }
         .ai-consent-panel.wearo-consent-panel { position: relative; z-index: 1; isolation: isolate; width: min(100%, 900px) !important; max-width: 900px !important; box-sizing: border-box !important; margin: 0 auto; padding: clamp(24px, 3.4vw, 44px) !important; border: 1px solid rgba(84,114,140,.22) !important; border-radius: 4px 4px 20px 20px !important; background: rgba(255,255,255,.97) !important; box-shadow: 0 22px 60px rgba(38,55,70,.08) !important; }
         .ai-consent-panel.wearo-consent-panel h1#ai-consent-title, .ai-consent-panel.wearo-consent-panel h1.wearo-consent-title { display: block; max-width: 100% !important; margin-top: 26px !important; color: #263746 !important; font-family: "Space Grotesk", sans-serif !important; font-size: clamp(34px, 4.3vw, 52px) !important; font-weight: 500 !important; line-height: 1.08 !important; letter-spacing: -.025em !important; word-break: normal !important; overflow-wrap: normal !important; writing-mode: horizontal-tb !important; text-orientation: mixed !important; }
-        .ai-consent-panel.wearo-consent-panel > p { max-width: 680px !important; margin-top: 16px !important; color: #536979 !important; font-size: 14px !important; line-height: 1.8 !important; }
-        .ai-consent-panel.wearo-consent-panel .wearo-consent-rule-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; margin-top: 26px; }
-        .ai-consent-panel.wearo-consent-panel .wearo-consent-rule { min-width: 0; min-height: 128px; box-sizing: border-box; border: 1px solid rgba(84,114,140,.22); border-radius: 2px; padding: 18px; background: #fff; }
+        .ai-consent-panel.wearo-consent-panel > p { max-width: 680px !important; margin-top: 16px !important; color: #3E5361 !important; font-size: 16px !important; line-height: 1.75 !important; }
+        .ai-consent-panel.wearo-consent-panel .wearo-consent-rule-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; margin-top: 28px; align-items: stretch; }
+        .ai-consent-panel.wearo-consent-panel .wearo-consent-rule { min-width: 0; min-height: 150px; box-sizing: border-box; border: 1px solid rgba(84,114,140,.32); border-radius: 4px; padding: 20px; background: #fff; }
         .ai-consent-panel.wearo-consent-panel .wearo-consent-rule[data-wide="true"] { grid-column: 1 / -1; min-height: 0; }
         .ai-consent-panel.wearo-consent-panel .wearo-consent-rule[data-accent="blue"] { background: #F0F4F6; border-color: rgba(84,114,140,.34); }
         .ai-consent-panel.wearo-consent-panel .wearo-consent-rule[data-accent="cream"] { background: #FCF6F0; border-color: rgba(217,187,169,.68); }
-        .ai-consent-panel.wearo-consent-panel .wearo-consent-rule h2 { margin: 1px 0 0; color: #263746 !important; font-size: 12px !important; font-weight: 700 !important; line-height: 1.5 !important; letter-spacing: .055em !important; text-transform: uppercase; }
-        .ai-consent-panel.wearo-consent-panel .wearo-consent-rule p { margin-top: 7px !important; color: #536373 !important; font-size: 13px !important; line-height: 1.7 !important; }
-        .ai-consent-panel.wearo-consent-panel .wearo-consent-number { display: flex; width: 36px; height: 36px; align-items: center; justify-content: center; border: 1px solid rgba(84,114,140,.4); background: #F8F5F0; color: #36566D; font-size: 11px; font-weight: 700; }
-        .ai-consent-panel.wearo-consent-panel .wearo-consent-disclosure { min-height: 48px; border-radius: 2px !important; border-color: rgba(84,114,140,.34) !important; background: #fff !important; color: #36566D !important; padding: 12px 15px !important; font-size: 13px !important; line-height: 1.5 !important; }
-        .ai-consent-panel.wearo-consent-panel .wearo-consent-check { margin-top: 22px !important; border-radius: 2px !important; border-color: rgba(84,114,140,.3) !important; background: #F3F6F7 !important; padding: 16px 18px !important; color: #263746 !important; }
-        .ai-consent-panel.wearo-consent-panel .wearo-consent-check span { color: #263746 !important; font-size: 13px !important; line-height: 1.7 !important; }
-        .ai-consent-panel.wearo-consent-panel .wearo-consent-choice { min-height: 48px; border-radius: 2px !important; padding: 13px 18px !important; font-size: 12px !important; font-weight: 700 !important; letter-spacing: .04em !important; text-transform: none !important; }
+        .ai-consent-panel.wearo-consent-panel .wearo-consent-rule h2 { margin: 1px 0 0; color: #203746 !important; font-size: 14px !important; font-weight: 750 !important; line-height: 1.5 !important; letter-spacing: .035em !important; text-transform: uppercase; }
+        .ai-consent-panel.wearo-consent-panel .wearo-consent-rule p { margin-top: 8px !important; color: #344B59 !important; font-size: 15px !important; line-height: 1.7 !important; }
+        .ai-consent-panel.wearo-consent-panel .wearo-consent-number { display: flex; width: 40px; height: 40px; align-items: center; justify-content: center; border: 1px solid rgba(54,86,109,.48); background: #F8F5F0; color: #29495F; font-size: 13px; font-weight: 750; }
+        .ai-consent-panel.wearo-consent-panel .wearo-consent-disclosure { min-height: 52px; border-radius: 4px !important; border-color: rgba(54,86,109,.42) !important; background: #fff !important; color: #29495F !important; padding: 13px 16px !important; font-size: 15px !important; line-height: 1.5 !important; }
+        .ai-consent-panel.wearo-consent-panel .wearo-consent-check { margin-top: 24px !important; border-radius: 4px !important; border-color: rgba(54,86,109,.38) !important; background: #F0F5F7 !important; padding: 18px 20px !important; color: #203746 !important; }
+        .ai-consent-panel.wearo-consent-panel .wearo-consent-check span { color: #203746 !important; font-size: 15px !important; line-height: 1.7 !important; }
+        .ai-consent-panel.wearo-consent-panel .wearo-consent-choice { min-height: 52px; border-radius: 4px !important; padding: 14px 18px !important; font-size: 14px !important; font-weight: 700 !important; letter-spacing: .015em !important; text-transform: none !important; }
         .ai-consent-panel.wearo-consent-panel .wearo-consent-primary { background: #54728C !important; color: #fff !important; border: 1px solid #54728C !important; }
         .ai-consent-panel.wearo-consent-panel .wearo-consent-primary:disabled { background: #AAB9C2 !important; color: #fff !important; border-color: #AAB9C2 !important; opacity: 1 !important; }
         .ai-consent-panel.wearo-consent-panel .wearo-consent-back { background: #fff !important; color: #36566D !important; border: 1px solid #54728C !important; text-decoration: none !important; }
         .ai-consent-panel.wearo-consent-panel .wearo-consent-back:hover { background: #F2CEAE !important; color: #263746 !important; }
-        .ai-consent-panel.wearo-consent-panel .wearo-consent-note { color: #687985 !important; font-size: 11px !important; line-height: 1.65 !important; }
+        .ai-consent-panel.wearo-consent-panel .wearo-consent-note { color: #435968 !important; font-size: 13px !important; line-height: 1.65 !important; }
         .wearo-consent-shape:nth-child(1) { width: 96px; height: 96px; top: 7%; left: 4%; background: #F2CEAE; clip-path: polygon(0 0,100% 0,72% 100%,18% 82%); }
         .wearo-consent-shape:nth-child(2) { width: 62px; height: 62px; top: 18%; right: 7%; background: #7794A6; clip-path: polygon(50% 0,100% 50%,50% 100%,0 50%); animation-delay: -3s; }
         .wearo-consent-shape:nth-child(3) { width: 42px; height: 42px; top: 47%; left: 1.5%; background: #D9BBA9; border-radius: 50%; animation-delay: -6s; }
@@ -103,8 +103,8 @@ function AiConsent({ onAccept }: { onAccept: () => void }) {
         @media (max-width: 700px) {
           .wearo-ai-consent-shell { padding: 14px 12px 32px; }
           .ai-consent-panel.wearo-consent-panel { padding: 24px 20px !important; border-radius: 4px 4px 14px 14px !important; }
-          .ai-consent-panel.wearo-consent-panel .wearo-consent-rule-grid { grid-template-columns: minmax(0, 1fr); gap: 10px; margin-top: 20px; }
-          .ai-consent-panel.wearo-consent-panel .wearo-consent-rule { min-height: 0; padding: 15px; }
+          .ai-consent-panel.wearo-consent-panel .wearo-consent-rule-grid { grid-template-columns: minmax(0, 1fr); gap: 12px; margin-top: 22px; }
+          .ai-consent-panel.wearo-consent-panel .wearo-consent-rule { min-height: 0; padding: 17px; }
           .ai-consent-panel.wearo-consent-panel h1#ai-consent-title { font-size: clamp(32px, 8vw, 42px) !important; margin-top: 22px !important; }
           .wearo-consent-shape:nth-child(1) { width: 52px; height: 52px; left: -8px; }
           .wearo-consent-shape:nth-child(4) { width: 56px; height: 40px; right: -8px; }
@@ -119,10 +119,10 @@ function AiConsent({ onAccept }: { onAccept: () => void }) {
         <section className="ai-consent-panel wearo-consent-panel" aria-labelledby="ai-consent-title">
           <div className="border-b border-[rgba(84,114,140,.22)] pb-5">
             <div className="flex flex-wrap items-center justify-between gap-3">
-              <p className="eyebrow">WEARO / AI STUDIO · NOTICE</p>
-              <span className="inline-flex items-center border border-[#D8B56D] bg-[#FFF4D8] px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.16em] text-[#6D4C12]" aria-label="Bản thử nghiệm">BETA</span>
+              <p className="eyebrow !text-[12px] !tracking-[0.12em]">WEARO / AI STUDIO · NOTICE</p>
+              <span className="inline-flex items-center border border-[#D8B56D] bg-[#FFF4D8] px-2.5 py-1 text-[11px] font-bold uppercase tracking-[0.12em] text-[#6D4C12]" aria-label="Bản thử nghiệm">BETA</span>
             </div>
-            <p className="mt-2 text-[10px] font-semibold uppercase tracking-[0.18em] text-[#54728C]">01 · Trước khi bắt đầu</p>
+            <p className="mt-2 text-[12px] font-semibold uppercase tracking-[0.12em] text-[#36566D]">01 · Trước khi bắt đầu</p>
           </div>
 
           <h1 id="ai-consent-title" className="wearo-consent-title mt-6 text-balance">
@@ -135,7 +135,7 @@ function AiConsent({ onAccept }: { onAccept: () => void }) {
 
           <div className="wearo-consent-rule-grid">
             {rules.map(([number, title, description]) => (
-              <article key={number} data-wide={number === "01" || number === "02" || number === "05" ? "true" : "false"} data-accent={number === "02" ? "blue" : number === "05" ? "cream" : "plain"} className="wearo-consent-rule group grid grid-cols-[36px_minmax(0,1fr)] items-start gap-3 sm:gap-4">
+              <article key={number} data-wide={number === "05" ? "true" : "false"} data-accent={number === "02" ? "blue" : number === "05" ? "cream" : "plain"} className="wearo-consent-rule group grid grid-cols-[36px_minmax(0,1fr)] items-start gap-3 sm:gap-4">
                 <span className="wearo-consent-number">{number}</span>
                 <div className="min-w-0">
                   <h2>{title}</h2>
@@ -180,9 +180,9 @@ function AiConsent({ onAccept }: { onAccept: () => void }) {
               Tôi đã đọc thông tin trên và đồng ý gửi nội dung/ảnh cần thiết đến dịch vụ WEARO và nhà cung cấp AI được cấu hình để thực hiện tính năng tôi chọn.
             </span>
           </label>
-          <p className="mt-2 text-xs leading-5 text-[#4B5563]">Bạn có thể không đồng ý và quay lại trang trước. Không cần chọn ô này để rời trang.</p>
+          <p className="mt-3 text-sm leading-6 text-[#344B59]">Bạn có thể không đồng ý và quay lại trang trước. Không cần chọn ô này để rời trang.</p>
 
-          <div className="mt-4 grid gap-3 sm:grid-cols-[minmax(0,1fr)_auto]">
+          <div className="mt-5 grid gap-3 sm:grid-cols-[minmax(0,1fr)_auto]">
             <button type="button" className="wearo-consent-choice wearo-consent-primary inline-flex w-full items-center justify-center gap-2 bg-[#54728C] px-5 py-3 text-sm font-semibold text-white shadow-sm hover:bg-[#3F5F76] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#54728C] focus-visible:ring-offset-2 disabled:hover:bg-[#54728C]" disabled={!checked} onClick={onAccept}>
               Tiếp tục vào AI Studio <span aria-hidden="true">→</span>
             </button>
