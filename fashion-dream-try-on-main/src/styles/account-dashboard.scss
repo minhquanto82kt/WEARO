@@ -1,26 +1,16 @@
 /* Authenticated /account dashboard only. Do not alter the login/register state. */
 
+/* Keep the authenticated dashboard layout, but let account.scss own its background. */
 .account-page:has(.account-dashboard) .account-content {
-  background: #1b1a17 !important;
   overflow: hidden;
 }
 
-.account-page:has(.account-dashboard) .account-content::before {
-  background-image: url('/account/account-background.png') !important;
-  background-size: cover !important;
-  background-position: center top !important;
-  background-repeat: no-repeat !important;
-  filter: none !important;
-}
-
+/* Disable the legacy image and dark overlay so the cream CSS gradient remains visible. */
+.account-page:has(.account-dashboard) .account-content::before,
 .account-page:has(.account-dashboard) .account-content::after {
-  background: linear-gradient(
-    to bottom,
-    rgba(27, 26, 23, 0) 45%,
-    rgba(27, 26, 23, 0.08) 58%,
-    rgba(27, 26, 23, 0.48) 76%,
-    #1b1a17 100%
-  ) !important;
+  display: none !important;
+  content: none !important;
+  background: none !important;
 }
 
 .account-page:has(.account-dashboard) .account-welcome h1 {
