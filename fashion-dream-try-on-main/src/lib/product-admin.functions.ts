@@ -78,7 +78,7 @@ export const suggestAdminColorName = createServerFn({ method: "POST" })
     await requireAdmin(data.accessToken);
     const hexValue = data.hex.trim().replace(/^#/, "").toUpperCase();
     if (!/^[0-9A-F]{6}$/.test(hexValue)) throw new Error("Mã màu HEX không hợp lệ.");
-    const hex = \`#\${hexValue}\`;
+    const hex = `#${hexValue}`;
 
     // Reuse a name already used by WEARO before asking the external color directory.
     const existing = await supabaseRequest<Array<{ color: string }>>(
@@ -93,7 +93,7 @@ export const suggestAdminColorName = createServerFn({ method: "POST" })
       }
     }
 
-    const response = await fetch(\`https://www.thecolorapi.com/id?hex=\${hexValue}\`, {
+    const response = await fetch(`https://www.thecolorapi.com/id?hex=${hexValue}`, {
       headers: { Accept: "application/json" },
       signal: AbortSignal.timeout(5000),
     });
