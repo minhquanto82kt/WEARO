@@ -1,10 +1,12 @@
-import { Clock, Facebook, Mail, MapPin, Phone } from "lucide-react";
+import { Clock, Mail, MapPin, Phone } from "lucide-react";
 import { Link, useLocation } from "@tanstack/react-router";
 import { useI18n } from "@/lib/i18n";
 import { ShapeMosaic } from "@/components/shape-mosaic";
 
 const linkClass = "wearo-footer__link";
 const FACEBOOK_URL = "https://www.facebook.com/profile.php?id=61595224420277&open_field=address&sk=directory_basic_info";
+const INSTAGRAM_URL = "https://www.instagram.com/upthink.iuh";
+const TIKTOK_URL = "https://www.tiktok.com/@upthink.iuh";
 
 export function SiteFooter() {
   const { t } = useI18n();
@@ -112,7 +114,23 @@ export function SiteFooter() {
                   rel="noopener noreferrer"
                   aria-label={t("Facebook (mở trong tab mới)", "Facebook (opens in a new tab)")}
                 >
-                  <Facebook size={17} aria-hidden="true" />
+                  <img src="/brand/facebook.svg" alt="" aria-hidden="true" loading="lazy" />
+                </a>
+                <a
+                  href={INSTAGRAM_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={t("Instagram (mở trong tab mới)", "Instagram (opens in a new tab)")}
+                >
+                  <img src="/brand/instagram.svg" alt="" aria-hidden="true" loading="lazy" />
+                </a>
+                <a
+                  href={TIKTOK_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={t("TikTok (mở trong tab mới)", "TikTok (opens in a new tab)")}
+                >
+                  <img src="/brand/Tiktok_icon.svg.webp" alt="" aria-hidden="true" loading="lazy" />
                 </a>
               </nav>
             </section>
