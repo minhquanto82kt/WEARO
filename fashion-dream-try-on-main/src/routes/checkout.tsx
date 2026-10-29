@@ -5,7 +5,7 @@ import { SiteNav } from "@/components/site-nav";
 import { SiteFooter } from "@/components/site-footer";
 import { formatVnd } from "@/data/products";
 import { useCart } from "@/lib/cart";
-import { createOrder } from "@/lib/order.functions";
+import { createOrder, listMyOrders } from "@/lib/order.functions";
 import { cancelCustomerOrder } from "@/lib/order-cancel.functions";
 import { getCustomerSession } from "@/lib/auth";
 import { isMockUserMode } from "@/lib/mock-user";
@@ -64,6 +64,8 @@ function CheckoutPage() {
   const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>("cod");
   const [paymentInfo, setPaymentInfo] = useState<PaymentInfo | null>(null);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [shippingInfo, setShippingInfo] = useState({ name: "", phone: "", email: "", address: "", city: "", district: "" });
+  const [shippingInfoLoaded, setShippingInfoLoaded] = useState(false);
   const [copyMessage, setCopyMessage] = useState<string | null>(null);
   const checkoutKeyRef = useRef<string | null>(null);
 
@@ -72,6 +74,38 @@ function CheckoutPage() {
     sync();
     window.addEventListener("wearo:mock-user:changed", sync);
     return () => window.removeEventListener("wearo:mock-user:changed", sync);
+  }, []);
+
+  useEffect(() => {
+    let active = true;
+    const loadSavedShippingInfo = async () => {
+      if (isMockUserMode()) return;
+      const session = getCustomerSession();
+      if (!session?.access_token) {
+        setShippingInfoLoaded(true);
+        return;
+      }
+      setShippingInfo((current) => ({ ...current, email: current.email || session.user?.email || "" }));
+      try {
+        const result = await listMyOrders({ data: { accessToken: session.access_token, limit: 1 } });
+        const latest = result.orders?.[0];
+        if (!active || !latest) return;
+        setShippingInfo((current) => ({
+          name: current.name || latest.customer_name || "",
+          phone: current.phone || latest.phone || "",
+          email: current.email || latest.email || session.user?.email || "",
+          address: current.address || latest.address || "",
+          city: current.city || latest.city || "",
+          district: current.district || latest.district || "",
+        }));
+      } catch {
+        // Keep account email available; users can still enter or edit delivery details manually.
+      } finally {
+        if (active) setShippingInfoLoaded(true);
+      }
+    };
+    void loadSavedShippingInfo();
+    return () => { active = false; };
   }, []);
 
   const shipping = subtotal === 0 || subtotal >= 1000000 ? 0 : 30000;
@@ -393,13 +427,13 @@ function CheckoutPage() {
             }}
           >
             <div className="min-w-0 space-y-4">
-              <Field label="Họ và tên" name="name" autoComplete="name" placeholder="Nhập họ và tên người nhận" />
-              <Field label="Số điện thoại" name="phone" type="tel" autoComplete="tel" inputMode="tel" placeholder="Ví dụ: 09xxxxxxxx" />
-              <Field label="Email (không bắt buộc)" name="email" type="email" autoComplete="email" inputMode="email" placeholder="you@example.com" />
-              <Field label="Số nhà, tên đường" name="address" autoComplete="street-address" placeholder="Nhập số nhà, tên đường" />
+              <Field label="Họ và tên" name="name" value={shippingInfo.name} onChange={(value) => setShippingInfo((current) => ({ ...current, name: value }))} autoComplete="name" placeholder="Nhập họ và tên người nhận" />
+              <Field label="Số điện thoại" name="phone" value={shippingInfo.phone} onChange={(value) => setShippingInfo((current) => ({ ...current, phone: value }))} type="tel" autoComplete="tel" inputMode="tel" placeholder="Ví dụ: 09xxxxxxxx" />
+              <Field label="Email (không bắt buộc)" name="email" value={shippingInfo.email} onChange={(value) => setShippingInfo((current) => ({ ...current, email: value }))} type="email" autoComplete="email" inputMode="email" placeholder="you@example.com" />
+              <Field label="Số nhà, tên đường" name="address" value={shippingInfo.address} onChange={(value) => setShippingInfo((current) => ({ ...current, address: value }))} autoComplete="street-address" placeholder="Nhập số nhà, tên đường" />
               <div className="grid min-w-0 gap-4 sm:grid-cols-2">
-                <Field label="Tỉnh / Thành phố" name="city" autoComplete="address-level1" placeholder="Nhập tỉnh / thành phố" />
-                <Field label="Phường / Xã" name="district" autoComplete="address-level2" placeholder="Nhập phường / xã" />
+                <Field label="Tỉnh / Thành phố" name="city" value={shippingInfo.city} onChange={(value) => setShippingInfo((current) => ({ ...current, city: value }))} autoComplete="address-level1" placeholder="Nhập tỉnh / thành phố" />
+                <Field label="Phường / Xã" name="district" value={shippingInfo.district} onChange={(value) => setShippingInfo((current) => ({ ...current, district: value }))} autoComplete="address-level2" placeholder="Nhập phường / xã" />
               </div>
               <p className="pt-4 text-xs uppercase leading-5 tracking-[0.2em] text-silver">Phương thức thanh toán</p>
               <div className="space-y-3">
@@ -433,8 +467,8 @@ function CheckoutPage() {
   );
 }
 
-function Field({ label, name, type = "text", placeholder, autoComplete, inputMode }: { label: string; name: string; type?: string; placeholder?: string; autoComplete?: string; inputMode?: "text" | "tel" | "email" }) {
-  return <label className="wearo-checkout-field block text-sm"><span className="mb-2 block text-silver">{label}</span><input required={name !== "email"} name={name} type={type} placeholder={placeholder} autoComplete={autoComplete} inputMode={inputMode} className="min-h-11 w-full border border-border bg-transparent px-4 py-3 outline-none focus:border-primary" /></label>;
+function Field({ label, name, type = "text", placeholder, autoComplete, inputMode, value, onChange }: { label: string; name: string; type?: string; placeholder?: string; autoComplete?: string; inputMode?: "text" | "tel" | "email"; value: string; onChange: (value: string) => void }) {
+  return <label className="wearo-checkout-field block text-sm"><span className="mb-2 block text-silver">{label}</span><input required={name !== "email"} name={name} type={type} value={value} onChange={(event) => onChange(event.currentTarget.value)} placeholder={placeholder} autoComplete={autoComplete} inputMode={inputMode} className="min-h-11 w-full border border-border bg-transparent px-4 py-3 outline-none focus:border-primary" /></label>;
 }
 
 function displayVariantColor(color: string) {
