@@ -72,6 +72,38 @@ async function requireAdmin(accessToken: string) {
   return user.id;
 }
 
+export const suggestAdminColorName = createServerFn({ method: "POST" })
+  .validator((data: AdminContext & { hex: string }) => data)
+  .handler(async ({ data }) => {
+    await requireAdmin(data.accessToken);
+    const hexValue = data.hex.trim().replace(/^#/, "").toUpperCase();
+    if (!/^[0-9A-F]{6}$/.test(hexValue)) throw new Error("Mã màu HEX không hợp lệ.");
+    const hex = \`#\${hexValue}\`;
+
+    // Reuse a name already used by WEARO before asking the external color directory.
+    const existing = await supabaseRequest<Array<{ color: string }>>(
+      "product_variants?select=color&limit=1000",
+      { method: "GET" },
+    );
+    for (const row of existing) {
+      const match = row.color.match(/#([0-9a-fA-F]{6})/);
+      if (match?.[1]?.toUpperCase() === hexValue) {
+        const name = row.color.replace(/\s*\(#?[0-9a-fA-F]{6}\)/, "").replace(/\s*#([0-9a-fA-F]{6})/, "").trim();
+        if (name && !/^màu tùy chỉnh$/i.test(name)) return { hex, name, source: "wearo" as const };
+      }
+    }
+
+    const response = await fetch(\`https://www.thecolorapi.com/id?hex=\${hexValue}\`, {
+      headers: { Accept: "application/json" },
+      signal: AbortSignal.timeout(5000),
+    });
+    if (!response.ok) throw new Error("Không lấy được tên màu lúc này. Bạn vẫn có thể nhập HEX và tự đặt tên.");
+    const result = (await response.json()) as { name?: { value?: string } };
+    const name = result.name?.value?.trim();
+    if (!name) throw new Error("API chưa trả về tên màu. Bạn có thể tự đặt tên.");
+    return { hex, name, source: "thecolorapi" as const };
+  });
+
 export const listAdminProducts = createServerFn({ method: "POST" })
   .validator((data: AdminContext) => data)
   .handler(async ({ data }) => {
