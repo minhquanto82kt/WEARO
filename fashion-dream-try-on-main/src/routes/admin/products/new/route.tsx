@@ -40,6 +40,10 @@ const emptyForm = {
   new_arrival: true,
   fashion_style: "Casual",
   gender: "Unisex" as Product["gender"],
+  color_mode: "single" as "single" | "multi",
+  color_name: "", color_hex: "#171717",
+  secondary_color_name: "", secondary_color_hex: "#F4F4F4",
+  tertiary_color_name: "", tertiary_color_hex: "#B51F2A",
 };
 
 function slugify(value: string) {
@@ -136,6 +140,15 @@ function NewProductPage() {
         new_arrival: form.new_arrival,
         fashion_style: form.fashion_style,
         gender: form.gender,
+        color_options: form.color_name.trim() ? {
+          mode: form.color_mode,
+          colors: (form.color_mode === "single"
+            ? [{ name: form.color_name.trim(), hex: form.color_hex }]
+            : [{ name: form.color_name.trim(), hex: form.color_hex },
+               ...(form.secondary_color_name.trim() ? [{ name: form.secondary_color_name.trim(), hex: form.secondary_color_hex }] : []),
+               ...(form.tertiary_color_name.trim() ? [{ name: form.tertiary_color_name.trim(), hex: form.tertiary_color_hex }] : [])])
+            .filter((color) => /^#[0-9A-Fa-f]{6}$/.test(color.hex)),
+        } : null,
       };
 
       const product = await createProduct(payload);
@@ -305,6 +318,36 @@ function NewProductPage() {
                 <small id="new-product-price-minimum">Giá tối thiểu: 1.000 ₫.</small>
               </label>
             </div>
+
+            <section className="up-color-options" aria-labelledby="product-colors-heading">
+              <h3 id="product-colors-heading">Màu sắc tổng quan</h3>
+              <p>Màu dùng để giới thiệu sản phẩm; màu và tồn kho bán thực tế được quản lý riêng theo biến thể.</p>
+              <label>Cách khai báo màu
+                <select value={form.color_mode} onChange={(e) => setForm({ ...form, color_mode: e.target.value as "single" | "multi" })}>
+                  <option value="single">Màu đơn</option><option value="multi">Màu phối (2–3 màu)</option>
+                </select>
+              </label>
+              <div className="up-two-col">
+                <label>Tên màu chính<input value={form.color_name} placeholder="Ví dụ: Xanh pastel" onChange={(e) => setForm({ ...form, color_name: e.target.value })} /></label>
+                <label>Mã HEX chính<div style={{ display: "flex", gap: 8, alignItems: "center" }}>
+                  <input aria-label="Chọn màu chính" type="color" value={form.color_hex} onChange={(e) => setForm({ ...form, color_hex: e.target.value })} style={{ width: 48, minWidth: 48, padding: 3 }} />
+                  <input aria-label="Mã HEX màu chính" value={form.color_hex} pattern="^#[0-9A-Fa-f]{6}$" onChange={(e) => setForm({ ...form, color_hex: e.target.value })} />
+                </div></label>
+                {form.color_mode === "multi" && <>
+                  <label>Tên màu thứ hai<input value={form.secondary_color_name} placeholder="Ví dụ: Trắng" onChange={(e) => setForm({ ...form, secondary_color_name: e.target.value })} /></label>
+                  <label>HEX màu thứ hai<div style={{ display: "flex", gap: 8, alignItems: "center" }}>
+                    <input aria-label="Chọn màu thứ hai" type="color" value={form.secondary_color_hex} onChange={(e) => setForm({ ...form, secondary_color_hex: e.target.value })} style={{ width: 48, minWidth: 48, padding: 3 }} />
+                    <input aria-label="HEX màu thứ hai" value={form.secondary_color_hex} pattern="^#[0-9A-Fa-f]{6}$" onChange={(e) => setForm({ ...form, secondary_color_hex: e.target.value })} />
+                  </div></label>
+                  <label>Tên màu thứ ba (không bắt buộc)<input value={form.tertiary_color_name} placeholder="Ví dụ: Đỏ" onChange={(e) => setForm({ ...form, tertiary_color_name: e.target.value })} /></label>
+                  <label>HEX màu thứ ba<div style={{ display: "flex", gap: 8, alignItems: "center" }}>
+                    <input aria-label="Chọn màu thứ ba" type="color" value={form.tertiary_color_hex} onChange={(e) => setForm({ ...form, tertiary_color_hex: e.target.value })} style={{ width: 48, minWidth: 48, padding: 3 }} />
+                    <input aria-label="HEX màu thứ ba" value={form.tertiary_color_hex} pattern="^#[0-9A-Fa-f]{6}$" onChange={(e) => setForm({ ...form, tertiary_color_hex: e.target.value })} />
+                  </div></label>
+                </>}
+              </div>
+              <small>Nhập tên màu và mã HEX. Màu phối có thể khai báo 2–3 màu.</small>
+            </section>
 
             <label>
               Mô tả ngắn
