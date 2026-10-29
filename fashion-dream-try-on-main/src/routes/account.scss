@@ -143,15 +143,15 @@
 .account-logout { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 44px; margin-top: 12px; padding: 0 14px; border: 1px solid rgba(32, 39, 44, .24); border-radius: 10px; color: var(--account-ink); background: rgba(255, 255, 255, .58); cursor: pointer; font: 700 10px/1.2 "Lexend", Arial, sans-serif; }
 .account-logout:hover:not(:disabled) { border-color: var(--account-blue); background: rgba(84, 114, 140, .1); }
 .account-hub-grid { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: 16px; margin-top: 22px; }
-.account-hub-card { position: relative; display: flex; flex-direction: column; gap: 16px; min-width: 0; padding: 22px; border: 1px solid rgba(248, 241, 232, .16); border-radius: 14px; color: var(--account-text); background: rgba(25, 34, 40, .82); text-decoration: none; box-shadow: 0 12px 32px rgba(0, 0, 0, .12); transition: transform .18s ease, border-color .18s ease, background .18s ease; }
-.account-hub-card:hover { transform: translateY(-2px); border-color: rgba(242, 173, 148, .68); background: rgba(39, 51, 59, .96); }
+.account-hub-card { position: relative; display: flex; flex-direction: column; gap: 16px; min-width: 0; padding: 22px; border: 1px solid rgba(248, 241, 232, .16); border-radius: 14px; color: var(--account-text); background: linear-gradient(145deg, #456b84 0%, #36566d 100%); text-decoration: none; box-shadow: 0 12px 32px rgba(0, 0, 0, .12); transition: transform .18s ease, border-color .18s ease, background .18s ease; }
+.account-hub-card:hover { transform: translateY(-2px); border-color: rgba(242, 173, 148, .68); background: linear-gradient(145deg, #547b94 0%, #42677f 100%); }
 .account-hub-card--tryon { grid-column: span 7; min-height: 250px; justify-content: space-between; overflow: hidden; background: linear-gradient(125deg, rgba(41, 58, 69, .98), rgba(25, 34, 40, .96) 70%, rgba(84, 114, 140, .55)); }
 .account-hub-card--tryon::after { content: "AI"; position: absolute; top: 8px; right: 22px; color: rgba(242, 173, 148, .1); font: 700 clamp(100px, 17vw, 210px)/1 "Space Grotesk", Arial, sans-serif; pointer-events: none; }
 .account-hub-card--order { grid-column: span 5; min-height: 250px; }
 .account-hub-card--small { grid-column: span 6; min-height: 174px; }
 .account-hub-card--style { grid-column: span 5; min-height: 174px; }
 .account-hub-card--profile { grid-column: span 7; min-height: 174px; cursor: default; }
-.account-hub-card--profile:hover { transform: none; border-color: rgba(248, 241, 232, .16); background: rgba(25, 34, 40, .82); }
+.account-hub-card--profile:hover { transform: none; border-color: rgba(248, 241, 232, .16); background: linear-gradient(145deg, #456b84 0%, #36566d 100%); }
 .account-hub-eyebrow { position: relative; z-index: 1; color: #f8f1e8; font: 600 13px/1.5 "Lexend", Arial, sans-serif; }
 .account-hub-title { position: relative; z-index: 1; margin: 0; color: var(--account-text); font: 700 clamp(21px, 2.4vw, 30px)/1.18 "Be Vietnam Pro", "Lexend", Arial, sans-serif; letter-spacing: -.025em; }
 .account-hub-title--hero { max-width: 460px; font-size: clamp(28px, 4vw, 44px); }
