@@ -314,6 +314,17 @@
   transition: color .18s ease, background .18s ease, border-color .18s ease, transform .18s ease;
 }
 
+.wearo-footer__socials a img {
+  display: block;
+  width: 18px;
+  height: 18px;
+  object-fit: contain;
+}
+
+.wearo-footer__socials a:hover img {
+  opacity: .92;
+}
+
 .wearo-footer__socials a:hover {
   color: #fff;
   background: var(--footer-blue);
