@@ -65,7 +65,6 @@ function CheckoutPage() {
   const [paymentInfo, setPaymentInfo] = useState<PaymentInfo | null>(null);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [shippingInfo, setShippingInfo] = useState({ name: "", phone: "", email: "", address: "", city: "", district: "" });
-  const [shippingInfoLoaded, setShippingInfoLoaded] = useState(false);
   const [copyMessage, setCopyMessage] = useState<string | null>(null);
   const checkoutKeyRef = useRef<string | null>(null);
 
@@ -82,7 +81,6 @@ function CheckoutPage() {
       if (isMockUserMode()) return;
       const session = getCustomerSession();
       if (!session?.access_token) {
-        setShippingInfoLoaded(true);
         return;
       }
       setShippingInfo((current) => ({ ...current, email: current.email || session.user?.email || "" }));
@@ -101,7 +99,6 @@ function CheckoutPage() {
       } catch {
         // Keep account email available; users can still enter or edit delivery details manually.
       } finally {
-        if (active) setShippingInfoLoaded(true);
       }
     };
     void loadSavedShippingInfo();
