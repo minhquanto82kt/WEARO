@@ -76,10 +76,10 @@ export async function checkAdmin() { return parseResponse<boolean>(await fetch(`
 
 export type Product = {
   id: string; name: string; slug: string; description: string | null; short_description: string | null; long_description: string | null;
-  price: number; category: string; gender: "Male" | "Female" | "Unisex"; image: string | null; active: boolean; status: "draft" | "published" | "archived"; featured: boolean; new_arrival?: boolean; fashion_style?: string | null; created_at: string; updated_at: string;
+  price: number; category: string; gender: "Male" | "Female" | "Unisex"; image: string | null; color_options?: { mode: "single" | "multi"; colors: Array<{ name: string; hex: string }> } | null; active: boolean; status: "draft" | "published" | "archived"; featured: boolean; new_arrival?: boolean; fashion_style?: string | null; created_at: string; updated_at: string;
 };
 export type ProductImage = { id?: string; product_id: string; image_url: string; alt_text?: string | null; sort_order: number; is_primary: boolean };
-export type ProductVariant = { id: string; product_id: string; size: string; color: string; sku: string | null; stock: number; created_at: string };
+export type ProductVariant = { id: string; product_id: string; size: string; color: string; color_hex?: string | null; sku: string | null; stock: number; created_at: string };
 export type InventoryRow = ProductVariant & { product: Product };
 
 export async function suggestProductColorName(hex: string) {
