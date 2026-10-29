@@ -203,3 +203,46 @@
 @media (prefers-reduced-motion: reduce) {
   .account-page *, .account-page *::before, .account-page *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; }
 }
+
+/* Authenticated dashboard-only refinements. Keep all /account styles beside the route. */
+.account-page:has(.account-dashboard) .account-content {
+  overflow: hidden;
+}
+
+/* The account page uses its CSS gradient, not the legacy image/overlay layers. */
+.account-page:has(.account-dashboard) .account-content::before,
+.account-page:has(.account-dashboard) .account-content::after {
+  display: none !important;
+  content: none !important;
+  background: none !important;
+}
+
+.account-page:has(.account-dashboard) .account-welcome h1 {
+  font-family: "Be Vietnam Pro", "Space Grotesk", Arial, sans-serif;
+  font-weight: 900;
+  letter-spacing: -0.045em;
+  line-height: 0.94;
+}
+
+.account-page:has(.account-dashboard) .account-profile-card h3 {
+  font-size: 12px;
+  line-height: 1.35;
+  letter-spacing: 0.14em;
+}
+
+.account-page:has(.account-dashboard) .account-profile-row {
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.account-page:has(.account-dashboard) .account-note {
+  font-size: 14px;
+  line-height: 1.8;
+}
+
+@media (max-width: 560px) {
+  .account-page:has(.account-dashboard) .account-welcome h1 {
+    font-size: clamp(38px, 11vw, 60px);
+  }
+}
+
