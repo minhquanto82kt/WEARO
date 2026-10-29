@@ -68,6 +68,7 @@ function AccountPage() {
   const [checkingUser, setCheckingUser] = useState(true);
   const [wishlistCount, setWishlistCount] = useState(0);
   const [latestOrder, setLatestOrder] = useState<CustomerOrder | null>(null);
+  const [orderCount, setOrderCount] = useState(0);
   const [copiedAccountId, setCopiedAccountId] = useState(false);
   const cart = useCart();
 
@@ -155,17 +156,17 @@ function AccountPage() {
   useEffect(() => {
     let active = true;
     async function loadAccountPreviews() {
-      if (!user) { setWishlistCount(0); setLatestOrder(null); return; }
+      if (!user) { setWishlistCount(0); setLatestOrder(null); setOrderCount(0); return; }
       try {
         const session = getCustomerSession();
         const wishlistPromise = listWishlistProductIds(user.id);
         const ordersPromise = session?.access_token
-          ? listMyOrders({ data: { accessToken: session.access_token, limit: 1 } })
+          ? listMyOrders({ data: { accessToken: session.access_token, limit: 100 } })
           : Promise.resolve({ orders: [] as CustomerOrder[] });
         const [wishlistIds, orderResult] = await Promise.all([wishlistPromise, ordersPromise]);
-        if (active) { setWishlistCount(wishlistIds.length); setLatestOrder(orderResult.orders[0] ?? null); }
+        if (active) { setWishlistCount(wishlistIds.length); setLatestOrder(orderResult.orders[0] ?? null); setOrderCount(orderResult.orders.length); }
       } catch {
-        if (active) { setWishlistCount(0); setLatestOrder(null); }
+        if (active) { setWishlistCount(0); setLatestOrder(null); setOrderCount(0); }
       }
     }
     void loadAccountPreviews();
@@ -202,8 +203,8 @@ function AccountPage() {
             <span className="account-hub-arrow">Mở AI Studio <ArrowRight size={17}/></span>
           </Link>
           <Link className="account-hub-card account-hub-card--order" to="/account/orders">
-            <div className="account-hub-topline"><span className="account-hub-eyebrow">Đơn hàng</span><span className="account-hub-icon"><Package size={20}/></span></div>
-            {latestOrder ? <><div><h2 className="account-hub-title">{latestOrder.order_code || "Đơn hàng gần đây"}</h2><p className="account-hub-copy account-hub-copy--order">Đặt ngày {new Date(latestOrder.created_at).toLocaleDateString("vi-VN")} · {formatVnd(latestOrder.total)}</p></div><span className="account-hub-status">{getOrderStatusLabel(latestOrder.order_status)}</span></> : <><h2 className="account-hub-title">Theo dõi đơn mua</h2><p className="account-empty-state">Xem trạng thái giao hàng và chi tiết các đơn hàng của bạn tại đây.</p></>}
+            <div className="account-hub-topline"><span className="account-hub-eyebrow">Đơn hàng · {orderCount} đơn gần đây</span><span className="account-hub-icon"><Package size={20}/></span></div>
+            {latestOrder ? <><div><h2 className="account-hub-title">{latestOrder.order_code || "Đơn hàng gần đây"}</h2><p className="account-hub-copy account-hub-copy--order">Đặt ngày {new Date(latestOrder.created_at).toLocaleDateString("vi-VN")} · {formatVnd(latestOrder.total)}</p></div><span className="account-hub-status">{getOrderStatusLabel(latestOrder.order_status)}</span></> : <><h2 className="account-hub-title">Chưa có đơn hàng</h2><p className="account-empty-state">Bạn chưa có đơn hàng nào. Khám phá sản phẩm và đơn mua sẽ xuất hiện tại đây.</p></>}
             <span className="account-hub-arrow">{latestOrder ? "Theo dõi đơn hàng" : "Xem lịch sử đơn"} <ArrowRight size={17}/></span>
           </Link>
           <Link className="account-hub-card account-hub-card--small" to="/account/wishlist">
@@ -218,7 +219,7 @@ function AccountPage() {
           </Link>
           <Link className="account-hub-card account-hub-card--style" to="/ai">
             <div className="account-hub-topline"><span className="account-hub-eyebrow">AI Stylist</span><span className="account-hub-icon"><WandSparkles size={20}/></span></div>
-            <h2 className="account-hub-title">Phối đồ theo dịp của bạn</h2><div className="account-style-tags"><span>Casual</span><span>Basic</span><span>Streetwear</span><span>Đi chơi</span></div>
+            <h2 className="account-hub-title">Phối đồ theo dịp của bạn</h2><p className="account-hub-copy account-hub-copy--style">Gợi ý outfit theo phong cách và dịp bạn chọn trong AI Studio.</p>
             <span className="account-hub-arrow">Nhận gợi ý phối đồ <ArrowRight size={17}/></span>
           </Link>
           <div className="account-hub-card account-hub-card--profile">
