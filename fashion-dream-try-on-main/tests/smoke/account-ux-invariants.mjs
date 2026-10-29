@@ -20,6 +20,10 @@ check(!account.includes("<style>"), "route has no embedded style block");
 check(!/style=\{\{/.test(account), "route has no inline style overrides");
 check(styles.includes("--account-blue: #54728c") && styles.includes("--account-peach: #f2ad94"), "brand colors are defined as account design tokens");
 check(styles.includes(".account-page") && styles.includes("@media (max-width: 560px)"), "styles are namespaced and include mobile layout");
+check(styles.includes("color: #36566d") && styles.includes("color: #fff8ef"), "dashboard text contrast is improved for cream and dark surfaces");
+check(styles.includes(".account-hub-card--small { grid-column: span 6;"), "wishlist and cart share the second bento row evenly");
+check(account.includes("orderCount") && account.includes("limit: 100"), "dashboard reads recent order count and latest order from the customer order API");
+check(!account.includes("<span>Casual</span>") && account.includes("account-hub-copy--style"), "stylist style labels no longer appear as inert chips");
 check(styles.includes("prefers-reduced-motion"), "motion respects reduced-motion preferences");
 
 // Keep a single canonical form and clear, mutually exclusive auth states.
@@ -38,4 +42,5 @@ check(account.includes('className="account-auth-simple"') && styles.includes(".a
 check(account.includes("Chào mừng trở lại") && account.includes("Tạo tài khoản"), "auth headings use concise Vietnamese copy");
 check(!styles.includes(".account-auth-grid") && !styles.includes(".account-socials"), "obsolete auth layout and social button styles are removed");
 
+check(!styles.includes("Chính sách mua hàng và bảo mật sẽ được cập nhật"), "account styles do not reintroduce policy placeholder copy");
 console.log("ACCOUNT UX CONTRACT PASS");
