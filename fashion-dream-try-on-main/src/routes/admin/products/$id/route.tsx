@@ -270,8 +270,8 @@ function ProductDetailPage() {
       const suggestion = await suggestProductColorName(hex);
       setVariantColorHex(hex);
       setVariantColorHexInput(hex);
-      setVariantForm((current) => ({ ...current, color: \`\${suggestion.name} (\${hex})\` }));
-      setMessage(\`Đã gợi ý tên màu “\${suggestion.name}” từ \${suggestion.source === "wearo" ? "thư viện màu WEARO" : "The Color API"}. Bạn có thể chỉnh sửa trước khi lưu.\`);
+      setVariantForm((current) => ({ ...current, color: `${suggestion.name} (${hex})` }));
+      setMessage(`Đã gợi ý tên màu “${suggestion.name}” từ ${suggestion.source === "wearo" ? "thư viện màu WEARO" : "The Color API"}. Bạn có thể chỉnh sửa trước khi lưu.`);
     } catch (cause) {
       setError(cause instanceof Error ? cause.message : "Không thể gợi ý tên màu.");
     } finally {
