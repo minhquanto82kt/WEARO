@@ -249,7 +249,6 @@ function AccountPage() {
           {error && <p className="account-feedback account-feedback--error" role="alert">{error}</p>}
           {message && <p className="account-feedback account-feedback--success" role="status">{message}</p>}
           {mode === "login" && <div className="account-field account-field--utility"><button className="account-link" type="button" onClick={() => switchMode("recover")}>Quên mật khẩu?</button></div>}
-          {mode === "login" && <div className="account-field account-field--placeholder" aria-hidden="true"><label>Xác nhận mật khẩu</label><span /></div>}
           {mode === "register" && requiresEmailConfirmation && message && !user && <button className="account-resend" type="button" onClick={handleResend} disabled={resending}>{resending ? "Đang gửi…" : "Gửi lại email xác nhận"}</button>}
           <button className="account-submit" type="submit" disabled={loading}>{loading ? "Đang xử lý…" : mode === "login" ? "Đăng nhập" : mode === "register" ? "Tạo tài khoản" : mode === "recover" ? "Gửi liên kết khôi phục" : "Cập nhật mật khẩu"}</button>
           {(mode === "recover" || mode === "reset") && <button className="account-link account-back" type="button" onClick={() => { switchMode("login"); if (mode === "reset") clearAccountQuery(); }}>← Quay lại đăng nhập</button>}
