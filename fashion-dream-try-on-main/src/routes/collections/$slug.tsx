@@ -20,6 +20,7 @@ type DbCatalogProduct = {
   colors: string[];
   gallery: string[];
   total_stock: number;
+  fashion_style: Product["fashionStyle"] | null;
 };
 
 type ProductStyleTag = {
@@ -35,6 +36,13 @@ const getCollectionData = createServerFn({ method: "GET" }).handler(async () => 
     supabaseRequest<DbCatalogProduct[]>("rpc/get_published_catalog", { method: "POST", body: "{}" }),
     supabaseRequest<ProductStyleTag[]>("rpc/get_public_product_style_tags", { method: "POST", body: "{}" }),
   ]);
+  const styleRows = catalog.length
+    ? await supabaseRequest<{ id: string; fashion_style: Product["fashionStyle"] | null }[]>(
+        `products?select=id,fashion_style&id=in.(${catalog.map((product) => product.id).join(",")})`,
+        { method: "GET" },
+      )
+    : [];
+  const styleById = new Map(styleRows.map((row) => [row.id, row.fashion_style]));
 
   const tagsByProduct = new Map<string, ProductStyleTag[]>();
   for (const tag of styleTags) {
@@ -58,11 +66,12 @@ const getCollectionData = createServerFn({ method: "GET" }).handler(async () => 
       colors: product.colors ?? [],
       badge: product.featured ? "Featured" : undefined,
       description: product.description ?? "",
+      fashionStyle: styleById.get(product.id) ?? product.fashion_style ?? null,
       tags: productTags.map((tag) => tag.tag_name),
     };
   });
 
-  return { products, styleTags };
+  return products;
 });
 
 const COLLECTIONS = {
@@ -115,7 +124,7 @@ export const Route = createFileRoute("/collections/$slug")({
 
 function CollectionPage() {
   const { slug } = Route.useParams();
-  const { products, styleTags } = Route.useLoaderData();
+  const products = Route.useLoaderData();
   const collectionSlug = slug === "outing-style" ? "outerwear" : slug;
   const collection = COLLECTIONS[collectionSlug as keyof typeof COLLECTIONS];
 
@@ -127,8 +136,10 @@ function CollectionPage() {
   const previousCollection = COLLECTIONS[previousSlug];
   const nextCollection = COLLECTIONS[nextSlug];
 
-  const styleProductIds = new Set(styleTags.filter((tag) => (tag.tag_slug === collectionSlug || (collectionSlug === "outerwear" && tag.tag_slug === "outing-style"))).map((tag) => tag.product_id));
-  const collectionProducts = products.filter((product) => styleProductIds.has(product.id));
+  const collectionProducts = products.filter((product) => {
+    const productStyle = product.fashionStyle?.toLowerCase();
+    return productStyle === collectionSlug || (collectionSlug === "outerwear" && productStyle === "outing style");
+  });
 
   return (
     <div className="wearo-collection-page" data-collection={collectionSlug}>
