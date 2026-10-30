@@ -100,6 +100,7 @@
 .account-content--auth .account-shell { width: min(100% - 32px, 480px); }
 .account-content--auth .account-main { justify-content: center; padding: 28px 0; }
 .account-auth-brand { display: flex; align-items: center; gap: 10px; color: #102a43; font: 800 15px/1 "Plus Jakarta Sans", "Be Vietnam Pro", Arial, sans-serif; letter-spacing: .08em; }
+.account-brand-logo { display: block; width: 132px; height: 48px; object-fit: contain; object-position: left center; }
 .account-brand-mark { display: grid; place-items: center; width: 34px; height: 34px; border-radius: 9px; color: #fff; background: #102a43; font: 800 16px/1 "Plus Jakarta Sans", Arial, sans-serif; letter-spacing: 0; }
 .account-auth-heading { margin: 28px 0 22px; }
 .account-auth-heading h1 { margin: 0; color: #0f172a; font: 800 clamp(25px, 5vw, 30px)/1.2 "Plus Jakarta Sans", "Be Vietnam Pro", Arial, sans-serif; letter-spacing: -.04em; }
