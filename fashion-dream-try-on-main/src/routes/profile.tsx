@@ -306,147 +306,33 @@ function AccountPage() {
         </nav>
         {activeProfileTab === "overview" && <section id="profile-panel-overview" className="account-profile-panel" role="tabpanel" aria-labelledby="profile-tab-overview"><div className="account-hub-grid">
           <Link className="account-hub-card account-hub-card--tryon" to="/ai" aria-label="Mở AI Studio – Thử outfit lên chính bạn">
-            <span className="account-hub-eyebrow">Tính năng chủ lực · WEARO AI</span>
-            <div>
-              <h2 className="account-hub-title account-hub-title--hero">Thử outfit lên chính bạn.</h2>
-              <p className="account-hub-copy">Tiếp tục với AI Virtual Try-On hoặc mở AI Stylist để tìm cách phối đồ hợp dịp và phong cách của bạn.</p>
-            </div>
-            <span className="account-hub-arrow">Mở AI Studio <ArrowRight size={17} aria-hidden="true" /></span>
+            <span className="account-hub-eyebrow">Tính năng chủ lực · WEARO AI</span><div><h2 className="account-hub-title account-hub-title--hero">Thử outfit lên chính bạn.</h2><p className="account-hub-copy">Tiếp tục với AI Virtual Try-On hoặc mở AI Stylist để tìm cách phối đồ hợp dịp và phong cách của bạn.</p></div><span className="account-hub-arrow">Mở AI Studio <ArrowRight size={17} aria-hidden="true" /></span>
           </Link>
           <Link className="account-hub-card account-hub-card--order" to="/account/orders" aria-label="Xem đơn hàng của bạn">
-            <div className="account-hub-topline">
-              <span className="account-hub-eyebrow">
-                Đơn hàng · {accountDataLoading ? "…" : `${orderCount} đơn gần đây`}
-              </span>
-              <span className="account-hub-icon" aria-hidden="true"><Package size={20} /></span>
-            </div>
-            {accountDataLoading ? (
-              <div className="account-hub-skeleton" aria-busy="true" aria-label="Đang tải đơn hàng">
-                <div className="account-skeleton-line account-skeleton-line--title" />
-                <div className="account-skeleton-line" />
-              </div>
-            ) : latestOrder ? (
-              <>
-                <div>
-                  <h2 className="account-hub-title">{latestOrder.order_code || "Đơn hàng gần đây"}</h2>
-                  <p className="account-hub-copy account-hub-copy--order">
-                    Đặt ngày {new Date(latestOrder.created_at).toLocaleDateString("vi-VN")} · {formatVnd(latestOrder.total)}
-                  </p>
-                </div>
-                <span className="account-hub-status" role="status">{getOrderStatusLabel(latestOrder.order_status)}</span>
-              </>
-            ) : (
-              <>
-                <h2 className="account-hub-title">Chưa có đơn hàng</h2>
-                <p className="account-empty-state">Bạn chưa có đơn hàng nào. Khám phá sản phẩm và đơn mua sẽ xuất hiện tại đây.</p>
-              </>
-            )}
-            <span className="account-hub-arrow">
-              {latestOrder ? "Theo dõi đơn hàng" : "Xem lịch sử đơn"} <ArrowRight size={17} aria-hidden="true" />
-            </span>
+            <div className="account-hub-topline"><span className="account-hub-eyebrow">Đơn hàng · {accountDataLoading ? "…" : `${orderCount} đơn gần đây`}</span><span className="account-hub-icon" aria-hidden="true"><Package size={20} /></span></div>
+            {accountDataLoading ? <div className="account-hub-skeleton" aria-busy="true"><div className="account-skeleton-line account-skeleton-line--title" /><div className="account-skeleton-line" /></div> : latestOrder ? <><div><h2 className="account-hub-title">{latestOrder.order_code || "Đơn hàng gần đây"}</h2><p className="account-hub-copy account-hub-copy--order">Đặt ngày {new Date(latestOrder.created_at).toLocaleDateString("vi-VN")} · {formatVnd(latestOrder.total)}</p></div><span className="account-hub-status" role="status">{getOrderStatusLabel(latestOrder.order_status)}</span></> : <><h2 className="account-hub-title">Chưa có đơn hàng</h2><p className="account-empty-state">Bạn chưa có đơn hàng nào. Khám phá sản phẩm và đơn mua sẽ xuất hiện tại đây.</p></>}
+            <span className="account-hub-arrow">{latestOrder ? "Theo dõi đơn hàng" : "Xem lịch sử đơn"} <ArrowRight size={17} aria-hidden="true" /></span>
           </Link>
-          <Link className="account-hub-card account-hub-card--small" to="/account/wishlist" aria-label="Xem danh sách yêu thích">
-            <div className="account-hub-topline">
-              <span className="account-hub-eyebrow">Đã lưu</span>
-              <span className="account-hub-icon" aria-hidden="true"><Heart size={20} /></span>
-            </div>
-            {accountDataLoading ? (
-              <div className="account-hub-skeleton" aria-busy="true">
-                <div className="account-skeleton-line account-skeleton-line--value" />
-                <div className="account-skeleton-line account-skeleton-line--short" />
-              </div>
-            ) : (
-              <>
-                <div className="account-hub-value">{wishlistCount} sản phẩm</div>
-                <p className="account-hub-subvalue">Danh sách yêu thích của bạn</p>
-              </>
-            )}
-            <span className="account-hub-arrow">Xem yêu thích <ArrowRight size={17} aria-hidden="true" /></span>
-          </Link>
-          <Link className="account-hub-card account-hub-card--small" to="/cart" aria-label="Xem giỏ hàng">
-            <div className="account-hub-topline">
-              <span className="account-hub-eyebrow">Giỏ hàng</span>
-              <span className="account-hub-icon" aria-hidden="true"><ShoppingBag size={20} /></span>
-            </div>
-            <div className="account-hub-value">{cart.count} món</div>
-            <p className="account-hub-subvalue">
-              {cart.subtotal > 0 ? `Tạm tính ${formatVnd(cart.subtotal)}` : "Chưa có sản phẩm trong giỏ"}
-            </p>
-            <span className="account-hub-arrow">
-              {cart.count > 0 ? "Tiếp tục thanh toán" : "Khám phá sản phẩm"} <ArrowRight size={17} aria-hidden="true" />
-            </span>
-          </Link>
-          <Link className="account-hub-card account-hub-card--style" to="/ai" aria-label="Nhận gợi ý phối đồ từ AI Stylist">
-            <div className="account-hub-topline">
-              <span className="account-hub-eyebrow">AI Stylist</span>
-              <span className="account-hub-icon" aria-hidden="true"><WandSparkles size={20} /></span>
-            </div>
-            <h2 className="account-hub-title">Phối đồ theo dịp của bạn</h2>
-            <p className="account-hub-copy account-hub-copy--style">Gợi ý outfit theo phong cách và dịp bạn chọn trong AI Studio.</p>
-            <span className="account-hub-arrow">Nhận gợi ý phối đồ <ArrowRight size={17} aria-hidden="true" /></span>
-          </Link>
-          </div></section>}
+          <Link className="account-hub-card account-hub-card--style" to="/ai" aria-label="Nhận gợi ý phối đồ từ AI Stylist"><div className="account-hub-topline"><span className="account-hub-eyebrow">AI Stylist</span><span className="account-hub-icon" aria-hidden="true"><WandSparkles size={20} /></span></div><h2 className="account-hub-title">Phối đồ theo dịp của bạn</h2><p className="account-hub-copy account-hub-copy--style">Gợi ý outfit theo phong cách và dịp bạn chọn trong AI Studio.</p><span className="account-hub-arrow">Nhận gợi ý phối đồ <ArrowRight size={17} aria-hidden="true" /></span></Link>
+        </div></section>}
         {activeProfileTab === "saved" && <section id="profile-panel-saved" className="account-profile-panel" role="tabpanel" aria-labelledby="profile-tab-saved"><div className="account-hub-grid">
-          <Link className="account-hub-card account-hub-card--small" to="/account/wishlist"<AccountAddressBook userId={user.id} preview={user.id === "preview-account-user"} /></div>
-          </div></section>}
+          <Link className="account-hub-card account-hub-card--small" to="/cart" aria-label="Xem giỏ hàng"><div className="account-hub-topline"><span className="account-hub-eyebrow">Giỏ hàng</span><span className="account-hub-icon" aria-hidden="true"><ShoppingBag size={20} /></span></div><div className="account-hub-value">{cart.count} món</div><p className="account-hub-subvalue">{cart.subtotal > 0 ? `Tạm tính ${formatVnd(cart.subtotal)}` : "Chưa có sản phẩm trong giỏ"}</p><span className="account-hub-arrow">{cart.count > 0 ? "Tiếp tục thanh toán" : "Khám phá sản phẩm"} <ArrowRight size={17} aria-hidden="true" /></span></Link>
+          <Link className="account-hub-card account-hub-card--small" to="/account/wishlist" aria-label="Xem danh sách yêu thích"><div className="account-hub-topline"><span className="account-hub-eyebrow">Đã lưu</span><span className="account-hub-icon" aria-hidden="true"><Heart size={20} /></span></div>{accountDataLoading ? <div className="account-hub-skeleton" aria-busy="true"><div className="account-skeleton-line account-skeleton-line--value" /><div className="account-skeleton-line account-skeleton-line--short" /></div> : <><div className="account-hub-value">{wishlistCount} sản phẩm</div><p className="account-hub-subvalue">Danh sách yêu thích của bạn</p></>}<span className="account-hub-arrow">Xem yêu thích <ArrowRight size={17} aria-hidden="true" /></span></Link>
+        </div></section>}
         {activeProfileTab === "account" && <section id="profile-panel-account" className="account-profile-panel" role="tabpanel" aria-labelledby="profile-tab-account"><div className="account-hub-grid">
           <div className="account-hub-card account-hub-card--addresses"><AccountAddressBook userId={user.id} preview={user.id === "preview-account-user"} /></div>
           <div className="account-hub-card account-hub-card--profile">
-            <div className="account-hub-topline">
-              <span className="account-hub-eyebrow">Hồ sơ tài khoản</span>
-              <span className="account-hub-icon" aria-hidden="true"><UserRound size={20} /></span>
-            </div>
-            <div className="account-profile-row">
-              <span>Email</span>
-              <strong>{user.email || "—"}</strong>
-            </div>
-            {profileLoading ? <p className="account-profile-feedback" role="status">Đang tải hồ sơ…</p> : (
-              <form className="account-profile-form" onSubmit={handleSaveProfile}>
-                <label className="account-profile-field">
-                  <span>Họ và tên</span>
-                  <input value={profileName} onChange={(event) => setProfileName(event.target.value)} maxLength={120} autoComplete="name" required disabled={profileSaving || user.id === "preview-account-user"} />
-                </label>
-                <label className="account-profile-field">
-                  <span>Số điện thoại</span>
-                  <input type="tel" value={profilePhone} onChange={(event) => setProfilePhone(event.target.value)} maxLength={30} autoComplete="tel" placeholder="Nhập số điện thoại" disabled={profileSaving || user.id === "preview-account-user"} />
-                </label>
-                <label className="account-profile-field">
-                  <span>Ngày sinh</span>
-                  <input type="date" value={profileBirthDate} onChange={(event) => setProfileBirthDate(event.target.value)} max={new Date().toISOString().slice(0, 10)} disabled={profileSaving || user.id === "preview-account-user"} />
-                </label>
-                {profileError && <p className="account-profile-feedback account-profile-feedback--error" role="alert">{profileError}</p>}
-                {profileMessage && <p className="account-profile-feedback account-profile-feedback--success" role="status">{profileMessage}</p>}
-                {user.id === "preview-account-user" && <p className="account-profile-feedback">Preview chỉ xem giao diện, không lưu dữ liệu thật.</p>}
-                <button className="account-profile-save" type="submit" disabled={profileSaving || user.id === "preview-account-user"}>{profileSaving ? "Đang lưu…" : "Lưu hồ sơ"}</button>
-              </form>
-            )}
-            <div className="account-profile-row">
-              <span>Mã tài khoản</span>
-              <div className="account-id-group">
-                <code className="account-id-preview" title={user.id}>
-                  {user.id.length > 12 ? `${user.id.slice(0, 8)}…${user.id.slice(-4)}` : user.id}
-                </code>
-                <button
-                  className="account-copy-id"
-                  type="button"
-                  onClick={() => void copyAccountId()}
-                  aria-label={copiedAccountId ? "Đã sao chép mã tài khoản" : "Sao chép mã tài khoản"}
-                >
-                  {copiedAccountId ? <Check size={14} aria-hidden="true" /> : <Copy size={14} aria-hidden="true" />}
-                  {copiedAccountId ? "Đã sao chép" : "Sao chép"}
-                </button>
-              </div>
-            </div>
-            <button
-              className="account-hub-arrow account-hub-action"
-              type="button"
-              onClick={() => {
-                setEmail(user.email || "");
-                switchMode("recover");
-              }}
-            >
-              Đặt lại mật khẩu qua email <ArrowRight size={17} aria-hidden="true" />
-            </button>
+            <div className="account-hub-topline"><span className="account-hub-eyebrow">Hồ sơ tài khoản</span><span className="account-hub-icon" aria-hidden="true"><UserRound size={20} /></span></div>
+            <div className="account-profile-row"><span>Email</span><strong>{user.email || "—"}</strong></div>
+            {profileLoading ? <p className="account-profile-feedback" role="status">Đang tải hồ sơ…</p> : <form className="account-profile-form" onSubmit={handleSaveProfile}>
+              <label className="account-profile-field"><span>Họ và tên</span><input value={profileName} onChange={(event) => setProfileName(event.target.value)} maxLength={120} autoComplete="name" required disabled={profileSaving || user.id === "preview-account-user"} /></label>
+              <label className="account-profile-field"><span>Số điện thoại</span><input type="tel" value={profilePhone} onChange={(event) => setProfilePhone(event.target.value)} maxLength={30} autoComplete="tel" placeholder="Nhập số điện thoại" disabled={profileSaving || user.id === "preview-account-user"} /></label>
+              <label className="account-profile-field"><span>Ngày sinh</span><input type="date" value={profileBirthDate} onChange={(event) => setProfileBirthDate(event.target.value)} max={new Date().toISOString().slice(0, 10)} disabled={profileSaving || user.id === "preview-account-user"} /></label>
+              {profileError && <p className="account-profile-feedback account-profile-feedback--error" role="alert">{profileError}</p>}{profileMessage && <p className="account-profile-feedback account-profile-feedback--success" role="status">{profileMessage}</p>}{user.id === "preview-account-user" && <p className="account-profile-feedback">Preview chỉ xem giao diện, không lưu dữ liệu thật.</p>}
+              <button className="account-profile-save" type="submit" disabled={profileSaving || user.id === "preview-account-user"}>{profileSaving ? "Đang lưu…" : "Lưu hồ sơ"}</button>
+            </form>}
+            <div className="account-profile-row"><span>Mã tài khoản</span><div className="account-id-group"><code className="account-id-preview" title={user.id}>{user.id.length > 12 ? `${user.id.slice(0, 8)}…${user.id.slice(-4)}` : user.id}</code><button className="account-copy-id" type="button" onClick={() => void copyAccountId()} aria-label={copiedAccountId ? "Đã sao chép mã tài khoản" : "Sao chép mã tài khoản"}>{copiedAccountId ? <Check size={14} aria-hidden="true" /> : <Copy size={14} aria-hidden="true" />}{copiedAccountId ? "Đã sao chép" : "Sao chép"}</button></div></div>
+            <button className="account-hub-arrow account-hub-action" type="button" onClick={() => { setEmail(user.email || ""); switchMode("recover"); }}>Đặt lại mật khẩu qua email <ArrowRight size={17} aria-hidden="true" /></button>
           </div>
         </div></section>}
       </div> : <div className="account-auth-flip">
