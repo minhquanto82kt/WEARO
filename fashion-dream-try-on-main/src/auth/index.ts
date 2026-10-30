@@ -5,7 +5,6 @@ export {
   signInCustomer,
   signUpCustomer,
   signOutCustomer,
-  signInWithGoogle,
   requestPasswordReset,
   updateCustomerPassword,
   refreshCustomerSession,
