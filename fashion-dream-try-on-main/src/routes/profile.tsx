@@ -10,7 +10,7 @@ import { useCart } from "@/lib/cart";
 import { listWishlistProductIds } from "@/lib/wishlist";
 import { listMyOrders, type CustomerOrder } from "@/lib/order.functions";
 import { formatVnd } from "@/data/products";
-import { getCustomerProfile, updateCustomerProfile, type CustomerProfile } from "@/lib/customer-profile";
+import { getCustomerProfile, updateCustomerProfile } from "@/lib/customer-profile";
 import "./user-profile.scss";
 
 export const Route = createFileRoute("/profile")({ component: AccountPage });
@@ -73,7 +73,6 @@ function AccountPage() {
   const [orderCount, setOrderCount] = useState(0);
   const [accountDataLoading, setAccountDataLoading] = useState(false);
   const [copiedAccountId, setCopiedAccountId] = useState(false);
-  const [customerProfile, setCustomerProfile] = useState<CustomerProfile | null>(null);
   const [profileName, setProfileName] = useState("");
   const [profilePhone, setProfilePhone] = useState("");
   const [profileBirthDate, setProfileBirthDate] = useState("");
@@ -219,7 +218,6 @@ function AccountPage() {
     let active = true;
     async function loadProfile() {
       if (!user || user.id === "preview-account-user") {
-        setCustomerProfile(null);
         setProfileName(user?.user_metadata?.full_name || user?.user_metadata?.name || "");
         setProfilePhone("");
         setProfileBirthDate("");
@@ -232,7 +230,6 @@ function AccountPage() {
       try {
         const profile = await getCustomerProfile(user.id);
         if (!active) return;
-        setCustomerProfile(profile);
         setProfileName(profile?.full_name || user.user_metadata?.full_name || user.user_metadata?.name || "");
         setProfilePhone(profile?.phone || "");
         setProfileBirthDate(profile?.birth_date || "");
@@ -258,7 +255,6 @@ function AccountPage() {
         phone: profilePhone,
         birth_date: profileBirthDate || null,
       });
-      setCustomerProfile(saved);
       setProfileName(saved.full_name);
       setProfilePhone(saved.phone || "");
       setProfileBirthDate(saved.birth_date || "");
