@@ -117,7 +117,18 @@ function CheckoutPage() {
       if (!userId || !session?.access_token) return;
       try {
         const rows = await listCustomerAddresses(userId);
-        if (active) setSavedAddresses(rows);
+        if (active) {
+          setSavedAddresses(rows);
+          const defaultAddress = rows.find(address => address.is_default);
+          if (defaultAddress) setShippingInfo(current => current.address ? current : {
+            ...current,
+            name: defaultAddress.recipient_name,
+            phone: defaultAddress.phone,
+            address: defaultAddress.address_line,
+            city: defaultAddress.city,
+            district: [defaultAddress.ward, defaultAddress.district].filter(Boolean).join(", "),
+          });
+        }
       } catch (error) {
         if (active) setAddressBookError(error instanceof Error ? error.message : "Không thể tải sổ địa chỉ.");
       }
@@ -477,7 +488,7 @@ function CheckoutPage() {
               <Field label="Số nhà, tên đường" name="address" value={shippingInfo.address} onChange={(value) => setShippingInfo((current) => ({ ...current, address: value }))} autoComplete="street-address" placeholder="Nhập số nhà, tên đường" />
               <div className="grid min-w-0 gap-4 sm:grid-cols-2">
                 <Field label="Tỉnh / Thành phố" name="city" value={shippingInfo.city} onChange={(value) => setShippingInfo((current) => ({ ...current, city: value }))} autoComplete="address-level1" placeholder="Nhập tỉnh / thành phố" />
-                <Field label="Phường / Xã" name="district" value={shippingInfo.district} onChange={(value) => setShippingInfo((current) => ({ ...current, district: value }))} autoComplete="address-level2" placeholder="Nhập phường / xã" />
+                <Field label="Phường / xã, quận / huyện" name="district" value={shippingInfo.district} onChange={(value) => setShippingInfo((current) => ({ ...current, district: value }))} autoComplete="address-level2" placeholder="Nhập phường / xã, quận / huyện" />
               </div>
               <p className="pt-4 text-xs uppercase leading-5 tracking-[0.2em] text-silver">Phương thức thanh toán</p>
               <div className="space-y-3">
