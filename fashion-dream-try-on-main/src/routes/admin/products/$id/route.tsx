@@ -322,21 +322,25 @@ function ProductDetailPage() {
     setImageActionId(image.id); setMessage(""); setError("");
     try {
       const remaining = images.filter((item) => item.id !== image.id);
-      await deleteProductImage(image.id);
-      setImages(remaining);
       if (image.is_primary || product?.image === image.image_url) {
         const nextPrimary = remaining[0];
         if (nextPrimary?.id) {
           await setPrimaryProductImage(id, nextPrimary.id);
-          setImages(remaining.map((item) => ({ ...item, is_primary: item.id === nextPrimary.id })));
           await updateProduct(id, { image: nextPrimary.image_url });
+          setImages(remaining.map((item) => ({ ...item, is_primary: item.id === nextPrimary.id })));
           setProduct((current) => current ? { ...current, image: nextPrimary.image_url } : current);
         } else {
           await updateProduct(id, { image: null });
           setProduct((current) => current ? { ...current, image: null } : current);
         }
       }
-      setMessage("Đã xóa ảnh khỏi danh sách ảnh sản phẩm.");
+      const deletion = await deleteProductImage(image.id);
+      setImages(remaining);
+      setMessage(deletion.storageCleanup === "failed"
+        ? "Đã xóa ảnh khỏi thư viện, nhưng chưa xóa được file Storage. Có thể cần dọn file này thủ công."
+        : deletion.storageCleanup === "retained"
+          ? "Đã xóa bản ghi ảnh; file được giữ lại vì vẫn còn tham chiếu."
+          : "Đã xóa ảnh khỏi thư viện ảnh sản phẩm.");
     } catch (cause) {
       setError(cause instanceof Error ? cause.message : "Không thể xóa ảnh sản phẩm.");
       await load();
