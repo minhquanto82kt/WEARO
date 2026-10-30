@@ -279,3 +279,72 @@
 .account-field--placeholder span { display: block; height: 46px; }
 .account-field--utility { min-height: 66px; justify-content: flex-end; }
 .account-field--utility .account-link { align-self: flex-start; }
+
+
+/* Compact auth viewport: keep the sign-in/sign-up experience inside short screens. */
+@media (min-width: 561px) and (max-height: 900px) {
+  .account-content--auth {
+    min-height: calc(100svh - 132px);
+  }
+  .account-content--auth .account-shell {
+    min-height: 0;
+    padding-top: 12px;
+    padding-bottom: 12px;
+  }
+  .account-content--auth .account-main {
+    padding-top: 10px;
+    padding-bottom: 10px;
+  }
+  .account-content--auth .account-auth-simple {
+    min-height: 0;
+    padding: 22px 28px;
+  }
+  .account-content--auth .account-auth-heading {
+    margin-top: 14px;
+    margin-bottom: 14px;
+  }
+  .account-content--auth .account-switch {
+    margin-bottom: 14px;
+  }
+  .account-content--auth .account-form {
+    gap: 10px;
+  }
+  .account-content--auth .account-field--utility {
+    min-height: 42px;
+  }
+  .account-content--auth .account-auth-footnote {
+    margin-top: 12px;
+    padding-top: 10px;
+  }
+  .account-content--auth .account-bottom {
+    padding-top: 8px;
+  }
+}
+
+/* Prevent horizontal page drift; hide scrollbar chrome without disabling scrolling. */
+.account-page:has(.account-content--auth) {
+  max-width: 100%;
+  overflow-x: clip;
+  scrollbar-width: none;
+}
+.account-page:has(.account-content--auth)::-webkit-scrollbar {
+  display: none;
+}
+.account-content--auth,
+.account-content--auth .account-shell,
+.account-content--auth .account-main,
+.account-content--auth .account-auth-simple {
+  min-width: 0;
+  max-width: 100%;
+}
+.account-content--auth .account-auth-simple {
+  overflow-wrap: anywhere;
+}
+@media (max-width: 560px) {
+  .account-content--auth {
+    overflow-x: clip;
+  }
+  .account-content--auth .account-shell {
+    width: calc(100% - 28px);
+  }
+}
