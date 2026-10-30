@@ -8,6 +8,7 @@ import { useCart } from "@/lib/cart";
 import { createOrder, listMyOrders } from "@/lib/order.functions";
 import { cancelCustomerOrder } from "@/lib/order-cancel.functions";
 import { getCustomerSession } from "@/lib/auth";
+import { listCustomerAddresses, type CustomerAddress } from "@/lib/customer-addresses";
 import { isMockUserMode } from "@/lib/mock-user";
 import { getInvoiceData, type InvoiceData } from "@/lib/invoice.functions";
 import { createVietQrUrl } from "@/lib/vietqr";
@@ -65,6 +66,8 @@ function CheckoutPage() {
   const [paymentInfo, setPaymentInfo] = useState<PaymentInfo | null>(null);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [shippingInfo, setShippingInfo] = useState({ name: "", phone: "", email: "", address: "", city: "", district: "" });
+  const [savedAddresses, setSavedAddresses] = useState<CustomerAddress[]>([]);
+  const [addressBookError, setAddressBookError] = useState("");
   const [copyMessage, setCopyMessage] = useState<string | null>(null);
   const checkoutKeyRef = useRef<string | null>(null);
 
@@ -104,6 +107,36 @@ function CheckoutPage() {
     void loadSavedShippingInfo();
     return () => { active = false; };
   }, []);
+
+  useEffect(() => {
+    let active = true;
+    async function loadSavedAddresses() {
+      if (isMockUserMode()) return;
+      const session = getCustomerSession();
+      const userId = session?.user?.id;
+      if (!userId || !session?.access_token) return;
+      try {
+        const rows = await listCustomerAddresses(userId);
+        if (active) setSavedAddresses(rows);
+      } catch (error) {
+        if (active) setAddressBookError(error instanceof Error ? error.message : "Không thể tải sổ địa chỉ.");
+      }
+    }
+    void loadSavedAddresses();
+    return () => { active = false; };
+  }, []);
+
+  const applySavedAddress = (address: CustomerAddress) => {
+    setShippingInfo(current => ({
+      ...current,
+      name: address.recipient_name,
+      phone: address.phone,
+      address: address.address_line,
+      city: address.city,
+      district: [address.ward, address.district].filter(Boolean).join(", "),
+    }));
+    setAddressBookError("");
+  };
 
   const shipping = subtotal === 0 || subtotal >= 1000000 ? 0 : 30000;
 
@@ -424,6 +457,20 @@ function CheckoutPage() {
             }}
           >
             <div className="min-w-0 space-y-4">
+              {savedAddresses.length > 0 && (
+                <div className="rounded-xl border border-border bg-card/60 p-4">
+                  <label htmlFor="checkout-saved-address" className="mb-2 block text-xs font-semibold uppercase tracking-[0.12em] text-beige">Địa chỉ đã lưu</label>
+                  <select id="checkout-saved-address" className="min-h-11 w-full rounded-lg border border-border bg-background px-3 text-sm" defaultValue="" onChange={(event) => {
+                    const selected = savedAddresses.find(address => address.id === event.target.value);
+                    if (selected) applySavedAddress(selected);
+                  }}>
+                    <option value="">Chọn địa chỉ giao hàng</option>
+                    {savedAddresses.map(address => <option key={address.id} value={address.id}>{address.recipient_name} · {address.address_line}, {address.city}{address.is_default ? " (Mặc định)" : ""}</option>)}
+                  </select>
+                  {addressBookError && <p className="mt-2 text-xs text-red-600" role="alert">{addressBookError}</p>}
+                  <p className="mt-2 text-xs text-silver">Bạn vẫn có thể chỉnh sửa thông tin giao hàng bên dưới cho đơn hàng này.</p>
+                </div>
+              )}
               <Field label="Họ và tên" name="name" value={shippingInfo.name} onChange={(value) => setShippingInfo((current) => ({ ...current, name: value }))} autoComplete="name" placeholder="Nhập họ và tên người nhận" />
               <Field label="Số điện thoại" name="phone" value={shippingInfo.phone} onChange={(value) => setShippingInfo((current) => ({ ...current, phone: value }))} type="tel" autoComplete="tel" inputMode="tel" placeholder="Ví dụ: 09xxxxxxxx" />
               <Field label="Email (không bắt buộc)" name="email" value={shippingInfo.email} onChange={(value) => setShippingInfo((current) => ({ ...current, email: value }))} type="email" autoComplete="email" inputMode="email" placeholder="you@example.com" />
