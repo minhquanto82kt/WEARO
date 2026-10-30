@@ -115,6 +115,10 @@
 .account-field input::placeholder { color: #94a3b8; }
 .account-field input:focus-visible { border-color: #2563eb; box-shadow: 0 0 0 3px rgba(37, 99, 235, .12); }
 .account-field input:disabled { opacity: .65; cursor: wait; }
+.account-field input[aria-invalid="true"] {
+  border-color: #dc2626;
+  box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.12);
+}
 .account-password { position: relative; }
 .account-password input { padding-right: 46px; }
 .account-eye { position: absolute; top: 3px; right: 3px; display: grid; place-items: center; width: 40px; height: 40px; border: 0; border-radius: 7px; color: #64748b; background: transparent; cursor: pointer; }
@@ -122,6 +126,12 @@
 .account-feedback { margin: 0; font: 500 12px/1.6 "Plus Jakarta Sans", "Be Vietnam Pro", Arial, sans-serif; overflow-wrap: anywhere; }
 .account-feedback--error { color: #b91c1c; }
 .account-feedback--success { color: #166534; }
+.account-password-hint,
+.account-field-error {
+  margin: 4px 0 0;
+  color: #b91c1c;
+  font: 500 12px/1.45 "Plus Jakarta Sans", "Be Vietnam Pro", Arial, sans-serif;
+}
 .account-submit { width: 100%; min-height: 46px; padding: 12px 16px; border: 1px solid #102a43; border-radius: 9px; color: #fff; background: #102a43; cursor: pointer; font: 700 13px/1.3 "Plus Jakarta Sans", "Be Vietnam Pro", Arial, sans-serif; transition: background .16s ease, transform .16s ease; }
 .account-submit:hover:not(:disabled) { transform: translateY(-1px); background: #173f5f; }
 .account-submit:disabled { opacity: .6; cursor: wait; }
@@ -214,19 +224,14 @@
   .account-page *, .account-page *::before, .account-page *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; }
 }
 
-/* Authenticated dashboard-only refinements. Keep all /account styles beside the route. */
-.account-page:has(.account-dashboard) .account-content {
-  overflow: hidden;
-}
-
-/* The account page uses its CSS gradient, not the legacy image/overlay layers. */
+/* Authenticated dashboard-only refinements. */
+.account-page:has(.account-dashboard) .account-content { overflow: hidden; }
 .account-page:has(.account-dashboard) .account-content::before,
 .account-page:has(.account-dashboard) .account-content::after {
   display: none !important;
   content: none !important;
   background: none !important;
 }
-
 .account-page:has(.account-dashboard) .account-welcome h1 {
   font-family: "Be Vietnam Pro", "Space Grotesk", Arial, sans-serif;
   font-weight: 900;
@@ -234,50 +239,106 @@
   line-height: 0.94;
 }
 
-.account-page:has(.account-dashboard) .account-profile-card h3 {
-  font-size: 12px;
-  line-height: 1.35;
-  letter-spacing: 0.14em;
-}
-
-.account-page:has(.account-dashboard) .account-profile-row {
-  font-size: 13px;
-  line-height: 1.5;
-}
-
-.account-page:has(.account-dashboard) .account-note {
-  font-size: 14px;
-  line-height: 1.8;
-}
-
-@media (max-width: 560px) {
-  .account-page:has(.account-dashboard) .account-welcome h1 {
-    font-size: clamp(38px, 11vw, 60px);
-  }
-}
-
-
-
-/* Login and registration share the same field rhythm without forcing excess card height. */
 .account-auth-simple { min-height: 0; }
+
+/* Mosaic — stronger presence on auth card */
 .account-auth-mosaic {
   position: absolute;
   z-index: 0;
-  top: 18px;
-  right: 18px;
-  width: 76px;
-  opacity: .22;
-  border-radius: 10px;
+  top: 14px;
+  right: 14px;
+  width: 88px;
+  opacity: 0.72;
+  border-radius: 12px;
+  overflow: hidden;
   pointer-events: none;
+  box-shadow: 0 4px 14px rgba(84, 114, 140, 0.12);
 }
+@media (max-width: 560px) {
+  .account-auth-mosaic {
+    width: 64px;
+    top: 10px;
+    right: 10px;
+    opacity: 0.58;
+  }
+}
+
 .account-auth-brand,
 .account-auth-heading,
 .account-switch,
 .account-form,
 .account-auth-footnote { position: relative; z-index: 1; }
 
+/* --- Card flip: Đăng nhập ↔ Đăng ký --- */
+.account-auth-flip {
+  perspective: 1400px;
+  width: 100%;
+  max-width: 440px;
+  margin: 0 auto;
+}
+.account-content--auth .account-auth-flip { width: 100%; }
 
-/* Fit the auth screen to the available viewport below the shared site navigation. */
+.account-auth-simple {
+  transform-style: preserve-3d;
+  backface-visibility: hidden;
+  transition:
+    transform 0.42s cubic-bezier(0.4, 0, 0.2, 1),
+    opacity 0.28s ease;
+  will-change: transform, opacity;
+}
+
+.account-auth-simple.is-flip-out {
+  transform: rotateY(92deg) scale(0.98);
+  opacity: 0.35;
+}
+
+.account-auth-simple.is-flip-in {
+  animation: account-auth-flip-in 0.42s cubic-bezier(0.4, 0, 0.2, 1) both;
+}
+
+@keyframes account-auth-flip-in {
+  from {
+    transform: rotateY(-92deg) scale(0.98);
+    opacity: 0.35;
+  }
+  to {
+    transform: rotateY(0deg) scale(1);
+    opacity: 1;
+  }
+}
+
+.account-auth-simple.is-register.is-flip-out {
+  transform: rotateY(-92deg) scale(0.98);
+}
+
+.account-auth-simple.is-register.is-flip-in {
+  animation-name: account-auth-flip-in-reverse;
+}
+
+@keyframes account-auth-flip-in-reverse {
+  from {
+    transform: rotateY(92deg) scale(0.98);
+    opacity: 0.35;
+  }
+  to {
+    transform: rotateY(0deg) scale(1);
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .account-auth-simple {
+    transition: none;
+  }
+  .account-auth-simple.is-flip-out,
+  .account-auth-simple.is-flip-in {
+    transform: none;
+    opacity: 1;
+    animation: none;
+  }
+}
+
+/* Viewport fit for auth card */
 @media (min-width: 561px) {
   .account-content--auth {
     height: calc(100dvh - 96px);
@@ -302,372 +363,9 @@
     margin-top: 14px;
     margin-bottom: 14px;
   }
-  .account-content--auth .account-switch { margin-bottom: 14px; }
-  .account-content--auth .account-form { gap: 10px; }
-  .account-content--auth .account-auth-footnote {
-    margin-top: 12px;
-    padding-top: 10px;
-  }
-  .account-content--auth .account-bottom { padding-top: 8px; }
-}
-/* Prevent horizontal page drift; hide scrollbar chrome without disabling scrolling. */
-.account-page:has(.account-content--auth) {
-  max-width: 100%;
-  overflow-x: clip;
-  scrollbar-width: none;
-}
-.account-page:has(.account-content--auth)::-webkit-scrollbar {
-  display: none;
-}
-.account-content--auth,
-.account-content--auth .account-shell,
-.account-content--auth .account-main,
-.account-content--auth .account-auth-simple {
-  min-width: 0;
-  max-width: 100%;
-}
-.account-content--auth .account-auth-simple {
-  overflow-wrap: anywhere;
-}
-@media (max-width: 560px) {
-  .account-content--auth {
-    overflow-x: clip;
-  }
-  .account-content--auth .account-shell {
-    width: calc(100% - 28px);
-  }
-}
-
-
-/* Two-step account registration roadmap */
-.account-register-roadmap {
-  display: grid;
-  grid-template-columns: auto minmax(32px, 1fr) auto;
-  align-items: center;
-  gap: 12px;
-  margin: 0 0 20px;
-}
-.account-register-roadmap button {
-  display: inline-grid;
-  grid-template-columns: 32px auto;
-  align-items: center;
-  gap: 8px;
-  padding: 0;
-  border: 0;
-  color: #64748b;
-  background: transparent;
-  text-align: left;
-  cursor: pointer;
-}
-.account-register-roadmap button span {
-  display: grid;
-  place-items: center;
-  width: 32px;
-  height: 32px;
-  border: 1px solid #cbd5e1;
-  border-radius: 50%;
-  color: #64748b;
-  background: #fff;
-  font: 700 13px/1 "Plus Jakarta Sans", Arial, sans-serif;
-  transition: color .18s ease, background .18s ease, border-color .18s ease, box-shadow .18s ease;
-}
-.account-register-roadmap button small {
-  color: #64748b;
-  font: 600 11px/1.3 "Plus Jakarta Sans", Arial, sans-serif;
-  white-space: nowrap;
-}
-.account-register-roadmap button.is-active span,
-.account-register-roadmap button.is-complete span {
-  border-color: #456f86;
-  color: #fff;
-  background: #456f86;
-  box-shadow: 0 0 0 4px rgba(69, 111, 134, .12);
-}
-.account-register-roadmap button.is-active small,
-.account-register-roadmap button.is-complete small { color: #24485e; }
-.account-register-roadmap > i {
-  height: 2px;
-  border-radius: 99px;
-  background: #dbe4e9;
-  transition: background .18s ease;
-}
-.account-register-roadmap > i.is-complete { background: linear-gradient(90deg, #456f86, #f2ad94); }
-.account-register-roadmap button:disabled { cursor: default; }
-.account-register-actions {
-  display: grid;
-  grid-template-columns: auto minmax(0, 1fr);
-  align-items: center;
-  gap: 12px;
-}
-.account-register-actions .account-submit { width: 100%; }
-.account-register-back {
-  min-height: 44px;
-  padding: 0 8px;
-  border: 0;
-  color: #456f86;
-  background: transparent;
-  cursor: pointer;
-  font: 700 12px/1.3 "Plus Jakarta Sans", Arial, sans-serif;
-}
-.account-register-back:hover { color: #102a43; text-decoration: underline; text-underline-offset: 3px; }
-@media (max-width: 380px) {
-  .account-register-roadmap { gap: 7px; }
-  .account-register-roadmap button { grid-template-columns: 30px auto; gap: 6px; }
-  .account-register-roadmap button span { width: 30px; height: 30px; }
-  .account-register-roadmap button small { font-size: 10px; }
-}
-
-
-/* Compact two-step signup so both registration panels fit short desktop viewports. */
-@media (min-width: 561px) and (max-height: 900px) {
-  .account-content--auth .account-main {
-    padding-top: 2px;
-    padding-bottom: 2px;
-  }
-  .account-content--auth .account-auth-simple {
-    padding: 14px 24px;
-  }
-  .account-content--auth .account-brand-logo {
-    width: 104px;
-    height: 36px;
-  }
-  .account-content--auth .account-auth-heading {
-    margin: 8px 0 10px;
-  }
-  .account-content--auth .account-auth-heading h1 {
-    font-size: 24px;
-    line-height: 1.15;
-  }
-  .account-content--auth .account-auth-heading p {
-    margin-top: 4px;
-    font-size: 12px;
-    line-height: 1.45;
-  }
-  .account-content--auth .account-switch {
-    margin-bottom: 10px;
-  }
-  .account-content--auth .account-switch button {
-    min-height: 34px;
-  }
-  .account-content--auth .account-register-roadmap {
-    gap: 8px;
-    margin-bottom: 10px;
-  }
-  .account-content--auth .account-register-roadmap button {
-    grid-template-columns: 28px auto;
-    gap: 6px;
-  }
-  .account-content--auth .account-register-roadmap button span {
-    width: 28px;
-    height: 28px;
-  }
-  .account-content--auth .account-register-roadmap button small {
-    font-size: 10px;
-  }
-  .account-content--auth .account-form--register {
-    gap: 8px;
-  }
-  .account-content--auth .account-form--register .account-field {
-    gap: 4px;
-  }
-  .account-content--auth .account-form--register .account-field input {
-    height: 40px;
-  }
-  .account-content--auth .account-form--register .account-eye {
-    width: 36px;
-    height: 36px;
-  }
-  .account-content--auth .account-form--register .account-submit,
-  .account-content--auth .account-register-actions .account-register-back {
-    min-height: 40px;
-    padding-top: 8px;
-    padding-bottom: 8px;
-  }
-  .account-content--auth .account-auth-footnote {
-    margin-top: 8px;
-    padding-top: 8px;
-  }
-  .account-content--auth .account-bottom {
-    padding-top: 2px;
-    font-size: 8px;
-  }
-}
-@media (min-width: 561px) and (max-height: 740px) {
-  .account-content--auth .account-auth-simple {
-    padding: 10px 22px;
-  }
-  .account-content--auth .account-auth-heading {
-    margin: 6px 0 8px;
-  }
-  .account-content--auth .account-auth-heading h1 {
-    font-size: 22px;
-  }
-  .account-content--auth .account-switch {
-    margin-bottom: 8px;
-  }
-  .account-content--auth .account-register-roadmap {
-    margin-bottom: 8px;
-  }
-  .account-content--auth .account-form--register {
-    gap: 6px;
-  }
-  .account-content--auth .account-form--register .account-field input {
-    height: 38px;
-  }
-  .account-content--auth .account-auth-footnote {
-    margin-top: 6px;
-    padding-top: 6px;
-  }
-}
-
-
-/* Final auth refinement: remove ghost spacing, align actions and keep controls accessible. */
-.account-content--auth .account-auth-simple {
-  display: flex;
-  flex-direction: column;
-  min-height: 0;
-}
-.account-content--auth .account-field__row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-}
-.account-content--auth .account-field__row .account-link {
-  flex: 0 0 auto;
-  min-height: 44px;
-  display: inline-flex;
-  align-items: center;
-  font-size: 12px;
-}
-.account-content--auth .account-submit {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  min-height: 44px;
-}
-.account-content--auth .account-form--register .account-submit,
-.account-content--auth .account-register-actions .account-register-back {
-  min-height: 44px;
-}
-.account-content--auth .account-switch button {
-  min-height: 44px;
-}
-.account-content--auth .account-register-roadmap button {
-  min-height: 44px;
-  align-items: center;
-}
-.account-content--auth .account-register-roadmap button span {
-  flex: none;
-}
-.account-content--auth .account-password-hint {
-  display: block;
-  margin-top: 2px;
-  color: #a12b2b;
-  font: 600 12px/1.4 "Plus Jakarta Sans", "Be Vietnam Pro", Arial, sans-serif;
-}
-.account-content--auth .account-field input[aria-invalid="true"] {
-  border-color: #b42318;
-  box-shadow: 0 0 0 2px rgba(180, 35, 24, .1);
-}
-.account-content--auth .account-field input::placeholder {
-  color: #64748b;
-  opacity: 1;
-}
-.account-content--auth .account-bottom {
-  color: #64748b;
-  font-size: 11px;
-  letter-spacing: .08em;
-}
-.account-content--auth .account-auth-footnote button {
-  color: var(--wearo-blue-dark, #54728c);
-}
-.account-content--auth .account-register-back {
-  color: var(--wearo-blue-dark, #54728c);
-}
-.account-content--auth .account-auth-heading h1 {
-  overflow-wrap: anywhere;
-}
-.account-content--auth .account-auth-footnote {
-  line-height: 1.55;
-}
-@media (min-width: 561px) {
-  .account-content--auth .account-main {
-    align-items: center;
-  }
-  .account-content--auth .account-auth-simple {
-    width: min(100%, 440px);
-  }
-}
-@media (min-width: 561px) and (max-height: 900px) {
-  .account-content--auth .account-form--register .account-field input {
-    height: 44px;
-  }
-  .account-content--auth .account-form--register .account-eye {
-    width: 44px;
-    height: 44px;
-  }
-  .account-content--auth .account-switch button {
-    min-height: 44px;
-  }
-  .account-content--auth .account-register-actions .account-register-back {
-    min-height: 44px;
-  }
-}
-@media (min-width: 561px) and (max-height: 740px) {
-  .account-content--auth .account-auth-simple {
-    padding-top: 8px;
-    padding-bottom: 8px;
-  }
-  .account-content--auth .account-form--register {
-    gap: 6px;
-  }
-  .account-content--auth .account-form--register .account-field input {
-    height: 44px;
-  }
 }
 @media (max-width: 560px) {
   .account-content--auth .account-auth-simple {
     padding: 20px 18px;
-  }
-  .account-content--auth .account-switch button {
-    min-height: 44px;
-  }
-  .account-content--auth .account-form {
-    gap: 12px;
-  }
-  .account-content--auth .account-field input {
-    height: 46px;
-  }
-  .account-content--auth .account-eye {
-    width: 44px;
-    height: 44px;
-    top: 1px;
-    right: 1px;
-  }
-  .account-content--auth .account-register-roadmap {
-    gap: 8px;
-    margin-bottom: 12px;
-  }
-  .account-content--auth .account-register-roadmap button {
-    min-height: 44px;
-  }
-}
-@media (max-width: 390px) {
-  .account-content--auth .account-auth-simple {
-    padding-right: 14px;
-    padding-left: 14px;
-  }
-  .account-content--auth .account-register-roadmap {
-    grid-template-columns: auto minmax(20px, 1fr) auto;
-    gap: 6px;
-  }
-  .account-content--auth .account-register-roadmap button {
-    grid-template-columns: 30px auto;
-    gap: 5px;
-  }
-  .account-content--auth .account-register-roadmap button small {
-    font-size: 10px;
   }
 }
