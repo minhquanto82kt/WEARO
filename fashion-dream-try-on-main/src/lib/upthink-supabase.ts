@@ -109,7 +109,7 @@ export async function updateProductImage(id: string, payload: Partial<Pick<Produ
   return updateAdminProductImage({ data: { accessToken: requireAccessToken(), id, altText: payload.alt_text, sortOrder: payload.sort_order, isPrimary: payload.is_primary } });
 }
 export async function deleteProductImage(id: string) {
-  await deleteAdminProductImage({ data: { accessToken: requireAccessToken(), id } });
+  return deleteAdminProductImage({ data: { accessToken: requireAccessToken(), id } });
 }
 export async function setPrimaryProductImage(productId: string, imageId: string) {
   return setPrimaryAdminProductImage({ data: { accessToken: requireAccessToken(), productId, imageId } });
