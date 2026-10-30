@@ -81,6 +81,7 @@ function AccountPage() {
   const [profileSaving, setProfileSaving] = useState(false);
   const [profileError, setProfileError] = useState("");
   const [profileMessage, setProfileMessage] = useState("");
+  const [activeProfileTab, setActiveProfileTab] = useState<"overview" | "account" | "saved">("overview");
   const cart = useCart();
 
   const loadUser = async () => {
@@ -297,8 +298,13 @@ function AccountPage() {
       </div>
       <div className="account-shell"><section className="account-main">
       {user && mode !== "reset" ? <div className="account-dashboard">
-        <div className="account-welcome"><div><div className="account-kicker">WEARO / PERSONAL FASHION SYSTEM</div><h1>CHÀO MỪNG <span>{user.user_metadata?.full_name || user.user_metadata?.name || user.email?.split("@")[0] || "BẠN"}</span></h1></div><div><p>Không gian cá nhân của bạn đã sẵn sàng. Quản lý tài khoản, khám phá sản phẩm và tiếp tục hành trình AI TRY-ON theo phong cách riêng.</p><button className="account-logout" type="button" onClick={handleLogout} disabled={loading}><LogOut size={13}/> Đăng xuất</button></div></div>
-        <div className="account-hub-grid">
+        <div className="account-welcome account-welcome--compact"><div className="account-welcome__identity"><div className="account-kicker">WEARO / PERSONAL FASHION SYSTEM</div><h1>CHÀO MỪNG <span>{user.user_metadata?.full_name || user.user_metadata?.name || user.email?.split("@")[0] || "BẠN"}</span></h1><p className="account-welcome__email">{user.email || "Tài khoản WEARO"}</p></div><button className="account-logout" type="button" onClick={handleLogout} disabled={loading}><LogOut size={13}/> Đăng xuất</button></div>
+        <nav className="account-profile-tabs" role="tablist" aria-label="Khu vực tài khoản">
+          <button type="button" role="tab" id="profile-tab-overview" aria-selected={activeProfileTab === "overview"} aria-controls="profile-panel-overview" className={activeProfileTab === "overview" ? "is-active" : ""} onClick={() => setActiveProfileTab("overview")}><Package size={16}/> Tổng quan</button>
+          <button type="button" role="tab" id="profile-tab-account" aria-selected={activeProfileTab === "account"} aria-controls="profile-panel-account" className={activeProfileTab === "account" ? "is-active" : ""} onClick={() => setActiveProfileTab("account")}><UserRound size={16}/> Tài khoản & địa chỉ</button>
+          <button type="button" role="tab" id="profile-tab-saved" aria-selected={activeProfileTab === "saved"} aria-controls="profile-panel-saved" className={activeProfileTab === "saved" ? "is-active" : ""} onClick={() => setActiveProfileTab("saved")}><Heart size={16}/> Giỏ hàng & đã lưu</button>
+        </nav>
+        {activeProfileTab === "overview" && <section id="profile-panel-overview" className="account-profile-panel" role="tabpanel" aria-labelledby="profile-tab-overview"><div className="account-hub-grid">
           <Link className="account-hub-card account-hub-card--tryon" to="/ai" aria-label="Mở AI Studio – Thử outfit lên chính bạn">
             <span className="account-hub-eyebrow">Tính năng chủ lực · WEARO AI</span>
             <div>
@@ -379,6 +385,11 @@ function AccountPage() {
             <p className="account-hub-copy account-hub-copy--style">Gợi ý outfit theo phong cách và dịp bạn chọn trong AI Studio.</p>
             <span className="account-hub-arrow">Nhận gợi ý phối đồ <ArrowRight size={17} aria-hidden="true" /></span>
           </Link>
+          </div></section>}
+        {activeProfileTab === "saved" && <section id="profile-panel-saved" className="account-profile-panel" role="tabpanel" aria-labelledby="profile-tab-saved"><div className="account-hub-grid">
+          <Link className="account-hub-card account-hub-card--small" to="/account/wishlist"<AccountAddressBook userId={user.id} preview={user.id === "preview-account-user"} /></div>
+          </div></section>}
+        {activeProfileTab === "account" && <section id="profile-panel-account" className="account-profile-panel" role="tabpanel" aria-labelledby="profile-tab-account"><div className="account-hub-grid">
           <div className="account-hub-card account-hub-card--addresses"><AccountAddressBook userId={user.id} preview={user.id === "preview-account-user"} /></div>
           <div className="account-hub-card account-hub-card--profile">
             <div className="account-hub-topline">
@@ -437,7 +448,7 @@ function AccountPage() {
               Đặt lại mật khẩu qua email <ArrowRight size={17} aria-hidden="true" />
             </button>
           </div>
-        </div>
+        </div></section>}
       </div> : <div className="account-auth-flip">
         <div className="account-auth-simple">
         <ShapeMosaic className="account-auth-mosaic" />
