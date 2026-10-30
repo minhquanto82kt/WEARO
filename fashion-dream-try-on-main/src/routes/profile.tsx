@@ -10,6 +10,7 @@ import { useCart } from "@/lib/cart";
 import { listWishlistProductIds } from "@/lib/wishlist";
 import { listMyOrders, type CustomerOrder } from "@/lib/order.functions";
 import { formatVnd } from "@/data/products";
+import { getCustomerProfile, updateCustomerProfile, type CustomerProfile } from "@/lib/customer-profile";
 import "./user-profile.scss";
 
 export const Route = createFileRoute("/profile")({ component: AccountPage });
@@ -72,6 +73,14 @@ function AccountPage() {
   const [orderCount, setOrderCount] = useState(0);
   const [accountDataLoading, setAccountDataLoading] = useState(false);
   const [copiedAccountId, setCopiedAccountId] = useState(false);
+  const [customerProfile, setCustomerProfile] = useState<CustomerProfile | null>(null);
+  const [profileName, setProfileName] = useState("");
+  const [profilePhone, setProfilePhone] = useState("");
+  const [profileBirthDate, setProfileBirthDate] = useState("");
+  const [profileLoading, setProfileLoading] = useState(false);
+  const [profileSaving, setProfileSaving] = useState(false);
+  const [profileError, setProfileError] = useState("");
+  const [profileMessage, setProfileMessage] = useState("");
   const cart = useCart();
 
   const loadUser = async () => {
@@ -206,6 +215,61 @@ function AccountPage() {
     return () => { active = false; };
   }, [user]);
 
+  useEffect(() => {
+    let active = true;
+    async function loadProfile() {
+      if (!user || user.id === "preview-account-user") {
+        setCustomerProfile(null);
+        setProfileName(user?.user_metadata?.full_name || user?.user_metadata?.name || "");
+        setProfilePhone("");
+        setProfileBirthDate("");
+        setProfileError("");
+        setProfileLoading(false);
+        return;
+      }
+      setProfileLoading(true);
+      setProfileError("");
+      try {
+        const profile = await getCustomerProfile(user.id);
+        if (!active) return;
+        setCustomerProfile(profile);
+        setProfileName(profile?.full_name || user.user_metadata?.full_name || user.user_metadata?.name || "");
+        setProfilePhone(profile?.phone || "");
+        setProfileBirthDate(profile?.birth_date || "");
+      } catch (loadError) {
+        if (active) setProfileError(loadError instanceof Error ? loadError.message : "Không thể tải hồ sơ.");
+      } finally {
+        if (active) setProfileLoading(false);
+      }
+    }
+    void loadProfile();
+    return () => { active = false; };
+  }, [user]);
+
+  const handleSaveProfile = async (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    if (!user || user.id === "preview-account-user") return;
+    setProfileSaving(true);
+    setProfileError("");
+    setProfileMessage("");
+    try {
+      const saved = await updateCustomerProfile(user.id, {
+        full_name: profileName,
+        phone: profilePhone,
+        birth_date: profileBirthDate || null,
+      });
+      setCustomerProfile(saved);
+      setProfileName(saved.full_name);
+      setProfilePhone(saved.phone || "");
+      setProfileBirthDate(saved.birth_date || "");
+      setProfileMessage("Đã lưu hồ sơ của bạn.");
+    } catch (saveError) {
+      setProfileError(saveError instanceof Error ? saveError.message : "Không thể lưu hồ sơ. Vui lòng thử lại.");
+    } finally {
+      setProfileSaving(false);
+    }
+  };
+
   const copyAccountId = async () => {
     try {
       await navigator.clipboard.writeText(user?.id ?? "");
@@ -324,13 +388,29 @@ function AccountPage() {
               <span className="account-hub-icon" aria-hidden="true"><UserRound size={20} /></span>
             </div>
             <div className="account-profile-row">
-              <span>Tên tài khoản</span>
-              <strong>{user.user_metadata?.full_name || user.user_metadata?.name || "Chưa cập nhật"}</strong>
-            </div>
-            <div className="account-profile-row">
               <span>Email</span>
               <strong>{user.email || "—"}</strong>
             </div>
+            {profileLoading ? <p className="account-profile-feedback" role="status">Đang tải hồ sơ…</p> : (
+              <form className="account-profile-form" onSubmit={handleSaveProfile}>
+                <label className="account-profile-field">
+                  <span>Họ và tên</span>
+                  <input value={profileName} onChange={(event) => setProfileName(event.target.value)} maxLength={120} autoComplete="name" required disabled={profileSaving || user.id === "preview-account-user"} />
+                </label>
+                <label className="account-profile-field">
+                  <span>Số điện thoại</span>
+                  <input type="tel" value={profilePhone} onChange={(event) => setProfilePhone(event.target.value)} maxLength={30} autoComplete="tel" placeholder="Nhập số điện thoại" disabled={profileSaving || user.id === "preview-account-user"} />
+                </label>
+                <label className="account-profile-field">
+                  <span>Ngày sinh</span>
+                  <input type="date" value={profileBirthDate} onChange={(event) => setProfileBirthDate(event.target.value)} max={new Date().toISOString().slice(0, 10)} disabled={profileSaving || user.id === "preview-account-user"} />
+                </label>
+                {profileError && <p className="account-profile-feedback account-profile-feedback--error" role="alert">{profileError}</p>}
+                {profileMessage && <p className="account-profile-feedback account-profile-feedback--success" role="status">{profileMessage}</p>}
+                {user.id === "preview-account-user" && <p className="account-profile-feedback">Preview chỉ xem giao diện, không lưu dữ liệu thật.</p>}
+                <button className="account-profile-save" type="submit" disabled={profileSaving || user.id === "preview-account-user"}>{profileSaving ? "Đang lưu…" : "Lưu hồ sơ"}</button>
+              </form>
+            )}
             <div className="account-profile-row">
               <span>Mã tài khoản</span>
               <div className="account-id-group">
