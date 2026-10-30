@@ -256,3 +256,26 @@
   }
 }
 
+
+
+/* Login and registration share the same field rhythm and card dimensions. */
+.account-auth-simple { min-height: 620px; }
+.account-auth-mosaic {
+  position: absolute;
+  z-index: 0;
+  top: 18px;
+  right: 18px;
+  width: 76px;
+  opacity: .22;
+  border-radius: 10px;
+  pointer-events: none;
+}
+.account-auth-brand,
+.account-auth-heading,
+.account-switch,
+.account-form,
+.account-auth-footnote { position: relative; z-index: 1; }
+.account-field--placeholder { visibility: hidden; }
+.account-field--placeholder span { display: block; height: 46px; }
+.account-field--utility { min-height: 66px; justify-content: flex-end; }
+.account-field--utility .account-link { align-self: flex-start; }
