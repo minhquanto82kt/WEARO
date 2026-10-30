@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { ArrowRight, Check, Copy, Eye, EyeOff, Heart, LogOut, Package, ShoppingBag, UserRound, WandSparkles } from "lucide-react";
 import { SiteNav } from "@/components/site-nav";
 import { SiteFooter } from "@/components/site-footer";
+import { ShapeMosaic } from "@/components/shape-mosaic";
 import { getCustomerSession, requestPasswordReset, signInCustomer, signOutCustomer, updateCustomerPassword } from "@/lib/auth";
 import { supabaseConfig } from "@/lib/upthink-supabase";
 import { useCart } from "@/lib/cart";
@@ -231,6 +232,7 @@ function AccountPage() {
           </div>
         </div>
       </div> : <div className="account-auth-simple">
+        <ShapeMosaic className="account-auth-mosaic" />
         <div className="account-auth-brand" aria-label="WEARO">
           <img className="account-brand-logo" src="/brand/OG-logo.webp" alt="WEARO" />
         </div>
@@ -240,19 +242,20 @@ function AccountPage() {
         </div>
         {mode === "login" || mode === "register" ? <div className="account-switch" role="tablist" aria-label="Chọn đăng nhập hoặc đăng ký"><button type="button" role="tab" aria-selected={mode === "login"} onClick={() => switchMode("login")}>Đăng nhập</button><button type="button" role="tab" aria-selected={mode === "register"} onClick={() => switchMode("register")}>Đăng ký</button></div> : null}
         <form className="account-form" onSubmit={handleSubmit}>
-          {mode === "register" && <div className="account-field"><label htmlFor="account-name">Họ và tên</label><input id="account-name" value={fullName} onChange={e => setFullName(e.target.value)} placeholder="Nhập họ và tên" autoComplete="name" disabled={loading} required /></div>}
+          {(mode === "register" || mode === "login") && (mode === "register" ? <div className="account-field"><label htmlFor="account-name">Họ và tên</label><input id="account-name" value={fullName} onChange={e => setFullName(e.target.value)} placeholder="Nhập họ và tên" autoComplete="name" disabled={loading} required /></div> : <div className="account-field account-field--placeholder" aria-hidden="true"><label>Họ và tên</label><span /></div>)}
           {mode !== "reset" && <div className="account-field"><label htmlFor="account-email">Email</label><input id="account-email" type="email" value={email} onChange={e => setEmail(e.target.value)} placeholder="name@example.com" autoComplete="email" disabled={loading} required /></div>}
           {mode !== "recover" && <div className="account-field"><label htmlFor="account-password">{mode === "reset" ? "Mật khẩu mới" : "Mật khẩu"}</label><div className="account-password"><input id="account-password" type={showPassword ? "text" : "password"} value={password} onChange={e => setPassword(e.target.value)} placeholder="Tối thiểu 6 ký tự" autoComplete={mode === "login" ? "current-password" : "new-password"} disabled={loading} required minLength={6} /><button className="account-eye" type="button" onClick={() => setShowPassword(v => !v)} aria-label={showPassword ? "Ẩn mật khẩu" : "Hiện mật khẩu"} disabled={loading}>{showPassword ? <EyeOff size={17} /> : <Eye size={17} />}</button></div></div>}
           {(mode === "register" || mode === "reset") && <div className="account-field"><label htmlFor="account-confirm-password">Xác nhận mật khẩu</label><div className="account-password"><input id="account-confirm-password" type={showConfirmPassword ? "text" : "password"} value={confirmPassword} onChange={e => setConfirmPassword(e.target.value)} placeholder="Nhập lại mật khẩu" autoComplete="new-password" disabled={loading} required minLength={6} /><button className="account-eye" type="button" onClick={() => setShowConfirmPassword(v => !v)} aria-label={showConfirmPassword ? "Ẩn mật khẩu xác nhận" : "Hiện mật khẩu xác nhận"} disabled={loading}>{showConfirmPassword ? <EyeOff size={17} /> : <Eye size={17} />}</button></div></div>}
           {error && <p className="account-feedback account-feedback--error" role="alert">{error}</p>}
           {message && <p className="account-feedback account-feedback--success" role="status">{message}</p>}
-          {mode === "login" && <button className="account-link" type="button" onClick={() => switchMode("recover")}>Quên mật khẩu?</button>}
+          {mode === "login" && <div className="account-field account-field--utility"><button className="account-link" type="button" onClick={() => switchMode("recover")}>Quên mật khẩu?</button></div>}
+          {mode === "login" && <div className="account-field account-field--placeholder" aria-hidden="true"><label>Xác nhận mật khẩu</label><span /></div>}
           {mode === "register" && requiresEmailConfirmation && message && !user && <button className="account-resend" type="button" onClick={handleResend} disabled={resending}>{resending ? "Đang gửi…" : "Gửi lại email xác nhận"}</button>}
           <button className="account-submit" type="submit" disabled={loading}>{loading ? "Đang xử lý…" : mode === "login" ? "Đăng nhập" : mode === "register" ? "Tạo tài khoản" : mode === "recover" ? "Gửi liên kết khôi phục" : "Cập nhật mật khẩu"}</button>
           {(mode === "recover" || mode === "reset") && <button className="account-link account-back" type="button" onClick={() => { switchMode("login"); if (mode === "reset") clearAccountQuery(); }}>← Quay lại đăng nhập</button>}
         </form>
         {(mode === "login" || mode === "register") && <p className="account-auth-footnote">{mode === "login" ? "Chưa có tài khoản?" : "Đã có tài khoản?"} <button type="button" onClick={() => switchMode(mode === "login" ? "register" : "login")}>{mode === "login" ? "Đăng ký ngay" : "Đăng nhập"}</button></p>}
       </div>}
-    </section><div className="account-bottom"><b>●</b> SYSTEM ONLINE / CUSTOMER ACCOUNT / WEARO 2026</div></div></main><SiteFooter />
+    </section><div className="account-bottom"><b>●</b> SYSTEM ONLINE / CUSTOMER ACCOUNT / WEARO 2026</div></div></main>{user ? <SiteFooter /> : null}
   </div>;
 }
