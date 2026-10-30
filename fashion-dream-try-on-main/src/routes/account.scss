@@ -124,21 +124,6 @@
 .account-field { display: flex; flex-direction: column; gap: 7px; }
 .account-field label { color: #334155; font: 700 12px/1.4 "Plus Jakarta Sans", "Be Vietnam Pro", Arial, sans-serif; }
 
-/* Label row: Mật khẩu + Quên mật khẩu? */
-.account-field__row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  width: 100%;
-}
-.account-field__row label { margin: 0; }
-.account-field__row .account-link {
-  flex: none;
-  margin: 0;
-  white-space: nowrap;
-}
-
 .account-field input {
   width: 100%;
   min-width: 0;
@@ -190,6 +175,11 @@
 .account-submit:disabled { opacity: .6; cursor: wait; }
 .account-link, .account-resend { align-self: flex-start; padding: 0; border: 0; color: #1d4ed8; background: transparent; cursor: pointer; text-align: left; font: 600 12px/1.5 "Plus Jakarta Sans", "Be Vietnam Pro", Arial, sans-serif; }
 .account-link:hover, .account-resend:hover { text-decoration: underline; text-underline-offset: 3px; }
+.account-forgot {
+  align-self: flex-end;
+  margin-top: -2px;
+  font-size: 12px;
+}
 .account-back { margin-top: 0; }
 .account-auth-footnote { margin: 22px 0 0; padding-top: 18px; border-top: 1px solid #e2e8f0; color: #64748b; text-align: center; font: 400 12px/1.6 "Plus Jakarta Sans", "Be Vietnam Pro", Arial, sans-serif; }
 .account-auth-footnote button { padding: 0; border: 0; color: #1d4ed8; background: transparent; cursor: pointer; font: 700 12px/1.6 "Plus Jakarta Sans", "Be Vietnam Pro", Arial, sans-serif; }
@@ -412,7 +402,6 @@
     overflow: auto;
   }
 
-  /* Tighter card — no forced min-height, less vertical chrome */
   .account-auth-simple {
     min-height: 0;
     padding: 16px 14px 14px;
@@ -467,7 +456,6 @@
     opacity: 0.48;
   }
 
-  /* SYSTEM ONLINE: one line, no wrap */
   .account-content--auth .account-bottom {
     padding-top: 10px;
     font-size: 8px;
