@@ -210,14 +210,12 @@ function AccountPage() {
   return <div className="account-page">
     <SiteNav />
     <main className={`account-content ${user && mode !== "reset" ? "account-content--hub" : "account-content--auth"}`}>
-      {!(user && mode !== "reset") && (
-        <div className="account-auth-bg" aria-hidden="true">
+      <div className={`account-auth-bg ${user && mode !== "reset" ? "account-hub-bg" : ""}`} aria-hidden="true">
           <ShapeMosaic className="account-bg-mosaic account-bg-mosaic--tl" />
           <ShapeMosaic className="account-bg-mosaic account-bg-mosaic--tr" />
           <ShapeMosaic className="account-bg-mosaic account-bg-mosaic--bl" />
           <ShapeMosaic className="account-bg-mosaic account-bg-mosaic--br" />
-        </div>
-      )}
+      </div>
       <div className="account-shell"><section className="account-main">
       {user && mode !== "reset" ? <div className="account-dashboard">
         <div className="account-welcome"><div><div className="account-kicker">WEARO / PERSONAL FASHION SYSTEM</div><h1>CHÀO MỪNG <span>{user.user_metadata?.full_name || user.user_metadata?.name || user.email?.split("@")[0] || "BẠN"}</span></h1></div><div><p>Không gian cá nhân của bạn đã sẵn sàng. Quản lý tài khoản, khám phá sản phẩm và tiếp tục hành trình AI TRY-ON theo phong cách riêng.</p><button className="account-logout" type="button" onClick={handleLogout} disabled={loading}><LogOut size={13}/> Đăng xuất</button></div></div>
