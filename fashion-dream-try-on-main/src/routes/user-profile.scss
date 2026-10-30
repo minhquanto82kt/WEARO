@@ -538,7 +538,9 @@
   box-shadow: 0 3px 10px rgba(32,39,44,.05);
 }
 .account-profile-tabs button:focus-visible { outline: 3px solid rgba(84,114,140,.28); outline-offset: 2px; }
-.account-profile-panel { min-width: 0; }
+.account-profile-panel { min-width: 0; animation: account-panel-enter .22s ease-out both; }
+@keyframes account-panel-enter { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+@media (prefers-reduced-motion: reduce) { .account-profile-panel { animation: none; } }
 .account-profile-panel .account-hub-grid { margin-top: 0; gap: 12px; }
 .account-profile-panel .account-hub-card { padding: 17px; gap: 12px; }
 .account-profile-panel .account-hub-card--tryon,
@@ -564,4 +566,51 @@
   .account-profile-panel .account-hub-card--order,
   .account-profile-panel .account-hub-card--style,
   .account-profile-panel .account-hub-card--small { grid-column: 1 / -1; }
+}
+
+
+/* Profile UX polish: clear copy feedback, address hierarchy and accessible motion. */
+.account-id-group { position: relative; flex-wrap: wrap; }
+.account-copy-toast {
+  position: absolute;
+  z-index: 2;
+  right: 0;
+  bottom: calc(100% + 8px);
+  padding: 7px 10px;
+  border: 1px solid rgba(84,114,140,.22);
+  border-radius: 8px;
+  color: #263f52;
+  background: #fffdf9;
+  box-shadow: 0 8px 22px rgba(32,39,44,.1);
+  font: 600 11px/1.3 "Lexend", Arial, sans-serif;
+  white-space: nowrap;
+  animation: account-panel-enter .16s ease-out both;
+}
+.account-address-item { transition: border-color .18s ease, background .18s ease, box-shadow .18s ease; }
+.account-address-item:hover { border-color: rgba(84,114,140,.48); background: rgba(255,255,255,.72); }
+.account-address-item:has(.account-address-item__top span) {
+  border-color: rgba(242,173,148,.72);
+  background: linear-gradient(145deg, rgba(255,255,255,.88), rgba(242,173,148,.12));
+  box-shadow: 0 5px 18px rgba(84,114,140,.07);
+}
+.account-address-item__top span {
+  padding: 4px 8px;
+  border: 1px solid rgba(242,173,148,.55);
+  border-radius: 999px;
+  background: rgba(242,173,148,.16);
+}
+.account-profile-tabs button:active { transform: translateY(1px); }
+.account-profile-tabs button { transition: color .16s ease, background .16s ease, border-color .16s ease, transform .16s ease; }
+.account-address-item__actions button:hover,
+.account-address-cancel:hover { background: rgba(119,148,166,.1); border-color: rgba(84,114,140,.55); }
+.account-address-item__actions button:focus-visible,
+.account-address-cancel:focus-visible,
+.account-profile-save:focus-visible,
+.account-copy-id:focus-visible { outline: 3px solid rgba(84,114,140,.25); outline-offset: 2px; }
+@media (max-width: 560px) {
+  .account-id-group { max-width: 100%; }
+  .account-copy-toast { right: auto; left: 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .account-address-item, .account-profile-tabs button { transition: none; }
 }
