@@ -8,8 +8,8 @@ const routes = [
   { path: "/cart", allowNotFound: false },
   { path: "/checkout", allowNotFound: false },
   { path: "/about", allowNotFound: false },
-  { path: "/account", allowNotFound: false },
-  { path: "/account?preview=1", allowNotFound: false },
+  { path: "/profile", allowNotFound: false },
+  { path: "/profile?preview=1", allowNotFound: false },
 ];
 
 let failed = false;
