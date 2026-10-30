@@ -11,6 +11,7 @@ import { listWishlistProductIds } from "@/lib/wishlist";
 import { listMyOrders, type CustomerOrder } from "@/lib/order.functions";
 import { formatVnd } from "@/data/products";
 import { getCustomerProfile, updateCustomerProfile } from "@/lib/customer-profile";
+import { AccountAddressBook } from "@/components/account-address-book";
 import "./user-profile.scss";
 
 export const Route = createFileRoute("/profile")({ component: AccountPage });
@@ -378,6 +379,7 @@ function AccountPage() {
             <p className="account-hub-copy account-hub-copy--style">Gợi ý outfit theo phong cách và dịp bạn chọn trong AI Studio.</p>
             <span className="account-hub-arrow">Nhận gợi ý phối đồ <ArrowRight size={17} aria-hidden="true" /></span>
           </Link>
+          <div className="account-hub-card account-hub-card--addresses"><AccountAddressBook userId={user.id} preview={user.id === "preview-account-user"} /></div>
           <div className="account-hub-card account-hub-card--profile">
             <div className="account-hub-topline">
               <span className="account-hub-eyebrow">Hồ sơ tài khoản</span>
