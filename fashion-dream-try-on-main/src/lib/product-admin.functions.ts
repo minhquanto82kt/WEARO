@@ -302,8 +302,30 @@ export const deleteAdminProductVariant = createServerFn({ method: "POST" })
   .validator((data: AdminContext & { id: string }) => data)
   .handler(async ({ data }) => {
     await requireAdmin(data.accessToken);
+    const id = data.id.trim();
+    if (!id) throw new Error("Variant ID không hợp lệ.");
+
+    const [cartRefs, inventoryRefs, orderRefs] = await Promise.all([
+      supabaseRequest<Array<{ id: string }>>(
+        `cart_items?variant_id=eq.${encodeURIComponent(id)}&select=id&limit=1`,
+        { method: "GET" },
+      ),
+      supabaseRequest<Array<{ id: string }>>(
+        `inventory_movements?variant_id=eq.${encodeURIComponent(id)}&select=id&limit=1`,
+        { method: "GET" },
+      ),
+      supabaseRequest<Array<{ id: string }>>(
+        `order_items?variant_id=eq.${encodeURIComponent(id)}&select=id&limit=1`,
+        { method: "GET" },
+      ),
+    ]);
+
+    if (cartRefs.length || inventoryRefs.length || orderRefs.length) {
+      throw new Error("Không thể xóa variant đã được tham chiếu bởi giỏ hàng, lịch sử tồn kho hoặc đơn hàng. Hãy ngừng bán/đặt tồn kho về 0 thay vì xóa để bảo toàn dữ liệu.");
+    }
+
     await supabaseRequest<unknown>(
-      `product_variants?id=eq.${encodeURIComponent(data.id)}`,
+      `product_variants?id=eq.${encodeURIComponent(id)}`,
       { method: "DELETE" },
     );
     return { ok: true };
