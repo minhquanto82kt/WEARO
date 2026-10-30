@@ -12,6 +12,7 @@ import {
   createAdminProductVariant,
   deleteAdminProductImage,
   deleteAdminProductVariant,
+  getAdminProduct,
   listAdminInventory,
   listAdminProductImages,
   listAdminProductVariants,
@@ -115,8 +116,7 @@ export async function setPrimaryProductImage(productId: string, imageId: string)
 }
 
 export async function getProduct(id: string) {
-  const url = `${supabaseConfig.url}/rest/v1/products?select=*&id=eq.${encodeURIComponent(id)}&limit=1`;
-  const data = await parseResponse<Product[]>(await fetch(url, { headers: headers() })); return data[0] ?? null;
+  return getAdminProduct({ data: { accessToken: requireAccessToken(), id } });
 }
 export async function listProducts() {
   const url = `${supabaseConfig.url}/rest/v1/products?select=*&order=created_at.desc`;
