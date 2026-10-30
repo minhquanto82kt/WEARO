@@ -26,6 +26,7 @@ export function AccountAddressBook({ userId, preview = false }: Props) {
   const [addresses, setAddresses] = useState<CustomerAddress[]>([]);
   const [form, setForm] = useState<CustomerAddressInput>(EMPTY_FORM);
   const [editingId, setEditingId] = useState<string | null>(null);
+  const [formOpen, setFormOpen] = useState(false);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState("");
@@ -47,6 +48,7 @@ export function AccountAddressBook({ userId, preview = false }: Props) {
 
   const beginEdit = (address?: CustomerAddress) => {
     setEditingId(address?.id ?? null);
+    setFormOpen(true);
     setForm(address ? {
       recipient_name: address.recipient_name,
       phone: address.phone,
@@ -70,7 +72,7 @@ export function AccountAddressBook({ userId, preview = false }: Props) {
       } else {
         await createCustomerAddress(userId, form);
       }
-      setEditingId(null); setForm(EMPTY_FORM);
+      setEditingId(null); setFormOpen(false); setForm(EMPTY_FORM);
       setNotice(editingId ? "Đã cập nhật địa chỉ." : "Đã thêm địa chỉ mới.");
       await refresh();
     } catch (err) {
@@ -109,7 +111,7 @@ export function AccountAddressBook({ userId, preview = false }: Props) {
       {preview && <p className="account-profile-feedback">Preview chỉ xem giao diện, không kết nối dữ liệu địa chỉ thật.</p>}
       {error && <p className="account-profile-feedback account-profile-feedback--error" role="alert">{error}</p>}
       {notice && <p className="account-profile-feedback account-profile-feedback--success" role="status">{notice}</p>}
-      {editingId !== null || form !== EMPTY_FORM ? (
+      {formOpen ? (
         <form className="account-address-form" onSubmit={submit}>
           <label>Tên người nhận<input required maxLength={120} autoComplete="name" value={form.recipient_name} onChange={e => setField("recipient_name", e.target.value)} /></label>
           <label>Số điện thoại<input required type="tel" maxLength={30} autoComplete="tel" value={form.phone} onChange={e => setField("phone", e.target.value)} /></label>
@@ -118,7 +120,7 @@ export function AccountAddressBook({ userId, preview = false }: Props) {
           <label>Quận / huyện<input required maxLength={120} value={form.district} onChange={e => setField("district", e.target.value)} /></label>
           <label className="account-address-form__wide">Tỉnh / thành phố<input required maxLength={120} autoComplete="address-level1" value={form.city} onChange={e => setField("city", e.target.value)} /></label>
           <label className="account-address-default"><input type="checkbox" checked={Boolean(form.is_default)} onChange={e => setField("is_default", e.target.checked)} /> Đặt làm địa chỉ mặc định</label>
-          <div className="account-address-form__actions"><button className="account-profile-save" type="submit" disabled={saving}>{saving ? "Đang lưu…" : editingId ? "Lưu thay đổi" : "Thêm địa chỉ"}</button><button type="button" className="account-address-cancel" onClick={() => { setEditingId(null); setForm(EMPTY_FORM); }} disabled={saving}><X size={14}/> Hủy</button></div>
+          <div className="account-address-form__actions"><button className="account-profile-save" type="submit" disabled={saving}>{saving ? "Đang lưu…" : editingId ? "Lưu thay đổi" : "Thêm địa chỉ"}</button><button type="button" className="account-address-cancel" onClick={() => { setEditingId(null); setFormOpen(false); setForm(EMPTY_FORM); }} disabled={saving}><X size={14}/> Hủy</button></div>
         </form>
       ) : null}
       {loading ? <p className="account-profile-feedback" role="status">Đang tải địa chỉ…</p> : addresses.length === 0 ? (
