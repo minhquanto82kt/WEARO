@@ -461,3 +461,263 @@
   }
   .account-auth-bg .account-bg-mosaic { transform: none !important; }
 }
+
+
+/* Account hub refresh — editorial cream canvas with quiet WEARO mosaic accents */
+.account-page {
+  --account-paper: #fbfaf6;
+  --account-cream: #f1eee6;
+  background:
+    radial-gradient(ellipse at 12% 18%, rgba(119, 148, 166, .10), transparent 34%),
+    radial-gradient(ellipse at 88% 76%, rgba(242, 206, 174, .15), transparent 36%),
+    linear-gradient(135deg, #fffefa 0%, #fbfaf6 54%, #f4f1e9 100%);
+}
+
+.account-content--auth {
+  background-color: #fbfaf6;
+  background-image:
+    radial-gradient(ellipse at 92% 10%, rgba(119, 148, 166, .13), transparent 42%),
+    radial-gradient(ellipse at 8% 88%, rgba(242, 206, 174, .18), transparent 44%),
+    linear-gradient(135deg, #fffefa 0%, #fbfaf6 58%, #f3f0e8 100%);
+}
+
+.account-content--hub,
+.account-page .account-content--hub {
+  background:
+    radial-gradient(ellipse at 8% 12%, rgba(119, 148, 166, .12), transparent 34%),
+    radial-gradient(ellipse at 92% 78%, rgba(242, 206, 174, .18), transparent 38%),
+    linear-gradient(135deg, #fffefa 0%, #fbfaf6 56%, #f2f0e9 100%);
+}
+
+.account-shell {
+  padding-top: clamp(32px, 4.5vw, 58px);
+  padding-bottom: clamp(36px, 5vw, 64px);
+}
+
+.account-dashboard {
+  max-width: 1160px;
+}
+
+.account-welcome {
+  gap: clamp(32px, 6vw, 84px);
+  padding: 30px 0 34px;
+  border-bottom-color: rgba(54, 86, 109, .16);
+}
+
+.account-welcome > div:first-child {
+  flex: 1 1 58%;
+  min-width: 0;
+}
+
+.account-welcome > div:last-child {
+  flex: 0 1 360px;
+  padding: 8px 0 4px;
+}
+
+.account-welcome h1 {
+  font-size: clamp(34px, 4.7vw, 60px);
+  line-height: 1.06;
+}
+
+.account-welcome p {
+  color: #53616a;
+  line-height: 1.85;
+}
+
+.account-logout {
+  margin-top: 18px;
+  border-color: rgba(54, 86, 109, .22);
+  background: rgba(255, 255, 255, .78);
+  transition: background .18s ease, border-color .18s ease, transform .18s ease;
+}
+
+.account-logout:hover:not(:disabled) {
+  transform: translateY(-1px);
+  border-color: rgba(54, 86, 109, .42);
+  background: #fff;
+}
+
+.account-hub-grid {
+  gap: 22px;
+  margin-top: 30px;
+}
+
+.account-hub-card {
+  gap: 20px;
+  padding: clamp(24px, 2.5vw, 32px);
+  border-radius: 18px;
+  box-shadow: 0 10px 28px rgba(35, 57, 71, .09);
+}
+
+.account-hub-card--tryon,
+.account-hub-card--order {
+  min-height: 264px;
+}
+
+.account-hub-card--small {
+  min-height: 190px;
+}
+
+.account-hub-card--style,
+.account-hub-card--profile {
+  min-height: 220px;
+}
+
+.account-hub-card--tryon {
+  background:
+    radial-gradient(ellipse at 92% 100%, rgba(242, 206, 174, .25), transparent 34%),
+    linear-gradient(125deg, #263943 0%, #1f3038 72%, #435d6d 100%);
+}
+
+.account-hub-card--order,
+.account-hub-card--small,
+.account-hub-card--style,
+.account-hub-card--profile {
+  background: linear-gradient(145deg, #416d83 0%, #315b70 100%);
+}
+
+.account-hub-card:hover {
+  box-shadow: 0 16px 34px rgba(35, 57, 71, .13);
+}
+
+.account-hub-eyebrow {
+  letter-spacing: .01em;
+}
+
+.account-hub-copy,
+.account-empty-state,
+.account-hub-subvalue {
+  line-height: 1.8;
+}
+
+.account-profile-row {
+  padding: 13px 0;
+  border-bottom-color: rgba(248, 241, 232, .16);
+}
+
+.account-hub-bg {
+  z-index: 0;
+}
+
+.account-hub-bg .account-bg-mosaic {
+  position: absolute;
+  width: 124px;
+  opacity: .16;
+  border-radius: 18px;
+  overflow: hidden;
+  filter: saturate(.7);
+}
+
+.account-hub-bg .account-bg-mosaic--tl {
+  top: 4%;
+  left: max(2%, calc((100vw - 1320px) / 2));
+  width: 150px;
+  opacity: .16;
+  transform: rotate(-9deg);
+}
+
+.account-hub-bg .account-bg-mosaic--tr {
+  top: 13%;
+  right: max(2%, calc((100vw - 1320px) / 2));
+  width: 116px;
+  opacity: .13;
+  transform: rotate(10deg);
+}
+
+.account-hub-bg .account-bg-mosaic--bl {
+  bottom: 8%;
+  left: 5%;
+  width: 120px;
+  opacity: .11;
+  transform: rotate(7deg);
+}
+
+.account-hub-bg .account-bg-mosaic--br {
+  right: 5%;
+  bottom: 6%;
+  width: 144px;
+  opacity: .14;
+  transform: rotate(-8deg);
+}
+
+@media (max-width: 900px) {
+  .account-shell {
+    padding-top: 28px;
+    padding-bottom: 36px;
+  }
+
+  .account-welcome {
+    gap: 18px;
+    padding: 24px 0 28px;
+  }
+
+  .account-hub-grid {
+    gap: 16px;
+    margin-top: 24px;
+  }
+
+  .account-hub-card {
+    padding: 22px;
+  }
+
+  .account-hub-bg .account-bg-mosaic--tl,
+  .account-hub-bg .account-bg-mosaic--tr {
+    width: 88px;
+    opacity: .1;
+  }
+}
+
+@media (max-width: 560px) {
+  .account-shell {
+    padding-top: 18px;
+    padding-bottom: 28px;
+  }
+
+  .account-welcome {
+    padding: 20px 0 24px;
+  }
+
+  .account-welcome h1 {
+    font-size: clamp(32px, 9vw, 42px);
+  }
+
+  .account-welcome p {
+    font-size: 13px;
+  }
+
+  .account-hub-grid {
+    gap: 14px;
+    margin-top: 20px;
+  }
+
+  .account-hub-card {
+    gap: 16px;
+    min-height: 0;
+    padding: 22px 20px;
+    border-radius: 16px;
+  }
+
+  .account-hub-card--tryon,
+  .account-hub-card--order,
+  .account-hub-card--small,
+  .account-hub-card--style,
+  .account-hub-card--profile {
+    min-height: 0;
+  }
+
+  .account-hub-title--hero {
+    font-size: 32px;
+  }
+
+  .account-hub-bg .account-bg-mosaic--tl,
+  .account-hub-bg .account-bg-mosaic--bl {
+    display: none;
+  }
+
+  .account-hub-bg .account-bg-mosaic--tr,
+  .account-hub-bg .account-bg-mosaic--br {
+    display: block;
+    width: 60px;
+    opacity: .08;
+  }
+}
