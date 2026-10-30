@@ -376,11 +376,62 @@ export const deleteAdminProductImage = createServerFn({ method: "POST" })
   .validator((data: AdminContext & { id: string }) => data)
   .handler(async ({ data }) => {
     await requireAdmin(data.accessToken);
+    const id = data.id.trim();
+    if (!id) throw new Error("Image ID không hợp lệ.");
+
+    const rows = await supabaseRequest<AdminProductImage[]>(
+      `product_images?id=eq.${encodeURIComponent(id)}&select=id,product_id,image_url&limit=1`,
+      { method: "GET" },
+    );
+    const image = rows[0];
+    if (!image) throw new Error("Không tìm thấy ảnh cần xóa.");
+
+    const [productRows, duplicateRows] = await Promise.all([
+      supabaseRequest<Array<{ image: string | null }>>(
+        `products?id=eq.${encodeURIComponent(image.product_id)}&select=image&limit=1`,
+        { method: "GET" },
+      ),
+      supabaseRequest<Array<{ id: string }>>(
+        `product_images?image_url=eq.${encodeURIComponent(image.image_url)}&id=neq.${encodeURIComponent(id)}&select=id&limit=1`,
+        { method: "GET" },
+      ),
+    ]);
+
     await supabaseRequest<unknown>(
-      `product_images?id=eq.${encodeURIComponent(data.id)}`,
+      `product_images?id=eq.${encodeURIComponent(id)}`,
       { method: "DELETE" },
     );
-    return { ok: true };
+
+    // Remove the Storage object only after the DB row is deleted and only when
+    // neither the product cover nor another image row still references it.
+    if (productRows[0]?.image === image.image_url || duplicateRows.length) {
+      return { ok: true, storageCleanup: "retained" as const };
+    }
+
+    const { url, secretKey } = getServerConfig();
+    const publicPrefix = "/storage/v1/object/public/product-images/";
+    try {
+      const imageUrl = new URL(image.image_url);
+      const projectUrl = new URL(url);
+      if (imageUrl.origin !== projectUrl.origin || !imageUrl.pathname.startsWith(publicPrefix)) {
+        return { ok: true, storageCleanup: "skipped" as const };
+      }
+
+      const encodedPath = imageUrl.pathname.slice(publicPrefix.length);
+      const objectPath = decodeURIComponent(encodedPath);
+      if (!objectPath || objectPath.split("/").some((segment) => !segment || segment === "." || segment === "..")) {
+        return { ok: true, storageCleanup: "skipped" as const };
+      }
+
+      const storagePath = objectPath.split("/").map(encodeURIComponent).join("/");
+      const response = await fetch(`${projectUrl.origin}/storage/v1/object/product-images/${storagePath}`, {
+        method: "DELETE",
+        headers: { apikey: secretKey, Authorization: `Bearer ${secretKey}` },
+      });
+      return { ok: true, storageCleanup: response.ok || response.status === 404 ? "deleted" as const : "failed" as const };
+    } catch {
+      return { ok: true, storageCleanup: "failed" as const };
+    }
   });
 
 export const setPrimaryAdminProductImage = createServerFn({ method: "POST" })
