@@ -284,7 +284,7 @@
 /* Fit the auth screen to the available viewport below the shared site navigation. */
 @media (min-width: 561px) {
   .account-content--auth {
-    height: calc(100dvh - 132px);
+    height: calc(100dvh - 96px);
     min-height: 0;
   }
   .account-content--auth .account-shell {
