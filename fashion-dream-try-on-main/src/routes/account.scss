@@ -286,7 +286,7 @@
   box-shadow: 0 4px 14px rgba(84, 114, 140, 0.12);
 }
 @media (max-width: 560px) {
-  .account-auth-mosaic { width: 64px; top: 10px; right: 10px; opacity: 0.58; }
+  .account-auth-mosaic { width: 56px; top: 10px; right: 10px; opacity: 0.5; }
 }
 .account-auth-brand,
 .account-auth-heading,
@@ -346,7 +346,7 @@
   to { transform: rotateY(0deg) scale(1); opacity: 1; }
 }
 
-/* Dashboard (authenticated) — keep existing hub styles compact */
+/* Dashboard (authenticated) */
 .account-dashboard { width: 100%; max-width: 1120px; margin: 0 auto; }
 .account-main:has(.account-dashboard) { align-items: flex-start; }
 .account-welcome { display: flex; align-items: center; justify-content: space-between; gap: 28px; padding: 24px 0; border-bottom: 1px solid rgba(32, 39, 44, .16); }
@@ -390,15 +390,109 @@
   .account-auth-bg .account-bg-mosaic--bl,
   .account-auth-bg .account-bg-mosaic--br { width: 100px; opacity: 0.1; }
 }
+
+/* Mobile: compact auth card + single-line system strip */
 @media (max-width: 560px) {
-  .account-shell { width: calc(100% - 28px); padding-top: 20px; }
-  .account-auth-simple { min-height: 0; padding: 20px 18px; }
+  .account-shell {
+    width: calc(100% - 24px);
+    min-height: 0;
+    padding-top: 12px;
+    padding-bottom: 10px;
+  }
+  .account-content--auth .account-shell {
+    width: calc(100% - 24px);
+    min-height: 0;
+  }
+  .account-content--auth .account-main {
+    padding: 8px 0 6px;
+    align-items: flex-start;
+  }
+  .account-content--auth {
+    min-height: calc(100svh - 96px);
+    overflow: auto;
+  }
+
+  /* Tighter card — no forced min-height, less vertical chrome */
+  .account-auth-simple {
+    min-height: 0;
+    padding: 16px 14px 14px;
+  }
+  .account-brand-logo {
+    width: 108px;
+    height: 40px;
+  }
+  .account-auth-heading {
+    margin: 10px 0 12px;
+  }
+  .account-auth-heading h1 {
+    font-size: 22px;
+    line-height: 1.15;
+  }
+  .account-auth-heading p {
+    margin-top: 4px;
+    font-size: 12px;
+    line-height: 1.45;
+  }
+  .account-switch {
+    margin-bottom: 12px;
+  }
+  .account-switch button {
+    min-height: 36px;
+  }
+  .account-form {
+    gap: 12px;
+  }
+  .account-field {
+    gap: 5px;
+  }
+  .account-field input {
+    height: 44px;
+  }
+  .account-register-roadmap {
+    margin-bottom: 12px;
+    gap: 8px;
+  }
+  .account-register-roadmap button span {
+    width: 28px;
+    height: 28px;
+  }
+  .account-auth-footnote {
+    margin-top: 12px;
+    padding-top: 12px;
+  }
+  .account-auth-mosaic {
+    width: 52px;
+    top: 8px;
+    right: 8px;
+    opacity: 0.48;
+  }
+
+  /* SYSTEM ONLINE: one line, no wrap */
+  .account-content--auth .account-bottom {
+    padding-top: 10px;
+    font-size: 8px;
+    letter-spacing: 0.08em;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%;
+  }
+
   .account-hub-grid { grid-template-columns: minmax(0, 1fr); }
-  .account-hub-card--tryon, .account-hub-card--order, .account-hub-card--small, .account-hub-card--style, .account-hub-card--profile { grid-column: 1; }
+  .account-hub-card--tryon,
+  .account-hub-card--order,
+  .account-hub-card--small,
+  .account-hub-card--style,
+  .account-hub-card--profile { grid-column: 1; }
   .account-auth-bg .account-bg-mosaic { display: none; }
   .account-auth-bg .account-bg-mosaic--tr,
-  .account-auth-bg .account-bg-mosaic--br { display: block; width: 72px; opacity: 0.12; }
+  .account-auth-bg .account-bg-mosaic--br {
+    display: block;
+    width: 64px;
+    opacity: 0.1;
+  }
 }
+
 @media (prefers-reduced-motion: reduce) {
   .account-page *, .account-page *::before, .account-page *::after {
     scroll-behavior: auto !important;
