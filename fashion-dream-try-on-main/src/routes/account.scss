@@ -65,7 +65,6 @@
 
 /* Auth card — fixed equal width for login & register */
 .account-auth-flip {
-  perspective: 1400px;
   width: 100%;
   max-width: 440px;
   margin: 0 auto;
@@ -92,10 +91,6 @@
     radial-gradient(ellipse at 0% 100%, rgba(119, 148, 166, .12), transparent 36%),
     linear-gradient(145deg, #ffffff 0%, #fffdf9 58%, #fff8ef 100%);
   box-shadow: 0 18px 48px rgba(84, 114, 140, .12), 0 3px 12px rgba(32, 39, 44, .04);
-  transform-style: preserve-3d;
-  backface-visibility: hidden;
-  transition: transform 0.42s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.28s ease;
-  will-change: transform, opacity;
 }
 .account-content--auth .account-auth-simple::before {
   content: "";
@@ -206,7 +201,6 @@
   border: 0;
   color: #64748b;
   background: transparent;
-  text-align: left;
   cursor: pointer;
 }
 .account-register-roadmap button span {
@@ -311,29 +305,6 @@
 }
 .account-auth-bg .account-bg-mosaic--br {
   bottom: 8%; right: 5%; width: 170px; opacity: 0.18; transform: rotate(-10deg);
-}
-
-/* Card flip animation */
-.account-auth-simple.is-flip-out {
-  transform: rotateY(92deg) scale(0.98);
-  opacity: 0.35;
-}
-.account-auth-simple.is-flip-in {
-  animation: account-auth-flip-in 0.42s cubic-bezier(0.4, 0, 0.2, 1) both;
-}
-@keyframes account-auth-flip-in {
-  from { transform: rotateY(-92deg) scale(0.98); opacity: 0.35; }
-  to { transform: rotateY(0deg) scale(1); opacity: 1; }
-}
-.account-auth-simple.is-register.is-flip-out {
-  transform: rotateY(-92deg) scale(0.98);
-}
-.account-auth-simple.is-register.is-flip-in {
-  animation-name: account-auth-flip-in-reverse;
-}
-@keyframes account-auth-flip-in-reverse {
-  from { transform: rotateY(92deg) scale(0.98); opacity: 0.35; }
-  to { transform: rotateY(0deg) scale(1); opacity: 1; }
 }
 
 /* Dashboard (authenticated) */
@@ -487,13 +458,6 @@
     transition-duration: .01ms !important;
     animation-duration: .01ms !important;
     animation-iteration-count: 1 !important;
-  }
-  .account-auth-simple { transition: none; }
-  .account-auth-simple.is-flip-out,
-  .account-auth-simple.is-flip-in {
-    transform: none;
-    opacity: 1;
-    animation: none;
   }
   .account-auth-bg .account-bg-mosaic { transform: none !important; }
 }
