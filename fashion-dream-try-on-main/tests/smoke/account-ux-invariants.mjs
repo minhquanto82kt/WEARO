@@ -5,8 +5,8 @@ import { join } from "node:path";
 const root = new URL("../../", import.meta.url).pathname;
 const read = (file) => readFile(join(root, file), "utf8");
 const [account, styles] = await Promise.all([
-  read("src/routes/account.tsx"),
-  read("src/routes/account.scss"),
+  read("src/routes/user-profile.tsx"),
+  read("src/routes/user-profile.scss"),
 ]);
 
 function check(condition, label) {
@@ -15,7 +15,7 @@ function check(condition, label) {
 }
 
 // One stylesheet owns the account route's visual system.
-check(account.includes('import "./account.scss";'), "account route imports its dedicated stylesheet");
+check(account.includes('import "./user-profile.scss";'), "profile route imports its dedicated stylesheet");
 check(!account.includes("<style>"), "route has no embedded style block");
 check(!/style=\{\{/.test(account), "route has no inline style overrides");
 check(styles.includes("--account-blue: #54728c") && styles.includes("--account-peach: #f2ad94"), "brand colors are defined as account design tokens");
