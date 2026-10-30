@@ -3,7 +3,6 @@ import type { FormEvent } from "react";
 import { useEffect, useState } from "react";
 import { ArrowRight, Check, Copy, Eye, EyeOff, Heart, LogOut, Package, ShoppingBag, UserRound, WandSparkles } from "lucide-react";
 import { SiteNav } from "@/components/site-nav";
-import { SiteFooter } from "@/components/site-footer";
 import { ShapeMosaic } from "@/components/shape-mosaic";
 import { getCustomerSession, requestPasswordReset, signInCustomer, signOutCustomer, updateCustomerPassword } from "@/lib/auth";
 import { supabaseConfig } from "@/lib/upthink-supabase";
@@ -335,6 +334,10 @@ function AccountPage() {
         {(mode === "login" || mode === "register") && <p className="account-auth-footnote">{mode === "login" ? "Chưa có tài khoản?" : "Đã có tài khoản?"} <button type="button" onClick={() => switchMode(mode === "login" ? "register" : "login")}>{mode === "login" ? "Đăng ký ngay" : "Đăng nhập"}</button></p>}
       </div>
       </div>}
-    </section><div className="account-bottom"><b>●</b> SYSTEM ONLINE / CUSTOMER ACCOUNT / WEARO 2026</div></div></main>{user ? <SiteFooter /> : null}
+    </section>
+        {!(user && mode !== "reset") && (
+          <div className="account-bottom"><b>●</b> SYSTEM ONLINE / CUSTOMER ACCOUNT / WEARO 2026</div>
+        )}
+      </div></main>
   </div>;
 }
