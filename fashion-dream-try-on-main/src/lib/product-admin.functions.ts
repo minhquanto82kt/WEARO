@@ -399,14 +399,32 @@ export const setPrimaryAdminProductImage = createServerFn({ method: "POST" })
     );
     if (!target.length) throw new Error("Hình ảnh không thuộc sản phẩm đã chọn.");
 
+    const previousPrimary = await supabaseRequest<Array<Pick<AdminProductImage, "id">>>(
+      `product_images?product_id=eq.${encodeURIComponent(productId)}&is_primary=eq.true&select=id&limit=1`,
+      { method: "GET" },
+    );
+
     await supabaseRequest<unknown>(
       `product_images?product_id=eq.${encodeURIComponent(productId)}`,
       { method: "PATCH", body: JSON.stringify({ is_primary: false }) },
     );
-    const rows = await supabaseRequest<AdminProductImage[]>(
-      `product_images?id=eq.${encodeURIComponent(imageId)}&product_id=eq.${encodeURIComponent(productId)}`,
-      { method: "PATCH", body: JSON.stringify({ is_primary: true }) },
-    );
-    if (!rows[0]) throw new Error("Không thể đặt hình ảnh chính.");
-    return rows[0];
+
+    try {
+      const rows = await supabaseRequest<AdminProductImage[]>(
+        `product_images?id=eq.${encodeURIComponent(imageId)}&product_id=eq.${encodeURIComponent(productId)}`,
+        { method: "PATCH", body: JSON.stringify({ is_primary: true }) },
+      );
+      if (!rows[0]) throw new Error("Không thể đặt hình ảnh chính.");
+      return rows[0];
+    } catch (error) {
+      // Compensate if the second request fails. A database RPC is still required
+      // for strict atomicity under concurrent requests.
+      if (previousPrimary[0]?.id) {
+        await supabaseRequest<unknown>(
+          `product_images?id=eq.${encodeURIComponent(previousPrimary[0].id)}&product_id=eq.${encodeURIComponent(productId)}`,
+          { method: "PATCH", body: JSON.stringify({ is_primary: true }) },
+        );
+      }
+      throw error;
+    }
   });
