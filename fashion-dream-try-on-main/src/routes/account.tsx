@@ -232,8 +232,7 @@ function AccountPage() {
         </div>
       </div> : <div className="account-auth-simple">
         <div className="account-auth-brand" aria-label="WEARO">
-          <span className="account-brand-mark">W</span>
-          <span>WEARO</span>
+          <img className="account-brand-logo" src="/brand/OG-logo.webp" alt="WEARO" />
         </div>
         <div className="account-auth-heading">
           <h1>{mode === "login" ? "Chào mừng trở lại" : mode === "register" ? "Tạo tài khoản" : mode === "recover" ? "Khôi phục mật khẩu" : "Đặt mật khẩu mới"}</h1>
