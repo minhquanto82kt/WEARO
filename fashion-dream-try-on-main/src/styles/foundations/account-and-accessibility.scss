@@ -24,9 +24,9 @@
 }
 
 .account-page .account-submit {
-  border-color: var(--primary) !important;
-  background-color: var(--primary) !important;
-  color: var(--primary-foreground) !important;
+  border-color: var(--wearo-blue-dark) !important;
+  background-color: var(--wearo-blue-dark) !important;
+  color: #fff !important;
 }
 
 .account-page .account-switch button[aria-selected="true"]::after {
@@ -88,4 +88,29 @@
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
   }
+}
+
+
+/* Auth form brand overrides: keep the account access flow on WEARO steel-blue tokens. */
+.account-page .account-content--auth .account-submit {
+  border-color: var(--wearo-blue-dark) !important;
+  background-color: var(--wearo-blue-dark) !important;
+  color: #fff !important;
+}
+.account-page .account-content--auth .account-link,
+.account-page .account-content--auth .account-auth-footnote button,
+.account-page .account-content--auth .account-register-back {
+  color: var(--wearo-blue-dark) !important;
+}
+.account-page .account-content--auth .account-field input::placeholder {
+  color: #64748b !important;
+  opacity: 1;
+}
+.account-page .account-content--auth .account-bottom {
+  color: #64748b !important;
+  font-size: 11px;
+}
+.account-page .account-content--auth .account-register-roadmap button:focus-visible,
+.account-page .account-content--auth .account-switch button:focus-visible {
+  outline-color: var(--wearo-blue-dark);
 }
