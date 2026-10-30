@@ -58,6 +58,7 @@ function AccountPage() {
   const [fullName, setFullName] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [registerStep, setRegisterStep] = useState<1 | 2>(1);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -100,7 +101,15 @@ function AccountPage() {
     return () => { window.removeEventListener("upthink:auth:login", onAuth); window.removeEventListener("upthink:auth:logout", onAuth); window.removeEventListener("upthink:auth:recovery", onRecovery); };
   }, []);
 
-  const switchMode = (next: Mode) => { setMode(next); setMessage(""); setError(""); setPassword(""); setConfirmPassword(""); };
+  const switchMode = (next: Mode) => { setMode(next); setRegisterStep(1); setMessage(""); setError(""); setPassword(""); setConfirmPassword(""); };
+
+  const advanceRegistration = (form: HTMLFormElement | null) => {
+    if (!form) return;
+    const nameInput = form.querySelector<HTMLInputElement>("#account-name");
+    const emailInput = form.querySelector<HTMLInputElement>("#account-email");
+    if (!nameInput?.reportValidity() || !emailInput?.reportValidity()) return;
+    setError(""); setMessage(""); setRegisterStep(2);
+  };
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault(); setLoading(true); setMessage(""); setError(""); setRequiresEmailConfirmation(false);
@@ -241,17 +250,33 @@ function AccountPage() {
           <p>{mode === "login" ? "Đăng nhập để tiếp tục trải nghiệm WEARO." : mode === "register" ? "Tạo tài khoản để lưu sản phẩm và quản lý đơn hàng." : mode === "recover" ? "Nhập email để nhận liên kết đặt lại mật khẩu." : "Chọn mật khẩu mới cho tài khoản của bạn."}</p>
         </div>
         {mode === "login" || mode === "register" ? <div className="account-switch" role="tablist" aria-label="Chọn đăng nhập hoặc đăng ký"><button type="button" role="tab" aria-selected={mode === "login"} onClick={() => switchMode("login")}>Đăng nhập</button><button type="button" role="tab" aria-selected={mode === "register"} onClick={() => switchMode("register")}>Đăng ký</button></div> : null}
-        <form className="account-form" onSubmit={handleSubmit}>
-          {mode === "register" && <div className="account-field"><label htmlFor="account-name">Họ và tên</label><input id="account-name" value={fullName} onChange={e => setFullName(e.target.value)} placeholder="Nhập họ và tên" autoComplete="name" disabled={loading} required /> </div>}
-          {mode !== "reset" && <div className="account-field"><label htmlFor="account-email">Email</label><input id="account-email" type="email" value={email} onChange={e => setEmail(e.target.value)} placeholder="name@example.com" autoComplete="email" disabled={loading} required /></div>}
-          {mode !== "recover" && <div className="account-field"><label htmlFor="account-password">{mode === "reset" ? "Mật khẩu mới" : "Mật khẩu"}</label><div className="account-password"><input id="account-password" type={showPassword ? "text" : "password"} value={password} onChange={e => setPassword(e.target.value)} placeholder="Tối thiểu 6 ký tự" autoComplete={mode === "login" ? "current-password" : "new-password"} disabled={loading} required minLength={6} /><button className="account-eye" type="button" onClick={() => setShowPassword(v => !v)} aria-label={showPassword ? "Ẩn mật khẩu" : "Hiện mật khẩu"} disabled={loading}>{showPassword ? <EyeOff size={17} /> : <Eye size={17} />}</button></div></div>}
-          {(mode === "register" || mode === "reset") && <div className="account-field"><label htmlFor="account-confirm-password">Xác nhận mật khẩu</label><div className="account-password"><input id="account-confirm-password" type={showConfirmPassword ? "text" : "password"} value={confirmPassword} onChange={e => setConfirmPassword(e.target.value)} placeholder="Nhập lại mật khẩu" autoComplete="new-password" disabled={loading} required minLength={6} /><button className="account-eye" type="button" onClick={() => setShowConfirmPassword(v => !v)} aria-label={showConfirmPassword ? "Ẩn mật khẩu xác nhận" : "Hiện mật khẩu xác nhận"} disabled={loading}>{showConfirmPassword ? <EyeOff size={17} /> : <Eye size={17} />}</button></div></div>}
+        {mode === "register" && <div className="account-register-roadmap" aria-label="Tiến trình đăng ký">
+          <button type="button" className={registerStep === 1 ? "is-active" : "is-complete"} aria-current={registerStep === 1 ? "step" : undefined} onClick={() => setRegisterStep(1)} disabled={loading}><span>1</span><small>Thông tin</small></button>
+          <i className={registerStep === 2 ? "is-complete" : ""} aria-hidden="true" />
+          <button type="button" className={registerStep === 2 ? "is-active" : ""} aria-current={registerStep === 2 ? "step" : undefined} onClick={() => { if (registerStep === 2) setRegisterStep(2); }} disabled={loading || registerStep === 1}><span>2</span><small>Bảo mật</small></button>
+        </div>}
+        <form className={`account-form ${mode === "register" ? `account-form--register account-form--step-${registerStep}` : ""}`} onSubmit={handleSubmit}>
+          {mode === "register" && registerStep === 1 && <>
+            <div className="account-field"><label htmlFor="account-name">Họ và tên</label><input id="account-name" value={fullName} onChange={e => setFullName(e.target.value)} placeholder="Nhập họ và tên" autoComplete="name" disabled={loading} required /></div>
+            <div className="account-field"><label htmlFor="account-email">Email</label><input id="account-email" type="email" value={email} onChange={e => setEmail(e.target.value)} placeholder="name@example.com" autoComplete="email" disabled={loading} required /></div>
+          </>}
+          {mode === "register" && registerStep === 2 && <>
+            <div className="account-field"><label htmlFor="account-password">Mật khẩu</label><div className="account-password"><input id="account-password" type={showPassword ? "text" : "password"} value={password} onChange={e => setPassword(e.target.value)} placeholder="Tối thiểu 6 ký tự" autoComplete="new-password" disabled={loading} required minLength={6} /><button className="account-eye" type="button" onClick={() => setShowPassword(v => !v)} aria-label={showPassword ? "Ẩn mật khẩu" : "Hiện mật khẩu"} disabled={loading}>{showPassword ? <EyeOff size={17} /> : <Eye size={17} />}</button></div></div>
+            <div className="account-field"><label htmlFor="account-confirm-password">Xác nhận mật khẩu</label><div className="account-password"><input id="account-confirm-password" type={showConfirmPassword ? "text" : "password"} value={confirmPassword} onChange={e => setConfirmPassword(e.target.value)} placeholder="Nhập lại mật khẩu" autoComplete="new-password" disabled={loading} required minLength={6} /><button className="account-eye" type="button" onClick={() => setShowConfirmPassword(v => !v)} aria-label={showConfirmPassword ? "Ẩn mật khẩu xác nhận" : "Hiện mật khẩu xác nhận"} disabled={loading}>{showConfirmPassword ? <EyeOff size={17} /> : <Eye size={17} />}</button></div></div>
+          </>}
+          {mode !== "register" && mode !== "reset" && <div className="account-field"><label htmlFor="account-email">Email</label><input id="account-email" type="email" value={email} onChange={e => setEmail(e.target.value)} placeholder="name@example.com" autoComplete="email" disabled={loading} required /></div>}
+          {mode !== "register" && mode !== "recover" && mode !== "reset" && <div className="account-field"><label htmlFor="account-password">Mật khẩu</label><div className="account-password"><input id="account-password" type={showPassword ? "text" : "password"} value={password} onChange={e => setPassword(e.target.value)} placeholder="Tối thiểu 6 ký tự" autoComplete="current-password" disabled={loading} required minLength={6} /><button className="account-eye" type="button" onClick={() => setShowPassword(v => !v)} aria-label={showPassword ? "Ẩn mật khẩu" : "Hiện mật khẩu"} disabled={loading}>{showPassword ? <EyeOff size={17} /> : <Eye size={17} />}</button></div></div>}
+          {(mode === "reset") && <div className="account-field"><label htmlFor="account-password">Mật khẩu mới</label><div className="account-password"><input id="account-password" type={showPassword ? "text" : "password"} value={password} onChange={e => setPassword(e.target.value)} placeholder="Tối thiểu 6 ký tự" autoComplete="new-password" disabled={loading} required minLength={6} /><button className="account-eye" type="button" onClick={() => setShowPassword(v => !v)} aria-label={showPassword ? "Ẩn mật khẩu" : "Hiện mật khẩu"} disabled={loading}>{showPassword ? <EyeOff size={17} /> : <Eye size={17} />}</button></div></div>}
+          {(mode === "reset") && <div className="account-field"><label htmlFor="account-confirm-password">Xác nhận mật khẩu</label><div className="account-password"><input id="account-confirm-password" type={showConfirmPassword ? "text" : "password"} value={confirmPassword} onChange={e => setConfirmPassword(e.target.value)} placeholder="Nhập lại mật khẩu" autoComplete="new-password" disabled={loading} required minLength={6} /><button className="account-eye" type="button" onClick={() => setShowConfirmPassword(v => !v)} aria-label={showConfirmPassword ? "Ẩn mật khẩu xác nhận" : "Hiện mật khẩu xác nhận"} disabled={loading}>{showConfirmPassword ? <EyeOff size={17} /> : <Eye size={17} />}</button></div></div>}
+          {mode === "recover" && <div className="account-field"><label htmlFor="account-email">Email</label><input id="account-email" type="email" value={email} onChange={e => setEmail(e.target.value)} placeholder="name@example.com" autoComplete="email" disabled={loading} required /></div>}
           {error && <p className="account-feedback account-feedback--error" role="alert">{error}</p>}
           {message && <p className="account-feedback account-feedback--success" role="status">{message}</p>}
           {mode === "login" && <div className="account-field account-field--utility"><button className="account-link" type="button" onClick={() => switchMode("recover")}>Quên mật khẩu?</button></div>}
           {mode === "login" && <div className="account-field account-field--placeholder" aria-hidden="true"><label>Họ và tên</label><span /></div>}
+          {mode === "register" && registerStep === 1 && <button className="account-submit" type="button" onClick={event => advanceRegistration(event.currentTarget.form)} disabled={loading}>Tiếp tục <ArrowRight size={16}/></button>}
+          {mode === "register" && registerStep === 2 && <div className="account-register-actions"><button className="account-register-back" type="button" onClick={() => { setError(""); setRegisterStep(1); }}>Quay lại</button><button className="account-submit" type="submit" disabled={loading}>{loading ? "Đang xử lý…" : "Tạo tài khoản"}</button></div>}
           {mode === "register" && requiresEmailConfirmation && message && !user && <button className="account-resend" type="button" onClick={handleResend} disabled={resending}>{resending ? "Đang gửi…" : "Gửi lại email xác nhận"}</button>}
-          <button className="account-submit" type="submit" disabled={loading}>{loading ? "Đang xử lý…" : mode === "login" ? "Đăng nhập" : mode === "register" ? "Tạo tài khoản" : mode === "recover" ? "Gửi liên kết khôi phục" : "Cập nhật mật khẩu"}</button>
+          {mode !== "register" && <button className="account-submit" type="submit" disabled={loading}>{loading ? "Đang xử lý…" : mode === "login" ? "Đăng nhập" : mode === "recover" ? "Gửi liên kết khôi phục" : "Cập nhật mật khẩu"}</button>}
           {(mode === "recover" || mode === "reset") && <button className="account-link account-back" type="button" onClick={() => { switchMode("login"); if (mode === "reset") clearAccountQuery(); }}>← Quay lại đăng nhập</button>}
         </form>
         {(mode === "login" || mode === "register") && <p className="account-auth-footnote">{mode === "login" ? "Chưa có tài khoản?" : "Đã có tài khoản?"} <button type="button" onClick={() => switchMode(mode === "login" ? "register" : "login")}>{mode === "login" ? "Đăng ký ngay" : "Đăng nhập"}</button></p>}
