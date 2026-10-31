@@ -9,7 +9,7 @@ export const Route = createFileRoute("/admin/products/")({
   head: () => ({ meta: [{ title: "Products Admin — UpThink" }] }),
 });
 
-const categories = ["hoodies", "tees", "outerwear", "pants", "cap", "sunglass", "accessories"];
+const categories = ["hoodies", "tees", "outerwear", "pants", "dresses", "cap", "sunglass", "accessories"];
 const PRODUCTS_PER_PAGE = 8;
 function money(value: number) { return new Intl.NumberFormat("vi-VN").format(value) + " ₫"; }
 
