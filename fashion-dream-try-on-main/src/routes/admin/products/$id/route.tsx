@@ -46,7 +46,7 @@ type VariantForm = {
   stock: string;
 };
 
-const categories = ["hoodies", "tees", "outerwear", "pants", "cap", "sunglass", "accessories"];
+const categories = ["hoodies", "tees", "outerwear", "pants", "dresses", "cap", "sunglass", "accessories"];
 const sizes = ["S", "M", "L", "XL", "Freesize"];
 const colors = ["Black", "White", "Cream", "Beige", "Ivory", "Charcoal", "Cement", "Moss", "Electric"];
 const emptyVariant: VariantForm = { size: "", color: "", sku: "", stock: "0" };
