@@ -26,6 +26,7 @@ const categories = [
   "cap",
   "sunglass",
   "accessories",
+  "dresses",
 ];
 
 const emptyForm = {
